@@ -1,18 +1,19 @@
-# PawCare Veterinary Clinic Landing Page
+# EA Forex LeopardSmart Landing Page
 
-A modern, professional landing page for a family veterinary clinic built with Next.js 15, Tailwind CSS, and TypeScript. Features appointment booking, service showcase, testimonials, and interactive contact section.
+A modern, professional landing page for EA Forex LeopardSmart built with Next.js 15, Tailwind CSS, and TypeScript. Features pricing plans, contact forms, blog, and comprehensive EA information.
 
 ## 🌟 Features
 
 - **Modern Design**: Professional blue and white color scheme with elegant typography
 - **Responsive Layout**: Optimized for mobile, tablet, and desktop devices
-- **Appointment Booking**: Integrated form with Resend email service
-- **Service Showcase**: Detailed service listings with transparent pricing
-- **Testimonials**: Customer reviews with carousel functionality
-- **Interactive Map**: Embedded Google Maps for location
-- **Sticky Call-to-Action**: Fixed bottom bar for easy contact
-- **Smooth Navigation**: Scroll-to-section navigation with mobile menu
-- **SEO Optimized**: Meta tags and structured data
+- **Pricing Plans**: Three tiers (Demo, Full, Pro) with detailed features
+- **Contact Forms**: Integrated forms with Resend email service
+- **Blog System**: SEO-optimized blog with detailed EA articles
+- **Strategy Details**: Comprehensive EA strategy and risk management info
+- **Performance Stats**: Backtest results and trading statistics
+- **Sticky Call-to-Action**: Fixed bottom bar for easy purchase
+- **Smooth Navigation**: Multi-page navigation with mobile menu
+- **SEO Optimized**: Meta tags, sitemap, and structured data
 
 ## 🚀 Tech Stack
 
@@ -23,16 +24,34 @@ A modern, professional landing page for a family veterinary clinic built with Ne
 - **Icons**: Lucide React
 - **Image Optimization**: Next.js Image component
 
-## 📱 Sections
+## 📱 Pages & Sections
 
-1. **Header**: Navigation, contact info, and social media links
-2. **Hero**: Main headline with appointment booking form
-3. **Services**: Service listings with pricing in Vietnamese Dong (₫)
-4. **About**: Clinic information and team profiles
-5. **Testimonials**: Customer reviews with star ratings
-6. **Contact**: Interactive map and contact information
-7. **Footer**: Additional links and information
-8. **Sticky CTA**: Always-visible call button
+### Homepage (/)
+1. **Header**: Navigation with links to all pages
+2. **Hero**: EA introduction with CTA buttons and performance stats
+3. **Features**: 6 key EA features with detailed descriptions
+4. **Strategy**: EA trading philosophy and methodology
+5. **Proof**: Performance statistics and customer testimonials
+6. **Contact**: Contact form with multiple inquiry types
+7. **Footer**: Links, products, and contact information
+8. **Sticky CTA**: Always-visible purchase button
+
+### Pricing (/pricing)
+- Three pricing tiers with detailed feature comparison
+- FAQ section with common questions
+- Contact form for inquiries and demo requests
+
+### About (/about)
+- Detailed EA strategy explanation
+- Backtest methodology and recommendations
+- Risk warnings and disclaimers
+- Technical specifications
+
+### Blog (/blog)
+- Blog post listing with categories
+- Individual blog post pages (/blog/[slug])
+- Newsletter signup
+- Related articles sidebar
 
 ## 🛠️ Setup Instructions
 
@@ -160,25 +179,27 @@ vet-clinic/
 
 ## 🌐 Business Information
 
-- **Address**: 74 Lê Trọng Tấn, Tây Thạnh Ward, Ho Chi Minh City Việt Nam
-- **Phone**: +84765452515
-- **Email**: info@pawcareclinic.com (update to your actual email)
+- **Product**: EA Forex LeopardSmart
+- **Phone**: +84 901 234 567
+- **Email**: support@leopardsmart.com
+- **Telegram**: @LeopardSmartSupport
+- **Support Hours**: Monday-Friday 9:00-18:00 (GMT+7)
 
 ## 📊 Features Implementation Status
 
 ✅ **Completed Features:**
 - [x] Professional design with blue/white theme
 - [x] Responsive mobile-first layout
-- [x] Appointment booking form with validation
-- [x] Service showcase with pricing
-- [x] About section with team profiles
-- [x] Testimonials with carousel
-- [x] Contact section with Google Maps
+- [x] Homepage with Hero, Features, Strategy, Proof sections
+- [x] Pricing page with 3 tiers and FAQ
+- [x] About page with detailed EA information
+- [x] Blog system with article listing and detail pages
+- [x] Contact forms with Resend integration
+- [x] Header and Footer navigation
 - [x] Sticky call-to-action bar
-- [x] Smooth scroll navigation
-- [x] Email integration with Resend
-- [x] SEO optimization
+- [x] SEO optimization (meta tags, sitemap, robots.txt)
 - [x] Image optimization
+- [x] Multi-page routing
 
 ## 🔧 Maintenance
 
@@ -204,4 +225,4 @@ For technical support or customization requests, please refer to:
 
 ---
 
-**Built with ❤️ for PawCare Clinic** 
+**Built with ❤️ for EA Forex LeopardSmart** 

@@ -1,16 +1,31 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import ChatWidget from "@/components/ChatWidget";
 
 export const metadata: Metadata = {
-  title: "Phòng Khám Thú Y PawCare - Chăm Sóc Thú Cưng Chuyên Nghiệp tại TP. Hồ Chí Minh",
-  description: "Phòng khám thú y đáng tin cậy tại TP. Hồ Chí Minh cung cấp dịch vụ chăm sóc thú cưng toàn diện. Đặt lịch hẹn ngay hôm nay để nhận dịch vụ thú y chuyên nghiệp.",
-  keywords: "phòng khám thú y, chăm sóc thú cưng, TP. Hồ Chí Minh, bệnh viện động vật, dịch vụ thú y",
-  authors: [{ name: "Phòng Khám Thú Y PawCare" }],
+  title: "EA Forex LeopardSmart — Giao dịch tự động tối ưu rủi ro",
+  description: "EA Forex đa chiến lược (trend + range), quản trị rủi ro, báo cáo minh bạch. Dùng thử demo hoặc mua bản đầy đủ.",
+  keywords: "EA Forex, robot forex, expert advisor, MT4, MT5, copy trading",
+  authors: [{ name: "EA Forex LeopardSmart" }],
   openGraph: {
-    title: "Phòng Khám Thú Y PawCare - Chăm Sóc Thú Cưng Chuyên Nghiệp",
-    description: "Phòng khám thú y đáng tin cậy tại TP. Hồ Chí Minh cung cấp dịch vụ chăm sóc thú cưng toàn diện.",
+    title: "EA Forex LeopardSmart — Giao dịch tự động tối ưu rủi ro",
+    description: "EA Forex đa chiến lược (trend + range), quản trị rủi ro, báo cáo minh bạch. Dùng thử demo hoặc mua bản đầy đủ.",
     type: "website",
     locale: "vi_VN",
+    images: [
+      {
+        url: "/og.jpg",
+        width: 1200,
+        height: 630,
+        alt: "EA Forex LeopardSmart",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "EA Forex LeopardSmart — Giao dịch tự động tối ưu rủi ro",
+    description: "EA Forex đa chiến lược (trend + range), quản trị rủi ro, báo cáo minh bạch. Dùng thử demo hoặc mua bản đầy đủ.",
+    images: ["/og.jpg"],
   },
   robots: {
     index: true,
@@ -25,7 +40,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="vi">
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">
+        {children}
+        <ChatWidget />
+      </body>
     </html>
   );
 } 
