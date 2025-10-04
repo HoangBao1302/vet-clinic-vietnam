@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import StickyCallToAction from "@/components/StickyCallToAction";
@@ -114,6 +114,12 @@ export default function PricingPage() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState("");
+  const [isClient, setIsClient] = useState(false);
+
+  // Fix hydration mismatch by ensuring client-side rendering
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -254,19 +260,34 @@ export default function PricingPage() {
                     )}
                   </div>
 
-                  <button 
-                    onClick={() => handlePlanClick(plan.id)}
-                    className={`w-full py-3 px-6 rounded-lg font-semibold transition-colors ${
-                      plan.popular 
-                        ? 'bg-blue-600 text-white hover:bg-blue-700' 
-                        : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
-                    }`}
-                  >
-                    {plan.id === 'demo' && <Download size={18} className="inline mr-2" />}
-                    {plan.id === 'full' && <ShoppingCart size={18} className="inline mr-2" />}
-                    {plan.id === 'pro' && <Send size={18} className="inline mr-2" />}
-                    {plan.cta}
-                  </button>
+                  {isClient ? (
+                    <button 
+                      onClick={() => handlePlanClick(plan.id)}
+                      className={`w-full py-3 px-6 rounded-lg font-semibold transition-colors ${
+                        plan.popular 
+                          ? 'bg-blue-600 text-white hover:bg-blue-700' 
+                          : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
+                      }`}
+                    >
+                      {plan.id === 'demo' && <Download size={18} className="inline mr-2" />}
+                      {plan.id === 'full' && <ShoppingCart size={18} className="inline mr-2" />}
+                      {plan.id === 'pro' && <Send size={18} className="inline mr-2" />}
+                      {plan.cta}
+                    </button>
+                  ) : (
+                    <div 
+                      className={`w-full py-3 px-6 rounded-lg font-semibold transition-colors ${
+                        plan.popular 
+                          ? 'bg-blue-600 text-white' 
+                          : 'bg-gray-100 text-gray-800'
+                      }`}
+                    >
+                      {plan.id === 'demo' && <Download size={18} className="inline mr-2" />}
+                      {plan.id === 'full' && <ShoppingCart size={18} className="inline mr-2" />}
+                      {plan.id === 'pro' && <Send size={18} className="inline mr-2" />}
+                      {plan.cta}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>

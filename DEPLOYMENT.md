@@ -1,4 +1,4 @@
-# Deployment Guide - PawCare Veterinary Clinic
+# Deployment Guide - EA Forex LeopardSmart Landing Page
 
 ## 🚀 GitHub Repository Setup
 
@@ -6,7 +6,7 @@
 
 1. **Create Repository**:
    - Go to [GitHub](https://github.com) and create a new repository
-   - Name: `vet-clinic-landing` or similar
+   - Name: `ea-forex-leopardsmart` or `leopardsmart-landing`
    - Set as Public (for free Vercel deployment)
    - Don't initialize with README (we already have one)
 
@@ -14,7 +14,7 @@
    ```bash
    git init
    git add .
-   git commit -m "Initial commit: PawCare Clinic landing page"
+   git commit -m "Initial commit: EA Forex LeopardSmart landing page"
    git branch -M main
    git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
    git push -u origin main
@@ -58,9 +58,9 @@ In Vercel dashboard:
 1. **Add Domain**: In Vercel dashboard, go to Domains
 2. **DNS Configuration**: Point your domain to Vercel
 3. **Update Email Configuration**:
-   - In `app/api/appointment/route.ts`
-   - Change `from: "appointments@pawcareclinic.com"`
-   - To `from: "appointments@yourdomain.com"`
+   - In `app/api/contact/route.ts`
+   - Change `from: "support@leopardsmart.com"`
+   - To `from: "support@yourdomain.com"`
 
 ## 📧 Resend Configuration
 
@@ -72,11 +72,11 @@ In Vercel dashboard:
 
 ### 2. Update Email Addresses
 
-In `app/api/appointment/route.ts`, update:
+In `app/api/contact/route.ts`, update:
 ```typescript
 const { data, error } = await resend.emails.send({
-  from: "appointments@yourdomain.com", // Your verified domain
-  to: ["info@yourdomain.com"], // Your clinic email
+  from: "support@yourdomain.com", // Your verified domain
+  to: ["support@leopardsmart.com"], // Your business email
   // ... rest of configuration
 });
 ```
@@ -89,7 +89,9 @@ const { data, error } = await resend.emails.send({
 - ✅ Navigation works smoothly
 - ✅ Images display properly
 - ✅ Mobile responsiveness
-- ✅ Appointment form submission
+- ✅ Contact form submission
+- ✅ Pricing page functionality
+- ✅ Blog pages loading
 - ✅ Email delivery
 
 ### 2. SEO and Analytics
@@ -116,17 +118,19 @@ const { data, error } = await resend.emails.send({
 
 ### Content Review
 - [ ] All business information is accurate
-- [ ] Phone numbers and addresses are correct
-- [ ] Service pricing is up-to-date
-- [ ] Team member information is accurate
+- [ ] Phone numbers and contact details are correct
+- [ ] EA pricing is up-to-date
+- [ ] Trading strategy information is accurate
 - [ ] Testimonials are real and approved
+- [ ] Blog content is complete and accurate
 
 ### Technical Check
 - [ ] Form submissions work and send emails
 - [ ] All images load correctly
 - [ ] Mobile responsiveness tested
 - [ ] All navigation links work
-- [ ] Map shows correct location
+- [ ] Pricing buttons work correctly
+- [ ] Blog pages load properly
 - [ ] Phone number clicks open dialer
 - [ ] Social media links are correct
 
@@ -139,9 +143,9 @@ const { data, error } = await resend.emails.send({
 ## 🛠️ Maintenance
 
 ### Regular Updates
-- **Monthly**: Review and update service pricing
-- **Quarterly**: Add new testimonials
-- **Annually**: Update team photos and information
+- **Monthly**: Review and update EA pricing
+- **Quarterly**: Add new testimonials and trading results
+- **Annually**: Update strategy information and performance stats
 
 ### Monitoring
 - **Email Delivery**: Monitor Resend dashboard for delivery rates
@@ -189,8 +193,9 @@ const { data, error } = await resend.emails.send({
 
 After deployment, monitor:
 - **Page Load Speed**: < 3 seconds
-- **Form Submission Rate**: Track appointment requests
+- **Form Submission Rate**: Track demo requests and purchases
 - **Mobile Traffic**: Ensure mobile optimization
 - **Email Delivery Rate**: Monitor through Resend dashboard
+- **Conversion Rate**: Track pricing page to contact form conversions
 
 **Ready for Launch! 🚀** 
