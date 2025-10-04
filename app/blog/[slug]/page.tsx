@@ -1,6 +1,7 @@
 "use client";
 
 import { useParams } from "next/navigation";
+import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import StickyCallToAction from "@/components/StickyCallToAction";
@@ -11,7 +12,13 @@ import { blogPosts, categories } from "@/data/blogPosts";
 
 export default function BlogPostPage() {
   const params = useParams();
-  const slug = params.slug as string;
+  const [slug, setSlug] = useState<string>("");
+  
+  useEffect(() => {
+    if (params.slug) {
+      setSlug(params.slug as string);
+    }
+  }, [params]);
   
   const post = blogPosts.find(p => p.id === slug);
 

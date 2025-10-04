@@ -10,8 +10,14 @@
   },
   "dependencies": {
     "@paypal/checkout-server-sdk": "^1.0.3",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "bcryptjs": "^3.0.2",
+    "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.468.0",
+    "mongoose": "^8.19.0",
     "next": "15.4.3",
+    "nodemailer": "^7.0.6",
     "react": "^18",
     "react-dom": "^18",
     "resend": "^4.8.0",
@@ -19,6 +25,7 @@
   },
   "devDependencies": {
     "@types/node": "^20",
+    "@types/nodemailer": "^7.0.2",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.4.21",
