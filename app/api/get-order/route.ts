@@ -8,9 +8,14 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "No session ID" }, { status: 400 });
     }
 
+    // Check if Stripe is configured
+    if (!process.env.STRIPE_SECRET_KEY) {
+      return NextResponse.json({ error: "Stripe not configured" }, { status: 503 });
+    }
+
     // Retrieve Stripe session
     const Stripe = (await import("stripe")).default;
-    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
       apiVersion: "2024-12-18.acacia" as any,
     });
 

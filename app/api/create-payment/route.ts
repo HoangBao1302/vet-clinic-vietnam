@@ -15,12 +15,17 @@ export async function POST(request: NextRequest) {
     }
 
     if (method === "stripe") {
-      // Stripe integration
-      // Requires: npm install stripe
+      // Check if Stripe is configured
+      if (!process.env.STRIPE_SECRET_KEY) {
+        return NextResponse.json(
+          { success: false, error: "Stripe not configured" },
+          { status: 503 }
+        );
+      }
       
       try {
         const Stripe = (await import("stripe")).default;
-        const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+        const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
           apiVersion: "2024-12-18.acacia" as any,
         });
 
@@ -40,8 +45,8 @@ export async function POST(request: NextRequest) {
             },
           ],
           mode: "payment",
-          success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/downloads/success?session_id={CHECKOUT_SESSION_ID}`,
-          cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/downloads?cancelled=true`,
+          success_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://leopardsmart.com'}/downloads/success?session_id={CHECKOUT_SESSION_ID}`,
+          cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://leopardsmart.com'}/downloads?cancelled=true`,
           customer_email: customerInfo.email,
           metadata: {
             productId,
@@ -63,20 +68,25 @@ export async function POST(request: NextRequest) {
         );
       }
     } else if (method === "paypal") {
-      // PayPal integration
-      // Requires: npm install @paypal/checkout-server-sdk
+      // Check if PayPal is configured
+      if (!process.env.PAYPAL_CLIENT_ID || !process.env.PAYPAL_CLIENT_SECRET) {
+        return NextResponse.json(
+          { success: false, error: "PayPal not configured" },
+          { status: 503 }
+        );
+      }
       
       try {
         const paypal = await import("@paypal/checkout-server-sdk");
         
         const environment = process.env.PAYPAL_MODE === "live"
           ? new paypal.core.LiveEnvironment(
-              process.env.PAYPAL_CLIENT_ID!,
-              process.env.PAYPAL_CLIENT_SECRET!
+              process.env.PAYPAL_CLIENT_ID,
+              process.env.PAYPAL_CLIENT_SECRET
             )
           : new paypal.core.SandboxEnvironment(
-              process.env.PAYPAL_CLIENT_ID!,
-              process.env.PAYPAL_CLIENT_SECRET!
+              process.env.PAYPAL_CLIENT_ID,
+              process.env.PAYPAL_CLIENT_SECRET
             );
 
         const client = new paypal.core.PayPalHttpClient(environment);
@@ -99,8 +109,8 @@ export async function POST(request: NextRequest) {
             brand_name: "EA LeopardSmart",
             landing_page: "NO_PREFERENCE",
             user_action: "PAY_NOW",
-            return_url: `${process.env.NEXT_PUBLIC_BASE_URL}/downloads/success?paypal=true&order_id={order_id}`,
-            cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/downloads?cancelled=true`,
+            return_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://leopardsmart.com'}/downloads/success?paypal=true&order_id={order_id}`,
+            cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://leopardsmart.com'}/downloads?cancelled=true`,
           },
         });
 
