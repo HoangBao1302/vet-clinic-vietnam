@@ -1,0 +1,62 @@
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+
+// Routes that require authentication
+const protectedRoutes = [
+  '/downloads',
+  '/profile',
+  '/affiliate/apply',
+  '/affiliate/dashboard',
+  '/dashboard',
+];
+
+// Routes that require paid membership
+const paidOnlyRoutes = [
+  '/members/signals',
+  '/members/webinars',
+  '/members/community',
+];
+
+// Admin only routes
+const adminOnlyRoutes = [
+  '/admin',
+];
+
+export function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+  const token = request.cookies.get('token')?.value;
+
+  // Check if route requires authentication
+  const isProtectedRoute = protectedRoutes.some(route => pathname.startsWith(route));
+  const isPaidOnlyRoute = paidOnlyRoutes.some(route => pathname.startsWith(route));
+  const isAdminOnlyRoute = adminOnlyRoutes.some(route => pathname.startsWith(route));
+
+  // Redirect to login if accessing protected route without token
+  if ((isProtectedRoute || isPaidOnlyRoute || isAdminOnlyRoute) && !token) {
+    const loginUrl = new URL('/login', request.url);
+    loginUrl.searchParams.set('redirect', pathname);
+    return NextResponse.redirect(loginUrl);
+  }
+
+  // For paid-only and admin routes, we'll check on the page itself
+  // since we need to verify the JWT token and check user role/tier
+  // Middleware doesn't have easy access to verify JWT without external libs
+
+  return NextResponse.next();
+}
+
+// Configure which routes use this middleware
+export const config = {
+  matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - api (API routes)
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * - public files (images, etc.)
+     */
+    '/((?!api|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+  ],
+};
+

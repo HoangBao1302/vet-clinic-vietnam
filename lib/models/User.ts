@@ -6,9 +6,21 @@ export interface IUser extends mongoose.Document {
   email: string;
   password: string;
   role: 'user' | 'admin';
+  membershipTier: 'free' | 'paid';
+  isPaid: boolean;
   isActive: boolean;
   resetPasswordToken?: string;
   resetPasswordExpire?: Date;
+  premiumPostsReadThisMonth: number;
+  lastPremiumPostReset: Date;
+  downloadsThisMonth: {
+    eaDemo: number;
+    indicators: number;
+  };
+  lastDownloadReset: Date;
+  purchasedProducts: string[];
+  affiliateStatus?: 'none' | 'pending' | 'approved' | 'rejected';
+  affiliateCode?: string;
   createdAt: Date;
   updatedAt: Date;
   comparePassword(candidatePassword: string): Promise<boolean>;
@@ -46,12 +58,57 @@ const UserSchema = new Schema<IUser>(
       enum: ['user', 'admin'],
       default: 'user',
     },
+    membershipTier: {
+      type: String,
+      enum: ['free', 'paid'],
+      default: 'free',
+    },
+    isPaid: {
+      type: Boolean,
+      default: false,
+    },
     isActive: {
       type: Boolean,
       default: true,
     },
     resetPasswordToken: String,
     resetPasswordExpire: Date,
+    premiumPostsReadThisMonth: {
+      type: Number,
+      default: 0,
+    },
+    lastPremiumPostReset: {
+      type: Date,
+      default: Date.now,
+    },
+    downloadsThisMonth: {
+      eaDemo: {
+        type: Number,
+        default: 0,
+      },
+      indicators: {
+        type: Number,
+        default: 0,
+      },
+    },
+    lastDownloadReset: {
+      type: Date,
+      default: Date.now,
+    },
+    purchasedProducts: {
+      type: [String],
+      default: [],
+    },
+    affiliateStatus: {
+      type: String,
+      enum: ['none', 'pending', 'approved', 'rejected'],
+      default: 'none',
+    },
+    affiliateCode: {
+      type: String,
+      unique: true,
+      sparse: true, // Allows null values to not be unique
+    },
   },
   {
     timestamps: true,

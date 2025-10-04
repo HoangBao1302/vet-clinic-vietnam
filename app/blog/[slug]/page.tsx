@@ -7,8 +7,9 @@ import Footer from "@/components/Footer";
 import StickyCallToAction from "@/components/StickyCallToAction";
 import Link from "next/link";
 import Image from "next/image";
-import { Calendar, Clock, ArrowLeft, Share2 } from "lucide-react";
+import { Calendar, Clock, ArrowLeft, Share2, Crown } from "lucide-react";
 import { blogPosts, categories } from "@/data/blogPosts";
+import PremiumBlogGate from "@/components/PremiumBlogGate";
 
 export default function BlogPostPage() {
   const params = useParams();
@@ -61,10 +62,16 @@ export default function BlogPostPage() {
                 <span>Quay lại Blog</span>
               </Link>
 
-              <div className="mb-6">
+              <div className="mb-6 flex items-center gap-3">
                 <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
                   {categories.find(c => c.id === post.category)?.name || post.category}
                 </span>
+                {post.isPremium && (
+                  <span className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-3 py-1 rounded-full text-sm font-medium flex items-center gap-1">
+                    <Crown size={14} />
+                    Premium
+                  </span>
+                )}
               </div>
 
               <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6 leading-tight">
@@ -121,13 +128,18 @@ export default function BlogPostPage() {
               <div className="grid lg:grid-cols-4 gap-12">
                 {/* Main Content */}
                 <div className="lg:col-span-3">
-                  <div 
-                    className="prose prose-lg max-w-none"
-                    dangerouslySetInnerHTML={{ __html: post.content || `<p>${post.excerpt}</p><p>Nội dung đang được cập nhật...</p>` }}
-                    style={{
-                      lineHeight: '1.8',
-                    }}
-                  />
+                  <PremiumBlogGate 
+                    isPremium={post.isPremium || false}
+                    previewContent={post.previewContent}
+                  >
+                    <div 
+                      className="prose prose-lg max-w-none"
+                      dangerouslySetInnerHTML={{ __html: post.content || `<p>${post.excerpt}</p><p>Nội dung đang được cập nhật...</p>` }}
+                      style={{
+                        lineHeight: '1.8',
+                      }}
+                    />
+                  </PremiumBlogGate>
 
                   {/* Article Footer */}
                   <div className="mt-12 pt-8 border-t border-gray-200">

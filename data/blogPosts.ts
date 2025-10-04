@@ -10,6 +10,8 @@ export interface BlogPost {
   image: string;
   featured?: boolean;
   tags?: string[];
+  isPremium?: boolean;
+  previewContent?: string;
 }
 
 export const blogPosts: BlogPost[] = [
@@ -26,7 +28,9 @@ export const blogPosts: BlogPost[] = [
     category: "news",
     image: "/vet-images/1.png",
     featured: true,
-    tags: ["NFP", "USD", "Employment", "Market Analysis"]
+    tags: ["NFP", "USD", "Employment", "Market Analysis"],
+    isPremium: true,
+    previewContent: "Số liệu Non-Farm Payroll (NFP) tháng 12/2024 vừa được công bố với mức tăng 256,000 việc làm, vượt xa dự báo của thị trường ở mức 160,000. Đây là dấu hiệu tích cực cho thấy thị trường lao động Mỹ vẫn duy trì đà tăng trưởng mạnh mẽ..."
   },
   {
     id: "fed-giu-nguyen-lai-suat-thang-12",

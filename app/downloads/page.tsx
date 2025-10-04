@@ -130,7 +130,16 @@ export default function DownloadsPage() {
   const [verifyMessage, setVerifyMessage] = useState("");
 
   const handleFreeDownload = (item: DownloadItem) => {
-    // Direct download for free items
+    // Check if user is logged in
+    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+    
+    if (!token) {
+      // Redirect to login if not authenticated
+      window.location.href = `/login?redirect=/downloads`;
+      return;
+    }
+    
+    // If logged in, proceed with download (will be tracked via API)
     if (item.downloadUrl) {
       window.open(item.downloadUrl, "_blank");
     }
@@ -259,7 +268,14 @@ export default function DownloadsPage() {
                   </div>
 
                   <button
-                    onClick={() => handleFreeDownload(item)}
+                    onClick={() => {
+                      const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+                      if (!token) {
+                        window.location.href = `/login?redirect=/downloads`;
+                      } else {
+                        handleFreeDownload(item);
+                      }
+                    }}
                     className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
                   >
                     <Download size={18} />
