@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Promote User to Admin</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 500px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #667eea;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    button:hover {
+      background: #5568d3;
+    }
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 5px;
+      display: none;
+    }
+    .success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    .error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔐 Promote User to Admin</h1>
+    <p>Nhập email của user cần promote thành admin:</p>
+    
+    <input 
+      type="email" 
+      id="email" 
+      placeholder="truong.cdk0405@gmail.com"
+      value="truong.cdk0405@gmail.com"
+    >
+    
+    <input 
+      type="text" 
+      id="secretKey" 
+      placeholder="Secret Key"
+      value="PROMOTE_ADMIN_2024"
+    >
+    
+    <button onclick="promoteToAdmin()">Promote to Admin</button>
+    
+    <div id="result" class="result"></div>
+  </div>
+
+  <script>
+    async function promoteToAdmin() {
+      const email = document.getElementById('email').value;
+      const secretKey = document.getElementById('secretKey').value;
+      const resultDiv = document.getElementById('result');
+
+      if (!email) {
+        showResult('Vui lòng nhập email!', false);
+        return;
+      }
+
+      try {
+        resultDiv.style.display = 'none';
+        
+        const response = await fetch('https://vet-clinic-vietnam.vercel.app/api/admin/promote', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, secretKey }),
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          showResult(`✅ ${data.message}`, true);
+        } else {
+          showResult(`❌ ${data.message}`, false);
+        }
+      } catch (error) {
+        showResult(`❌ Error: ${error.message}`, false);
+      }
+    }
+
+    function showResult(message, isSuccess) {
+      const resultDiv = document.getElementById('result');
+      resultDiv.textContent = message;
+      resultDiv.className = 'result ' + (isSuccess ? 'success' : 'error');
+      resultDiv.style.display = 'block';
+    }
+  </script>
+</body>
+</html>
