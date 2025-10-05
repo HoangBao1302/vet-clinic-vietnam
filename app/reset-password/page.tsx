@@ -1,16 +1,15 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Lock, AlertCircle, CheckCircle, Eye, EyeOff } from "lucide-react";
 
-function ResetPasswordForm() {
+export default function ResetPasswordPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const token = searchParams.get("token");
+  const [token, setToken] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
     password: "",
@@ -25,17 +24,24 @@ function ResetPasswordForm() {
   const [tokenValid, setTokenValid] = useState(false);
 
   useEffect(() => {
-    // Validate token on mount
-    if (!token) {
-      setError("Link không hợp lệ. Vui lòng thử lại.");
-      setValidatingToken(false);
-      return;
-    }
+    // Get token from URL on client side only
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search);
+      const tokenParam = urlParams.get('token');
+      setToken(tokenParam);
+      
+      // Validate token
+      if (!tokenParam) {
+        setError("Link không hợp lệ. Vui lòng thử lại.");
+        setValidatingToken(false);
+        return;
+      }
 
-    // Simple check - actual validation happens on submit
-    setTokenValid(true);
-    setValidatingToken(false);
-  }, [token]);
+      // Simple check - actual validation happens on submit
+      setTokenValid(true);
+      setValidatingToken(false);
+    }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -263,27 +269,6 @@ function ResetPasswordForm() {
 
       <Footer />
     </div>
-  );
-}
-
-export default function ResetPasswordPage() {
-  return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-gray-50">
-        <Header />
-        <main className="py-20">
-          <div className="container-custom max-w-md mx-auto text-center">
-            <div className="bg-white rounded-2xl shadow-xl p-8">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-              <p className="text-gray-600">Đang tải...</p>
-            </div>
-          </div>
-        </main>
-        <Footer />
-      </div>
-    }>
-      <ResetPasswordForm />
-    </Suspense>
   );
 }
 
