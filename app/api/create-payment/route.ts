@@ -68,76 +68,12 @@ export async function POST(request: NextRequest) {
         );
       }
     } else if (method === "paypal") {
-      // Check if PayPal is configured
-      if (!process.env.PAYPAL_CLIENT_ID || !process.env.PAYPAL_CLIENT_SECRET) {
-        return NextResponse.json(
-          { success: false, error: "PayPal not configured" },
-          { status: 503 }
-        );
-      }
-      
-      try {
-        // TODO: Update to use @paypal/paypal-js instead of deprecated checkout-server-sdk
-        // For now, return error to avoid build failure
-        return NextResponse.json(
-          { success: false, error: "PayPal integration temporarily disabled. Please use Stripe." },
-          { status: 503 }
-        );
-        
-        /* Commented out deprecated PayPal SDK code
-        const paypal = await import("@paypal/checkout-server-sdk");
-        
-        const environment = process.env.PAYPAL_MODE === "live"
-          ? new paypal.core.LiveEnvironment(
-              process.env.PAYPAL_CLIENT_ID,
-              process.env.PAYPAL_CLIENT_SECRET
-            )
-          : new paypal.core.SandboxEnvironment(
-              process.env.PAYPAL_CLIENT_ID,
-              process.env.PAYPAL_CLIENT_SECRET
-            );
-
-        const client = new paypal.core.PayPalHttpClient(environment);
-        const request = new paypal.orders.OrdersCreateRequest();
-        
-        request.prefer("return=representation");
-        request.requestBody({
-          intent: "CAPTURE",
-          purchase_units: [
-            {
-              amount: {
-                currency_code: "USD",
-                value: (amount / 25000).toFixed(2), // VND to USD conversion (adjust rate as needed)
-              },
-              description: productName,
-              custom_id: productId,
-            },
-          ],
-          application_context: {
-            brand_name: "EA LeopardSmart",
-            landing_page: "NO_PREFERENCE",
-            user_action: "PAY_NOW",
-            return_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://leopardsmart.com'}/downloads/success?paypal=true&order_id={order_id}`,
-            cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://leopardsmart.com'}/downloads?cancelled=true`,
-          },
-        });
-
-        const order = await client.execute(request);
-        const approveUrl = order.result.links.find((link: any) => link.rel === "approve")?.href;
-
-        return NextResponse.json({
-          success: true,
-          paymentUrl: approveUrl,
-          orderId: order.result.id,
-        });
-        */
-      } catch (paypalError: any) {
-        console.error("PayPal error:", paypalError);
-        return NextResponse.json(
-          { success: false, error: `PayPal error: ${paypalError.message}` },
-          { status: 500 }
-        );
-      }
+      // PayPal integration temporarily disabled
+      // TODO: Implement using @paypal/paypal-js instead of deprecated checkout-server-sdk
+      return NextResponse.json(
+        { success: false, error: "PayPal integration temporarily disabled. Please use Stripe." },
+        { status: 503 }
+      );
     }
 
     return NextResponse.json(
