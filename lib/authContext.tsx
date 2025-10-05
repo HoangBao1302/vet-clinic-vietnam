@@ -7,6 +7,9 @@ interface User {
   username: string;
   email: string;
   role: string;
+  isPaid?: boolean;
+  affiliateStatus?: 'none' | 'pending' | 'approved' | 'rejected';
+  affiliateCode?: string;
 }
 
 interface AuthContextType {

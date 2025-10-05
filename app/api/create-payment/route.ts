@@ -77,6 +77,14 @@ export async function POST(request: NextRequest) {
       }
       
       try {
+        // TODO: Update to use @paypal/paypal-js instead of deprecated checkout-server-sdk
+        // For now, return error to avoid build failure
+        return NextResponse.json(
+          { success: false, error: "PayPal integration temporarily disabled. Please use Stripe." },
+          { status: 503 }
+        );
+        
+        /* Commented out deprecated PayPal SDK code
         const paypal = await import("@paypal/checkout-server-sdk");
         
         const environment = process.env.PAYPAL_MODE === "live"
@@ -122,6 +130,7 @@ export async function POST(request: NextRequest) {
           paymentUrl: approveUrl,
           orderId: order.result.id,
         });
+        */
       } catch (paypalError: any) {
         console.error("PayPal error:", paypalError);
         return NextResponse.json(
