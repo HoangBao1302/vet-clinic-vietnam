@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Resend } from "resend";
-
-const resend = new Resend(process.env.RESEND_API_KEY);
+import { sendEmail } from "@/lib/email";
 
 export async function POST(request: NextRequest) {
   try {
@@ -16,10 +14,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Send email using Resend
-    const { data, error } = await resend.emails.send({
-      from: "delivered@resend.dev",
-      to: ["baotong130277@gmail.com"],
+    // Send email using Nodemailer
+    const emailResult = await sendEmail({
+      to: process.env.SMTP_USER || 'baotong130277@gmail.com',
       subject: `Yêu cầu đặt lịch hẹn mới từ ${name}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -49,15 +46,15 @@ export async function POST(request: NextRequest) {
           
           <div style="border-top: 1px solid #e5e7eb; padding-top: 20px; margin-top: 30px;">
             <p style="color: #6b7280; font-size: 14px; margin: 0;">
-              Email này được gửi từ biểu mẫu đặt lịch hẹn trên website Phòng Khám Thú Y PawCare.
+              Email này được gửi từ biểu mẫu đặt lịch hẹn trên website EA Forex LeopardSmart.
             </p>
           </div>
         </div>
       `,
     });
 
-    if (error) {
-      console.error("Resend error:", error);
+    if (!emailResult.success) {
+      console.error("Email send error:", emailResult.error);
       return NextResponse.json(
         { error: "Không thể gửi email" },
         { status: 500 }
@@ -65,7 +62,7 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json(
-      { message: "Yêu cầu đặt lịch hẹn đã được gửi thành công", id: data?.id },
+      { message: "Yêu cầu đặt lịch hẹn đã được gửi thành công" },
       { status: 200 }
     );
 
