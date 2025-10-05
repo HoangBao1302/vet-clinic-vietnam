@@ -362,10 +362,10 @@ export default function AffiliateApplyPage() {
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
                   <option value="">Chọn mức độ</option>
-                  <option value="beginner">Mới bắt đầu (< 1 năm)</option>
+                  <option value="beginner">Mới bắt đầu (&lt; 1 năm)</option>
                   <option value="intermediate">Trung cấp (1-3 năm)</option>
                   <option value="advanced">Nâng cao (3-5 năm)</option>
-                  <option value="expert">Chuyên gia (> 5 năm)</option>
+                  <option value="expert">Chuyên gia (&gt; 5 năm)</option>
                 </select>
               </div>
 
