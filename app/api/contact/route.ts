@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Resend } from "resend";
+import { sendEmail } from "@/lib/email";
 
 export const runtime = "nodejs";
 
@@ -32,8 +32,6 @@ function escapeHtml(str: string) {
 function isEmail(v: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
 }
-
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(request: NextRequest) {
   try {
@@ -102,23 +100,6 @@ export async function POST(request: NextRequest) {
     };
     const topicText = topicMap[topic] || topic;
 
-    // Kiểm tra env
-    const FROM = process.env.RESEND_FROM || "noreply@leopardsmart.com";
-    const TO = process.env.RESEND_TO || "support@leopardsmart.com";
-    if (!process.env.RESEND_API_KEY || process.env.RESEND_API_KEY === "YOUR_RESEND_API_KEY") {
-      console.log("⚠️ RESEND_API_KEY chưa được cấu hình");
-      return NextResponse.json(
-        { ok: false, error: "Email chưa được cấu hình. Vui lòng liên hệ trực tiếp qua Telegram @LeopardSmartSupport hoặc email support@leopardsmart.com" },
-        { status: 503 }
-      );
-    }
-    if (!FROM || !TO) {
-      return NextResponse.json(
-        { ok: false, error: "Thiếu RESEND_FROM/RESEND_TO." },
-        { status: 500 }
-      );
-    }
-
     // Email HTML (đã escape)
     const subject = `[EA LeopardSmart] ${topicText} - ${escapeHtml(name)}`;
     const html = `
@@ -147,18 +128,17 @@ export async function POST(request: NextRequest) {
       </div>
     `;
 
-    const { error } = await resend.emails.send({
-      from: FROM,
-      to: [TO],
+    // Send email using Nodemailer (same as auth system)
+    const emailResult = await sendEmail({
+      to: process.env.SMTP_USER || 'baotong130277@gmail.com',
       subject,
       html,
-      replyTo: email, // để bạn reply thẳng cho khách
     });
 
-    if (error) {
-      console.error("Resend error:", error);
+    if (!emailResult.success) {
+      console.error("Email send error:", emailResult.error);
       return NextResponse.json(
-        { ok: false, error: "Gửi email thất bại." },
+        { ok: false, error: "Gửi email thất bại. Vui lòng thử lại sau." },
         { status: 502 }
       );
     }
