@@ -83,6 +83,7 @@ export function getWelcomeEmail(username: string) {
         .container { max-width: 600px; margin: 0 auto; padding: 20px; }
         .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
         .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; }
+        .button { display: inline-block; padding: 12px 30px; background: #667eea; color: white; text-decoration: none; border-radius: 5px; margin: 20px 0; }
         .footer { text-align: center; margin-top: 30px; font-size: 12px; color: #666; }
       </style>
     </head>
@@ -102,7 +103,182 @@ export function getWelcomeEmail(username: string) {
             <li>✅ Xem kết quả giao dịch thực tế</li>
             <li>✅ Download EA Demo miễn phí</li>
           </ul>
+          <center>
+            <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'https://vet-clinic-vietnam.vercel.app'}/profile" class="button">Xem Tài Khoản Của Bạn</a>
+          </center>
           <p>Nếu bạn có bất kỳ câu hỏi nào, đừng ngần ngại liên hệ với chúng tôi!</p>
+        </div>
+        <div class="footer">
+          <p>&copy; 2024 EA Forex LeopardSmart. All rights reserved.</p>
+          <p>Email này được gửi từ hệ thống tự động. Vui lòng không reply.</p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+}
+
+// Affiliate approval email
+export function getAffiliateApprovalEmail(username: string, affiliateCode: string) {
+  return `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+        .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; }
+        .code-box { background: #fff; border: 2px dashed #10b981; padding: 20px; text-align: center; margin: 20px 0; border-radius: 5px; }
+        .code { font-size: 24px; font-weight: bold; color: #10b981; font-family: monospace; }
+        .button { display: inline-block; padding: 12px 30px; background: #10b981; color: white; text-decoration: none; border-radius: 5px; margin: 20px 0; }
+        .footer { text-align: center; margin-top: 30px; font-size: 12px; color: #666; }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="header">
+          <h1>🎊 Chúc Mừng! Affiliate Application Đã Được Duyệt!</h1>
+        </div>
+        <div class="content">
+          <p>Xin chào <strong>${username}</strong>,</p>
+          <p>Chúng tôi rất vui mừng thông báo rằng đơn đăng ký Affiliate của bạn đã được <strong>PHÊ DUYỆT</strong>!</p>
+          
+          <div class="code-box">
+            <p style="margin: 0 0 10px 0; color: #666;">Mã Affiliate của bạn:</p>
+            <div class="code">${affiliateCode}</div>
+          </div>
+
+          <h3>💰 Hoa Hồng Của Bạn:</h3>
+          <ul>
+            <li><strong>30%</strong> - Bán EA</li>
+            <li><strong>25%</strong> - Bán Khóa Học</li>
+            <li><strong>10%</strong> - Copy Social (recurring)</li>
+          </ul>
+
+          <h3>🚀 Bắt Đầu Kiếm Tiền:</h3>
+          <ol>
+            <li>Chia sẻ link affiliate của bạn</li>
+            <li>Khi có người mua qua link của bạn</li>
+            <li>Bạn nhận hoa hồng tự động</li>
+          </ol>
+
+          <center>
+            <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'https://vet-clinic-vietnam.vercel.app'}/profile" class="button">Xem Dashboard</a>
+          </center>
+
+          <p><strong>Lưu ý:</strong> Hoa hồng sẽ được thanh toán vào cuối mỗi tháng qua chuyển khoản ngân hàng.</p>
+        </div>
+        <div class="footer">
+          <p>&copy; 2024 EA Forex LeopardSmart. All rights reserved.</p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+}
+
+// Affiliate rejection email
+export function getAffiliateRejectionEmail(username: string, reason?: string) {
+  return `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+        .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; }
+        .button { display: inline-block; padding: 12px 30px; background: #667eea; color: white; text-decoration: none; border-radius: 5px; margin: 20px 0; }
+        .footer { text-align: center; margin-top: 30px; font-size: 12px; color: #666; }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="header">
+          <h1>Thông Báo Về Affiliate Application</h1>
+        </div>
+        <div class="content">
+          <p>Xin chào <strong>${username}</strong>,</p>
+          <p>Cảm ơn bạn đã quan tâm đến chương trình Affiliate của chúng tôi.</p>
+          <p>Rất tiếc, đơn đăng ký của bạn chưa được chấp nhận lúc này.</p>
+          
+          ${reason ? `<p><strong>Lý do:</strong> ${reason}</p>` : ''}
+
+          <p>Bạn có thể:</p>
+          <ul>
+            <li>Tích lũy thêm kinh nghiệm trong lĩnh vực Forex</li>
+            <li>Xây dựng audience/community lớn hơn</li>
+            <li>Đăng ký lại sau 3 tháng</li>
+          </ul>
+
+          <center>
+            <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'https://vet-clinic-vietnam.vercel.app'}/referral" class="button">Tìm Hiểu Thêm</a>
+          </center>
+
+          <p>Nếu có thắc mắc, vui lòng liên hệ support@leopardsmart.com</p>
+        </div>
+        <div class="footer">
+          <p>&copy; 2024 EA Forex LeopardSmart. All rights reserved.</p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+}
+
+// Membership upgrade email
+export function getMembershipUpgradeEmail(username: string) {
+  return `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+        .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; }
+        .feature { background: #fff; padding: 15px; margin: 10px 0; border-left: 4px solid #f59e0b; }
+        .button { display: inline-block; padding: 12px 30px; background: #f59e0b; color: white; text-decoration: none; border-radius: 5px; margin: 20px 0; }
+        .footer { text-align: center; margin-top: 30px; font-size: 12px; color: #666; }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="header">
+          <h1>👑 Chào Mừng Paid Member!</h1>
+        </div>
+        <div class="content">
+          <p>Xin chào <strong>${username}</strong>,</p>
+          <p>Chúc mừng! Tài khoản của bạn đã được nâng cấp lên <strong>Paid Member</strong>!</p>
+          
+          <h3>🎁 Quyền Lợi Của Bạn:</h3>
+          
+          <div class="feature">
+            <strong>📥 Unlimited Downloads</strong>
+            <p>Download không giới hạn EA Demo và Indicators</p>
+          </div>
+
+          <div class="feature">
+            <strong>📰 Unlimited Premium Posts</strong>
+            <p>Đọc tất cả bài phân tích Premium không giới hạn</p>
+          </div>
+
+          <div class="feature">
+            <strong>🎓 Exclusive Content</strong>
+            <p>Truy cập khóa học và tài liệu độc quyền</p>
+          </div>
+
+          <div class="feature">
+            <strong>💬 Priority Support</strong>
+            <p>Hỗ trợ ưu tiên 24/7</p>
+          </div>
+
+          <center>
+            <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'https://vet-clinic-vietnam.vercel.app'}/profile" class="button">Khám Phá Ngay</a>
+          </center>
+
+          <p>Cảm ơn bạn đã tin tưởng EA Forex LeopardSmart!</p>
         </div>
         <div class="footer">
           <p>&copy; 2024 EA Forex LeopardSmart. All rights reserved.</p>
