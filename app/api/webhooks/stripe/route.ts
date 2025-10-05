@@ -56,14 +56,12 @@ export async function POST(request: NextRequest) {
 
       console.log("Order details:", order);
 
-      // Send email notification if Resend is configured
-      if (process.env.RESEND_API_KEY) {
+      // Send email notification using Nodemailer
+      if (session.customer_email) {
         try {
-          const { Resend } = await import("resend");
-          const resend = new Resend(process.env.RESEND_API_KEY);
-
-          await resend.emails.send({
-            from: process.env.RESEND_FROM || "downloads@leopardsmart.com",
+          const { sendEmail } = await import("@/lib/email");
+          
+          await sendEmail({
             to: session.customer_email,
             subject: "✅ Thanh toán thành công - Download EA LeopardSmart",
             html: `
@@ -82,7 +80,7 @@ export async function POST(request: NextRequest) {
                   </div>
                   
                   <div style="text-align: center; margin: 30px 0;">
-                    <a href="${process.env.NEXT_PUBLIC_BASE_URL || 'https://leopardsmart.com'}/downloads?order=${session.id}" 
+                    <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'https://vet-clinic-vietnam.vercel.app'}/downloads?order=${session.id}" 
                        style="display: inline-block; padding: 15px 40px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 18px;">
                       Tải xuống ngay
                     </a>
