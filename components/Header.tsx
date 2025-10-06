@@ -141,6 +141,13 @@ export default function Header() {
             >
               Trang Chủ
             </button>
+            <button
+              onClick={() => isClient && scrollToSection("features")}
+              className="text-gray-700 hover:text-primary-600 transition-colors font-medium whitespace-nowrap"
+              suppressHydrationWarning
+            >
+              Tính Năng
+            </button>
             <Link
               href="/pricing"
               className="text-gray-700 hover:text-primary-600 transition-colors font-medium whitespace-nowrap"
@@ -154,6 +161,12 @@ export default function Header() {
               Downloads
             </Link>
             <Link
+              href="/about"
+              className="text-gray-700 hover:text-primary-600 transition-colors font-medium whitespace-nowrap"
+            >
+              Về EA
+            </Link>
+            <Link
               href="/live-results"
               className="text-gray-700 hover:text-primary-600 transition-colors font-medium whitespace-nowrap"
             >
@@ -164,6 +177,12 @@ export default function Header() {
               className="text-gray-700 hover:text-primary-600 transition-colors font-medium whitespace-nowrap"
             >
               Blog
+            </Link>
+            <Link
+              href="/partners"
+              className="text-gray-700 hover:text-primary-600 transition-colors font-medium whitespace-nowrap"
+            >
+              Đối Tác
             </Link>
             
             {/* Referral Dropdown */}
