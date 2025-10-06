@@ -24,7 +24,7 @@ export default function ForexHero() {
           {/* Left Column - Text */}
           <div className="text-white space-y-8">
             <div className="animate-fade-in">
-              <h1 className="text-5xl md:text-7xl font-bold mb-4 bg-gradient-to-r from-blue-200 to-white bg-clip-text text-transparent">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 bg-gradient-to-r from-blue-200 to-white bg-clip-text text-transparent leading-tight break-words">
                 EA Forex ThebenchmarkTrader
               </h1>
               <p className="text-xl md:text-2xl text-blue-100 leading-relaxed">
