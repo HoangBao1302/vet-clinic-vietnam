@@ -28,7 +28,7 @@ export default function Strategy() {
             </h2>
             
             <p className="text-lg text-gray-600 mb-8">
-              EA LeopardSmart được xây dựng trên nguyên tắc minh bạch tuyệt đối. 
+              EA ThebenchmarkTrader được xây dựng trên nguyên tắc minh bạch tuyệt đối. 
               Mọi điều kiện vào lệnh, ra lệnh và quản trị rủi ro đều được công khai, 
               không có "hộp đen" bí ẩn.
             </p>

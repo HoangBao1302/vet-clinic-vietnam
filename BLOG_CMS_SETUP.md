@@ -14,7 +14,7 @@
    - Support/Resistance, Money Management, MA Strategy
    - Price Action, Fibonacci, Trading Psychology
 
-3. **🤖 EA LeopardSmart** - 6 bài viết
+3. **🤖 EA ThebenchmarkTrader** - 6 bài viết
    - Profit Factor analysis, Parameter optimization
    - EA vs Manual, Installation guide, Multi-pair, Updates
 
@@ -40,7 +40,7 @@ project-root/
 ## 🎨 Tính Năng Hiện Tại
 
 ### ✅ **Category Tabs**
-- 4 tabs: Tất cả, Tin Tức, Đào Tạo, EA LeopardSmart
+- 4 tabs: Tất cả, Tin Tức, Đào Tạo, EA ThebenchmarkTrader
 - Sticky navigation khi scroll
 - Counter hiển thị số bài viết
 - Smooth filtering
@@ -496,7 +496,7 @@ Configure notifications khi:
 - Custom features
 - Training team
 
-Contact: support@leopardsmart.com
+Contact: support@thebenchmarktrader.com
 
 ---
 

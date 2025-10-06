@@ -26,7 +26,7 @@ Hệ thống Downloads & Payment đầy đủ đã được tạo với:
 ### **2. 🎁 Free Indicators & EA (Miễn phí cho cộng đồng)**
 - Support & Resistance Indicator
 - Auto Trend Lines Indicator
-- EA LeopardSmart Demo
+- EA ThebenchmarkTrader Demo
 
 **Download:** Trực tiếp, không giới hạn
 
@@ -34,7 +34,7 @@ Hệ thống Downloads & Payment đầy đủ đã được tạo với:
 
 ### **3. 💎 Paid Products (Cần thanh toán)**
 - Multi-Indicator Pro Pack (1.990.000đ)
-- EA LeopardSmart Full (7.900.000đ)
+- EA ThebenchmarkTrader Full (7.900.000đ)
 - EA Pro + Source Code (14.900.000đ)
 
 **Payment:** Stripe hoặc PayPal
@@ -82,7 +82,7 @@ PAYPAL_MODE=sandbox
 
 # Resend Email
 RESEND_API_KEY=re_...
-RESEND_FROM=downloads@leopardsmart.com
+RESEND_FROM=downloads@thebenchmarktrader.com
 
 # App Config
 NEXT_PUBLIC_BASE_URL=http://localhost:3000
@@ -100,10 +100,10 @@ public/downloads/files/
 ├── Broker-Setup-Guide.pdf
 ├── SR-Indicator-Free.ex4
 ├── TrendLines-Free.ex4
-├── LeopardSmart-Demo.ex4
+├── ThebenchmarkTrader-Demo.ex4
 ├── Indicator-Pro-Pack.zip
-├── LeopardSmart-Full.ex4
-└── LeopardSmart-Pro-Source.zip
+├── ThebenchmarkTrader-Full.ex4
+└── ThebenchmarkTrader-Pro-Source.zip
 ```
 
 ### **Step 4: Stripe Webhook**
@@ -195,7 +195,7 @@ NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_51...
 STRIPE_WEBHOOK_SECRET=whsec_...
 NEXT_PUBLIC_BASE_URL=http://localhost:3000
 RESEND_API_KEY=re_...
-RESEND_FROM=downloads@leopardsmart.com
+RESEND_FROM=downloads@thebenchmarktrader.com
 ```
 
 ### **3. Upload Test Files:**
@@ -205,7 +205,7 @@ Create dummy files for testing:
 ```bash
 cd public/downloads/files
 echo "PDF Guide Content" > Installation-Guide.pdf
-echo "EA Demo" > LeopardSmart-Demo.ex4
+echo "EA Demo" > ThebenchmarkTrader-Demo.ex4
 ```
 
 ### **4. Test:**

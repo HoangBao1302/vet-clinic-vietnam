@@ -1,6 +1,6 @@
-# EA Forex LeopardSmart Landing Page
+# EA Forex ThebenchmarkTrader Landing Page
 
-A modern, professional landing page for EA Forex LeopardSmart built with Next.js 15, Tailwind CSS, and TypeScript. Features pricing plans, contact forms, blog, and comprehensive EA information.
+A modern, professional landing page for EA Forex ThebenchmarkTrader built with Next.js 15, Tailwind CSS, and TypeScript. Features pricing plans, contact forms, blog, and comprehensive EA information.
 
 ## 🌟 Features
 
@@ -179,10 +179,10 @@ vet-clinic/
 
 ## 🌐 Business Information
 
-- **Product**: EA Forex LeopardSmart
+- **Product**: EA Forex ThebenchmarkTrader
 - **Phone**: +84 901 234 567
-- **Email**: support@leopardsmart.com
-- **Telegram**: @LeopardSmartSupport
+- **Email**: support@thebenchmarktrader.com
+- **Telegram**: @ThebenchmarkTraderSupport
 - **Support Hours**: Monday-Friday 9:00-18:00 (GMT+7)
 
 ## 📊 Features Implementation Status
@@ -225,4 +225,4 @@ For technical support or customization requests, please refer to:
 
 ---
 
-**Built with ❤️ for EA Forex LeopardSmart** 
+**Built with ❤️ for EA Forex ThebenchmarkTrader** 

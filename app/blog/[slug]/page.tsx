@@ -145,7 +145,7 @@ export default function BlogPostPage() {
                   <div className="mt-12 pt-8 border-t border-gray-200">
                     <div className="bg-blue-50 p-6 rounded-lg">
                       <h3 className="text-lg font-semibold text-gray-800 mb-3">
-                        Quan tâm đến EA LeopardSmart?
+                        Quan tâm đến EA ThebenchmarkTrader?
                       </h3>
                       <p className="text-gray-600 mb-4">
                         Tải demo miễn phí hoặc tìm hiểu thêm về các gói EA của chúng tôi.

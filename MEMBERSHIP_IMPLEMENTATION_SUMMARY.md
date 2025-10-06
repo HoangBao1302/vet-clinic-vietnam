@@ -233,7 +233,7 @@ components/Header.tsx                 - Added login/user menu
 Add to Vercel → Settings → Environment Variables:
 
 ```env
-MONGODB_URI=mongodb+srv://user:pass@cluster.mongodb.net/leopardsmart
+MONGODB_URI=mongodb+srv://user:pass@cluster.mongodb.net/thebenchmarktrader
 JWT_SECRET=<64-char-random-string>
 NEXT_PUBLIC_SITE_URL=https://your-domain.vercel.app
 SMTP_HOST=smtp.gmail.com
@@ -353,7 +353,7 @@ git push origin main
 {
   "membershipTier": "paid",
   "isPaid": true,
-  "purchasedProducts": ["ea-leopardsmart-full"]
+  "purchasedProducts": ["ea-thebenchmarktrader-full"]
 }
 ```
 

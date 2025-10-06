@@ -32,7 +32,7 @@ Sau đó cập nhật các giá trị:
 
 ```env
 # MongoDB - Đăng ký tại https://www.mongodb.com/cloud/atlas
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/leopardsmart
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/thebenchmarktrader
 
 # JWT Secret - Tạo random string
 JWT_SECRET=generate-random-string-here

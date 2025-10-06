@@ -87,7 +87,7 @@ export default function Header() {
               </div>
               <div className="flex items-center space-x-1">
                 <Mail size={14} />
-                <span className="hidden sm:inline">support@leopardsmart.com</span>
+                <span className="hidden sm:inline">support@thebenchmarktrader.com</span>
                 <span className="sm:hidden">Support</span>
               </div>
             </div>
@@ -129,7 +129,7 @@ export default function Header() {
         <div className="flex justify-between items-center py-4">
           {/* Logo */}
           <Link href="/" className="text-2xl font-bold text-primary-600 hover:text-primary-700 transition-colors">
-            EA Forex LeopardSmart
+            EA Forex ThebenchmarkTrader
           </Link>
 
           {/* Desktop Navigation */}

@@ -4,7 +4,7 @@
 const mongoose = require('mongoose');
 
 // MongoDB connection
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://leopardsmart_user:QyP69n73WYWJOUGy@cluster0.gghymaa.mongodb.net/leopardsmart?retryWrites=true&w=majority&appName=Cluster0';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://thebenchmarktrader_user:QyP69n73WYWJOUGy@cluster0.gghymaa.mongodb.net/thebenchmarktrader?retryWrites=true&w=majority&appName=Cluster0';
 
 // User schema (simplified)
 const UserSchema = new mongoose.Schema({

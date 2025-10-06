@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
     // Send welcome email (don't wait for it)
     sendEmail({
       to: user.email,
-      subject: 'Chào mừng đến với EA Forex LeopardSmart!',
+      subject: 'Chào mừng đến với EA Forex ThebenchmarkTrader!',
       html: getWelcomeEmail(user.username),
     }).catch((error) => console.error('Error sending welcome email:', error));
 

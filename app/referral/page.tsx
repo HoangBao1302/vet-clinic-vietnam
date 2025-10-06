@@ -28,7 +28,7 @@ const affiliatePrograms: AffiliateProgram[] = [
     commission: "30%",
     icon: TrendingUp,
     color: "from-blue-600 to-purple-600",
-    description: "Kiếm hoa hồng cao nhất với chương trình bán EA LeopardSmart. Phù hợp cho trader có community hoặc kênh youtube/blog.",
+    description: "Kiếm hoa hồng cao nhất với chương trình bán EA ThebenchmarkTrader. Phù hợp cho trader có community hoặc kênh youtube/blog.",
     benefits: [
       "Hoa hồng 30% cho mỗi đơn hàng thành công",
       "Tracking link riêng với cookie 90 ngày",

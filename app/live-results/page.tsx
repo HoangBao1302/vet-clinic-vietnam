@@ -32,7 +32,7 @@ const tradingAccounts: TradingAccount[] = [
   // MQL5 Accounts
   {
     platform: "MQL5",
-    accountName: "LeopardSmart Live #1",
+    accountName: "ThebenchmarkTrader Live #1",
     accountNumber: "12345678",
     broker: "Tickmill",
     verified: true,
@@ -48,7 +48,7 @@ const tradingAccounts: TradingAccount[] = [
       profile: "https://www.mql5.com/en/signals/YOUR_SIGNAL_ID",
       youtube: "https://www.youtube.com/watch?v=MQL5_TUTORIAL_ID"
     },
-    description: "Tài khoản live đầu tiên chạy EA LeopardSmart trên Tickmill. Verified bởi MQL5, tất cả giao dịch được tracking real-time.",
+    description: "Tài khoản live đầu tiên chạy EA ThebenchmarkTrader trên Tickmill. Verified bởi MQL5, tất cả giao dịch được tracking real-time.",
     highlights: [
       "✅ Verified bởi MQL5.com",
       "📈 Lợi nhuận ổn định 180 ngày",
@@ -59,7 +59,7 @@ const tradingAccounts: TradingAccount[] = [
   },
   {
     platform: "MQL5",
-    accountName: "LeopardSmart Live #2",
+    accountName: "ThebenchmarkTrader Live #2",
     accountNumber: "87654321",
     broker: "PuPrime",
     verified: true,
@@ -87,7 +87,7 @@ const tradingAccounts: TradingAccount[] = [
   // Myfxbook Accounts
   {
     platform: "Myfxbook",
-    accountName: "EA LeopardSmart Pro",
+    accountName: "EA ThebenchmarkTrader Pro",
     accountNumber: "MYFX-123456",
     broker: "Tickmill",
     verified: true,
@@ -115,7 +115,7 @@ const tradingAccounts: TradingAccount[] = [
   // Tickmill Social Trading
   {
     platform: "Tickmill Social",
-    accountName: "LeopardSmart Strategy",
+    accountName: "ThebenchmarkTrader Strategy",
     accountNumber: "Social-TM-789",
     broker: "Tickmill",
     verified: true,
@@ -144,7 +144,7 @@ const tradingAccounts: TradingAccount[] = [
   // PuPrime Social Trading
   {
     platform: "PuPrime Social",
-    accountName: "LeopardSmart MAM",
+    accountName: "ThebenchmarkTrader MAM",
     accountNumber: "Social-PP-456",
     broker: "PuPrime",
     verified: true,

@@ -20,7 +20,7 @@
 - Fibonacci Retracement Guide
 - Tâm lý Trader thành công
 
-#### 3. **🤖 EA LeopardSmart (6 bài viết)**
+#### 3. **🤖 EA ThebenchmarkTrader (6 bài viết)**
 - Cách đọc Profit Factor & Drawdown
 - Tối ưu tham số EA
 - EA vs Manual Trading
@@ -35,7 +35,7 @@
 ## 🎨 Tính Năng UI
 
 ### ✅ **Category Tabs**
-- 4 tabs với icons: 📚 Tất cả, 📰 Tin Tức, 🎓 Đào Tạo, 🤖 EA LeopardSmart
+- 4 tabs với icons: 📚 Tất cả, 📰 Tin Tức, 🎓 Đào Tạo, 🤖 EA ThebenchmarkTrader
 - Sticky navigation (dính khi scroll)
 - Counter số bài viết
 - Description cho mỗi category
@@ -154,7 +154,7 @@ http://localhost:3000/blog
 #### Test category filter:
 - Click tab "Tin Tức" → Chỉ thấy 6 bài tin tức
 - Click tab "Đào Tạo" → Chỉ thấy 6 bài đào tạo
-- Click tab "EA LeopardSmart" → Chỉ thấy 6 bài EA
+- Click tab "EA ThebenchmarkTrader" → Chỉ thấy 6 bài EA
 
 #### Xem chi tiết bài:
 ```
@@ -240,7 +240,7 @@ Mỗi bài viết có:
 ### **Categories:**
 - **Tin Tức:** Current events, data analysis
 - **Đào Tạo:** Evergreen, educational
-- **EA LeopardSmart:** Product-specific
+- **EA ThebenchmarkTrader:** Product-specific
 
 ### **Publishing:**
 - Post 2-3 bài/tuần

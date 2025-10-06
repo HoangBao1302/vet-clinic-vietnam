@@ -45,8 +45,8 @@ export async function POST(request: NextRequest) {
             },
           ],
           mode: "payment",
-          success_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://leopardsmart.com'}/downloads/success?session_id={CHECKOUT_SESSION_ID}`,
-          cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://leopardsmart.com'}/downloads?cancelled=true`,
+          success_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://thebenchmarktrader.com'}/downloads/success?session_id={CHECKOUT_SESSION_ID}`,
+          cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://thebenchmarktrader.com'}/downloads?cancelled=true`,
           customer_email: customerInfo.email,
           metadata: {
             productId,

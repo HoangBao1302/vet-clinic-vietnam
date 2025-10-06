@@ -16,7 +16,7 @@ STRIPE_WEBHOOK_SECRET=whsec_xxxxx
 
 # REQUIRED - Resend Email (Already have)
 RESEND_API_KEY=re_xxxxx
-RESEND_FROM=downloads@leopardsmart.com
+RESEND_FROM=downloads@thebenchmarktrader.com
 
 # REQUIRED - App Config
 NEXT_PUBLIC_BASE_URL=http://localhost:3000
@@ -50,21 +50,21 @@ Broker-Setup-Guide.pdf
 ```
 SR-Indicator-Free.ex4
 TrendLines-Free.ex4
-LeopardSmart-Demo.ex4
+ThebenchmarkTrader-Demo.ex4
 ```
 
 ### **Paid Products (3 files):**
 ```
 Indicator-Pro-Pack.zip
-LeopardSmart-Full.ex4
-LeopardSmart-Pro-Source.zip
+ThebenchmarkTrader-Full.ex4
+ThebenchmarkTrader-Pro-Source.zip
 ```
 
 **Quick Test Files (if don't have real files):**
 ```bash
 cd public/downloads/files
 echo "Test PDF" > Installation-Guide.pdf
-echo "Test EA" > LeopardSmart-Demo.ex4
+echo "Test EA" > ThebenchmarkTrader-Demo.ex4
 # ... create other test files
 ```
 
@@ -115,7 +115,7 @@ npm run dev
 - [ ] See 4 category tabs
 - [ ] Click "Tin Tức" → 6 posts
 - [ ] Click "Đào Tạo" → 6 posts
-- [ ] Click "EA LeopardSmart" → 6 posts
+- [ ] Click "EA ThebenchmarkTrader" → 6 posts
 - [ ] Click any post → Detail page loads
 
 ---
@@ -205,8 +205,8 @@ git push
 
 ### **Get Support:**
 - 📚 Read relevant .md file
-- 📧 Email: support@leopardsmart.com
-- 💬 Telegram: @LeopardSmartSupport
+- 📧 Email: support@thebenchmarktrader.com
+- 💬 Telegram: @ThebenchmarkTraderSupport
 
 ---
 

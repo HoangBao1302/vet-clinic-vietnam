@@ -73,20 +73,20 @@ Tôi đã implement xong **toàn bộ hệ thống membership & authentication**
 5. Network Access: **Allow 0.0.0.0/0**
 6. Get connection string:
 ```
-mongodb+srv://USER:PASSWORD@cluster.mongodb.net/leopardsmart
+mongodb+srv://USER:PASSWORD@cluster.mongodb.net/thebenchmarktrader
 ```
 
 ### **Bước 2: Gmail SMTP**
 1. Bật 2FA: https://myaccount.google.com/security
 2. Tạo App Password: https://myaccount.google.com/apppasswords
-3. App name: "EA Forex LeopardSmart"
+3. App name: "EA Forex ThebenchmarkTrader"
 4. Copy password 16 ký tự → **LƯU LẠI**
 
 ### **Bước 3: Vercel Environment Variables**
 Vào Vercel Dashboard → Project → Settings → Environment Variables:
 
 ```env
-MONGODB_URI=mongodb+srv://user:pass@cluster.mongodb.net/leopardsmart
+MONGODB_URI=mongodb+srv://user:pass@cluster.mongodb.net/thebenchmarktrader
 JWT_SECRET=658082374187e11eefd47af2572b79e6259c4a7914d14f22a15403ade4c9ddbb
 NEXT_PUBLIC_SITE_URL=https://your-domain.vercel.app
 SMTP_HOST=smtp.gmail.com
@@ -240,7 +240,7 @@ Paid members: Unlimited access
 {
   "membershipTier": "paid",
   "isPaid": true,
-  "purchasedProducts": ["ea-leopardsmart-full"]
+  "purchasedProducts": ["ea-thebenchmarktrader-full"]
 }
 ```
 

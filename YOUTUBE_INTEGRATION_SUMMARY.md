@@ -2,7 +2,7 @@
 
 ## 🎯 Tổng Quan
 
-Đã tích hợp đầy đủ các liên kết YouTube vào website EA Forex LeopardSmart để khách hàng có thể xem video backtest và hướng dẫn cài đặt.
+Đã tích hợp đầy đủ các liên kết YouTube vào website EA Forex ThebenchmarkTrader để khách hàng có thể xem video backtest và hướng dẫn cài đặt.
 
 ## 📍 Các Vị Trí Đã Thêm Button/Link YouTube
 
@@ -97,12 +97,12 @@ Các link sau đây là **PLACEHOLDER** và cần được thay thế khi bạn 
 
 ### Channel Link (Dùng ở nhiều nơi):
 ```
-https://www.youtube.com/@LeopardSmartEA
+https://www.youtube.com/@ThebenchmarkTraderEA
 ```
 
 ### Playlist Link:
 ```
-https://www.youtube.com/@LeopardSmartEA/playlists
+https://www.youtube.com/@ThebenchmarkTraderEA/playlists
 ```
 
 ### Installation Video (Cần cập nhật):
@@ -116,12 +116,12 @@ https://www.youtube.com/watch?v=INSTALLATION_VIDEO_ID
 ## 📝 Cách Cập Nhật Link
 
 ### Option 1: Manual Update (Từng file)
-Mở từng file và tìm kiếm `@LeopardSmartEA`, thay bằng channel name thực tế.
+Mở từng file và tìm kiếm `@ThebenchmarkTraderEA`, thay bằng channel name thực tế.
 
 ### Option 2: Find & Replace All (Nhanh hơn)
 Trong VS Code/Cursor:
 1. Nhấn `Ctrl+Shift+H` (hoặc `Cmd+Shift+H` trên Mac)
-2. Find: `@LeopardSmartEA`
+2. Find: `@ThebenchmarkTraderEA`
 3. Replace: `@TenKenhThucTe` (channel name của bạn)
 4. Click "Replace All"
 
@@ -261,8 +261,8 @@ Sau khi cập nhật link thực tế, test các điểm sau:
 
 Nếu cần hỗ trợ:
 - File documentation chi tiết: `YOUTUBE_LINKS.md`
-- Contact: support@leopardsmart.com
-- Telegram: @LeopardSmartSupport
+- Contact: support@thebenchmarktrader.com
+- Telegram: @ThebenchmarkTraderSupport
 
 ---
 

@@ -39,7 +39,7 @@
 ### **Categories:**
 ✅ **📰 Tin Tức** (6 bài) - NFP, FED, CPI, ADP, PCE, GDP
 ✅ **🎓 Đào Tạo** (6 bài) - Technical, Psychology, Strategy
-✅ **🤖 EA LeopardSmart** (6 bài) - Product tutorials
+✅ **🤖 EA ThebenchmarkTrader** (6 bài) - Product tutorials
 
 **Total:** 18 bài viết sample đầy đủ
 

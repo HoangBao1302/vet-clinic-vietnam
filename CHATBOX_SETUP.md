@@ -130,12 +130,12 @@ if (reply.action === "your-action") {
 
 **Telegram:**
 ```
-https://t.me/LeopardSmartSupport
+https://t.me/ThebenchmarkTraderSupport
 ```
 
 **Email:**
 ```
-support@leopardsmart.com
+support@thebenchmarktrader.com
 ```
 
 **Hotline:**
@@ -289,7 +289,7 @@ Nếu muốn chat real-time với nhân viên, có thể tích hợp:
 
 // Trong handleQuickReply:
 if (reply.action === "whatsapp") {
-  window.open("https://wa.me/84901234567?text=Xin chào, tôi muốn hỏi về EA LeopardSmart", "_blank");
+  window.open("https://wa.me/84901234567?text=Xin chào, tôi muốn hỏi về EA ThebenchmarkTrader", "_blank");
 }
 ```
 
@@ -539,8 +539,8 @@ Create a config file `config/chat.ts`:
 
 ```typescript
 export const chatConfig = {
-  telegram: "https://t.me/LeopardSmartSupport",
-  email: "support@leopardsmart.com",
+  telegram: "https://t.me/ThebenchmarkTraderSupport",
+  email: "support@thebenchmarktrader.com",
   hotline: "+84 901 234 567",
   whatsapp: "84901234567",
   zaloOA: "YOUR_OA_ID",
@@ -643,7 +643,7 @@ className="w-96 max-w-[calc(100vw-3rem)]"
 Nếu cần help:
 - File này: Quick reference
 - Component code: `components/ChatWidget.tsx`
-- Contact: support@leopardsmart.com
+- Contact: support@thebenchmarktrader.com
 
 ---
 

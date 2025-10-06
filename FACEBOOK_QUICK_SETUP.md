@@ -17,7 +17,7 @@ Tất cả các nút Facebook đã được cấu hình để:
 1. Truy cập: [facebook.com/pages/create](https://www.facebook.com/pages/create)
 2. Chọn: **Business or Brand**
 3. Nhập thông tin:
-   - **Tên:** EA Forex LeopardSmart
+   - **Tên:** EA Forex ThebenchmarkTrader
    - **Category:** Financial Service
    - **Bio:** EA Forex tự động với quản trị rủi ro thông minh
 4. Click **Create Page**
@@ -29,10 +29,10 @@ Tất cả các nút Facebook đã được cấu hình để:
 
 1. Vào **Page Settings** → **Page Info**
 2. Click **Edit** bên cạnh **Username**
-3. Nhập username ngắn: `LeopardSmartEA` hoặc `leopardsmart`
+3. Nhập username ngắn: `ThebenchmarkTraderEA` hoặc `thebenchmarktrader`
 4. Check availability → Save
 
-**Result:** URL đẹp hơn `https://www.facebook.com/LeopardSmartEA`
+**Result:** URL đẹp hơn `https://www.facebook.com/ThebenchmarkTraderEA`
 
 ---
 
@@ -44,7 +44,7 @@ Trong VS Code/Cursor, nhấn `Ctrl+Shift+H` (hoặc `Cmd+Shift+H`):
 
 ```
 Find:    YOUR_PAGE_NAME
-Replace: LeopardSmartEA    (hoặc tên page của bạn)
+Replace: ThebenchmarkTraderEA    (hoặc tên page của bạn)
 ```
 
 Click **Replace All**
@@ -59,14 +59,14 @@ Click **Replace All**
 ```tsx
 href="https://www.facebook.com/YOUR_PAGE_NAME"
      ↓ Thay bằng
-href="https://www.facebook.com/LeopardSmartEA"
+href="https://www.facebook.com/ThebenchmarkTraderEA"
 ```
 
 **File:** `components/Footer.tsx` (Dòng 48)
 ```tsx
 href="https://www.facebook.com/YOUR_PAGE_NAME"
      ↓ Thay bằng
-href="https://www.facebook.com/LeopardSmartEA"
+href="https://www.facebook.com/ThebenchmarkTraderEA"
 ```
 
 ---
@@ -92,7 +92,7 @@ Các format URL hợp lệ:
 
 ✅ **Username-based (Best):**
 ```
-https://www.facebook.com/LeopardSmartEA
+https://www.facebook.com/ThebenchmarkTraderEA
 ```
 
 ✅ **Page ID-based:**
@@ -102,7 +102,7 @@ https://www.facebook.com/profile.php?id=100012345678901
 
 ✅ **Custom vanity URL:**
 ```
-https://www.facebook.com/leopardsmart
+https://www.facebook.com/thebenchmarktrader
 ```
 
 ❌ **Không dùng:**
@@ -136,7 +136,7 @@ https://m.facebook.com/...       (mobile link)
 
 **Post đầu tiên (Welcome Post):**
 ```
-🎉 Chào mừng đến với EA Forex LeopardSmart!
+🎉 Chào mừng đến với EA Forex ThebenchmarkTrader!
 
 🤖 EA tự động với quản trị rủi ro thông minh
 📊 5+ tài khoản verified
@@ -154,7 +154,7 @@ https://m.facebook.com/...       (mobile link)
 - CTA: "Xem Kết Quả Thực Tế"
 
 **Profile Picture (180x180px):**
-- Logo EA LeopardSmart
+- Logo EA ThebenchmarkTrader
 - Background: Blue theme
 - Simple, recognizable
 
@@ -167,13 +167,13 @@ Nếu bạn cũng muốn setup Instagram và Twitter, placeholder đã sẵn sà
 **Instagram:**
 ```
 Find:    YOUR_INSTAGRAM_NAME
-Replace: leopardsmart_ea
+Replace: thebenchmarktrader_ea
 ```
 
 **Twitter:**
 ```
 Find:    YOUR_TWITTER_NAME
-Replace: LeopardSmartEA
+Replace: ThebenchmarkTraderEA
 ```
 
 Tương tự như Facebook, chỉ cần Find & Replace!

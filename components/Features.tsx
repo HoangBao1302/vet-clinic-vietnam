@@ -56,7 +56,7 @@ export default function Features() {
             Tính năng vượt trội
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            EA LeopardSmart được thiết kế với các tính năng tiên tiến để tối ưu hóa hiệu suất giao dịch 
+            EA ThebenchmarkTrader được thiết kế với các tính năng tiên tiến để tối ưu hóa hiệu suất giao dịch 
             và bảo vệ tài khoản của bạn
           </p>
         </div>

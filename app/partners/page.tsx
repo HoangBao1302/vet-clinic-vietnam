@@ -160,7 +160,7 @@ export default function PartnersPage() {
                 Đối Tác Broker Uy Tín
               </h1>
               <p className="text-xl text-blue-100 leading-relaxed">
-                Danh sách các broker được khuyến nghị để sử dụng EA Forex LeopardSmart. 
+                Danh sách các broker được khuyến nghị để sử dụng EA Forex ThebenchmarkTrader. 
                 Mỗi broker đều được đánh giá kỹ về spread, giấy phép, và hỗ trợ khách hàng.
               </p>
             </div>
@@ -403,7 +403,7 @@ export default function PartnersPage() {
                       số tiền bạn có thể chấp nhận mất. EA không đảm bảo lợi nhuận.
                     </p>
                     <p>
-                      <strong>4. Phù hợp broker:</strong> EA LeopardSmart hoạt động tốt trên broker có spread thấp, 
+                      <strong>4. Phù hợp broker:</strong> EA ThebenchmarkTrader hoạt động tốt trên broker có spread thấp, 
                       execution nhanh, và không hạn chế scalping/EA. Kiểm tra demo trước khi chạy live.
                     </p>
                   </div>
@@ -423,7 +423,7 @@ export default function PartnersPage() {
                 <div className="border border-gray-200 rounded-lg p-6">
                   <h3 className="font-bold text-lg mb-2">EA hoạt động trên broker nào?</h3>
                   <p className="text-gray-700">
-                    EA LeopardSmart hoạt động trên hầu hết các broker hỗ trợ MT4/MT5. Tuy nhiên, hiệu suất tốt nhất 
+                    EA ThebenchmarkTrader hoạt động trên hầu hết các broker hỗ trợ MT4/MT5. Tuy nhiên, hiệu suất tốt nhất 
                     trên các broker có spread thấp, execution nhanh (ECN/STP), và không hạn chế chiến lược EA.
                   </p>
                 </div>

@@ -2,7 +2,7 @@
 
 ## ✅ TẤT CẢ ĐÃ HOÀN THÀNH
 
-Tôi đã tích hợp đầy đủ tất cả tính năng bạn yêu cầu vào website EA Forex LeopardSmart!
+Tôi đã tích hợp đầy đủ tất cả tính năng bạn yêu cầu vào website EA Forex ThebenchmarkTrader!
 
 ---
 
@@ -20,7 +20,7 @@ Tôi đã tích hợp đầy đủ tất cả tính năng bạn yêu cầu vào 
 **🎁 Free Products (Miễn phí - 3 items):**
 - Support & Resistance Indicator
 - Auto Trend Lines Indicator
-- EA LeopardSmart Demo
+- EA ThebenchmarkTrader Demo
 
 **💎 Paid Products (Có thanh toán - 3 items):**
 - Multi-Indicator Pro Pack (1.990.000đ)
@@ -53,7 +53,7 @@ Tôi đã tích hợp đầy đủ tất cả tính năng bạn yêu cầu vào 
 **🎓 Đào Tạo (6 bài):**
 - Technical analysis, Money management, Psychology
 
-**🤖 EA LeopardSmart (6 bài):**
+**🤖 EA ThebenchmarkTrader (6 bài):**
 - Product-specific, tutorials, updates
 
 **Total:** 18 bài viết sample
@@ -280,7 +280,7 @@ STRIPE_SECRET_KEY=sk_test_...
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...
 STRIPE_WEBHOOK_SECRET=whsec_...
 RESEND_API_KEY=re_...
-RESEND_FROM=downloads@leopardsmart.com
+RESEND_FROM=downloads@thebenchmarktrader.com
 NEXT_PUBLIC_BASE_URL=http://localhost:3000
 ```
 
@@ -299,12 +299,12 @@ echo "Broker Guide" > Broker-Setup-Guide.pdf
 # Free products
 echo "SR Indicator" > SR-Indicator-Free.ex4
 echo "Trend Lines" > TrendLines-Free.ex4  
-echo "Demo EA" > LeopardSmart-Demo.ex4
+echo "Demo EA" > ThebenchmarkTrader-Demo.ex4
 
 # Paid products
 echo "Pro Indicators" > Indicator-Pro-Pack.zip
-echo "Full EA" > LeopardSmart-Full.ex4
-echo "Pro Source" > LeopardSmart-Pro-Source.zip
+echo "Full EA" > ThebenchmarkTrader-Full.ex4
+echo "Pro Source" > ThebenchmarkTrader-Pro-Source.zip
 ```
 
 ### **Step 3: Run Development Server**
@@ -715,5 +715,5 @@ Bạn hiện có một website EA Forex hoàn chỉnh với:
 
 **Created:** October 3, 2025
 **Version:** 2.0 Complete
-**Author:** EA Forex LeopardSmart Development Team
+**Author:** EA Forex ThebenchmarkTrader Development Team
 

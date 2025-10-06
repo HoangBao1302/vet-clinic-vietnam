@@ -40,7 +40,7 @@ const testimonials = [
     role: "Trader 3 năm kinh nghiệm",
     image: "/reviews/jonas-leupe-8pCtwj37VB4-unsplash.jpg",
     rating: 5,
-    comment: "EA LeopardSmart đã giúp tôi ổn định lợi nhuận hàng tháng. Quản trị rủi ro rất tốt, tôi yên tâm để EA chạy cả đêm."
+    comment: "EA ThebenchmarkTrader đã giúp tôi ổn định lợi nhuận hàng tháng. Quản trị rủi ro rất tốt, tôi yên tâm để EA chạy cả đêm."
   },
   {
     name: "Chị Lan",
@@ -100,7 +100,7 @@ export default function Proof() {
             Phản hồi từ khách hàng
           </h3>
           <p className="text-lg text-gray-600">
-            Hơn 500+ trader đang sử dụng EA LeopardSmart
+            Hơn 500+ trader đang sử dụng EA ThebenchmarkTrader
           </p>
         </div>
 
@@ -144,7 +144,7 @@ export default function Proof() {
           {/* YouTube Video Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <a
-              href="https://www.youtube.com/@LeopardSmartEA"
+              href="https://www.youtube.com/@ThebenchmarkTraderEA"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center space-x-2 px-6 py-3 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors shadow-lg hover:shadow-xl"
@@ -153,7 +153,7 @@ export default function Proof() {
               <span>Xem Video Backtest</span>
             </a>
             <a
-              href="https://www.youtube.com/@LeopardSmartEA/playlists"
+              href="https://www.youtube.com/@ThebenchmarkTraderEA/playlists"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center space-x-2 px-6 py-3 bg-white border-2 border-blue-600 text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-colors"

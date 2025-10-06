@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
           
           <div style="border-top: 1px solid #e5e7eb; padding-top: 20px; margin-top: 30px;">
             <p style="color: #6b7280; font-size: 14px; margin: 0;">
-              Email này được gửi từ biểu mẫu đặt lịch hẹn trên website EA Forex LeopardSmart.
+              Email này được gửi từ biểu mẫu đặt lịch hẹn trên website EA Forex ThebenchmarkTrader.
             </p>
           </div>
         </div>

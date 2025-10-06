@@ -1,4 +1,4 @@
-# YouTube Integration - EA Forex LeopardSmart
+# YouTube Integration - EA Forex ThebenchmarkTrader
 
 ## 📺 Tổng Quan
 
@@ -15,10 +15,10 @@ Website đã được tích hợp các liên kết YouTube để khách hàng c�
 **Dòng code cần cập nhật:**
 ```tsx
 // Dòng ~147
-href="https://www.youtube.com/@LeopardSmartEA"
+href="https://www.youtube.com/@ThebenchmarkTraderEA"
 
 // Dòng ~156
-href="https://www.youtube.com/@LeopardSmartEA/playlists"
+href="https://www.youtube.com/@ThebenchmarkTraderEA/playlists"
 ```
 
 ---
@@ -29,10 +29,10 @@ href="https://www.youtube.com/@LeopardSmartEA/playlists"
 **Dòng code cần cập nhật:**
 ```tsx
 // Dòng ~202
-href="https://www.youtube.com/@LeopardSmartEA"
+href="https://www.youtube.com/@ThebenchmarkTraderEA"
 
 // Dòng ~210
-href="https://www.youtube.com/@LeopardSmartEA/playlists"
+href="https://www.youtube.com/@ThebenchmarkTraderEA/playlists"
 ```
 
 ---
@@ -47,7 +47,7 @@ href="https://www.youtube.com/watch?v=INSTALLATION_VIDEO_ID"
 // ⚠️ Thay INSTALLATION_VIDEO_ID bằng ID video thực tế
 
 // Dòng ~328 - Link playlist
-href="https://www.youtube.com/@LeopardSmartEA/playlists"
+href="https://www.youtube.com/@ThebenchmarkTraderEA/playlists"
 ```
 
 ---
@@ -60,16 +60,16 @@ href="https://www.youtube.com/@LeopardSmartEA/playlists"
 **Dòng code cần cập nhật:**
 ```tsx
 // Dòng ~57 - YouTube icon trong social media
-href="https://www.youtube.com/@LeopardSmartEA"
+href="https://www.youtube.com/@ThebenchmarkTraderEA"
 
 // Dòng ~122 - Link "Kênh YouTube"
-href="https://www.youtube.com/@LeopardSmartEA"
+href="https://www.youtube.com/@ThebenchmarkTraderEA"
 
 // Dòng ~133 - Link "Video Backtest"
-href="https://www.youtube.com/@LeopardSmartEA/playlists"
+href="https://www.youtube.com/@ThebenchmarkTraderEA/playlists"
 
 // Dòng ~143 - Link "Hướng dẫn cài đặt"
-href="https://www.youtube.com/@LeopardSmartEA/playlists"
+href="https://www.youtube.com/@ThebenchmarkTraderEA/playlists"
 ```
 
 ---
@@ -78,7 +78,7 @@ href="https://www.youtube.com/@LeopardSmartEA/playlists"
 
 ### Bước 1: Tạo Kênh YouTube
 1. Truy cập [YouTube Studio](https://studio.youtube.com)
-2. Tạo kênh mới với tên: **EA Forex LeopardSmart** (hoặc tên bạn muốn)
+2. Tạo kênh mới với tên: **EA Forex ThebenchmarkTrader** (hoặc tên bạn muốn)
 3. Lấy URL kênh (thường có dạng: `https://www.youtube.com/@TenKenh`)
 
 ### Bước 2: Upload Video
@@ -103,7 +103,7 @@ Tạo các playlist để tổ chức video:
 ### Bước 5: Thay Thế Link trong Code
 Sử dụng tính năng Find & Replace trong editor:
 
-**Find:** `https://www.youtube.com/@LeopardSmartEA`
+**Find:** `https://www.youtube.com/@ThebenchmarkTraderEA`
 **Replace with:** `https://www.youtube.com/@TenKenhThucTe`
 
 **Find:** `INSTALLATION_VIDEO_ID`
@@ -169,7 +169,7 @@ Sử dụng tính năng Find & Replace trong editor:
 - "BACKTEST 5 NĂM"
 - "PROFIT FACTOR 2.4"
 - "HƯỚNG DẪN CÀI ĐẶT EA"
-- "FOREX EA LeopardSmart"
+- "FOREX EA ThebenchmarkTrader"
 
 **Tools:** Canva, Photoshop, hoặc Figma
 
@@ -202,7 +202,7 @@ Nếu bạn đã có kênh YouTube, chạy lệnh sau trong terminal/PowerShell 
 ### PowerShell (Windows):
 ```powershell
 # Thay YOUR_CHANNEL_NAME bằng tên kênh thực tế
-$oldUrl = "@LeopardSmartEA"
+$oldUrl = "@ThebenchmarkTraderEA"
 $newUrl = "@YOUR_CHANNEL_NAME"
 
 Get-ChildItem -Recurse -Include *.tsx,*.ts | ForEach-Object {
@@ -213,7 +213,7 @@ Get-ChildItem -Recurse -Include *.tsx,*.ts | ForEach-Object {
 ### Bash (Mac/Linux):
 ```bash
 # Thay YOUR_CHANNEL_NAME bằng tên kênh thực tế
-find . -name "*.tsx" -o -name "*.ts" | xargs sed -i 's/@LeopardSmartEA/@YOUR_CHANNEL_NAME/g'
+find . -name "*.tsx" -o -name "*.ts" | xargs sed -i 's/@ThebenchmarkTraderEA/@YOUR_CHANNEL_NAME/g'
 ```
 
 ---
@@ -221,8 +221,8 @@ find . -name "*.tsx" -o -name "*.ts" | xargs sed -i 's/@LeopardSmartEA/@YOUR_CHA
 ## 📞 Hỗ Trợ
 
 Nếu cần hỗ trợ tích hợp YouTube hoặc tạo video content, liên hệ:
-- Email: support@leopardsmart.com
-- Telegram: @LeopardSmartSupport
+- Email: support@thebenchmarktrader.com
+- Telegram: @ThebenchmarkTraderSupport
 
 ---
 

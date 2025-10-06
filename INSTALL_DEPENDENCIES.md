@@ -46,7 +46,7 @@ PAYPAL_MODE=sandbox
 
 # Resend Email (Already have)
 RESEND_API_KEY=re_...
-RESEND_FROM=downloads@leopardsmart.com
+RESEND_FROM=downloads@thebenchmarktrader.com
 
 # App Config
 NEXT_PUBLIC_BASE_URL=http://localhost:3000
@@ -99,7 +99,7 @@ Visit:
 
 ### **Step 2: Get Credentials**
 1. Dashboard → My Apps & Credentials
-2. Create App → Name: "EA LeopardSmart"
+2. Create App → Name: "EA ThebenchmarkTrader"
 3. Copy **Client ID** and **Secret**
 
 ### **Step 3: Test**
@@ -123,12 +123,12 @@ Upload your files to: `public/downloads/files/`
 ### Free Products:
 - `SR-Indicator-Free.ex4`
 - `TrendLines-Free.ex4`
-- `LeopardSmart-Demo.ex4`
+- `ThebenchmarkTrader-Demo.ex4`
 
 ### Paid Products:
 - `Indicator-Pro-Pack.zip`
-- `LeopardSmart-Full.ex4`
-- `LeopardSmart-Pro-Source.zip`
+- `ThebenchmarkTrader-Full.ex4`
+- `ThebenchmarkTrader-Pro-Source.zip`
 
 ---
 
@@ -227,7 +227,7 @@ npm start
 **Need Help?**
 - Stripe support: https://support.stripe.com
 - PayPal support: https://developer.paypal.com/support
-- Email: support@leopardsmart.com
+- Email: support@thebenchmarktrader.com
 
 ---
 

@@ -87,7 +87,7 @@ ADMIN_SECRET=your-admin-secret-here
 
 # Email (for sending download links)
 RESEND_API_KEY=re_...
-RESEND_FROM=downloads@leopardsmart.com
+RESEND_FROM=downloads@thebenchmarktrader.com
 ```
 
 ---
@@ -111,10 +111,10 @@ public/downloads/files/
 ├── Broker-Setup-Guide.pdf
 ├── SR-Indicator-Free.ex4
 ├── TrendLines-Free.ex4
-├── LeopardSmart-Demo.ex4
+├── ThebenchmarkTrader-Demo.ex4
 ├── Indicator-Pro-Pack.zip
-├── LeopardSmart-Full.ex4
-└── LeopardSmart-Pro-Source.zip
+├── ThebenchmarkTrader-Full.ex4
+└── ThebenchmarkTrader-Pro-Source.zip
 ```
 
 ---
@@ -198,7 +198,7 @@ export async function POST(request: NextRequest) {
           },
         ],
         application_context: {
-          brand_name: "EA LeopardSmart",
+          brand_name: "EA ThebenchmarkTrader",
           landing_page: "NO_PREFERENCE",
           user_action: "PAY_NOW",
           return_url: `${process.env.NEXT_PUBLIC_BASE_URL}/api/paypal/capture`,
@@ -364,7 +364,7 @@ export async function POST(request: NextRequest) {
     await resend.emails.send({
       from: process.env.RESEND_FROM!,
       to: session.customer_email!,
-      subject: "Download EA LeopardSmart - Thanh toán thành công",
+      subject: "Download EA ThebenchmarkTrader - Thanh toán thành công",
       html: `
         <h2>Cảm ơn bạn đã mua hàng!</h2>
         <p>Mã đơn hàng: <strong>${session.id}</strong></p>
@@ -491,13 +491,13 @@ export const downloadEmail = (orderInfo: any) => `
       
       <p>Cần hỗ trợ? Liên hệ:</p>
       <ul>
-        <li>📧 Email: support@leopardsmart.com</li>
-        <li>📱 Telegram: @LeopardSmartSupport</li>
+        <li>📧 Email: support@thebenchmarktrader.com</li>
+        <li>📱 Telegram: @ThebenchmarkTraderSupport</li>
         <li>📞 Hotline: +84 901 234 567</li>
       </ul>
     </div>
     <div class="footer">
-      <p>EA Forex LeopardSmart<br>
+      <p>EA Forex ThebenchmarkTrader<br>
       © 2025 All rights reserved</p>
     </div>
   </div>
@@ -812,7 +812,7 @@ await db.collection("orders").insertOne({...});
 # Production .env
 STRIPE_SECRET_KEY=sk_live_...
 PAYPAL_MODE=live
-NEXT_PUBLIC_BASE_URL=https://leopardsmart.com
+NEXT_PUBLIC_BASE_URL=https://thebenchmarktrader.com
 ```
 
 ---

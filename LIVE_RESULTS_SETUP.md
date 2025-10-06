@@ -213,7 +213,7 @@ Stats nên được cập nhật định kỳ (weekly/monthly) để đảm bả
 **Nội dung:**
 - Mở tài khoản Tickmill
 - Navigate to Social Trading
-- Find strategy (LeopardSmart)
+- Find strategy (ThebenchmarkTrader)
 - Click copy với amount cụ thể
 - Dashboard & monitoring
 
@@ -399,7 +399,7 @@ Sau khi cập nhật, test các điểm sau:
 5. **1-on-1 support** cho copy trading
 
 ### Content Ideas:
-1. Blog post "5 tháng copy trading với EA LeopardSmart"
+1. Blog post "5 tháng copy trading với EA ThebenchmarkTrader"
 2. Video "Drawdown period - cách vượt qua"
 3. Case study "Từ $1000 lên $3500"
 4. FAQ "10 câu hỏi về copy trading"
@@ -411,8 +411,8 @@ Sau khi cập nhật, test các điểm sau:
 
 **Nếu gặp vấn đề khi setup:**
 - Documentation: File này + `YOUTUBE_LINKS.md`
-- Email: support@leopardsmart.com
-- Telegram: @LeopardSmartSupport
+- Email: support@thebenchmarktrader.com
+- Telegram: @ThebenchmarkTraderSupport
 
 **Nếu cần help technical:**
 - Issues về code
@@ -460,5 +460,5 @@ chore: update live trading stats - Oct 2025
 
 **Last Updated:** October 3, 2025
 **Version:** 1.0
-**Author:** EA Forex LeopardSmart Team
+**Author:** EA Forex ThebenchmarkTrader Team
 

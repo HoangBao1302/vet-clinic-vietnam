@@ -179,7 +179,7 @@ export default function ForgotPasswordPage() {
           {/* Help Text */}
           {!success && (
             <div className="mt-6 text-center text-sm text-gray-500">
-              <p>Cần hỗ trợ? Liên hệ: support@leopardsmart.com</p>
+              <p>Cần hỗ trợ? Liên hệ: support@thebenchmarktrader.com</p>
             </div>
           )}
         </div>

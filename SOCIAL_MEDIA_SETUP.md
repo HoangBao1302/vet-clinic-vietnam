@@ -41,7 +41,7 @@ Tất cả các nút social media (Facebook, Instagram, Twitter, YouTube, Telegr
 #### Bước 1: Tạo Facebook Page
 1. Truy cập [facebook.com/pages/create](https://www.facebook.com/pages/create)
 2. Chọn loại: **Business or Brand**
-3. Nhập tên: **EA Forex LeopardSmart** (hoặc tên bạn muốn)
+3. Nhập tên: **EA Forex ThebenchmarkTrader** (hoặc tên bạn muốn)
 4. Category: **Financial Service** hoặc **Software**
 5. Thêm mô tả về EA
 
@@ -52,7 +52,7 @@ https://www.facebook.com/YourPageName
 ```
 
 **Ví dụ:**
-- `https://www.facebook.com/LeopardSmartEA`
+- `https://www.facebook.com/ThebenchmarkTraderEA`
 - `https://www.facebook.com/EAForexLeopard`
 
 #### Bước 3: Tùy Chỉnh Username (Optional)
@@ -61,7 +61,7 @@ https://www.facebook.com/YourPageName
 3. Chọn username ngắn gọn, dễ nhớ
 4. Save
 
-**Result:** `https://www.facebook.com/leopardsmart`
+**Result:** `https://www.facebook.com/thebenchmarktrader`
 
 ---
 
@@ -91,19 +91,19 @@ Nếu bạn muốn dùng profile cá nhân:
 **Facebook:**
 ```
 Find:    https://www.facebook.com/YOUR_PAGE_NAME
-Replace: https://www.facebook.com/LeopardSmartEA
+Replace: https://www.facebook.com/ThebenchmarkTraderEA
 ```
 
 **Instagram:**
 ```
 Find:    https://www.instagram.com/YOUR_INSTAGRAM_NAME
-Replace: https://www.instagram.com/leopardsmart_ea
+Replace: https://www.instagram.com/thebenchmarktrader_ea
 ```
 
 **Twitter:**
 ```
 Find:    https://twitter.com/YOUR_TWITTER_NAME
-Replace: https://twitter.com/LeopardSmartEA
+Replace: https://twitter.com/ThebenchmarkTraderEA
 ```
 
 3. Click **Replace All**
@@ -153,8 +153,8 @@ Tương tự Header, update 3 links:
 - Twitter (Dòng ~66)
 
 **YouTube & Telegram** đã được setup trước đó:
-- YouTube: `https://www.youtube.com/@LeopardSmartEA`
-- Telegram: `https://t.me/LeopardSmartSupport`
+- YouTube: `https://www.youtube.com/@ThebenchmarkTraderEA`
+- Telegram: `https://t.me/ThebenchmarkTraderSupport`
 
 ---
 
@@ -260,25 +260,25 @@ Thêm vào `app/layout.tsx` trong `<head>`:
 ### **Link Website trên Social Media:**
 
 #### **Facebook Page:**
-- **Website field:** https://leopardsmart.com
+- **Website field:** https://thebenchmarktrader.com
 - **About section:** Mô tả EA + link website
 - **Pinned post:** Video intro + link đến /live-results
 
 #### **Instagram Bio:**
 ```
-🤖 EA Forex LeopardSmart
+🤖 EA Forex ThebenchmarkTrader
 📊 Auto Trading | Risk Management
 ✅ 5+ Verified Accounts
 👇 Live Results & Copy Trading
-🔗 leopardsmart.com/live-results
+🔗 thebenchmarktrader.com/live-results
 ```
 
 #### **Twitter Bio:**
 ```
-EA Forex LeopardSmart 🤖 
+EA Forex ThebenchmarkTrader 🤖 
 Auto Trading with Smart Risk Management
 📊 Verified Results | Copy Trading Available
-🔗 leopardsmart.com
+🔗 thebenchmarktrader.com
 ```
 
 ---
@@ -338,11 +338,11 @@ Nếu có reviews tốt trên Facebook Page, có thể embed:
 
 ### **YouTube:**
 - [ ] ✅ Đã setup (từ integration trước)
-- [ ] Link: `@LeopardSmartEA`
+- [ ] Link: `@ThebenchmarkTraderEA`
 
 ### **Telegram:**
 - [ ] ✅ Đã setup
-- [ ] Link: `@LeopardSmartSupport`
+- [ ] Link: `@ThebenchmarkTraderSupport`
 
 ---
 
@@ -353,7 +353,7 @@ Nếu chưa có social media accounts, tạm thời:
 1. **Tạo Facebook Page nhanh** (3 phút):
    - Vào facebook.com/pages/create
    - Business/Brand → Financial Service
-   - Tên: EA Forex LeopardSmart
+   - Tên: EA Forex ThebenchmarkTrader
    - Skip các bước optional
    - Copy URL
 
@@ -397,7 +397,7 @@ Sau khi update, test:
 
 ### **Consistency:**
 - Dùng cùng **username** trên tất cả platforms nếu được
-- Ví dụ: `LeopardSmartEA` hoặc `leopardsmart`
+- Ví dụ: `ThebenchmarkTraderEA` hoặc `thebenchmarktrader`
 - Giúp branding và dễ tìm
 
 ### **Branding:**
@@ -434,8 +434,8 @@ Khi tạo/update social media:
 ```
 feat: add Facebook page integration
 
-- Created Facebook Page: LeopardSmartEA
-- URL: https://www.facebook.com/LeopardSmartEA
+- Created Facebook Page: ThebenchmarkTraderEA
+- URL: https://www.facebook.com/ThebenchmarkTraderEA
 - Updated Header.tsx (line 71)
 - Updated Footer.tsx (line 48)
 - Tested on Chrome, Firefox, Safari

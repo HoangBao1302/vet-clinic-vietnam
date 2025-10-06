@@ -24,7 +24,7 @@ export default function BanEAPage() {
                 Affiliate Bán EA - <span className="text-yellow-400">30%</span> Hoa Hồng
               </h1>
               <p className="text-xl text-blue-100 leading-relaxed mb-8">
-                Kiếm hoa hồng cao nhất với chương trình bán EA LeopardSmart. 
+                Kiếm hoa hồng cao nhất với chương trình bán EA ThebenchmarkTrader. 
                 Phù hợp cho trader có community, kênh Youtube, hoặc blog.
               </p>
               <div className="flex flex-wrap gap-4 justify-center">
@@ -225,7 +225,7 @@ export default function BanEAPage() {
                   3
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-gray-800 mb-2">Promote EA LeopardSmart</h3>
+                  <h3 className="text-xl font-bold text-gray-800 mb-2">Promote EA ThebenchmarkTrader</h3>
                   <p className="text-gray-600">
                     Share tracking link qua blog posts, Youtube videos, Facebook groups, email newsletters, etc. 
                     Sử dụng materials có sẵn hoặc tự sáng tạo content riêng.
@@ -289,7 +289,7 @@ export default function BanEAPage() {
                   ))}
                 </div>
                 <p className="text-gray-700 mb-4 italic">
-                  "Tôi viết blog về forex trading. Sau khi publish bài review EA LeopardSmart, 
+                  "Tôi viết blog về forex trading. Sau khi publish bài review EA ThebenchmarkTrader, 
                   mỗi tháng có 10-15 sales organic từ SEO. Thu nhập thụ động mà không cần làm gì thêm. 
                   Recommend!"
                 </p>

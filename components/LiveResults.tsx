@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const featuredAccounts = [
   {
-    name: "LeopardSmart Live #1",
+    name: "ThebenchmarkTrader Live #1",
     platform: "MQL5",
     broker: "Tickmill",
     gain: "+186%",
@@ -14,7 +14,7 @@ const featuredAccounts = [
     link: "https://www.mql5.com/en/signals/YOUR_SIGNAL_ID"
   },
   {
-    name: "EA LeopardSmart Pro",
+    name: "EA ThebenchmarkTrader Pro",
     platform: "Myfxbook",
     broker: "Tickmill",
     gain: "+215%",
@@ -23,7 +23,7 @@ const featuredAccounts = [
     link: "https://www.myfxbook.com/members/YOUR_USERNAME/YOUR_ACCOUNT_ID"
   },
   {
-    name: "LeopardSmart Strategy",
+    name: "ThebenchmarkTrader Strategy",
     platform: "Tickmill Social",
     broker: "Tickmill",
     gain: "+168%",

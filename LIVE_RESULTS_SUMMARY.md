@@ -264,8 +264,8 @@ npm run build      # Build production
 - **YouTube:** `YOUTUBE_LINKS.md`
 
 ### Contact:
-- Email: support@leopardsmart.com
-- Telegram: @LeopardSmartSupport
+- Email: support@thebenchmarktrader.com
+- Telegram: @ThebenchmarkTraderSupport
 
 ---
 

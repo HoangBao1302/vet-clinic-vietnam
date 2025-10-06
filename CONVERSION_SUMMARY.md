@@ -1,14 +1,14 @@
-# EA Forex LeopardSmart - Conversion Summary
+# EA Forex ThebenchmarkTrader - Conversion Summary
 
 ## 🎯 Conversion Overview
 
-Successfully converted the veterinary clinic landing page to a comprehensive EA Forex LeopardSmart landing page with all requested features.
+Successfully converted the veterinary clinic landing page to a comprehensive EA Forex ThebenchmarkTrader landing page with all requested features.
 
 ## ✅ Completed Tasks
 
 ### 1. Branding & Metadata (✓)
 - **Layout.tsx**: Updated metadata with EA Forex branding
-  - Title: "EA Forex LeopardSmart — Giao dịch tự động tối ưu rủi ro"
+  - Title: "EA Forex ThebenchmarkTrader — Giao dịch tự động tối ưu rủi ro"
   - Description: EA Forex features and benefits
   - Keywords: EA Forex, robot forex, expert advisor, MT4, MT5, copy trading
   - OpenGraph + Twitter meta tags with locale "vi_VN"
@@ -16,7 +16,7 @@ Successfully converted the veterinary clinic landing page to a comprehensive EA 
 
 ### 2. Homepage Transformation (✓)
 - **ForexHero.tsx**: New hero section with EA branding
-  - Title: "EA Forex LeopardSmart"
+  - Title: "EA Forex ThebenchmarkTrader"
   - Subtitle: "Tự động hóa giao dịch, kiểm soát rủi ro, tối ưu lợi nhuận"
   - CTA buttons: "Dùng thử demo" → `/pricing#demo`, "Mua ngay" → `/pricing#full`
   - Badges: MT4/MT5, Risk Control, Backtest-friendly
@@ -109,8 +109,8 @@ Successfully converted the veterinary clinic landing page to a comprehensive EA 
 
 ## 🌐 Contact Information Updated
 - **Phone**: +84 901 234 567
-- **Email**: support@leopardsmart.com
-- **Telegram**: @LeopardSmartSupport
+- **Email**: support@thebenchmarktrader.com
+- **Telegram**: @ThebenchmarkTraderSupport
 - **Support Hours**: Monday-Friday 9:00-18:00 (GMT+7)
 
 ## 📧 Environment Setup Required
@@ -118,9 +118,9 @@ Successfully converted the veterinary clinic landing page to a comprehensive EA 
 Create `.env.local` file:
 ```
 RESEND_API_KEY=your_resend_api_key_here
-RESEND_FROM=noreply@leopardsmart.com
-RESEND_TO=support@leopardsmart.com
-NEXT_PUBLIC_BASE_URL=https://leopardsmart.com
+RESEND_FROM=noreply@thebenchmarktrader.com
+RESEND_TO=support@thebenchmarktrader.com
+NEXT_PUBLIC_BASE_URL=https://thebenchmarktrader.com
 ```
 
 ## 🚀 Ready for Deployment
@@ -143,6 +143,6 @@ The project is fully converted and ready for:
 ---
 
 **Conversion completed successfully!** 🎉
-The EA Forex LeopardSmart landing page is now fully functional with all requested features.
+The EA Forex ThebenchmarkTrader landing page is now fully functional with all requested features.
 
 

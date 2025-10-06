@@ -18,7 +18,7 @@ export default function AboutPage() {
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div>
                 <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6">
-                  Về EA Forex LeopardSmart
+                  Về EA Forex ThebenchmarkTrader
                 </h1>
                 <p className="text-xl text-gray-600 mb-8">
                   Expert Advisor được thiết kế với triết lý minh bạch, quản trị rủi ro khoa học 
@@ -61,7 +61,7 @@ export default function AboutPage() {
                 Chiến lược giao dịch chi tiết
               </h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                EA LeopardSmart sử dụng kết hợp nhiều chiến lược được tối ưu hóa 
+                EA ThebenchmarkTrader sử dụng kết hợp nhiều chiến lược được tối ưu hóa 
                 để thích ứng với mọi điều kiện thị trường
               </p>
             </div>
@@ -199,7 +199,7 @@ export default function AboutPage() {
                   </div>
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
                     <a
-                      href="https://www.youtube.com/@LeopardSmartEA"
+                      href="https://www.youtube.com/@ThebenchmarkTraderEA"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center justify-center space-x-2 px-6 py-3 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors"
@@ -208,7 +208,7 @@ export default function AboutPage() {
                       <span>Xem Video Backtest</span>
                     </a>
                     <a
-                      href="https://www.youtube.com/@LeopardSmartEA/playlists"
+                      href="https://www.youtube.com/@ThebenchmarkTraderEA/playlists"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center justify-center space-x-2 px-6 py-3 bg-white border-2 border-blue-600 text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-colors"
@@ -297,7 +297,7 @@ export default function AboutPage() {
               <div className="mt-8 p-6 bg-white rounded-lg border border-red-200">
                 <p className="text-red-700 text-sm">
                   <strong>Tuyên bố miễn trừ trách nhiệm:</strong> 
-                  EA LeopardSmart là công cụ hỗ trợ giao dịch, không phải lời khuyên đầu tư. 
+                  EA ThebenchmarkTrader là công cụ hỗ trợ giao dịch, không phải lời khuyên đầu tư. 
                   Chúng tôi không chịu trách nhiệm về tổn thất phát sinh từ việc sử dụng EA. 
                   Hãy luôn thận trọng và quản lý rủi ro hợp lý.
                 </p>

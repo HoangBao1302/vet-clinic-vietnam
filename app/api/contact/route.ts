@@ -101,11 +101,11 @@ export async function POST(request: NextRequest) {
     const topicText = topicMap[topic] || topic;
 
     // Email HTML (đã escape)
-    const subject = `[EA LeopardSmart] ${topicText} - ${escapeHtml(name)}`;
+    const subject = `[EA ThebenchmarkTrader] ${topicText} - ${escapeHtml(name)}`;
     const html = `
       <div style="font-family:Arial,Helvetica,sans-serif;max-width:640px;margin:0 auto;line-height:1.6">
         <h2 style="color:#1e40af;border-bottom:2px solid #1e40af;padding-bottom:8px;margin:0 0 12px">
-          Yêu cầu mới từ website EA LeopardSmart
+          Yêu cầu mới từ website EA ThebenchmarkTrader
         </h2>
         <p><b>IP:</b> ${escapeHtml(ip)}</p>
         <div style="background:#f8fafc;padding:16px;border-radius:8px;margin:16px 0">
@@ -122,7 +122,7 @@ export async function POST(request: NextRequest) {
             : ""
         }
         <div style="margin-top:16px;padding-top:12px;border-top:1px solid #e5e7eb;color:#6b7280;font-size:12px">
-          <p>Email này được gửi từ form liên hệ trên website EA LeopardSmart</p>
+          <p>Email này được gửi từ form liên hệ trên website EA ThebenchmarkTrader</p>
           <p>Thời gian: ${escapeHtml(new Date().toLocaleString("vi-VN"))}</p>
         </div>
       </div>

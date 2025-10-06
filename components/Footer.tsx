@@ -37,7 +37,7 @@ export default function Footer() {
           {/* Logo and Description */}
           <div className="lg:col-span-1">
             <div className="text-2xl font-bold text-white mb-4">
-              EA Forex LeopardSmart
+              EA Forex ThebenchmarkTrader
             </div>
             <p className="text-gray-300 mb-6">
               Expert Advisor đa chiến lược với quản trị rủi ro khoa học. 
@@ -72,7 +72,7 @@ export default function Footer() {
                 <Twitter size={20} />
               </a>
               <a 
-                href="https://www.youtube.com/@LeopardSmartEA" 
+                href="https://www.youtube.com/@ThebenchmarkTraderEA" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-gray-300 hover:text-white transition-colors" 
@@ -81,7 +81,7 @@ export default function Footer() {
                 <Youtube size={20} />
               </a>
               <a 
-                href="https://t.me/LeopardSmartSupport" 
+                href="https://t.me/ThebenchmarkTraderSupport" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-gray-300 hover:text-white transition-colors" 
@@ -162,7 +162,7 @@ export default function Footer() {
             <ul className="space-y-2 text-gray-300">
               <li>
                 <a 
-                  href="https://www.youtube.com/@LeopardSmartEA" 
+                  href="https://www.youtube.com/@ThebenchmarkTraderEA" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="hover:text-white transition-colors inline-flex items-center gap-2"
@@ -173,7 +173,7 @@ export default function Footer() {
               </li>
               <li>
                 <a 
-                  href="https://www.youtube.com/@LeopardSmartEA/playlists" 
+                  href="https://www.youtube.com/@ThebenchmarkTraderEA/playlists" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="hover:text-white transition-colors"
@@ -183,7 +183,7 @@ export default function Footer() {
               </li>
               <li>
                 <a 
-                  href="https://www.youtube.com/@LeopardSmartEA/playlists" 
+                  href="https://www.youtube.com/@ThebenchmarkTraderEA/playlists" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="hover:text-white transition-colors"
@@ -208,12 +208,12 @@ export default function Footer() {
               
               <div className="flex items-center space-x-3">
                 <Mail className="w-5 h-5 text-gray-300" />
-                <span className="text-gray-300">support@leopardsmart.com</span>
+                <span className="text-gray-300">support@thebenchmarktrader.com</span>
               </div>
               
               <div className="flex items-center space-x-3">
                 <MessageCircle className="w-5 h-5 text-gray-300" />
-                <span className="text-gray-300">@LeopardSmartSupport</span>
+                <span className="text-gray-300">@ThebenchmarkTraderSupport</span>
               </div>
 
               <div className="mt-4 pt-4 border-t border-gray-700">
@@ -232,7 +232,7 @@ export default function Footer() {
         <div className="border-t border-gray-700 mt-8 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-300 text-sm">
-              © {new Date().getFullYear()} EA Forex LeopardSmart. Bảo lưu mọi quyền.
+              © {new Date().getFullYear()} EA Forex ThebenchmarkTrader. Bảo lưu mọi quyền.
             </p>
             <div className="flex space-x-6 mt-4 md:mt-0">
               <a href="#" className="text-gray-300 hover:text-white text-sm transition-colors">

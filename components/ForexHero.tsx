@@ -25,7 +25,7 @@ export default function ForexHero() {
           <div className="text-white space-y-8">
             <div className="animate-fade-in">
               <h1 className="text-5xl md:text-7xl font-bold mb-4 bg-gradient-to-r from-blue-200 to-white bg-clip-text text-transparent">
-                EA Forex LeopardSmart
+                EA Forex ThebenchmarkTrader
               </h1>
               <p className="text-xl md:text-2xl text-blue-100 leading-relaxed">
                 Tự động hóa giao dịch, kiểm soát rủi ro, tối ưu lợi nhuận

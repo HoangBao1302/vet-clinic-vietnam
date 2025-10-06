@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
     // Send email
     const emailResult = await sendEmail({
       to: user.email,
-      subject: 'Reset Mật Khẩu - EA Forex LeopardSmart',
+      subject: 'Reset Mật Khẩu - EA Forex ThebenchmarkTrader',
       html: getResetPasswordEmail(resetUrl, user.username),
     });
 

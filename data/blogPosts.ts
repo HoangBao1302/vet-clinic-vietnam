@@ -163,9 +163,9 @@ export const blogPosts: BlogPost[] = [
   // ============================================
   {
     id: "cach-doc-profit-factor-drawdown",
-    title: "Cách đọc Profit Factor & Drawdown của EA LeopardSmart",
+    title: "Cách đọc Profit Factor & Drawdown của EA ThebenchmarkTrader",
     excerpt: "Hướng dẫn chi tiết cách phân tích và đánh giá hiệu suất EA thông qua các chỉ số quan trọng như Profit Factor, Maximum Drawdown và Win Rate.",
-    author: "EA LeopardSmart Team",
+    author: "EA ThebenchmarkTrader Team",
     date: "2024-12-15",
     readTime: "8 phút đọc",
     category: "ea-leopard",
@@ -174,9 +174,9 @@ export const blogPosts: BlogPost[] = [
   },
   {
     id: "toi-uu-tham-so-ea-leopard",
-    title: "Tối ưu tham số EA LeopardSmart cho từng loại tài khoản",
+    title: "Tối ưu tham số EA ThebenchmarkTrader cho từng loại tài khoản",
     excerpt: "Hướng dẫn chi tiết cách điều chỉnh Risk%, Lot Size, Max Positions và các tham số khác của EA cho phù hợp với quy mô tài khoản từ $500 đến $50,000.",
-    author: "EA LeopardSmart Team",
+    author: "EA ThebenchmarkTrader Team",
     date: "2024-11-28",
     readTime: "12 phút đọc",
     category: "ea-leopard",
@@ -185,9 +185,9 @@ export const blogPosts: BlogPost[] = [
   },
   {
     id: "ea-leopard-vs-manual-trading",
-    title: "EA LeopardSmart vs Manual Trading: So sánh chi tiết",
+    title: "EA ThebenchmarkTrader vs Manual Trading: So sánh chi tiết",
     excerpt: "Phân tích ưu và nhược điểm của EA automation so với manual trading. Khi nào nên dùng EA, khi nào nên trade manually? Case studies thực tế.",
-    author: "EA LeopardSmart Team",
+    author: "EA ThebenchmarkTrader Team",
     date: "2024-12-11",
     readTime: "10 phút đọc",
     category: "ea-leopard",
@@ -196,9 +196,9 @@ export const blogPosts: BlogPost[] = [
   },
   {
     id: "cai-dat-ea-leopard-vps",
-    title: "Cài đặt EA LeopardSmart trên VPS: Hướng dẫn từ A-Z",
+    title: "Cài đặt EA ThebenchmarkTrader trên VPS: Hướng dẫn từ A-Z",
     excerpt: "Step-by-step guide chi tiết: chọn VPS, setup MT4/MT5, install EA, configure settings, monitoring và troubleshooting. Kèm video demo.",
-    author: "EA LeopardSmart Team",
+    author: "EA ThebenchmarkTrader Team",
     date: "2024-12-24",
     readTime: "15 phút đọc",
     category: "ea-leopard",
@@ -207,9 +207,9 @@ export const blogPosts: BlogPost[] = [
   },
   {
     id: "ea-leopard-multi-pair-strategy",
-    title: "Chiến lược Multi-Pair với EA LeopardSmart: Tối ưu đa cặp tiền",
+    title: "Chiến lược Multi-Pair với EA ThebenchmarkTrader: Tối ưu đa cặp tiền",
     excerpt: "Cách chạy EA trên nhiều cặp tiền (EURUSD, GBPUSD, USDJPY) để diversify risk. Correlation analysis, capital allocation và expected returns.",
-    author: "EA LeopardSmart Team",
+    author: "EA ThebenchmarkTrader Team",
     date: "2024-12-02",
     readTime: "14 phút đọc",
     category: "ea-leopard",
@@ -218,9 +218,9 @@ export const blogPosts: BlogPost[] = [
   },
   {
     id: "ea-leopard-update-v2-features",
-    title: "EA LeopardSmart v2.0: Những tính năng mới và cải tiến",
+    title: "EA ThebenchmarkTrader v2.0: Những tính năng mới và cải tiến",
     excerpt: "Changelog chi tiết phiên bản 2.0: AI-enhanced entry logic, adaptive trailing stop, news filter auto, multi-timeframe analysis và performance improvements.",
-    author: "EA LeopardSmart Team",
+    author: "EA ThebenchmarkTrader Team",
     date: "2024-12-30",
     readTime: "11 phút đọc",
     category: "ea-leopard",
@@ -250,8 +250,8 @@ export const categories = [
   },
   {
     id: "ea-leopard",
-    name: "EA LeopardSmart",
-    description: "Bài viết chuyên sâu về EA LeopardSmart",
+    name: "EA ThebenchmarkTrader",
+    description: "Bài viết chuyên sâu về EA ThebenchmarkTrader",
     icon: "🤖"
   }
 ];

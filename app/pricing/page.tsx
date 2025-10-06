@@ -147,10 +147,10 @@ export default function PricingPage() {
         ...prev, 
         topic,
         message: planId === 'demo' 
-          ? "Tôi muốn tải demo EA LeopardSmart để dùng thử trên tài khoản demo." 
+          ? "Tôi muốn tải demo EA ThebenchmarkTrader để dùng thử trên tài khoản demo." 
           : planId === 'full'
-          ? "Tôi quan tâm đến gói Full Version EA LeopardSmart."
-          : "Tôi quan tâm đến gói Pro + Source Code EA LeopardSmart."
+          ? "Tôi quan tâm đến gói Full Version EA ThebenchmarkTrader."
+          : "Tôi quan tâm đến gói Pro + Source Code EA ThebenchmarkTrader."
       }));
       
       // Scroll xuống form sau một chút để user thấy được update
@@ -306,7 +306,7 @@ export default function PricingPage() {
                   Hướng Dẫn Cài Đặt EA
                 </h2>
                 <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                  Xem video hướng dẫn chi tiết từng bước cài đặt EA LeopardSmart trên MT4/MT5, 
+                  Xem video hướng dẫn chi tiết từng bước cài đặt EA ThebenchmarkTrader trên MT4/MT5, 
                   cấu hình tham số và bắt đầu giao dịch
                 </p>
               </div>
@@ -346,7 +346,7 @@ export default function PricingPage() {
                   <span>Xem Video Hướng Dẫn Cài Đặt</span>
                 </a>
                 <a
-                  href="https://www.youtube.com/@LeopardSmartEA/playlists"
+                  href="https://www.youtube.com/@ThebenchmarkTraderEA/playlists"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center space-x-2 px-8 py-4 bg-white border-2 border-blue-600 text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-colors"
@@ -359,7 +359,7 @@ export default function PricingPage() {
               <div className="mt-8 p-4 bg-blue-50 rounded-lg border border-blue-200">
                 <p className="text-sm text-blue-800 text-center">
                   <strong>💡 Tip:</strong> Xem hết video trước khi cài đặt để hiểu rõ quy trình. 
-                  Nếu cần hỗ trợ, liên hệ qua Telegram @LeopardSmartSupport
+                  Nếu cần hỗ trợ, liên hệ qua Telegram @ThebenchmarkTraderSupport
                 </p>
               </div>
             </div>
@@ -374,7 +374,7 @@ export default function PricingPage() {
                 Câu hỏi thường gặp
               </h2>
               <p className="text-lg text-gray-600">
-                Giải đáp những thắc mắc phổ biến về EA LeopardSmart
+                Giải đáp những thắc mắc phổ biến về EA ThebenchmarkTrader
               </p>
             </div>
 
@@ -411,7 +411,7 @@ export default function PricingPage() {
                 Đăng ký hoặc đặt mua
               </h2>
               <p className="text-lg text-gray-600">
-                Điền form dưới đây để nhận demo hoặc đặt mua EA LeopardSmart
+                Điền form dưới đây để nhận demo hoặc đặt mua EA ThebenchmarkTrader
               </p>
             </div>
 

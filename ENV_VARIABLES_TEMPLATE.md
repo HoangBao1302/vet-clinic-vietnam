@@ -25,8 +25,8 @@ PAYPAL_MODE=sandbox
 # EMAIL (RESEND)
 # ============================================
 RESEND_API_KEY=re_xxxxxxxxxxxxx
-RESEND_FROM=downloads@leopardsmart.com
-RESEND_TO=support@leopardsmart.com
+RESEND_FROM=downloads@thebenchmarktrader.com
+RESEND_TO=support@thebenchmarktrader.com
 
 # ============================================
 # APP CONFIGURATION

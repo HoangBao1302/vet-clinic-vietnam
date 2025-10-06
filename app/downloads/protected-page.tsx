@@ -21,12 +21,12 @@ interface DownloadFile {
 const availableFiles: DownloadFile[] = [
   {
     id: 'ea-demo-1',
-    name: 'EA Forex LeopardSmart Demo',
+    name: 'EA Forex ThebenchmarkTrader Demo',
     type: 'ea-demo',
     description: 'Phiên bản demo với các tính năng cơ bản, giới hạn thời gian 30 ngày',
     fileSize: '2.5 MB',
     version: '1.0.0',
-    filePath: '/downloads/files/ea-leopardsmart-demo.ex4',
+    filePath: '/downloads/files/ea-thebenchmarktrader-demo.ex4',
     isPremium: false,
   },
   {

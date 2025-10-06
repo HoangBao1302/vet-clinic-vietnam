@@ -12,12 +12,12 @@ Upload your files here according to the download page configuration:
 ### **Free Indicators & EA:**
 - `SR-Indicator-Free.ex4` - Support/Resistance Indicator
 - `TrendLines-Free.ex4` - Auto Trend Lines
-- `LeopardSmart-Demo.ex4` - EA Demo version
+- `ThebenchmarkTrader-Demo.ex4` - EA Demo version
 
 ### **Paid Products:**
 - `Indicator-Pro-Pack.zip` - Multi-Indicator Pro Pack
-- `LeopardSmart-Full.ex4` - EA Full Version
-- `LeopardSmart-Pro-Source.zip` - EA Pro + Source Code
+- `ThebenchmarkTrader-Full.ex4` - EA Full Version
+- `ThebenchmarkTrader-Pro-Source.zip` - EA Pro + Source Code
 
 ## 📝 File Naming Rules
 

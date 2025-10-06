@@ -58,7 +58,7 @@ export default function ForexContact() {
             Liên hệ & Hỗ trợ
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Cần hỗ trợ về EA LeopardSmart? Chúng tôi luôn sẵn sàng giúp đỡ bạn
+            Cần hỗ trợ về EA ThebenchmarkTrader? Chúng tôi luôn sẵn sàng giúp đỡ bạn
           </p>
         </div>
 
@@ -185,7 +185,7 @@ export default function ForexContact() {
                   </div>
                   <div>
                     <h4 className="font-semibold text-gray-800 mb-1">Email hỗ trợ</h4>
-                    <p className="text-gray-600">support@leopardsmart.com</p>
+                    <p className="text-gray-600">support@thebenchmarktrader.com</p>
                     <p className="text-sm text-gray-500">Phản hồi trong vòng 24 giờ</p>
                   </div>
                 </div>
@@ -196,7 +196,7 @@ export default function ForexContact() {
                   </div>
                   <div>
                     <h4 className="font-semibold text-gray-800 mb-1">Telegram</h4>
-                    <p className="text-gray-600">@LeopardSmartSupport</p>
+                    <p className="text-gray-600">@ThebenchmarkTraderSupport</p>
                     <p className="text-sm text-gray-500">Chat trực tiếp với team hỗ trợ</p>
                   </div>
                 </div>

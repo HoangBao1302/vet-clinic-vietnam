@@ -22,7 +22,7 @@ const quickReplies: QuickReply[] = [
   {
     id: "1",
     text: "💰 Giá EA bao nhiêu?",
-    answer: "EA LeopardSmart có 3 gói:\n\n📦 Demo: Miễn phí (chỉ demo account)\n💎 Full Version: 7.900.000đ (3 tài khoản live)\n🚀 Pro + Source: 14.900.000đ (unlimited + source code)\n\nBạn quan tâm gói nào ạ?"
+    answer: "EA ThebenchmarkTrader có 3 gói:\n\n📦 Demo: Miễn phí (chỉ demo account)\n💎 Full Version: 7.900.000đ (3 tài khoản live)\n🚀 Pro + Source: 14.900.000đ (unlimited + source code)\n\nBạn quan tâm gói nào ạ?"
   },
   {
     id: "2",
@@ -33,7 +33,7 @@ const quickReplies: QuickReply[] = [
   {
     id: "3",
     text: "🤖 EA hoạt động như thế nào?",
-    answer: "EA LeopardSmart sử dụng:\n\n📈 Đa chiến lược: Trend + Range\n🛡️ Quản trị rủi ro: 1-2% per trade\n⏰ Time filter: Tránh news quan trọng\n📊 Multi-timeframe analysis\n\nEA tự động phân tích và đặt lệnh 24/7. Bạn muốn biết thêm về tính năng nào?"
+    answer: "EA ThebenchmarkTrader sử dụng:\n\n📈 Đa chiến lược: Trend + Range\n🛡️ Quản trị rủi ro: 1-2% per trade\n⏰ Time filter: Tránh news quan trọng\n📊 Multi-timeframe analysis\n\nEA tự động phân tích và đặt lệnh 24/7. Bạn muốn biết thêm về tính năng nào?"
   },
   {
     id: "4",
@@ -53,7 +53,7 @@ const quickReplies: QuickReply[] = [
   {
     id: "7",
     text: "❓ Câu hỏi khác",
-    answer: "Để được hỗ trợ tốt nhất, bạn có thể:\n\n📱 Chat Telegram: @LeopardSmartSupport\n📧 Email: support@leopardsmart.com\n📞 Hotline: +84 901 234 567\n\nTeam support sẽ trả lời trong vòng 1-2 giờ (T2-T6, 9h-18h). Bạn muốn liên hệ qua kênh nào?"
+    answer: "Để được hỗ trợ tốt nhất, bạn có thể:\n\n📱 Chat Telegram: @ThebenchmarkTraderSupport\n📧 Email: support@thebenchmarktrader.com\n📞 Hotline: +84 901 234 567\n\nTeam support sẽ trả lời trong vòng 1-2 giờ (T2-T6, 9h-18h). Bạn muốn liên hệ qua kênh nào?"
   }
 ];
 
@@ -68,7 +68,7 @@ export default function ChatWidget() {
       // Welcome message
       const welcomeMessage: Message = {
         id: "welcome",
-        text: "Xin chào! 👋\n\nTôi là trợ lý ảo của EA LeopardSmart. Tôi có thể giúp bạn:\n\n💰 Thông tin giá và gói EA\n📊 Xem kết quả thực tế\n🤖 Cách EA hoạt động\n🎯 Copy trading\n📥 Hướng dẫn mua/cài đặt\n\nBạn quan tâm điều gì?",
+        text: "Xin chào! 👋\n\nTôi là trợ lý ảo của EA ThebenchmarkTrader. Tôi có thể giúp bạn:\n\n💰 Thông tin giá và gói EA\n📊 Xem kết quả thực tế\n🤖 Cách EA hoạt động\n🎯 Copy trading\n📥 Hướng dẫn mua/cài đặt\n\nBạn quan tâm điều gì?",
         sender: "bot",
         timestamp: new Date(),
         options: quickReplies
@@ -111,7 +111,7 @@ export default function ChatWidget() {
       // Handle actions
       if (reply.action === "telegram") {
         setTimeout(() => {
-          window.open("https://t.me/LeopardSmartSupport", "_blank");
+          window.open("https://t.me/ThebenchmarkTraderSupport", "_blank");
         }, 1000);
       } else if (reply.action === "live-results") {
         setTimeout(() => {
@@ -143,7 +143,7 @@ export default function ChatWidget() {
     setTimeout(() => {
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: "Cảm ơn câu hỏi của bạn! 😊\n\nĐể được hỗ trợ chi tiết hơn, vui lòng liên hệ:\n\n📱 Telegram: @LeopardSmartSupport\n📧 Email: support@leopardsmart.com\n📞 Hotline: +84 901 234 567\n\nTeam sẽ trả lời trong 1-2 giờ!",
+        text: "Cảm ơn câu hỏi của bạn! 😊\n\nĐể được hỗ trợ chi tiết hơn, vui lòng liên hệ:\n\n📱 Telegram: @ThebenchmarkTraderSupport\n📧 Email: support@thebenchmarktrader.com\n📞 Hotline: +84 901 234 567\n\nTeam sẽ trả lời trong 1-2 giờ!",
         sender: "bot",
         timestamp: new Date(),
         options: [
@@ -173,9 +173,9 @@ export default function ChatWidget() {
 
   const handleContactAction = (action: string) => {
     if (action === "telegram") {
-      window.open("https://t.me/LeopardSmartSupport", "_blank");
+      window.open("https://t.me/ThebenchmarkTraderSupport", "_blank");
     } else if (action === "email") {
-      window.location.href = "mailto:support@leopardsmart.com?subject=Hỏi về EA LeopardSmart";
+      window.location.href = "mailto:support@thebenchmarktrader.com?subject=Hỏi về EA ThebenchmarkTrader";
     }
   };
 
@@ -212,7 +212,7 @@ export default function ChatWidget() {
                 <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-400 rounded-full border-2 border-white"></span>
               </div>
               <div>
-                <h3 className="font-bold">EA LeopardSmart</h3>
+                <h3 className="font-bold">EA ThebenchmarkTrader</h3>
                 <p className="text-xs text-blue-100">Trợ lý ảo • Online</p>
               </div>
             </div>

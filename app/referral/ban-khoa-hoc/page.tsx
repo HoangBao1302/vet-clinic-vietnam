@@ -92,7 +92,7 @@ export default function BanKhoaHocPage() {
                 </div>
                 <div className="p-6">
                   <ul className="space-y-2 text-sm text-gray-700 mb-6">
-                    <li>✓ Setup & optimize EA LeopardSmart</li>
+                    <li>✓ Setup & optimize EA ThebenchmarkTrader</li>
                     <li>✓ Advanced parameter tuning</li>
                     <li>✓ Portfolio management</li>
                     <li>✓ Live trading sessions</li>

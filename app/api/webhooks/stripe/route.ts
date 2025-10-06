@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
           
           await sendEmail({
             to: session.customer_email,
-            subject: "✅ Thanh toán thành công - Download EA LeopardSmart",
+            subject: "✅ Thanh toán thành công - Download EA ThebenchmarkTrader",
             html: `
               <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
                 <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px 20px; text-align: center;">
@@ -75,7 +75,7 @@ export async function POST(request: NextRequest) {
                   
                   <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0;">
                     <p><strong>Mã đơn hàng:</strong> ${session.id}</p>
-                    <p><strong>Sản phẩm:</strong> ${session.metadata?.productName || "EA LeopardSmart"}</p>
+                    <p><strong>Sản phẩm:</strong> ${session.metadata?.productName || "EA ThebenchmarkTrader"}</p>
                     <p><strong>Số tiền:</strong> ${(session.amount_total / 100).toLocaleString("vi-VN")}đ</p>
                   </div>
                   
@@ -98,14 +98,14 @@ export async function POST(request: NextRequest) {
                   
                   <h3>Cần hỗ trợ?</h3>
                   <ul style="list-style: none; padding: 0;">
-                    <li>📧 Email: support@leopardsmart.com</li>
-                    <li>📱 Telegram: @LeopardSmartSupport</li>
+                    <li>📧 Email: support@thebenchmarktrader.com</li>
+                    <li>📱 Telegram: @ThebenchmarkTraderSupport</li>
                     <li>📞 Hotline: +84 901 234 567</li>
                   </ul>
                 </div>
                 
                 <div style="text-align: center; padding: 20px; color: #6b7280; font-size: 14px;">
-                  <p>EA Forex LeopardSmart<br>© 2025 All rights reserved</p>
+                  <p>EA Forex ThebenchmarkTrader<br>© 2025 All rights reserved</p>
                 </div>
               </div>
             `,

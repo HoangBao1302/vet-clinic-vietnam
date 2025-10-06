@@ -1,4 +1,4 @@
-# Deployment Guide - EA Forex LeopardSmart Landing Page
+# Deployment Guide - EA Forex ThebenchmarkTrader Landing Page
 
 ## 🚀 GitHub Repository Setup
 
@@ -6,7 +6,7 @@
 
 1. **Create Repository**:
    - Go to [GitHub](https://github.com) and create a new repository
-   - Name: `ea-forex-leopardsmart` or `leopardsmart-landing`
+   - Name: `ea-forex-thebenchmarktrader` or `thebenchmarktrader-landing`
    - Set as Public (for free Vercel deployment)
    - Don't initialize with README (we already have one)
 
@@ -14,7 +14,7 @@
    ```bash
    git init
    git add .
-   git commit -m "Initial commit: EA Forex LeopardSmart landing page"
+   git commit -m "Initial commit: EA Forex ThebenchmarkTrader landing page"
    git branch -M main
    git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
    git push -u origin main
@@ -59,7 +59,7 @@ In Vercel dashboard:
 2. **DNS Configuration**: Point your domain to Vercel
 3. **Update Email Configuration**:
    - In `app/api/contact/route.ts`
-   - Change `from: "support@leopardsmart.com"`
+   - Change `from: "support@thebenchmarktrader.com"`
    - To `from: "support@yourdomain.com"`
 
 ## 📧 Resend Configuration
@@ -76,7 +76,7 @@ In `app/api/contact/route.ts`, update:
 ```typescript
 const { data, error } = await resend.emails.send({
   from: "support@yourdomain.com", // Your verified domain
-  to: ["support@leopardsmart.com"], // Your business email
+  to: ["support@thebenchmarktrader.com"], // Your business email
   // ... rest of configuration
 });
 ```

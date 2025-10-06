@@ -1,4 +1,4 @@
-# Test Forms EA LeopardSmart
+# Test Forms EA ThebenchmarkTrader
 
 ## 🔍 Tình trạng hiện tại:
 
@@ -18,8 +18,8 @@
 ```bash
 # Tạo file .env.local trong thư mục gốc dự án
 echo 'RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-RESEND_FROM=noreply@leopardsmart.com  
-RESEND_TO=support@leopardsmart.com
+RESEND_FROM=noreply@thebenchmarktrader.com  
+RESEND_TO=support@thebenchmarktrader.com
 NEXT_PUBLIC_BASE_URL=http://localhost:3002' > .env.local
 ```
 
@@ -38,7 +38,7 @@ npm run dev
 ## 📧 Thông báo lỗi thân thiện:
 
 Khi chưa cấu hình email, form sẽ hiển thị:
-> "Email chưa được cấu hình. Vui lòng liên hệ trực tiếp qua Telegram @LeopardSmartSupport hoặc email support@leopardsmart.com"
+> "Email chưa được cấu hình. Vui lòng liên hệ trực tiếp qua Telegram @ThebenchmarkTraderSupport hoặc email support@thebenchmarktrader.com"
 
 ## ✅ Sau khi cấu hình:
 

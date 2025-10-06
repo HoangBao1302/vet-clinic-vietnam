@@ -24,7 +24,7 @@ const downloads: DownloadItem[] = [
   // Section 1: Hướng dẫn PDF
   {
     id: "guide-installation",
-    name: "Hướng dẫn cài đặt EA LeopardSmart",
+    name: "Hướng dẫn cài đặt EA ThebenchmarkTrader",
     description: "PDF chi tiết từng bước cài đặt EA trên MT4/MT5, cấu hình tham số và troubleshooting",
     version: "v2.0",
     size: "5.2 MB",
@@ -76,13 +76,13 @@ const downloads: DownloadItem[] = [
   },
   {
     id: "ea-demo",
-    name: "EA LeopardSmart Demo (Free)",
+    name: "EA ThebenchmarkTrader Demo (Free)",
     description: "Phiên bản demo đầy đủ tính năng, chỉ chạy trên tài khoản demo. Không giới hạn thời gian.",
     version: "v2.0 Demo",
     size: "450 KB",
     type: "ea",
     free: true,
-    downloadUrl: "/downloads/files/LeopardSmart-Demo.ex4"
+    downloadUrl: "/downloads/files/ThebenchmarkTrader-Demo.ex4"
   },
 
   // Section 3: Paid Products
@@ -100,7 +100,7 @@ const downloads: DownloadItem[] = [
   },
   {
     id: "ea-full",
-    name: "EA LeopardSmart Full Version",
+    name: "EA ThebenchmarkTrader Full Version",
     description: "Phiên bản đầy đủ cho tài khoản thực. License 3 tài khoản, cập nhật miễn phí 1 năm.",
     version: "v2.0 Full",
     size: "680 KB",
@@ -108,11 +108,11 @@ const downloads: DownloadItem[] = [
     free: false,
     requiresPayment: true,
     price: 7900000,
-    downloadUrl: "/downloads/files/LeopardSmart-Full.ex4"
+    downloadUrl: "/downloads/files/ThebenchmarkTrader-Full.ex4"
   },
   {
     id: "ea-pro-source",
-    name: "EA LeopardSmart Pro + Source Code",
+    name: "EA ThebenchmarkTrader Pro + Source Code",
     description: "Phiên bản Pro với source code đầy đủ. Unlimited accounts, cập nhật trọn đời, hỗ trợ VIP.",
     version: "v2.0 Pro",
     size: "1.2 MB",
@@ -120,7 +120,7 @@ const downloads: DownloadItem[] = [
     free: false,
     requiresPayment: true,
     price: 14900000,
-    downloadUrl: "/downloads/files/LeopardSmart-Pro-Source.zip"
+    downloadUrl: "/downloads/files/ThebenchmarkTrader-Pro-Source.zip"
   }
 ];
 
@@ -464,7 +464,7 @@ export default function DownloadsPage() {
               <Link href="/pricing#contact" className="btn-primary">
                 Liên hệ hỗ trợ
               </Link>
-              <a href="https://t.me/LeopardSmartSupport" target="_blank" rel="noopener noreferrer" className="btn-secondary">
+              <a href="https://t.me/ThebenchmarkTraderSupport" target="_blank" rel="noopener noreferrer" className="btn-secondary">
                 Chat Telegram
               </a>
             </div>

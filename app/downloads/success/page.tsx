@@ -100,11 +100,11 @@ function SuccessContent() {
                 Cần hỗ trợ cài đặt? Team support sẵn sàng giúp đỡ:
               </p>
               <div className="flex flex-wrap gap-4 justify-center text-sm">
-                <a href="https://t.me/LeopardSmartSupport" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                <a href="https://t.me/ThebenchmarkTraderSupport" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
                   📱 Telegram
                 </a>
                 <span className="text-gray-300">•</span>
-                <a href="mailto:support@leopardsmart.com" className="text-blue-600 hover:underline">
+                <a href="mailto:support@thebenchmarktrader.com" className="text-blue-600 hover:underline">
                   📧 Email
                 </a>
                 <span className="text-gray-300">•</span>

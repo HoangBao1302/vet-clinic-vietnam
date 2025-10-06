@@ -49,7 +49,7 @@ export default function BlogPage() {
           name: "Newsletter Subscriber",
           email: newsletterEmail,
           topic: "support",
-          message: `Đăng ký nhận bài viết mới từ blog EA LeopardSmart.\n\nEmail: ${newsletterEmail}`,
+          message: `Đăng ký nhận bài viết mới từ blog EA ThebenchmarkTrader.\n\nEmail: ${newsletterEmail}`,
         }),
       });
 
@@ -77,7 +77,7 @@ export default function BlogPage() {
         <section className="py-20 bg-gradient-to-br from-blue-50 to-purple-50">
           <div className="container-custom text-center">
             <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6">
-              Blog EA LeopardSmart
+              Blog EA ThebenchmarkTrader
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
               Tin tức thị trường, kiến thức giao dịch và hướng dẫn chuyên sâu về EA
@@ -278,7 +278,7 @@ export default function BlogPage() {
             </h2>
             <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
               Nhận thông báo khi có bài viết mới về tin tức thị trường, 
-              kiến thức giao dịch và EA LeopardSmart
+              kiến thức giao dịch và EA ThebenchmarkTrader
             </p>
             
             <div className="max-w-md mx-auto">
