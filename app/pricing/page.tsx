@@ -336,24 +336,50 @@ export default function PricingPage() {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <a
-                  href="https://www.youtube.com/watch?v=INSTALLATION_VIDEO_ID"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button
+                  onClick={() => {
+                    try {
+                      // Primary URL
+                      const url = 'https://www.youtube.com/@ThebenchmarkTraderEA';
+                      const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
+                      
+                      // Fallback if popup blocked
+                      if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
+                        window.location.href = url;
+                      }
+                    } catch (error) {
+                      console.error('Error opening YouTube:', error);
+                      // Fallback to direct navigation
+                      window.location.href = 'https://www.youtube.com/@ThebenchmarkTraderEA';
+                    }
+                  }}
                   className="inline-flex items-center justify-center space-x-2 px-8 py-4 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors shadow-lg hover:shadow-xl"
                 >
                   <Youtube size={24} />
                   <span>Xem Video Hướng Dẫn Cài Đặt</span>
-                </a>
-                <a
-                  href="https://www.youtube.com/@ThebenchmarkTraderEA/playlists"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                </button>
+                <button
+                  onClick={() => {
+                    try {
+                      // Primary URL
+                      const url = 'https://www.youtube.com/@ThebenchmarkTraderEA/playlists';
+                      const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
+                      
+                      // Fallback if popup blocked
+                      if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
+                        window.location.href = url;
+                      }
+                    } catch (error) {
+                      console.error('Error opening YouTube playlists:', error);
+                      // Fallback to direct navigation
+                      window.location.href = 'https://www.youtube.com/@ThebenchmarkTraderEA/playlists';
+                    }
+                  }}
                   className="inline-flex items-center justify-center space-x-2 px-8 py-4 bg-white border-2 border-blue-600 text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-colors"
                 >
                   <PlayCircle size={24} />
                   <span>Xem Tất Cả Video Tutorial</span>
-                </a>
+                </button>
               </div>
 
               <div className="mt-8 p-4 bg-blue-50 rounded-lg border border-blue-200">
