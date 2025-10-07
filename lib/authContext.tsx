@@ -36,8 +36,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setToken(storedToken);
       setUser(JSON.parse(storedUser));
       
-      // Ensure token is also in cookies
-      document.cookie = `token=${storedToken}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Lax`;
+      // Ensure token is also in cookies with proper settings
+      document.cookie = `token=${storedToken}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Lax; Secure=${window.location.protocol === 'https:'}`;
     }
   }, []);
 
@@ -47,8 +47,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem('token', newToken);
     localStorage.setItem('user', JSON.stringify(newUser));
     
-    // Also save to cookies for middleware
-    document.cookie = `token=${newToken}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Lax`;
+    // Also save to cookies for middleware with proper settings
+    const isSecure = typeof window !== 'undefined' && window.location.protocol === 'https:';
+    document.cookie = `token=${newToken}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Lax${isSecure ? '; Secure' : ''}`;
   };
 
   const logout = () => {

@@ -52,8 +52,27 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Get request body for reading analytics
+    const body = await request.json();
+    const { postId, category, readTimeMinutes } = body;
+
     // Increment counter
     user.premiumPostsReadThisMonth += 1;
+    
+    // Update reading analytics
+    user.totalPostsRead = (user.totalPostsRead || 0) + 1;
+    user.readingTimeMinutes = (user.readingTimeMinutes || 0) + (readTimeMinutes || 5);
+    user.lastReadDate = new Date();
+    
+    // Update favorite categories
+    if (category) {
+      const currentCategories = user.favoriteCategories || [];
+      if (!currentCategories.includes(category)) {
+        currentCategories.push(category);
+      }
+      user.favoriteCategories = currentCategories.slice(0, 10); // Keep only top 10
+    }
+    
     await user.save();
 
     return NextResponse.json({
@@ -61,6 +80,8 @@ export async function POST(request: NextRequest) {
       tracked: true,
       premiumPostsReadThisMonth: user.premiumPostsReadThisMonth,
       remaining: Math.max(0, 3 - user.premiumPostsReadThisMonth),
+      totalPostsRead: user.totalPostsRead,
+      readingTimeMinutes: user.readingTimeMinutes,
     });
   } catch (error: any) {
     console.error('Track blog read error:', error);

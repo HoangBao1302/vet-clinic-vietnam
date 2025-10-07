@@ -21,6 +21,14 @@ export interface IUser extends mongoose.Document {
   purchasedProducts: string[];
   affiliateStatus?: 'none' | 'pending' | 'approved' | 'rejected';
   affiliateCode?: string;
+  totalPostsRead: number;
+  readingTimeMinutes: number;
+  favoriteCategories: string[];
+  lastReadDate?: Date;
+  newsletterSubscribed: boolean;
+  newsletterEmail?: string;
+  newsletterSubscribedAt?: Date;
+  newsletterUnsubscribedAt?: Date;
   createdAt: Date;
   updatedAt: Date;
   comparePassword(candidatePassword: string): Promise<boolean>;
@@ -108,6 +116,34 @@ const UserSchema = new Schema<IUser>(
       type: String,
       unique: true,
       sparse: true, // Allows null values to not be unique
+    },
+    totalPostsRead: {
+      type: Number,
+      default: 0,
+    },
+    readingTimeMinutes: {
+      type: Number,
+      default: 0,
+    },
+    favoriteCategories: {
+      type: [String],
+      default: [],
+    },
+    lastReadDate: {
+      type: Date,
+    },
+    newsletterSubscribed: {
+      type: Boolean,
+      default: false,
+    },
+    newsletterEmail: {
+      type: String,
+    },
+    newsletterSubscribedAt: {
+      type: Date,
+    },
+    newsletterUnsubscribedAt: {
+      type: Date,
     },
   },
   {

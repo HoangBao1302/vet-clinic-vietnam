@@ -1,11 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import StickyCallToAction from "@/components/StickyCallToAction";
 import { FileText, Download, Lock, CheckCircle, Gift, ShieldCheck, CreditCard } from "lucide-react";
 import Link from "next/link";
+import { useAuth } from "@/lib/authContext";
 
 interface DownloadItem {
   id: string;
@@ -125,17 +127,35 @@ const downloads: DownloadItem[] = [
 ];
 
 export default function DownloadsPage() {
+  const { user, isAuthenticated } = useAuth();
+  const router = useRouter();
   const [verifyingOrder, setVerifyingOrder] = useState<string | null>(null);
   const [orderCode, setOrderCode] = useState("");
   const [verifyMessage, setVerifyMessage] = useState("");
 
+  // Check authentication
+  useEffect(() => {
+    if (!isAuthenticated) {
+      router.push('/login?redirect=/downloads');
+    }
+  }, [isAuthenticated, router]);
+
+  // Show loading if not authenticated yet
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Đang kiểm tra quyền truy cập...</p>
+        </div>
+      </div>
+    );
+  }
+
   const handleFreeDownload = (item: DownloadItem) => {
-    // Check if user is logged in
-    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-    
-    if (!token) {
-      // Redirect to login if not authenticated
-      window.location.href = `/login?redirect=/downloads`;
+    // Check if user is authenticated
+    if (!isAuthenticated || !user) {
+      router.push('/login?redirect=/downloads');
       return;
     }
     

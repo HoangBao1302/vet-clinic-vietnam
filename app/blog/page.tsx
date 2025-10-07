@@ -4,6 +4,7 @@ import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import StickyCallToAction from "@/components/StickyCallToAction";
+import Newsletter from "@/components/Newsletter";
 import Link from "next/link";
 import Image from "next/image";
 import { Calendar, Clock, ArrowRight, TrendingUp, BarChart3, Shield, Newspaper, GraduationCap, Bot } from "lucide-react";
@@ -270,52 +271,8 @@ export default function BlogPage() {
           </div>
         </section>
 
-        {/* Newsletter Signup */}
-        <section className="py-20 bg-blue-600">
-          <div className="container-custom text-center">
-            <h2 className="text-3xl font-bold text-white mb-4">
-              Đăng ký nhận bài viết mới
-            </h2>
-            <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-              Nhận thông báo khi có bài viết mới về tin tức thị trường, 
-              kiến thức giao dịch và EA ThebenchmarkTrader
-            </p>
-            
-            <div className="max-w-md mx-auto">
-              <form onSubmit={handleNewsletterSubmit} className="mb-4">
-                <div className="flex">
-                  <input
-                    type="email"
-                    value={newsletterEmail}
-                    onChange={(e) => setNewsletterEmail(e.target.value)}
-                    placeholder="Nhập email của bạn"
-                    className="flex-1 px-4 py-3 rounded-l-lg border-0 focus:ring-2 focus:ring-blue-300"
-                    disabled={newsletterSubmitting}
-                  />
-                  <button 
-                    type="submit"
-                    disabled={newsletterSubmitting}
-                    className="bg-white text-blue-600 px-6 py-3 rounded-r-lg font-semibold hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {newsletterSubmitting ? "Đang gửi..." : "Đăng ký"}
-                  </button>
-                </div>
-              </form>
-              
-              {newsletterMessage && (
-                <div className={`text-sm mb-2 ${
-                  newsletterMessage.includes("✅") ? "text-green-200" : "text-red-200"
-                }`}>
-                  {newsletterMessage}
-                </div>
-              )}
-              
-              <p className="text-blue-100 text-sm">
-                Chúng tôi tôn trọng quyền riêng tư của bạn. Không spam.
-              </p>
-            </div>
-          </div>
-        </section>
+        {/* Newsletter Component */}
+        <Newsletter variant="hero" />
       </main>
 
       <Footer />

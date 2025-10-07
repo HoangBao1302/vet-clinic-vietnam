@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Facebook, Instagram, Twitter, Phone, Mail, MessageCircle, Youtube } from "lucide-react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
+import Newsletter from "./Newsletter";
 
 export default function Footer() {
   const [isClient, setIsClient] = useState(false);
@@ -226,6 +227,9 @@ export default function Footer() {
               </div>
             </div>
           </div>
+
+          {/* Newsletter */}
+          <Newsletter variant="footer" />
         </div>
 
         {/* Bottom Bar */}
