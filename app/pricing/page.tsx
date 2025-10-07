@@ -337,7 +337,7 @@ export default function PricingPage() {
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a
-                  href="https://www.youtube.com/watch?v=RJ9s0VO0b5U"
+                  href="https://www.youtube.com/watch?v=Ld_k8T_UQPc&list=PLeTOW6sILCDjZAV7VKoILaxKe6-OOnjNp"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center space-x-2 px-8 py-4 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors shadow-lg hover:shadow-xl"
