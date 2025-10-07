@@ -9,6 +9,15 @@ export const metadata: Metadata = {
   description: "EA Forex đa chiến lược (trend + range), quản trị rủi ro, báo cáo minh bạch. Dùng thử demo hoặc mua bản đầy đủ.",
   keywords: "EA Forex, robot forex, expert advisor, MT4, MT5, copy trading",
   authors: [{ name: "EA Forex ThebenchmarkTrader" }],
+  icons: {
+    icon: [
+      { url: '/64.svg', sizes: '64x64', type: 'image/svg+xml' },
+      { url: '/128.svg', sizes: '128x128', type: 'image/svg+xml' }
+    ],
+    apple: [
+      { url: '/512-512.svg', sizes: '512x512', type: 'image/svg+xml' }
+    ],
+  },
   openGraph: {
     title: "EA Forex ThebenchmarkTrader — Giao dịch tự động tối ưu rủi ro",
     description: "EA Forex đa chiến lược (trend + range), quản trị rủi ro, báo cáo minh bạch. Dùng thử demo hoặc mua bản đầy đủ.",

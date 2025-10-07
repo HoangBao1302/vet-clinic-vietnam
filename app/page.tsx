@@ -3,6 +3,7 @@
 import Header from "@/components/Header";
 import ForexHero from "@/components/ForexHero";
 import Features from "@/components/Features";
+import SloganBanner from "@/components/SloganBanner";
 import Strategy from "@/components/Strategy";
 import Proof from "@/components/Proof";
 import LiveResults from "@/components/LiveResults";
@@ -16,6 +17,7 @@ export default function Home() {
       <main>
         <ForexHero />
         <Features />
+        <SloganBanner />
         <Strategy />
         <Proof />
         <LiveResults />

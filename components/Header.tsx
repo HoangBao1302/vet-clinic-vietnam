@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Facebook, Instagram, Twitter, Menu, X, Phone, Mail, ChevronDown, LogIn, User, LogOut } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
 import { useAuth } from "@/lib/authContext";
 
@@ -128,8 +129,18 @@ export default function Header() {
       <div className="container-custom">
         <div className="flex justify-between items-center py-4">
           {/* Logo */}
-          <Link href="/" className="text-2xl font-bold text-primary-600 hover:text-primary-700 transition-colors">
-            EA Forex ThebenchmarkTrader
+          <Link href="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
+            <Image 
+              src="/800_800.svg" 
+              alt="EA Forex ThebenchmarkTrader" 
+              width={50} 
+              height={50}
+              className="h-12 w-auto"
+              priority
+            />
+            <span className="text-xl font-bold text-primary-600 hidden sm:block">
+              EA Forex ThebenchmarkTrader
+            </span>
           </Link>
 
           {/* Desktop Navigation */}
