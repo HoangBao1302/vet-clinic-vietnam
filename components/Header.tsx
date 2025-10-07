@@ -129,18 +129,15 @@ export default function Header() {
       <div className="container-custom">
         <div className="flex justify-between items-center py-4">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
+          <Link href="/" className="flex items-center hover:opacity-80 transition-opacity">
             <Image 
-              src="/800_800.svg" 
+              src="/BenchHeaderLogo.svg" 
               alt="EA Forex ThebenchmarkTrader" 
-              width={50} 
-              height={50}
-              className="h-12 w-auto"
+              width={200} 
+              height={60}
+              className="h-10 sm:h-12 md:h-14 w-auto"
               priority
             />
-            <span className="text-xl font-bold text-primary-600 hidden sm:block">
-              EA Forex ThebenchmarkTrader
-            </span>
           </Link>
 
           {/* Desktop Navigation */}

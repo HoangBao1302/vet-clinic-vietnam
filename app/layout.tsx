@@ -11,12 +11,14 @@ export const metadata: Metadata = {
   authors: [{ name: "EA Forex ThebenchmarkTrader" }],
   icons: {
     icon: [
-      { url: '/64.svg', sizes: '64x64', type: 'image/svg+xml' },
-      { url: '/128.svg', sizes: '128x128', type: 'image/svg+xml' }
+      { url: '/favicon.svg', sizes: 'any', type: 'image/svg+xml' },
+      { url: '/favicon.svg', sizes: '32x32', type: 'image/svg+xml' },
+      { url: '/favicon.svg', sizes: '16x16', type: 'image/svg+xml' }
     ],
     apple: [
-      { url: '/512-512.svg', sizes: '512x512', type: 'image/svg+xml' }
+      { url: '/favicon.svg', sizes: '180x180', type: 'image/svg+xml' }
     ],
+    shortcut: '/favicon.svg'
   },
   openGraph: {
     title: "EA Forex ThebenchmarkTrader — Giao dịch tự động tối ưu rủi ro",
