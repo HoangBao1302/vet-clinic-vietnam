@@ -339,8 +339,8 @@ export default function PricingPage() {
                 <button
                   onClick={() => {
                     try {
-                      // Primary URL
-                      const url = 'https://www.youtube.com/@ThebenchmarkTraderEA';
+                      // Primary URL - use the specific video link from remote
+                      const url = 'https://www.youtube.com/watch?v=Ld_k8T_UQPc&list=PLeTOW6sILCDjZAV7VKoILaxKe6-OOnjNp';
                       const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
                       
                       // Fallback if popup blocked
@@ -350,7 +350,7 @@ export default function PricingPage() {
                     } catch (error) {
                       console.error('Error opening YouTube:', error);
                       // Fallback to direct navigation
-                      window.location.href = 'https://www.youtube.com/@ThebenchmarkTraderEA';
+                      window.location.href = 'https://www.youtube.com/watch?v=Ld_k8T_UQPc&list=PLeTOW6sILCDjZAV7VKoILaxKe6-OOnjNp';
                     }
                   }}
                   className="inline-flex items-center justify-center space-x-2 px-8 py-4 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors shadow-lg hover:shadow-xl"
