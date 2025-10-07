@@ -133,24 +133,33 @@ export default function DownloadsPage() {
   const [orderCode, setOrderCode] = useState("");
   const [verifyMessage, setVerifyMessage] = useState("");
 
-  // Check authentication with delay to allow AuthContext to initialize
+  // Check authentication with mobile-friendly delay
   useEffect(() => {
     const checkAuth = () => {
       const token = localStorage.getItem('token');
       const user = localStorage.getItem('user');
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
       
       if (!token || !user) {
         router.push('/login?redirect=/downloads');
         return;
       }
       
-      // If we have token but AuthContext not ready yet, wait a bit
+      // For mobile, wait longer for AuthContext to initialize
       if (!isAuthenticated) {
-        setTimeout(checkAuth, 500);
+        const delay = isMobile ? 1000 : 500;
+        console.log('Auth not ready, retrying in:', delay, 'ms');
+        setTimeout(checkAuth, delay);
+      } else {
+        console.log('Authentication successful');
       }
     };
     
-    checkAuth();
+    // Initial check with mobile-specific delay
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    const initialDelay = isMobile ? 300 : 100;
+    
+    setTimeout(checkAuth, initialDelay);
   }, [isAuthenticated, router]);
 
   // Show loading if not authenticated yet

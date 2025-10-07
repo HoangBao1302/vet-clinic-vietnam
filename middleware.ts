@@ -33,11 +33,16 @@ export function middleware(request: NextRequest) {
 
   // Debug logging for downloads route
   if (pathname === '/downloads') {
+    const userAgent = request.headers.get('user-agent') || '';
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
+    
     console.log('Downloads middleware check:', {
       pathname,
       hasToken: !!token,
       tokenLength: token?.length || 0,
-      cookies: request.cookies.getAll().map(c => c.name)
+      cookies: request.cookies.getAll().map(c => c.name),
+      isMobile,
+      userAgent: userAgent.substring(0, 50)
     });
   }
 
