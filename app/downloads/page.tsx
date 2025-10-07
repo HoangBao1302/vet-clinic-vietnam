@@ -133,11 +133,24 @@ export default function DownloadsPage() {
   const [orderCode, setOrderCode] = useState("");
   const [verifyMessage, setVerifyMessage] = useState("");
 
-  // Check authentication
+  // Check authentication with delay to allow AuthContext to initialize
   useEffect(() => {
-    if (!isAuthenticated) {
-      router.push('/login?redirect=/downloads');
-    }
+    const checkAuth = () => {
+      const token = localStorage.getItem('token');
+      const user = localStorage.getItem('user');
+      
+      if (!token || !user) {
+        router.push('/login?redirect=/downloads');
+        return;
+      }
+      
+      // If we have token but AuthContext not ready yet, wait a bit
+      if (!isAuthenticated) {
+        setTimeout(checkAuth, 500);
+      }
+    };
+    
+    checkAuth();
   }, [isAuthenticated, router]);
 
   // Show loading if not authenticated yet

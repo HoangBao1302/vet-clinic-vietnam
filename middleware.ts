@@ -31,8 +31,19 @@ export function middleware(request: NextRequest) {
   const isPaidOnlyRoute = paidOnlyRoutes.some(route => pathname.startsWith(route));
   const isAdminOnlyRoute = adminOnlyRoutes.some(route => pathname.startsWith(route));
 
+  // Debug logging for downloads route
+  if (pathname === '/downloads') {
+    console.log('Downloads middleware check:', {
+      pathname,
+      hasToken: !!token,
+      tokenLength: token?.length || 0,
+      cookies: request.cookies.getAll().map(c => c.name)
+    });
+  }
+
   // Redirect to login if accessing protected route without token
   if ((isProtectedRoute || isPaidOnlyRoute || isAdminOnlyRoute) && !token) {
+    console.log('Redirecting to login:', { pathname, hasToken: !!token });
     const loginUrl = new URL('/login', request.url);
     loginUrl.searchParams.set('redirect', pathname);
     return NextResponse.redirect(loginUrl);

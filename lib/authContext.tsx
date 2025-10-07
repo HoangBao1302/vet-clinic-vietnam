@@ -36,8 +36,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setToken(storedToken);
       setUser(JSON.parse(storedUser));
       
-      // Ensure token is also in cookies with proper settings
-      document.cookie = `token=${storedToken}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Lax; Secure=${window.location.protocol === 'https:'}`;
+      // Ensure token is also in cookies with proper settings - IMMEDIATELY
+      const isSecure = window.location.protocol === 'https:';
+      document.cookie = `token=${storedToken}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Lax${isSecure ? '; Secure' : ''}`;
+      
+      // Also try to set cookie without secure flag for HTTP
+      if (!isSecure) {
+        document.cookie = `token=${storedToken}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Lax`;
+      }
     }
   }, []);
 
@@ -47,9 +53,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem('token', newToken);
     localStorage.setItem('user', JSON.stringify(newUser));
     
-    // Also save to cookies for middleware with proper settings
+    // Also save to cookies for middleware with proper settings - IMMEDIATELY
     const isSecure = typeof window !== 'undefined' && window.location.protocol === 'https:';
     document.cookie = `token=${newToken}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Lax${isSecure ? '; Secure' : ''}`;
+    
+    // Also try to set cookie without secure flag for HTTP compatibility
+    if (!isSecure) {
+      document.cookie = `token=${newToken}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Lax`;
+    }
+    
+    // Force a small delay to ensure cookie is set before any redirects
+    setTimeout(() => {
+      // This ensures cookie is definitely set
+      const cookieCheck = document.cookie.includes('token=');
+      if (!cookieCheck) {
+        console.warn('Cookie not set properly, retrying...');
+        document.cookie = `token=${newToken}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Lax`;
+      }
+    }, 100);
   };
 
   const logout = () => {
@@ -58,8 +79,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     
-    // Also remove from cookies
-    document.cookie = 'token=; path=/; max-age=0';
+    // Clear cookies completely
+    document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax';
+    document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax; Secure';
   };
 
   const value = {
