@@ -3,11 +3,14 @@ import nodemailer from 'nodemailer';
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST || 'smtp.gmail.com',
   port: parseInt(process.env.SMTP_PORT || '587'),
-  secure: false,
+  secure: false, // true for 465, false for other ports
   auth: {
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASS,
   },
+  tls: {
+    rejectUnauthorized: false
+  }
 });
 
 export interface SendEmailOptions {
@@ -18,6 +21,14 @@ export interface SendEmailOptions {
 
 export async function sendEmail({ to, subject, html }: SendEmailOptions) {
   try {
+    // Debug logging
+    console.log('📧 Attempting to send email...');
+    console.log('📧 SMTP_USER:', process.env.SMTP_USER);
+    console.log('📧 SMTP_HOST:', process.env.SMTP_HOST);
+    console.log('📧 SMTP_PORT:', process.env.SMTP_PORT);
+    console.log('📧 To:', to);
+    console.log('📧 From:', process.env.SMTP_USER);
+    
     const info = await transporter.sendMail({
       from: `"EA Forex ThebenchmarkTrader" <${process.env.SMTP_USER}>`,
       to,
@@ -25,10 +36,12 @@ export async function sendEmail({ to, subject, html }: SendEmailOptions) {
       html,
     });
 
-    console.log('✅ Email sent:', info.messageId);
+    console.log('✅ Email sent successfully:', info.messageId);
     return { success: true, messageId: info.messageId };
   } catch (error) {
     console.error('❌ Error sending email:', error);
+    console.error('❌ SMTP_USER:', process.env.SMTP_USER);
+    console.error('❌ SMTP_PASS length:', process.env.SMTP_PASS?.length);
     return { success: false, error };
   }
 }
