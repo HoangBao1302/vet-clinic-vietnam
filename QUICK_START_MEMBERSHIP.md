@@ -91,7 +91,7 @@ JWT_SECRET=658082374187e11eefd47af2572b79e6259c4a7914d14f22a15403ade4c9ddbb
 NEXT_PUBLIC_SITE_URL=https://your-domain.vercel.app
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
-SMTP_USER=your@gmail.com
+SMTP_USER=support@ThebenchmarkTrader.com
 SMTP_PASS=your-16-char-app-password
 ```
 
