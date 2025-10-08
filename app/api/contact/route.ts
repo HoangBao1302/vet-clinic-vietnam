@@ -130,7 +130,7 @@ export async function POST(request: NextRequest) {
 
     // Send email using Nodemailer (same as auth system)
     const emailResult = await sendEmail({
-      to: process.env.SMTP_USER || 'support@ThebenchmarkTrader.com',
+      to: process.env.SMTP_FROM || 'support@ThebenchmarkTrader.com',
       subject,
       html,
     });

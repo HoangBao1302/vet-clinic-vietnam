@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
 
     // Send email using Nodemailer
     const emailResult = await sendEmail({
-      to: process.env.SMTP_USER || 'support@ThebenchmarkTrader.com',
+      to: process.env.SMTP_FROM || 'support@ThebenchmarkTrader.com',
       subject: `Yêu cầu đặt lịch hẹn mới từ ${name}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
