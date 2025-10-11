@@ -58,12 +58,23 @@ export async function POST(request: NextRequest) {
       role: user.role,
     });
 
-    // Send welcome email (don't wait for it)
-    sendEmail({
-      to: user.email,
-      subject: 'Chào mừng đến với EA Forex ThebenchmarkTrader!',
-      html: getWelcomeEmail(user.username),
-    }).catch((error) => console.error('Error sending welcome email:', error));
+    // Send welcome email (use same config as forgot-password)
+    try {
+      const emailResult = await sendEmail({
+        to: user.email,
+        subject: 'Chào mừng đến với EA Forex ThebenchmarkTrader!',
+        html: getWelcomeEmail(user.username),
+      });
+
+      if (emailResult.success) {
+        console.log('✅ Welcome email sent successfully to:', user.email);
+      } else {
+        console.error('⚠️ Welcome email failed to send to:', user.email);
+      }
+    } catch (emailError) {
+      console.error('❌ Error sending welcome email:', emailError);
+      // Continue even if email fails - user is already registered
+    }
 
     return NextResponse.json(
       {
