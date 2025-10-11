@@ -117,7 +117,7 @@ export function getWelcomeEmail(username: string) {
             <li>✅ Download EA Demo miễn phí</li>
           </ul>
           <center>
-            <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'https://vet-clinic-vietnam.vercel.app'}/profile" class="button">Xem Tài Khoản Của Bạn</a>
+            <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'https://ThebenchmarkTrader.com'}/profile" class="button">Xem Tài Khoản Của Bạn</a>
           </center>
           <p>Nếu bạn có bất kỳ câu hỏi nào, đừng ngần ngại liên hệ với chúng tôi!</p>
         </div>
@@ -177,7 +177,7 @@ export function getAffiliateApprovalEmail(username: string, affiliateCode: strin
           </ol>
 
           <center>
-            <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'https://vet-clinic-vietnam.vercel.app'}/profile" class="button">Xem Dashboard</a>
+            <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'https://ThebenchmarkTrader.com'}/profile" class="button">Xem Dashboard</a>
           </center>
 
           <p><strong>Lưu ý:</strong> Hoa hồng sẽ được thanh toán vào cuối mỗi tháng qua chuyển khoản ngân hàng.</p>
@@ -226,7 +226,7 @@ export function getAffiliateRejectionEmail(username: string, reason?: string) {
           </ul>
 
           <center>
-            <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'https://vet-clinic-vietnam.vercel.app'}/referral" class="button">Tìm Hiểu Thêm</a>
+            <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'https://ThebenchmarkTrader.com'}/referral" class="button">Tìm Hiểu Thêm</a>
           </center>
 
           <p>Nếu có thắc mắc, vui lòng liên hệ support@thebenchmarktrader.com</p>
@@ -288,7 +288,7 @@ export function getMembershipUpgradeEmail(username: string) {
           </div>
 
           <center>
-            <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'https://vet-clinic-vietnam.vercel.app'}/profile" class="button">Khám Phá Ngay</a>
+            <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'https://ThebenchmarkTrader.com'}/profile" class="button">Khám Phá Ngay</a>
           </center>
 
           <p>Cảm ơn bạn đã tin tưởng EA Forex ThebenchmarkTrader!</p>

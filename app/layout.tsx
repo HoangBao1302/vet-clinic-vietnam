@@ -4,7 +4,7 @@ import ChatWidget from "@/components/ChatWidget";
 import { AuthProvider } from "@/lib/authContext";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://your-domain.vercel.app'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://ThebenchmarkTrader.com'),
   title: "EA Forex ThebenchmarkTrader — Giao dịch tự động tối ưu rủi ro",
   description: "EA Forex đa chiến lược (trend + range), quản trị rủi ro, báo cáo minh bạch. Dùng thử demo hoặc mua bản đầy đủ.",
   keywords: "EA Forex, robot forex, expert advisor, MT4, MT5, copy trading",
