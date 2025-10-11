@@ -84,7 +84,7 @@ export default function Header() {
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-1">
                 <Phone size={14} />
-                <span>+84 901 234 567</span>
+                <span>+84 765 452 515</span>
               </div>
               <div className="flex items-center space-x-1">
                 <Mail size={14} />
@@ -94,7 +94,7 @@ export default function Header() {
             </div>
             <div className="flex items-center space-x-3">
               <a 
-                href="https://www.facebook.com/YOUR_PAGE_NAME" 
+                href="https://www.facebook.com/Thebenchmarktrader/about" 
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-accent-100 transition-colors"

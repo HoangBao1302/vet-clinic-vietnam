@@ -108,9 +108,10 @@ Successfully converted the veterinary clinic landing page to a comprehensive EA 
 - **Accessibility**: Proper ARIA labels and alt texts
 
 ## 🌐 Contact Information Updated
-- **Phone**: +84 901 234 567
+- **Phone**: +84 765 452 515
 - **Email**: support@thebenchmarktrader.com
-- **Telegram**: @ThebenchmarkTraderSupport
+- **Telegram Channel**: https://t.me/thebenchmarktrader
+- **Telegram Support Group**: https://t.me/+0ETUdIuYUzdhZWQ1
 - **Support Hours**: Monday-Friday 9:00-18:00 (GMT+7)
 
 ## 📧 Environment Setup Required

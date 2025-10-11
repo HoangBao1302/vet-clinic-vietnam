@@ -206,7 +206,8 @@ git push
 ### **Get Support:**
 - 📚 Read relevant .md file
 - 📧 Email: support@thebenchmarktrader.com
-- 💬 Telegram: @ThebenchmarkTraderSupport
+- 💬 Telegram Channel: @thebenchmarktrader
+- 💬 Telegram Support: t.me/+0ETUdIuYUzdhZWQ1
 
 ---
 

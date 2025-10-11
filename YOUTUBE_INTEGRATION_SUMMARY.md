@@ -262,7 +262,8 @@ Sau khi cập nhật link thực tế, test các điểm sau:
 Nếu cần hỗ trợ:
 - File documentation chi tiết: `YOUTUBE_LINKS.md`
 - Contact: support@thebenchmarktrader.com
-- Telegram: @ThebenchmarkTraderSupport
+- Telegram Channel: @thebenchmarktrader
+- Telegram Support: t.me/+0ETUdIuYUzdhZWQ1
 
 ---
 

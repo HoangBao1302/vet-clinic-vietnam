@@ -130,7 +130,7 @@ if (reply.action === "your-action") {
 
 **Telegram:**
 ```
-https://t.me/ThebenchmarkTraderSupport
+https://t.me/+0ETUdIuYUzdhZWQ1
 ```
 
 **Email:**
@@ -140,7 +140,7 @@ support@thebenchmarktrader.com
 
 **Hotline:**
 ```
-+84 901 234 567
++84 765 452 515
 ```
 
 ### **Cập Nhật Links:**
@@ -150,7 +150,7 @@ Trong `ChatWidget.tsx`, tìm và thay đổi:
 #### **Telegram Link (nhiều chỗ):**
 ```typescript
 // Line ~88, ~260, ~344
-window.open("https://t.me/YOUR_TELEGRAM", "_blank");
+window.open("https://t.me/+0ETUdIuYUzdhZWQ1", "_blank"); // Support Group
 ```
 
 #### **Email:**
@@ -289,7 +289,7 @@ Nếu muốn chat real-time với nhân viên, có thể tích hợp:
 
 // Trong handleQuickReply:
 if (reply.action === "whatsapp") {
-  window.open("https://wa.me/84901234567?text=Xin chào, tôi muốn hỏi về EA ThebenchmarkTrader", "_blank");
+  window.open("https://wa.me/84765452515?text=Xin chào, tôi muốn hỏi về EA ThebenchmarkTrader", "_blank");
 }
 ```
 
@@ -539,10 +539,10 @@ Create a config file `config/chat.ts`:
 
 ```typescript
 export const chatConfig = {
-  telegram: "https://t.me/ThebenchmarkTraderSupport",
+  telegram: "https://t.me/+0ETUdIuYUzdhZWQ1",
   email: "support@thebenchmarktrader.com",
-  hotline: "+84 901 234 567",
-  whatsapp: "84901234567",
+  hotline: "+84 765 452 515",
+  whatsapp: "84765452515",
   zaloOA: "YOUR_OA_ID",
   workingHours: "T2-T6, 9h-18h (GMT+7)"
 };

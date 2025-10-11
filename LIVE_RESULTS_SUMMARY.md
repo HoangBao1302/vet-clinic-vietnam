@@ -265,7 +265,8 @@ npm run build      # Build production
 
 ### Contact:
 - Email: support@thebenchmarktrader.com
-- Telegram: @ThebenchmarkTraderSupport
+- Telegram Channel: @thebenchmarktrader
+- Telegram Support: t.me/+0ETUdIuYUzdhZWQ1
 
 ---
 

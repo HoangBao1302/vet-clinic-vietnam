@@ -32,7 +32,7 @@ Tất cả các nút Facebook đã được cấu hình để:
 3. Nhập username ngắn: `ThebenchmarkTraderEA` hoặc `thebenchmarktrader`
 4. Check availability → Save
 
-**Result:** URL đẹp hơn `https://www.facebook.com/ThebenchmarkTraderEA`
+**Result:** URL đẹp hơn `https://www.facebook.com/Thebenchmarktrader/about`
 
 ---
 
@@ -57,16 +57,16 @@ Click **Replace All**
 
 **File:** `components/Header.tsx` (Dòng 71)
 ```tsx
-href="https://www.facebook.com/YOUR_PAGE_NAME"
+href="https://www.facebook.com/Thebenchmarktrader/about"
      ↓ Thay bằng
-href="https://www.facebook.com/ThebenchmarkTraderEA"
+href="https://www.facebook.com/Thebenchmarktrader/about"
 ```
 
 **File:** `components/Footer.tsx` (Dòng 48)
 ```tsx
-href="https://www.facebook.com/YOUR_PAGE_NAME"
+href="https://www.facebook.com/Thebenchmarktrader/about"
      ↓ Thay bằng
-href="https://www.facebook.com/ThebenchmarkTraderEA"
+href="https://www.facebook.com/Thebenchmarktrader/about"
 ```
 
 ---
@@ -92,7 +92,7 @@ Các format URL hợp lệ:
 
 ✅ **Username-based (Best):**
 ```
-https://www.facebook.com/ThebenchmarkTraderEA
+https://www.facebook.com/Thebenchmarktrader/about
 ```
 
 ✅ **Page ID-based:**

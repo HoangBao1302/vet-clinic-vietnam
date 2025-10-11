@@ -506,7 +506,7 @@ export default function DownloadsPage() {
               <Link href="/pricing#contact" className="btn-primary">
                 Liên hệ hỗ trợ
               </Link>
-              <a href="https://t.me/ThebenchmarkTraderSupport" target="_blank" rel="noopener noreferrer" className="btn-secondary">
+              <a href="https://t.me/+0ETUdIuYUzdhZWQ1" target="_blank" rel="noopener noreferrer" className="btn-secondary">
                 Chat Telegram
               </a>
             </div>

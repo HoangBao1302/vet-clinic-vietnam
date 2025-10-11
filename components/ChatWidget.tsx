@@ -53,7 +53,7 @@ const quickReplies: QuickReply[] = [
   {
     id: "7",
     text: "❓ Câu hỏi khác",
-    answer: "Để được hỗ trợ tốt nhất, bạn có thể:\n\n📱 Chat Telegram: @ThebenchmarkTraderSupport\n📧 Email: support@thebenchmarktrader.com\n📞 Hotline: +84 901 234 567\n\nTeam support sẽ trả lời trong vòng 1-2 giờ (T2-T6, 9h-18h). Bạn muốn liên hệ qua kênh nào?"
+    answer: "Để được hỗ trợ tốt nhất, bạn có thể:\n\n📱 Chat Telegram Group: t.me/+0ETUdIuYUzdhZWQ1\n📧 Email: support@thebenchmarktrader.com\n📞 Hotline: +84 765 452 515\n\nTeam support sẽ trả lời trong vòng 1-2 giờ (T2-T6, 9h-18h). Bạn muốn liên hệ qua kênh nào?"
   }
 ];
 
@@ -111,7 +111,7 @@ export default function ChatWidget() {
       // Handle actions
       if (reply.action === "telegram") {
         setTimeout(() => {
-          window.open("https://t.me/ThebenchmarkTraderSupport", "_blank");
+          window.open("https://t.me/+0ETUdIuYUzdhZWQ1", "_blank");
         }, 1000);
       } else if (reply.action === "live-results") {
         setTimeout(() => {
@@ -143,7 +143,7 @@ export default function ChatWidget() {
     setTimeout(() => {
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: "Cảm ơn câu hỏi của bạn! 😊\n\nĐể được hỗ trợ chi tiết hơn, vui lòng liên hệ:\n\n📱 Telegram: @ThebenchmarkTraderSupport\n📧 Email: support@thebenchmarktrader.com\n📞 Hotline: +84 901 234 567\n\nTeam sẽ trả lời trong 1-2 giờ!",
+        text: "Cảm ơn câu hỏi của bạn! 😊\n\nĐể được hỗ trợ chi tiết hơn, vui lòng liên hệ:\n\n📱 Telegram Group: t.me/+0ETUdIuYUzdhZWQ1\n📧 Email: support@thebenchmarktrader.com\n📞 Hotline: +84 765 452 515\n\nTeam sẽ trả lời trong 1-2 giờ!",
         sender: "bot",
         timestamp: new Date(),
         options: [
@@ -173,7 +173,7 @@ export default function ChatWidget() {
 
   const handleContactAction = (action: string) => {
     if (action === "telegram") {
-      window.open("https://t.me/ThebenchmarkTraderSupport", "_blank");
+      window.open("https://t.me/+0ETUdIuYUzdhZWQ1", "_blank");
     } else if (action === "email") {
       window.location.href = "mailto:support@thebenchmarktrader.com?subject=Hỏi về EA ThebenchmarkTrader";
     }

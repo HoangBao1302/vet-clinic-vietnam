@@ -174,7 +174,7 @@ export default function ForexContact() {
                   </div>
                   <div>
                     <h4 className="font-semibold text-gray-800 mb-1">Hotline hỗ trợ</h4>
-                    <p className="text-gray-600">+84 901 234 567</p>
+                    <p className="text-gray-600">+84 765 452 515</p>
                     <p className="text-sm text-gray-500">Thứ 2 - Thứ 6: 9:00 - 18:00</p>
                   </div>
                 </div>
@@ -196,7 +196,8 @@ export default function ForexContact() {
                   </div>
                   <div>
                     <h4 className="font-semibold text-gray-800 mb-1">Telegram</h4>
-                    <p className="text-gray-600">@ThebenchmarkTraderSupport</p>
+                    <p className="text-gray-600">Telegram Group Support</p>
+                    <a href="https://t.me/+0ETUdIuYUzdhZWQ1" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline text-sm">Join Group</a>
                     <p className="text-sm text-gray-500">Chat trực tiếp với team hỗ trợ</p>
                   </div>
                 </div>

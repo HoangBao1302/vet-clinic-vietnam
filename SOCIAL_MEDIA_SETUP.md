@@ -52,7 +52,7 @@ https://www.facebook.com/YourPageName
 ```
 
 **Ví dụ:**
-- `https://www.facebook.com/ThebenchmarkTraderEA`
+- `https://www.facebook.com/Thebenchmarktrader/about`
 - `https://www.facebook.com/EAForexLeopard`
 
 #### Bước 3: Tùy Chỉnh Username (Optional)
@@ -91,7 +91,7 @@ Nếu bạn muốn dùng profile cá nhân:
 **Facebook:**
 ```
 Find:    https://www.facebook.com/YOUR_PAGE_NAME
-Replace: https://www.facebook.com/ThebenchmarkTraderEA
+Replace: https://www.facebook.com/Thebenchmarktrader/about
 ```
 
 **Instagram:**
@@ -117,7 +117,7 @@ Replace: https://twitter.com/ThebenchmarkTraderEA
 **Facebook (Dòng ~71):**
 ```tsx
 <a 
-  href="https://www.facebook.com/YOUR_PAGE_NAME"  // ⬅️ THAY ĐỔI Ở ĐÂY
+  href="https://www.facebook.com/Thebenchmarktrader/about"  // ✅ ĐÃ CẬP NHẬT
   target="_blank"
   rel="noopener noreferrer"
   className="hover:text-accent-100 transition-colors"
@@ -154,7 +154,8 @@ Tương tự Header, update 3 links:
 
 **YouTube & Telegram** đã được setup trước đó:
 - YouTube: `https://www.youtube.com/@ThebenchmarkTraderEA`
-- Telegram: `https://t.me/ThebenchmarkTraderSupport`
+- Telegram Channel: `https://t.me/thebenchmarktrader` (Follow/News)
+- Telegram Group: `https://t.me/+0ETUdIuYUzdhZWQ1` (Support/Chat)
 
 ---
 
@@ -342,7 +343,8 @@ Nếu có reviews tốt trên Facebook Page, có thể embed:
 
 ### **Telegram:**
 - [ ] ✅ Đã setup
-- [ ] Link: `@ThebenchmarkTraderSupport`
+- [ ] Channel: `@thebenchmarktrader` (Follow)
+- [ ] Group: `+0ETUdIuYUzdhZWQ1` (Support)
 
 ---
 
@@ -434,8 +436,8 @@ Khi tạo/update social media:
 ```
 feat: add Facebook page integration
 
-- Created Facebook Page: ThebenchmarkTraderEA
-- URL: https://www.facebook.com/ThebenchmarkTraderEA
+- Created Facebook Page: Thebenchmarktrader
+- URL: https://www.facebook.com/Thebenchmarktrader/about
 - Updated Header.tsx (line 71)
 - Updated Footer.tsx (line 48)
 - Tested on Chrome, Firefox, Safari

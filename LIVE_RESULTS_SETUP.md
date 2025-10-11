@@ -412,7 +412,8 @@ Sau khi cập nhật, test các điểm sau:
 **Nếu gặp vấn đề khi setup:**
 - Documentation: File này + `YOUTUBE_LINKS.md`
 - Email: support@thebenchmarktrader.com
-- Telegram: @ThebenchmarkTraderSupport
+- Telegram Channel: @thebenchmarktrader
+- Telegram Support: t.me/+0ETUdIuYUzdhZWQ1
 
 **Nếu cần help technical:**
 - Issues về code

@@ -100,15 +100,15 @@ function SuccessContent() {
                 Cần hỗ trợ cài đặt? Team support sẵn sàng giúp đỡ:
               </p>
               <div className="flex flex-wrap gap-4 justify-center text-sm">
-                <a href="https://t.me/ThebenchmarkTraderSupport" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-                  📱 Telegram
+                <a href="https://t.me/+0ETUdIuYUzdhZWQ1" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                  📱 Telegram Group
                 </a>
                 <span className="text-gray-300">•</span>
                 <a href="mailto:support@thebenchmarktrader.com" className="text-blue-600 hover:underline">
                   📧 Email
                 </a>
                 <span className="text-gray-300">•</span>
-                <a href="tel:+84901234567" className="text-blue-600 hover:underline">
+                <a href="tel:+84765452515" className="text-blue-600 hover:underline">
                   📞 Hotline
                 </a>
               </div>

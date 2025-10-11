@@ -492,8 +492,8 @@ export const downloadEmail = (orderInfo: any) => `
       <p>Cần hỗ trợ? Liên hệ:</p>
       <ul>
         <li>📧 Email: support@thebenchmarktrader.com</li>
-        <li>📱 Telegram: @ThebenchmarkTraderSupport</li>
-        <li>📞 Hotline: +84 901 234 567</li>
+        <li>📱 Telegram Group: t.me/+0ETUdIuYUzdhZWQ1</li>
+        <li>📞 Hotline: +84 765 452 515</li>
       </ul>
     </div>
     <div class="footer">

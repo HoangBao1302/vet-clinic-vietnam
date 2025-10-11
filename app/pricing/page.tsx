@@ -385,7 +385,7 @@ export default function PricingPage() {
               <div className="mt-8 p-4 bg-blue-50 rounded-lg border border-blue-200">
                 <p className="text-sm text-blue-800 text-center">
                   <strong>💡 Tip:</strong> Xem hết video trước khi cài đặt để hiểu rõ quy trình. 
-                  Nếu cần hỗ trợ, liên hệ qua Telegram @ThebenchmarkTraderSupport
+                  Nếu cần hỗ trợ, liên hệ qua Telegram Group: t.me/+0ETUdIuYUzdhZWQ1
                 </p>
               </div>
             </div>

@@ -38,7 +38,7 @@ npm run dev
 ## 📧 Thông báo lỗi thân thiện:
 
 Khi chưa cấu hình email, form sẽ hiển thị:
-> "Email chưa được cấu hình. Vui lòng liên hệ trực tiếp qua Telegram @ThebenchmarkTraderSupport hoặc email support@thebenchmarktrader.com"
+> "Email chưa được cấu hình. Vui lòng liên hệ trực tiếp qua Telegram Group: t.me/+0ETUdIuYUzdhZWQ1 hoặc email support@thebenchmarktrader.com"
 
 ## ✅ Sau khi cấu hình:
 

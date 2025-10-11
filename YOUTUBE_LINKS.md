@@ -43,7 +43,7 @@ href="https://www.youtube.com/@ThebenchmarkTraderEA/playlists"
 **Dòng code cần cập nhật:**
 ```tsx
 // Dòng ~319 - Video cụ thể về installation
-href="https://www.youtube.com/watch?v=INSTALLATION_VIDEO_ID"
+href="https://www.youtube.com/@ThebenchmarkTraderEA"
 // ⚠️ Thay INSTALLATION_VIDEO_ID bằng ID video thực tế
 
 // Dòng ~328 - Link playlist
@@ -222,7 +222,8 @@ find . -name "*.tsx" -o -name "*.ts" | xargs sed -i 's/@ThebenchmarkTraderEA/@YO
 
 Nếu cần hỗ trợ tích hợp YouTube hoặc tạo video content, liên hệ:
 - Email: support@thebenchmarktrader.com
-- Telegram: @ThebenchmarkTraderSupport
+- Telegram Channel: @thebenchmarktrader
+- Telegram Support: t.me/+0ETUdIuYUzdhZWQ1
 
 ---
 

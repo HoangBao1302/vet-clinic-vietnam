@@ -46,7 +46,7 @@ export default function Footer() {
             </p>
             <div className="flex space-x-4">
               <a 
-                href="https://www.facebook.com/YOUR_PAGE_NAME" 
+                href="https://www.facebook.com/Thebenchmarktrader/about" 
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-300 hover:text-white transition-colors" 
@@ -82,11 +82,11 @@ export default function Footer() {
                 <Youtube size={20} />
               </a>
               <a 
-                href="https://t.me/ThebenchmarkTraderSupport" 
-                target="_blank" 
+                href="https://t.me/thebenchmarktrader" 
+                target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-300 hover:text-white transition-colors" 
-                aria-label="Telegram"
+                aria-label="Telegram Channel"
               >
                 <MessageCircle size={20} />
               </a>
@@ -204,7 +204,7 @@ export default function Footer() {
             <div className="space-y-3">
               <div className="flex items-center space-x-3">
                 <Phone className="w-5 h-5 text-gray-300" />
-                <span className="text-gray-300">+84 901 234 567</span>
+                <span className="text-gray-300">+84 765 452 515</span>
               </div>
               
               <div className="flex items-center space-x-3">
@@ -214,7 +214,7 @@ export default function Footer() {
               
               <div className="flex items-center space-x-3">
                 <MessageCircle className="w-5 h-5 text-gray-300" />
-                <span className="text-gray-300">@ThebenchmarkTraderSupport</span>
+                <span className="text-gray-300">@thebenchmarktrader</span>
               </div>
 
               <div className="mt-4 pt-4 border-t border-gray-700">
