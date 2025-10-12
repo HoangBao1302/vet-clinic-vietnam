@@ -94,7 +94,7 @@ export default function Header() {
             </div>
             <div className="flex items-center space-x-3">
               <a 
-                href="https://www.facebook.com/Thebenchmarktrader/about" 
+                href="https://www.facebook.com/Thebenchmarktrader" 
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-accent-100 transition-colors"
@@ -112,11 +112,11 @@ export default function Header() {
                 <Instagram size={16} />
               </a>
               <a 
-                href="https://twitter.com/YOUR_TWITTER_NAME" 
+                href="https://x.com/trader1594" 
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-accent-100 transition-colors"
-                aria-label="Twitter"
+                aria-label="X (Twitter)"
               >
                 <Twitter size={16} />
               </a>

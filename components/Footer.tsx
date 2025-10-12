@@ -46,7 +46,7 @@ export default function Footer() {
             </p>
             <div className="flex space-x-4">
               <a 
-                href="https://www.facebook.com/Thebenchmarktrader/about" 
+                href="https://www.facebook.com/Thebenchmarktrader" 
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-300 hover:text-white transition-colors" 
@@ -64,11 +64,11 @@ export default function Footer() {
                 <Instagram size={20} />
               </a>
               <a 
-                href="https://twitter.com/YOUR_TWITTER_NAME" 
+                href="https://x.com/trader1594" 
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-300 hover:text-white transition-colors" 
-                aria-label="Twitter"
+                aria-label="X (Twitter)"
               >
                 <Twitter size={20} />
               </a>
