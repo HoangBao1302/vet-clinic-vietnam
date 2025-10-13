@@ -103,7 +103,7 @@ export default function Header() {
                 <Facebook size={16} />
               </a>
               <a 
-                href="https://www.instagram.com/YOUR_INSTAGRAM_NAME" 
+                href="https://www.instagram.com/thebenchmarktrader/" 
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-accent-100 transition-colors"
@@ -112,7 +112,7 @@ export default function Header() {
                 <Instagram size={16} />
               </a>
               <a 
-                href="https://x.com/trader1594" 
+                href="https://x.com/TheBenchmarkEA" 
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-accent-100 transition-colors"

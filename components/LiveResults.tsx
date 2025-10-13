@@ -11,7 +11,7 @@ const featuredAccounts = [
     gain: "+186%",
     drawdown: "12.5%",
     days: "180",
-    link: "https://www.mql5.com/en/signals/YOUR_SIGNAL_ID"
+    link: "https://www.mql5.com/en/signals/2328382"
   },
   {
     name: "EA ThebenchmarkTrader Pro",
@@ -20,7 +20,7 @@ const featuredAccounts = [
     gain: "+215%",
     drawdown: "14.2%",
     days: "240",
-    link: "https://www.myfxbook.com/members/YOUR_USERNAME/YOUR_ACCOUNT_ID"
+    link: "https://www.myfxbook.com/portfolio/yen-pham-thi-thuan/11670921"
   },
   {
     name: "ThebenchmarkTrader Strategy",
@@ -29,7 +29,7 @@ const featuredAccounts = [
     gain: "+168%",
     drawdown: "11.3%",
     days: "165",
-    link: "https://www.tickmill.com/social-trading/YOUR_STRATEGY_ID",
+    link: "https://stats.tmsocial.net/widgets/ratings/4117?widgetKey=social_platform_ratings&lang=en&preview=P3U9NTQ2ZTFiJmE9ODU1NSZwPTQxMTcmdz0x&zarsrc=30&utm_source=zalo&utm_medium=zalo&utm_campaign=zalo",
     copyable: true
   }
 ];

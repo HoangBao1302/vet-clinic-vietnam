@@ -55,7 +55,7 @@ export default function Footer() {
                 <Facebook size={20} />
               </a>
               <a 
-                href="https://www.instagram.com/YOUR_INSTAGRAM_NAME" 
+                href="https://www.instagram.com/thebenchmarktrader/" 
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-300 hover:text-white transition-colors" 
@@ -64,7 +64,7 @@ export default function Footer() {
                 <Instagram size={20} />
               </a>
               <a 
-                href="https://x.com/trader1594" 
+                href="https://x.com/TheBenchmarkEA" 
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-300 hover:text-white transition-colors" 

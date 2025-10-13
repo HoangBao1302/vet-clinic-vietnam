@@ -45,7 +45,7 @@ const tradingAccounts: TradingAccount[] = [
       tradingDays: "180 days"
     },
     links: {
-      profile: "https://www.mql5.com/en/signals/YOUR_SIGNAL_ID",
+      profile: "https://www.mql5.com/en/signals/2328382",
       youtube: "https://www.youtube.com/watch?v=MQL5_TUTORIAL_ID"
     },
     description: "Tài khoản live đầu tiên chạy EA ThebenchmarkTrader trên Tickmill. Verified bởi MQL5, tất cả giao dịch được tracking real-time.",
@@ -100,7 +100,7 @@ const tradingAccounts: TradingAccount[] = [
       tradingDays: "240 days"
     },
     links: {
-      profile: "https://www.myfxbook.com/members/YOUR_USERNAME/YOUR_ACCOUNT_ID",
+      profile: "https://www.myfxbook.com/portfolio/yen-pham-thi-thuan/11670921",
       youtube: "https://www.youtube.com/watch?v=MYFXBOOK_TUTORIAL_ID"
     },
     description: "Tài khoản dài hạn nhất, tracking 240 ngày liên tục. Verified trading history bởi Myfxbook với track record minh bạch.",
@@ -128,8 +128,8 @@ const tradingAccounts: TradingAccount[] = [
       tradingDays: "165 days"
     },
     links: {
-      profile: "https://www.tickmill.com/social-trading/YOUR_STRATEGY_ID",
-      copyTrade: "https://www.tickmill.com/social-trading/YOUR_STRATEGY_ID/copy",
+      profile: "https://stats.tmsocial.net/widgets/ratings/4117?widgetKey=social_platform_ratings&lang=en&preview=P3U9NTQ2ZTFiJmE9ODU1NSZwPTQxMTcmdz0x&zarsrc=30&utm_source=zalo&utm_medium=zalo&utm_campaign=zalo",
+      copyTrade: "https://stats.tmsocial.net/widgets/ratings/4117?widgetKey=social_platform_ratings&lang=en&preview=P3U9NTQ2ZTFiJmE9ODU1NSZwPTQxMTcmdz0x&zarsrc=30&utm_source=zalo&utm_medium=zalo&utm_campaign=zalo",
       youtube: "https://www.youtube.com/watch?v=TICKMILL_COPY_TUTORIAL"
     },
     description: "Copy trading trực tiếp trên Tickmill Social. Khách hàng có thể copy với 1 click, phí copy 20% profit share.",
