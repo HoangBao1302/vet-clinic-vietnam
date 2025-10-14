@@ -8,10 +8,10 @@ const featuredAccounts = [
     name: "ThebenchmarkTrader Live #1",
     platform: "MQL5",
     broker: "Tickmill",
-    gain: "+186%",
-    drawdown: "12.5%",
-    days: "180",
-    link: "https://www.mql5.com/en/signals/2328382"
+    gain: "+4359%",
+    drawdown: "28.5%",
+    days: "1638",
+    link: "https://www.mql5.com/en/signals/2327790"
   },
   {
     name: "EA ThebenchmarkTrader Pro",
