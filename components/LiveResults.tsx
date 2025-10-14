@@ -17,18 +17,18 @@ const featuredAccounts = [
     name: "EA ThebenchmarkTrader Pro",
     platform: "Myfxbook",
     broker: "Tickmill",
-    gain: "+215%",
-    drawdown: "14.2%",
-    days: "240",
+    gain: "+60.78%",
+    drawdown: "8.55%",
+    days: "160",
     link: "https://www.myfxbook.com/portfolio/yen-pham-thi-thuan/11670921"
   },
   {
     name: "ThebenchmarkTrader Strategy",
     platform: "Tickmill Social",
     broker: "Tickmill",
-    gain: "+168%",
-    drawdown: "11.3%",
-    days: "165",
+    gain: "+60.75%",
+    drawdown: "8.53%",
+    days: "161",
     link: "https://stats.tmsocial.net/widgets/ratings/4117?widgetKey=social_platform_ratings&lang=en&preview=P3U9NTQ2ZTFiJmE9ODU1NSZwPTQxMTcmdz0x&zarsrc=30&utm_source=zalo&utm_medium=zalo&utm_campaign=zalo",
     copyable: true
   }

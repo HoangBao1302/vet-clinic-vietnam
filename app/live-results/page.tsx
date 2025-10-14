@@ -31,30 +31,30 @@ interface TradingAccount {
 const tradingAccounts: TradingAccount[] = [
   // MQL5 Accounts
   {
-    platform: "MQL5",
+    platform: "MQL4",
     accountName: "ThebenchmarkTrader Live #1",
-    accountNumber: "12345678",
+    accountNumber: "9029831",
     broker: "Tickmill",
     verified: true,
     badge: "Verified Real Account",
     stats: {
-      gain: "+186%",
-      drawdown: "12.5%",
-      winRate: "68%",
+      gain: "+4359%",
+      drawdown: "28.5%",
+      winRate: "76.8%",
       profitFactor: "2.3",
-      tradingDays: "180 days"
+      tradingDays: "593 days"
     },
     links: {
       profile: "https://www.mql5.com/en/signals/2327790",
-      youtube: "https://www.youtube.com/watch?v=MQL5_TUTORIAL_ID"
+      youtube: "https://www.youtube.com/@ThebenchmarkTraderEA"
     },
     description: "Tài khoản live đầu tiên chạy EA ThebenchmarkTrader trên Tickmill. Verified bởi MQL5, tất cả giao dịch được tracking real-time.",
     highlights: [
       "✅ Verified bởi MQL5.com",
-      "📈 Lợi nhuận ổn định 180 ngày",
-      "🛡️ Drawdown được kiểm soát < 15%",
+      "📈 Lợi nhuận ổn định 593 ngày",
+      "🛡️ Drawdown được kiểm soát < 30%",
       "💰 Risk 1.5% mỗi lệnh",
-      "⏰ Trade trên EURUSD H1"
+      "⏰ Trade trên EURUSD M5, AUDUSD M5"
     ]
   },
   {
