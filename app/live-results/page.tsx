@@ -45,7 +45,7 @@ const tradingAccounts: TradingAccount[] = [
       tradingDays: "180 days"
     },
     links: {
-      profile: "https://www.mql5.com/en/signals/2328382",
+      profile: "https://www.mql5.com/en/signals/2327790",
       youtube: "https://www.youtube.com/watch?v=MQL5_TUTORIAL_ID"
     },
     description: "Tài khoản live đầu tiên chạy EA ThebenchmarkTrader trên Tickmill. Verified bởi MQL5, tất cả giao dịch được tracking real-time.",
