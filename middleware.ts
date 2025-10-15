@@ -44,6 +44,19 @@ export function middleware(request: NextRequest) {
       isMobile,
       userAgent: userAgent.substring(0, 50)
     });
+    
+    // For downloads route, be more lenient - let the client-side handle auth
+    // Only redirect if absolutely no token exists and it's not a retry
+    const isRetry = request.nextUrl.searchParams.get('retry') === 'true';
+    if (!token && !isRetry) {
+      console.log('Downloads: No token found, redirecting to login');
+      const loginUrl = new URL('/login', request.url);
+      loginUrl.searchParams.set('redirect', '/downloads');
+      return NextResponse.redirect(loginUrl);
+    }
+    
+    // If we have a token or it's a retry, let it through
+    return NextResponse.next();
   }
 
   // Redirect to login if accessing protected route without token

@@ -84,7 +84,7 @@ const downloads: DownloadItem[] = [
     size: "450 KB",
     type: "ea",
     free: true,
-    downloadUrl: "/downloads/files/ThebenchmarkTrader-Demo.ex4"
+    downloadUrl: "/downloads/files/ThebenchmarkTrader-Demo.ex5"
   },
 
   // Section 3: Paid Products
@@ -140,17 +140,21 @@ export default function DownloadsPage() {
       const user = localStorage.getItem('user');
       const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
       
-      if (!token || !user) {
+      console.log('Auth check:', { hasToken: !!token, hasUser: !!user, isAuthenticated, isMobile });
+      
+      // Only redirect if we're sure there's no authentication data
+      if (!token && !user && !isAuthenticated) {
+        console.log('No auth data found, redirecting to login');
         router.push('/login?redirect=/downloads');
         return;
       }
       
       // For mobile, wait longer for AuthContext to initialize
-      if (!isAuthenticated) {
+      if (!isAuthenticated && (token || user)) {
         const delay = isMobile ? 1000 : 500;
         console.log('Auth not ready, retrying in:', delay, 'ms');
         setTimeout(checkAuth, delay);
-      } else {
+      } else if (isAuthenticated) {
         console.log('Authentication successful');
       }
     };
@@ -162,13 +166,27 @@ export default function DownloadsPage() {
     setTimeout(checkAuth, initialDelay);
   }, [isAuthenticated, router]);
 
-  // Show loading if not authenticated yet
-  if (!isAuthenticated) {
+  // Show loading if not authenticated yet, but only if we have auth data
+  const hasAuthData = typeof window !== 'undefined' && (localStorage.getItem('token') || localStorage.getItem('user'));
+  
+  if (!isAuthenticated && hasAuthData) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
           <p className="text-gray-600">Đang kiểm tra quyền truy cập...</p>
+        </div>
+      </div>
+    );
+  }
+  
+  // If no auth data at all, let the useEffect handle the redirect
+  if (!isAuthenticated && !hasAuthData) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Đang chuyển hướng...</p>
         </div>
       </div>
     );

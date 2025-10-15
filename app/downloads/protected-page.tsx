@@ -26,7 +26,7 @@ const availableFiles: DownloadFile[] = [
     description: 'Phiên bản demo với các tính năng cơ bản, giới hạn thời gian 30 ngày',
     fileSize: '2.5 MB',
     version: '1.0.0',
-    filePath: '/downloads/files/ea-thebenchmarktrader-demo.ex4',
+    filePath: '/downloads/files/ThebenchmarkTrader-Demo.ex5',
     isPremium: false,
   },
   {
@@ -36,7 +36,7 @@ const availableFiles: DownloadFile[] = [
     description: 'Indicator xác định xu hướng chính xác cao',
     fileSize: '1.2 MB',
     version: '2.1.0',
-    filePath: '/downloads/files/trend-indicator-pro.ex4',
+    filePath: '/downloads/files/TrendLines-Free.ex4',
     isPremium: false,
   },
   {
@@ -46,7 +46,7 @@ const availableFiles: DownloadFile[] = [
     description: 'Tự động vẽ vùng support và resistance',
     fileSize: '850 KB',
     version: '1.5.0',
-    filePath: '/downloads/files/sr-indicator.ex4',
+    filePath: '/downloads/files/SR-Indicator-Free.ex4',
     isPremium: false,
   },
   {
