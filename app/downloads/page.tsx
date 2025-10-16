@@ -133,48 +133,38 @@ export default function DownloadsPage() {
   const [orderCode, setOrderCode] = useState("");
   const [verifyMessage, setVerifyMessage] = useState("");
 
-  // Check authentication with simplified logic
+  // Simplified authentication check - only redirect if definitely not authenticated
   useEffect(() => {
-    let retryCount = 0;
-    const maxRetries = 10; // Prevent infinite loop
-    
+    // Only check once when component mounts
     const checkAuth = () => {
       const token = localStorage.getItem('token');
       const user = localStorage.getItem('user');
       
-      console.log('Auth check:', { hasToken: !!token, hasUser: !!user, isAuthenticated, retryCount });
+      console.log('Downloads auth check:', { 
+        hasToken: !!token, 
+        hasUser: !!user, 
+        isAuthenticated,
+        contextReady: typeof isAuthenticated !== 'undefined'
+      });
       
-      // If we have auth data but context is not ready, wait a bit
-      if ((token || user) && !isAuthenticated && retryCount < maxRetries) {
-        console.log('Auth data exists but context not ready, waiting...');
-        retryCount++;
-        setTimeout(checkAuth, 200);
-        return;
+      // If we have auth data in localStorage, wait for context to initialize
+      if (token && user && !isAuthenticated) {
+        console.log('Auth data exists, waiting for context...');
+        return; // Don't redirect, let context handle it
       }
       
-      // If no auth data at all, redirect to login
+      // Only redirect if we have NO auth data AND context says not authenticated
       if (!token && !user && !isAuthenticated) {
         console.log('No auth data found, redirecting to login');
         router.push('/login?redirect=/downloads');
-        return;
-      }
-      
-      // If max retries reached, assume not authenticated
-      if (retryCount >= maxRetries && !isAuthenticated) {
-        console.log('Max retries reached, redirecting to login');
-        router.push('/login?redirect=/downloads');
-        return;
-      }
-      
-      // If authenticated, we're good
-      if (isAuthenticated) {
-        console.log('Authentication successful');
       }
     };
     
-    // Initial check with small delay
-    setTimeout(checkAuth, 100);
-  }, [isAuthenticated, router]);
+    // Check after a short delay to allow context to initialize
+    const timeoutId = setTimeout(checkAuth, 500);
+    
+    return () => clearTimeout(timeoutId);
+  }, []); // Only run once on mount
 
   // Show loading if not authenticated yet, but only if we have auth data
   const hasAuthData = typeof window !== 'undefined' && (localStorage.getItem('token') || localStorage.getItem('user'));
