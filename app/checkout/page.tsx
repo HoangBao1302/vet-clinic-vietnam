@@ -54,6 +54,11 @@ function CheckoutContent() {
       const result = await response.json();
 
       if (result.success && result.paymentUrl) {
+        // For PayPal, store orderId in localStorage for success page
+        if (paymentMethod === "paypal" && result.orderId) {
+          localStorage.setItem("paypalOrderId", result.orderId);
+        }
+        
         // Redirect to payment gateway
         window.location.href = result.paymentUrl;
       } else {

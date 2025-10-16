@@ -68,12 +68,50 @@ export async function POST(request: NextRequest) {
         );
       }
     } else if (method === "paypal") {
-      // PayPal integration temporarily disabled
-      // TODO: Implement using @paypal/paypal-js instead of deprecated checkout-server-sdk
-      return NextResponse.json(
-        { success: false, error: "PayPal integration temporarily disabled. Please use Stripe." },
-        { status: 503 }
-      );
+      // Check if PayPal is configured
+      if (!process.env.PAYPAL_CLIENT_ID || !process.env.PAYPAL_CLIENT_SECRET) {
+        return NextResponse.json(
+          { success: false, error: "PayPal not configured" },
+          { status: 503 }
+        );
+      }
+
+      try {
+        // Create PayPal order
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/paypal/create-order`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            productId,
+            productName,
+            amount,
+            customerInfo
+          }),
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          return NextResponse.json({
+            success: true,
+            paymentUrl: result.approvalUrl,
+            orderId: result.orderId,
+          });
+        } else {
+          return NextResponse.json(
+            { success: false, error: result.error || "PayPal error" },
+            { status: 500 }
+          );
+        }
+      } catch (paypalError: any) {
+        console.error("PayPal error:", paypalError);
+        return NextResponse.json(
+          { success: false, error: `PayPal error: ${paypalError.message}` },
+          { status: 500 }
+        );
+      }
     }
 
     return NextResponse.json(

@@ -29,7 +29,7 @@ const featuredAccounts = [
     gain: "+60.75%",
     drawdown: "8.53%",
     days: "161",
-    link: "https://stats.tmsocial.net/widgets/ratings/4117?widgetKey=social_platform_ratings&lang=en&preview=P3U9NTQ2ZTFiJmE9ODU1NSZwPTQxMTcmdz0x&zarsrc=30&utm_source=zalo&utm_medium=zalo&utm_campaign=zalo",
+    link: "https://stats.tmsocial.net/widgets/ratings/4117?widgetKey=social_platform_ratings&lang=en&preview=P3U9OGQ2OThlJmE9ODU1NSZwPTQxMTcmdz0x",
     copyable: true
   }
 ];

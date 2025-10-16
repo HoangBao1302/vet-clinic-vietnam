@@ -10,17 +10,75 @@ import Link from "next/link";
 function SuccessContent() {
   const searchParams = useSearchParams();
   const [orderInfo, setOrderInfo] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
   const sessionId = searchParams.get("session_id");
+  const orderId = searchParams.get("order");
+  const paymentMethod = searchParams.get("payment_method") || "stripe";
 
   useEffect(() => {
-    if (sessionId) {
-      // Fetch order info from Stripe session
-      fetch(`/api/get-order?session_id=${sessionId}`)
-        .then(res => res.json())
-        .then(data => setOrderInfo(data))
-        .catch(err => console.error(err));
-    }
-  }, [sessionId]);
+    const verifyPayment = async () => {
+      if (sessionId && paymentMethod === "stripe") {
+        // Fetch order info from Stripe session
+        try {
+          const res = await fetch(`/api/get-order?session_id=${sessionId}`);
+          const data = await res.json();
+          setOrderInfo({ ...data, paymentMethod: "stripe" });
+        } catch (err) {
+          console.error("Stripe verification error:", err);
+        }
+      } else if (orderId && paymentMethod === "paypal") {
+        // For PayPal, verify the order
+        try {
+          const response = await fetch("/api/paypal/capture-order", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              orderId: orderId,
+            }),
+          });
+
+          const result = await response.json();
+          
+          if (result.success) {
+            setOrderInfo({
+              orderId: orderId,
+              status: "paid",
+              paymentMethod: "paypal",
+            });
+          }
+        } catch (err) {
+          console.error("PayPal verification error:", err);
+        }
+      } else if (orderId || sessionId) {
+        // Fallback for direct order ID
+        setOrderInfo({
+          orderId: orderId || sessionId,
+          status: "paid",
+          paymentMethod: paymentMethod,
+        });
+      }
+      setLoading(false);
+    };
+
+    verifyPayment();
+  }, [sessionId, orderId, paymentMethod]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <main className="pt-20 pb-20">
+          <div className="container-custom max-w-3xl mx-auto text-center">
+            <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <p className="text-gray-600">Đang xác minh thanh toán...</p>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -47,9 +105,12 @@ function SuccessContent() {
             <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-6 mb-8">
               <div className="text-sm text-gray-600 mb-2">Mã đơn hàng:</div>
               <div className="text-3xl font-bold text-blue-600 font-mono">
-                {sessionId || orderInfo?.orderId || "Loading..."}
+                {orderInfo?.orderId || sessionId || orderId || "Loading..."}
               </div>
               <p className="text-sm text-gray-500 mt-2">
+                Phương thức: <span className="font-bold">{orderInfo?.paymentMethod === "stripe" ? "Stripe" : "PayPal"}</span>
+              </p>
+              <p className="text-sm text-gray-500 mt-1">
                 Lưu mã này để tải lại sau
               </p>
             </div>
