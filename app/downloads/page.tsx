@@ -457,6 +457,9 @@ export default function DownloadsPage() {
                     <div className="text-xs text-gray-600">
                       Mua 1 lần, sử dụng trọn đời
                     </div>
+                    <div className="text-xs text-blue-600 mt-1">
+                      PayPal: ${((item.price || 0) / 24000).toFixed(2)} USD
+                    </div>
                   </div>
 
                   {/* Purchase Buttons */}

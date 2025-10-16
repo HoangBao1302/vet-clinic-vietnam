@@ -79,8 +79,8 @@ export async function POST(request: NextRequest) {
         {
           reference_id: productId,
           amount: {
-            currency_code: "VND",
-            value: (amount / 100).toFixed(2),
+            currency_code: "USD",
+            value: (amount / 100 / 24000).toFixed(2), // Convert VND to USD
           },
           description: productName,
           custom_id: productId,

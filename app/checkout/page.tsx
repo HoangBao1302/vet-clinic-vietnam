@@ -115,6 +115,11 @@ function CheckoutContent() {
                       {itemPrice.toLocaleString("vi-VN")}đ
                     </span>
                   </div>
+                  {paymentMethod === "paypal" && (
+                    <div className="text-sm text-gray-600 mt-1 text-right">
+                      ≈ ${(itemPrice / 24000).toFixed(2)} USD
+                    </div>
+                  )}
                 </div>
               </div>
 
