@@ -104,15 +104,19 @@ function SuccessContent() {
             {/* Order Code */}
             <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-6 mb-8">
               <div className="text-sm text-gray-600 mb-2">Mã đơn hàng:</div>
-              <div className="text-3xl font-bold text-blue-600 font-mono">
-                {orderInfo?.orderId || sessionId || orderId || "Loading..."}
+              <div className="bg-white border border-blue-200 rounded-lg p-4 mb-3">
+                <div className="text-sm font-mono text-blue-600 break-all leading-relaxed">
+                  {orderInfo?.orderId || sessionId || orderId || "Loading..."}
+                </div>
               </div>
-              <p className="text-sm text-gray-500 mt-2">
-                Phương thức: <span className="font-bold">{orderInfo?.paymentMethod === "stripe" ? "Stripe" : "PayPal"}</span>
-              </p>
-              <p className="text-sm text-gray-500 mt-1">
-                Lưu mã này để tải lại sau
-              </p>
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                <p className="text-sm text-gray-500">
+                  Phương thức: <span className="font-bold text-gray-700">{orderInfo?.paymentMethod === "stripe" ? "Stripe" : "PayPal"}</span>
+                </p>
+                <p className="text-xs text-gray-400">
+                  Lưu mã này để tải lại sau
+                </p>
+              </div>
             </div>
 
             {/* Next Steps */}
