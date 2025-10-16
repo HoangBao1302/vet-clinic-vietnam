@@ -27,9 +27,9 @@ export async function POST(request: NextRequest) {
 
     const accessToken = await getPayPalAccessToken();
     if (!accessToken) {
-      console.error("Failed to get PayPal access token");
+      console.error("Failed to get PayPal access token - check credentials and mode");
       return NextResponse.json(
-        { success: false, error: "PayPal payment is temporarily unavailable. Please try Stripe instead." },
+        { success: false, error: "PayPal authentication failed. Please check your PayPal configuration or try Stripe instead." },
         { status: 500 }
       );
     }
