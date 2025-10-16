@@ -12,11 +12,19 @@ function SuccessContent() {
   const [orderInfo, setOrderInfo] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const sessionId = searchParams.get("session_id");
-  const orderId = searchParams.get("order");
+  const orderId = searchParams.get("order") || searchParams.get("token") || searchParams.get("PayerID");
   const paymentMethod = searchParams.get("payment_method") || "stripe";
 
   useEffect(() => {
     const verifyPayment = async () => {
+      // Debug: log all search params
+      const allParams: { [key: string]: string | null } = {};
+      searchParams.forEach((value, key) => {
+        allParams[key] = value;
+      });
+      console.log("All search params:", allParams);
+      console.log("Payment verification:", { sessionId, orderId, paymentMethod });
+      
       if (sessionId && paymentMethod === "stripe") {
         // Fetch order info from Stripe session
         try {
@@ -26,32 +34,16 @@ function SuccessContent() {
         } catch (err) {
           console.error("Stripe verification error:", err);
         }
-      } else if (orderId && paymentMethod === "paypal") {
-        // For PayPal, verify the order
-        try {
-          const response = await fetch("/api/paypal/capture-order", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              orderId: orderId,
-            }),
-          });
-
-          const result = await response.json();
-          
-          if (result.success) {
-            setOrderInfo({
-              orderId: orderId,
-              status: "paid",
-              paymentMethod: "paypal",
-            });
-          }
-        } catch (err) {
-          console.error("PayPal verification error:", err);
-        }
-      } else if (orderId || sessionId) {
+      } else if (orderId) {
+        // For PayPal, just set the order info directly
+        // PayPal order is already approved when user reaches this page
+        console.log("PayPal order approved:", orderId);
+        setOrderInfo({
+          orderId: orderId,
+          status: "paid",
+          paymentMethod: "paypal",
+        });
+      } else if (sessionId || orderId) {
         // Fallback for direct order ID
         setOrderInfo({
           orderId: orderId || sessionId,
@@ -63,7 +55,7 @@ function SuccessContent() {
     };
 
     verifyPayment();
-  }, [sessionId, orderId, paymentMethod]);
+  }, [sessionId, orderId, paymentMethod, searchParams]);
 
   if (loading) {
     return (

@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
         brand_name: "ThebenchmarkTrader",
         landing_page: "NO_PREFERENCE",
         user_action: "PAY_NOW",
-        return_url: `${process.env.NEXT_PUBLIC_SITE_URL}/downloads/success`,
+        return_url: `${process.env.NEXT_PUBLIC_SITE_URL}/downloads/success?payment_method=paypal`,
         cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/downloads?cancelled=true`,
       },
     };
