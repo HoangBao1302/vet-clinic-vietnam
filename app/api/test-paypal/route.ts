@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
       : 'https://api-m.sandbox.paypal.com';
     
     // Test authentication
-    let authTest = null;
+    let authTest: any = null;
     if (hasClientId && hasClientSecret) {
       try {
         const auth = Buffer.from(
