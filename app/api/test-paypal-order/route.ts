@@ -73,7 +73,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Test order creation
-    const orderData = {
+    const orderData: any = {
       intent: "CAPTURE",
       purchase_units: [
         {
