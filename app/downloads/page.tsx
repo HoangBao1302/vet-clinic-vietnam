@@ -133,37 +133,47 @@ export default function DownloadsPage() {
   const [orderCode, setOrderCode] = useState("");
   const [verifyMessage, setVerifyMessage] = useState("");
 
-  // Check authentication with mobile-friendly delay
+  // Check authentication with simplified logic
   useEffect(() => {
+    let retryCount = 0;
+    const maxRetries = 10; // Prevent infinite loop
+    
     const checkAuth = () => {
       const token = localStorage.getItem('token');
       const user = localStorage.getItem('user');
-      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
       
-      console.log('Auth check:', { hasToken: !!token, hasUser: !!user, isAuthenticated, isMobile });
+      console.log('Auth check:', { hasToken: !!token, hasUser: !!user, isAuthenticated, retryCount });
       
-      // Only redirect if we're sure there's no authentication data
+      // If we have auth data but context is not ready, wait a bit
+      if ((token || user) && !isAuthenticated && retryCount < maxRetries) {
+        console.log('Auth data exists but context not ready, waiting...');
+        retryCount++;
+        setTimeout(checkAuth, 200);
+        return;
+      }
+      
+      // If no auth data at all, redirect to login
       if (!token && !user && !isAuthenticated) {
         console.log('No auth data found, redirecting to login');
         router.push('/login?redirect=/downloads');
         return;
       }
       
-      // For mobile, wait longer for AuthContext to initialize
-      if (!isAuthenticated && (token || user)) {
-        const delay = isMobile ? 1000 : 500;
-        console.log('Auth not ready, retrying in:', delay, 'ms');
-        setTimeout(checkAuth, delay);
-      } else if (isAuthenticated) {
+      // If max retries reached, assume not authenticated
+      if (retryCount >= maxRetries && !isAuthenticated) {
+        console.log('Max retries reached, redirecting to login');
+        router.push('/login?redirect=/downloads');
+        return;
+      }
+      
+      // If authenticated, we're good
+      if (isAuthenticated) {
         console.log('Authentication successful');
       }
     };
     
-    // Initial check with mobile-specific delay
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    const initialDelay = isMobile ? 300 : 100;
-    
-    setTimeout(checkAuth, initialDelay);
+    // Initial check with small delay
+    setTimeout(checkAuth, 100);
   }, [isAuthenticated, router]);
 
   // Show loading if not authenticated yet, but only if we have auth data
