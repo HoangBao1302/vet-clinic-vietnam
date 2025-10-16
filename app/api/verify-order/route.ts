@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
+import fs from "fs";
+import path from "path";
 
 export async function GET(request: NextRequest) {
   try {
@@ -68,6 +70,28 @@ export async function POST(request: NextRequest) {
         { success: false, error: "Missing order ID" },
         { status: 400 }
       );
+    }
+
+    // First check local orders.json file
+    try {
+      const ordersPath = path.join(process.cwd(), "data", "orders.json");
+      if (fs.existsSync(ordersPath)) {
+        const data = fs.readFileSync(ordersPath, "utf8");
+        const orders = JSON.parse(data);
+        
+        const order = orders.find((o: any) => o.orderId === orderId);
+        if (order && order.status === "paid") {
+          const item = getProductById(productId);
+          return NextResponse.json({
+            verified: true,
+            orderId: orderId,
+            downloadUrl: item?.downloadUrl,
+            productId: order.productId,
+          });
+        }
+      }
+    } catch (fileError) {
+      console.error("Error reading orders file:", fileError);
     }
 
     // Try to verify as Stripe session first

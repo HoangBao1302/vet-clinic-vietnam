@@ -35,9 +35,37 @@ function SuccessContent() {
           console.error("Stripe verification error:", err);
         }
       } else if (orderId) {
-        // For PayPal, just set the order info directly
-        // PayPal order is already approved when user reaches this page
+        // For PayPal, save order and send email
         console.log("PayPal order approved:", orderId);
+        
+        // Save order to database
+        try {
+          const saveResponse = await fetch("/api/save-order", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              orderId: orderId,
+              productId: "ea-full", // Default product ID
+              productName: "EA ThebenchmarkTrader Full Version",
+              amount: 7900000, // Default amount
+              customerInfo: {
+                email: "customer@example.com", // Will be updated from PayPal
+                name: "Customer",
+                phone: "0900000000"
+              },
+              paymentMethod: "paypal",
+            }),
+          });
+          
+          if (saveResponse.ok) {
+            console.log("Order saved successfully");
+          }
+        } catch (saveError) {
+          console.error("Error saving order:", saveError);
+        }
+        
         setOrderInfo({
           orderId: orderId,
           status: "paid",
