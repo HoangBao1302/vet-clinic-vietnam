@@ -43,8 +43,8 @@ function SuccessContent() {
         
         // Get customer info from AuthContext, URL params, or fallback
         const customerEmail = searchParams.get("email") || user?.email || "customer@example.com";
-        const customerName = searchParams.get("name") || user?.name || "Customer";
-        const customerPhone = searchParams.get("phone") || user?.phone || "0900000000";
+        const customerName = searchParams.get("name") || user?.username || "Customer";
+        const customerPhone = searchParams.get("phone") || "0900000000";
         
         // Save order to database
         try {
