@@ -12,7 +12,8 @@ function SuccessContent() {
   const searchParams = useSearchParams();
   const [orderInfo, setOrderInfo] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const { user } = useContext(AuthContext);
+  const authContext = useContext(AuthContext);
+  const user = authContext?.user;
   const sessionId = searchParams.get("session_id");
   const orderId = searchParams.get("order") || searchParams.get("token") || searchParams.get("PayerID");
   const paymentMethod = searchParams.get("payment_method") || "stripe";
