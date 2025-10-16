@@ -212,6 +212,11 @@ function CheckoutContent() {
                   <p className="text-xs text-gray-500 mt-1">
                     Link download sẽ được gửi qua email này
                   </p>
+                  {formData.email.includes('business.example.com') && (
+                    <p className="text-xs text-orange-600 mt-1 font-medium">
+                      ⚠️ PayPal sandbox có thể không chấp nhận business email. Hãy dùng email cá nhân hoặc thử Stripe.
+                    </p>
+                  )}
                 </div>
 
                 <div>

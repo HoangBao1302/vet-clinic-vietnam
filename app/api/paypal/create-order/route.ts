@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Create PayPal order
-    const orderData = {
+    const orderData: any = {
       intent: "CAPTURE",
       purchase_units: [
         {
@@ -51,7 +51,11 @@ export async function POST(request: NextRequest) {
         return_url: `${process.env.NEXT_PUBLIC_SITE_URL}/downloads/success`,
         cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/downloads?cancelled=true`,
       },
-      payer: {
+    };
+
+    // Only add payer info for live mode, sandbox doesn't need it
+    if (process.env.PAYPAL_MODE === 'live') {
+      orderData.payer = {
         name: {
           given_name: customerInfo.name,
         },
@@ -61,8 +65,8 @@ export async function POST(request: NextRequest) {
             national_number: customerInfo.phone,
           },
         },
-      },
-    };
+      };
+    }
 
     const response = await fetch(
       `https://api-m.${process.env.PAYPAL_MODE === 'live' ? '' : 'sandbox.'}paypal.com/v2/checkout/orders`,
@@ -80,9 +84,33 @@ export async function POST(request: NextRequest) {
     const order = await response.json();
 
     if (!response.ok) {
-      console.error("PayPal order creation failed:", order);
+      console.error("PayPal order creation failed:", {
+        status: response.status,
+        statusText: response.statusText,
+        order: order,
+        mode: process.env.PAYPAL_MODE,
+        baseUrl: `https://api-m.${process.env.PAYPAL_MODE === 'live' ? '' : 'sandbox.'}paypal.com`
+      });
+      
+      // Better error messages for common issues
+      let errorMessage = "PayPal payment is temporarily unavailable. Please try Stripe instead.";
+      
+      if (response.status === 400) {
+        if (order.message?.includes("business validation")) {
+          errorMessage = "PayPal sandbox không chấp nhận email này. Vui lòng dùng email cá nhân hoặc thử Stripe.";
+        } else if (order.message?.includes("semantically incorrect")) {
+          errorMessage = "Thông tin thanh toán không hợp lệ. Vui lòng kiểm tra lại hoặc thử Stripe.";
+        } else {
+          errorMessage = "Thông tin thanh toán không đúng. Vui lòng thử Stripe.";
+        }
+      } else if (response.status === 401) {
+        errorMessage = "PayPal credentials không hợp lệ. Vui lòng thử Stripe.";
+      } else if (response.status === 403) {
+        errorMessage = "PayPal không cho phép thanh toán này. Vui lòng thử Stripe.";
+      }
+      
       return NextResponse.json(
-        { success: false, error: `PayPal error: ${order.message || "Unknown error"}` },
+        { success: false, error: errorMessage },
         { status: 500 }
       );
     }
