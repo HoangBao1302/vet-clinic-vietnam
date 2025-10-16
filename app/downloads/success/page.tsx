@@ -38,6 +38,11 @@ function SuccessContent() {
         // For PayPal, save order and send email
         console.log("PayPal order approved:", orderId);
         
+        // Get customer info from localStorage or URL params
+        const customerEmail = searchParams.get("email") || "hoangkim.helen@gmail.com";
+        const customerName = searchParams.get("name") || "Hoang Kim";
+        const customerPhone = searchParams.get("phone") || "0900000000";
+        
         // Save order to database
         try {
           const saveResponse = await fetch("/api/save-order", {
@@ -51,9 +56,9 @@ function SuccessContent() {
               productName: "EA ThebenchmarkTrader Full Version",
               amount: 7900000, // Default amount
               customerInfo: {
-                email: "customer@example.com", // Will be updated from PayPal
-                name: "Customer",
-                phone: "0900000000"
+                email: customerEmail,
+                name: customerName,
+                phone: customerPhone
               },
               paymentMethod: "paypal",
             }),
@@ -61,6 +66,30 @@ function SuccessContent() {
           
           if (saveResponse.ok) {
             console.log("Order saved successfully");
+            
+            // Send email notification
+            try {
+              const emailResponse = await fetch("/api/send-order-email", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  orderId: orderId,
+                  customerEmail: customerEmail,
+                  customerName: customerName,
+                  productName: "EA ThebenchmarkTrader Full Version",
+                  amount: 7900000,
+                  paymentMethod: "paypal"
+                }),
+              });
+              
+              if (emailResponse.ok) {
+                console.log("Email sent successfully");
+              }
+            } catch (emailError) {
+              console.error("Error sending email:", emailError);
+            }
           }
         } catch (saveError) {
           console.error("Error saving order:", saveError);
