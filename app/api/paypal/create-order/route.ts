@@ -14,16 +14,18 @@ export async function POST(request: NextRequest) {
 
     // Check if PayPal is configured
     if (!process.env.PAYPAL_CLIENT_ID || !process.env.PAYPAL_CLIENT_SECRET) {
+      console.error("PayPal not configured on server");
       return NextResponse.json(
-        { success: false, error: "PayPal not configured" },
+        { success: false, error: "PayPal payment is temporarily unavailable. Please try Stripe instead." },
         { status: 503 }
       );
     }
 
     const accessToken = await getPayPalAccessToken();
     if (!accessToken) {
+      console.error("Failed to get PayPal access token");
       return NextResponse.json(
-        { success: false, error: "Failed to get PayPal access token" },
+        { success: false, error: "PayPal payment is temporarily unavailable. Please try Stripe instead." },
         { status: 500 }
       );
     }
@@ -104,29 +106,52 @@ export async function POST(request: NextRequest) {
 
 async function getPayPalAccessToken(): Promise<string | null> {
   try {
+    // Check if environment variables are set
+    if (!process.env.PAYPAL_CLIENT_ID || !process.env.PAYPAL_CLIENT_SECRET) {
+      console.error("PayPal credentials not configured:", {
+        hasClientId: !!process.env.PAYPAL_CLIENT_ID,
+        hasClientSecret: !!process.env.PAYPAL_CLIENT_SECRET,
+        mode: process.env.PAYPAL_MODE
+      });
+      return null;
+    }
+
     const auth = Buffer.from(
       `${process.env.PAYPAL_CLIENT_ID}:${process.env.PAYPAL_CLIENT_SECRET}`
     ).toString("base64");
 
-    const response = await fetch(
-      `https://api-m.${process.env.PAYPAL_MODE === 'live' ? '' : 'sandbox.'}paypal.com/v1/oauth2/token`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Basic ${auth}`,
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: "grant_type=client_credentials",
-      }
-    );
+    const baseUrl = process.env.PAYPAL_MODE === 'live' 
+      ? 'https://api-m.paypal.com' 
+      : 'https://api-m.sandbox.paypal.com';
+
+    console.log("PayPal auth request:", {
+      baseUrl,
+      mode: process.env.PAYPAL_MODE,
+      clientIdLength: process.env.PAYPAL_CLIENT_ID?.length
+    });
+
+    const response = await fetch(`${baseUrl}/v1/oauth2/token`, {
+      method: "POST",
+      headers: {
+        Authorization: `Basic ${auth}`,
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: "grant_type=client_credentials",
+    });
 
     const data = await response.json();
 
     if (!response.ok) {
-      console.error("PayPal auth failed:", data);
+      console.error("PayPal auth failed:", {
+        status: response.status,
+        statusText: response.statusText,
+        data: data,
+        baseUrl
+      });
       return null;
     }
 
+    console.log("PayPal auth successful");
     return data.access_token;
   } catch (error) {
     console.error("PayPal access token error:", error);
