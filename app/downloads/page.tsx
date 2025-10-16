@@ -135,7 +135,7 @@ export default function DownloadsPage() {
 
   // Simplified authentication check - only redirect if definitely not authenticated
   useEffect(() => {
-    // Only check once when component mounts
+    // Only check once when component mounts, with longer delay for context
     const checkAuth = () => {
       const token = localStorage.getItem('token');
       const user = localStorage.getItem('user');
@@ -147,21 +147,21 @@ export default function DownloadsPage() {
         contextReady: typeof isAuthenticated !== 'undefined'
       });
       
-      // If we have auth data in localStorage, wait for context to initialize
+      // If we have auth data in localStorage, wait longer for context to initialize
       if (token && user && !isAuthenticated) {
         console.log('Auth data exists, waiting for context...');
         return; // Don't redirect, let context handle it
       }
       
-      // Only redirect if we have NO auth data AND context says not authenticated
-      if (!token && !user && !isAuthenticated) {
-        console.log('No auth data found, redirecting to login');
+      // Only redirect if we have NO auth data AND context is ready and says not authenticated
+      if (!token && !user && isAuthenticated === false) {
+        console.log('No auth data found and context confirmed not authenticated, redirecting to login');
         router.push('/login?redirect=/downloads');
       }
     };
     
-    // Check after a short delay to allow context to initialize
-    const timeoutId = setTimeout(checkAuth, 500);
+    // Check after a longer delay to allow context to fully initialize
+    const timeoutId = setTimeout(checkAuth, 1000);
     
     return () => clearTimeout(timeoutId);
   }, []); // Only run once on mount
@@ -169,24 +169,26 @@ export default function DownloadsPage() {
   // Show loading if not authenticated yet, but only if we have auth data
   const hasAuthData = typeof window !== 'undefined' && (localStorage.getItem('token') || localStorage.getItem('user'));
   
+  // If we have auth data but context is not ready, show loading
   if (!isAuthenticated && hasAuthData) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
           <p className="text-gray-600">Đang kiểm tra quyền truy cập...</p>
+          <p className="text-xs text-gray-500 mt-2">Nếu chờ quá lâu, hãy refresh trang</p>
         </div>
       </div>
     );
   }
   
-  // If no auth data at all, let the useEffect handle the redirect
+  // If no auth data and context confirmed not authenticated, show redirect message
   if (!isAuthenticated && !hasAuthData) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Đang chuyển hướng...</p>
+          <p className="text-gray-600">Đang chuyển hướng đến trang đăng nhập...</p>
         </div>
       </div>
     );
