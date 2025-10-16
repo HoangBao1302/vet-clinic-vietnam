@@ -14,7 +14,11 @@ export async function POST(request: NextRequest) {
 
     // Check if PayPal is configured
     if (!process.env.PAYPAL_CLIENT_ID || !process.env.PAYPAL_CLIENT_SECRET) {
-      console.error("PayPal not configured on server");
+      console.error("PayPal not configured on server:", {
+        hasClientId: !!process.env.PAYPAL_CLIENT_ID,
+        hasClientSecret: !!process.env.PAYPAL_CLIENT_SECRET,
+        mode: process.env.PAYPAL_MODE
+      });
       return NextResponse.json(
         { success: false, error: "PayPal payment is temporarily unavailable. Please try Stripe instead." },
         { status: 503 }
@@ -155,7 +159,9 @@ async function getPayPalAccessToken(): Promise<string | null> {
     console.log("PayPal auth request:", {
       baseUrl,
       mode: process.env.PAYPAL_MODE,
-      clientIdLength: process.env.PAYPAL_CLIENT_ID?.length
+      clientIdLength: process.env.PAYPAL_CLIENT_ID?.length,
+      clientIdPrefix: process.env.PAYPAL_CLIENT_ID?.substring(0, 10) + "...",
+      isLiveMode: process.env.PAYPAL_MODE === 'live'
     });
 
     const response = await fetch(`${baseUrl}/v1/oauth2/token`, {
@@ -174,12 +180,18 @@ async function getPayPalAccessToken(): Promise<string | null> {
         status: response.status,
         statusText: response.statusText,
         data: data,
-        baseUrl
+        baseUrl,
+        mode: process.env.PAYPAL_MODE,
+        clientIdPrefix: process.env.PAYPAL_CLIENT_ID?.substring(0, 10) + "..."
       });
       return null;
     }
 
-    console.log("PayPal auth successful");
+    console.log("PayPal auth successful:", {
+      mode: process.env.PAYPAL_MODE,
+      baseUrl,
+      tokenLength: data.access_token?.length
+    });
     return data.access_token;
   } catch (error) {
     console.error("PayPal access token error:", error);
