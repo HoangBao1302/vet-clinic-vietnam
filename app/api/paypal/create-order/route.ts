@@ -57,20 +57,18 @@ export async function POST(request: NextRequest) {
       },
     };
 
-    // Only add payer info for live mode, sandbox doesn't need it
-    if (process.env.PAYPAL_MODE === 'live') {
-      orderData.payer = {
-        name: {
-          given_name: customerInfo.name,
+    // Add payer info for both live and sandbox modes
+    orderData.payer = {
+      name: {
+        given_name: customerInfo.name,
+      },
+      email_address: customerInfo.email,
+      phone: {
+        phone_number: {
+          national_number: customerInfo.phone,
         },
-        email_address: customerInfo.email,
-        phone: {
-          phone_number: {
-            national_number: customerInfo.phone,
-          },
-        },
-      };
-    }
+      },
+    };
 
     const response = await fetch(
       `https://api-m.${process.env.PAYPAL_MODE === 'live' ? '' : 'sandbox.'}paypal.com/v2/checkout/orders`,

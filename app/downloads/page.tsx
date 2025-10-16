@@ -459,6 +459,7 @@ export default function DownloadsPage() {
                     </div>
                     <div className="text-xs text-blue-600 mt-1">
                       PayPal: ${((item.price || 0) / 24000).toFixed(2)} USD
+                      <span className="text-orange-600 ml-1">(Sandbox)</span>
                     </div>
                   </div>
 

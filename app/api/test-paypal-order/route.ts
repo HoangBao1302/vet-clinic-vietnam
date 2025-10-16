@@ -95,20 +95,18 @@ export async function POST(request: NextRequest) {
       },
     };
 
-    // Add payer info for live mode
-    if (process.env.PAYPAL_MODE === 'live') {
-      orderData.payer = {
-        name: {
-          given_name: customerInfo.name,
+    // Add payer info for both live and sandbox modes
+    orderData.payer = {
+      name: {
+        given_name: customerInfo.name,
+      },
+      email_address: customerInfo.email,
+      phone: {
+        phone_number: {
+          national_number: customerInfo.phone,
         },
-        email_address: customerInfo.email,
-        phone: {
-          phone_number: {
-            national_number: customerInfo.phone,
-          },
-        },
-      };
-    }
+      },
+    };
 
     const orderResponse = await fetch(
       `${baseUrl}/v2/checkout/orders`,

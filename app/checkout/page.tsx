@@ -118,6 +118,7 @@ function CheckoutContent() {
                   {paymentMethod === "paypal" && (
                     <div className="text-sm text-gray-600 mt-1 text-right">
                       ≈ ${(itemPrice / 24000).toFixed(2)} USD
+                      <span className="text-orange-600 ml-1">(Sandbox)</span>
                     </div>
                   )}
                 </div>
