@@ -1,16 +1,18 @@
 "use client";
 
-import { useEffect, useState, Suspense } from "react";
+import { useEffect, useState, Suspense, useContext } from "react";
 import { useSearchParams } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { CheckCircle, Download, Mail, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { AuthContext } from "@/lib/authContext";
 
 function SuccessContent() {
   const searchParams = useSearchParams();
   const [orderInfo, setOrderInfo] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const { user } = useContext(AuthContext);
   const sessionId = searchParams.get("session_id");
   const orderId = searchParams.get("order") || searchParams.get("token") || searchParams.get("PayerID");
   const paymentMethod = searchParams.get("payment_method") || "stripe";
@@ -38,10 +40,10 @@ function SuccessContent() {
         // For PayPal, save order and send email
         console.log("PayPal order approved:", orderId);
         
-        // Get customer info from localStorage or URL params
-        const customerEmail = searchParams.get("email") || "hoangkim.helen@gmail.com";
-        const customerName = searchParams.get("name") || "Hoang Kim";
-        const customerPhone = searchParams.get("phone") || "0900000000";
+        // Get customer info from AuthContext, URL params, or fallback
+        const customerEmail = searchParams.get("email") || user?.email || "customer@example.com";
+        const customerName = searchParams.get("name") || user?.name || "Customer";
+        const customerPhone = searchParams.get("phone") || user?.phone || "0900000000";
         
         // Save order to database
         try {
