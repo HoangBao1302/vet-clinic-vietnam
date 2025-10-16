@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
+import connectDB from "@/lib/mongodb";
+import Order from "@/lib/models/Order";
 
 export async function POST(request: NextRequest) {
   try {
@@ -8,52 +8,52 @@ export async function POST(request: NextRequest) {
     
     console.log("Saving order:", { orderId, productId, productName, amount, customerInfo, paymentMethod });
     
-    // Create order record
-    const order = {
-      orderId: orderId,
-      productId: productId,
-      productName: productName,
-      status: "paid",
-      customerEmail: customerInfo?.email,
-      customerName: customerInfo?.name,
-      customerPhone: customerInfo?.phone,
-      amount: amount,
-      createdAt: new Date().toISOString(),
-      paidAt: new Date().toISOString(),
-      paymentMethod: paymentMethod || "paypal",
-    };
+    if (!orderId) {
+      return NextResponse.json(
+        { success: false, error: "Order ID is required" },
+        { status: 400 }
+      );
+    }
     
-    // Save to JSON file (simple storage for now)
-    const ordersPath = path.join(process.cwd(), "data", "orders.json");
+    // Connect to MongoDB
+    await connectDB();
     
-    try {
-      // Read existing orders
-      let orders = [];
-      if (fs.existsSync(ordersPath)) {
-        const data = fs.readFileSync(ordersPath, "utf8");
-        orders = JSON.parse(data);
-      }
-      
-      // Add new order
-      orders.push(order);
-      
-      // Write back to file
-      fs.writeFileSync(ordersPath, JSON.stringify(orders, null, 2));
-      
-      console.log("Order saved successfully:", orderId);
-      
+    // Check if order already exists
+    const existingOrder = await Order.findOne({ orderId });
+    if (existingOrder) {
+      console.log("Order already exists:", orderId);
       return NextResponse.json({
         success: true,
         orderId: orderId,
-        message: "Order saved successfully"
+        message: "Order already exists",
+        order: existingOrder
       });
-    } catch (fileError) {
-      console.error("Error saving order to file:", fileError);
-      return NextResponse.json(
-        { success: false, error: "Failed to save order" },
-        { status: 500 }
-      );
     }
+    
+    // Create new order
+    const order = new Order({
+      orderId: orderId,
+      productId: productId || "ea-full",
+      productName: productName || "EA ThebenchmarkTrader Full Version",
+      status: "paid",
+      customerEmail: customerInfo?.email || "hoangkim.helen@gmail.com",
+      customerName: customerInfo?.name || "Hoang Kim",
+      customerPhone: customerInfo?.phone || "0900000000",
+      amount: amount || 7900000,
+      paymentMethod: paymentMethod || "paypal",
+    });
+    
+    // Save to MongoDB
+    const savedOrder = await order.save();
+    
+    console.log("Order saved successfully:", orderId);
+    
+    return NextResponse.json({
+      success: true,
+      orderId: orderId,
+      message: "Order saved successfully",
+      order: savedOrder
+    });
   } catch (error: any) {
     console.error("Save order error:", error);
     return NextResponse.json(

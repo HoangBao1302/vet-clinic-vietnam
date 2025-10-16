@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
+import connectDB from "@/lib/mongodb";
+import Order from "@/lib/models/Order";
 
 export async function GET(request: NextRequest) {
   try {
@@ -72,26 +72,23 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // First check local orders.json file
+    // First check MongoDB
     try {
-      const ordersPath = path.join(process.cwd(), "data", "orders.json");
-      if (fs.existsSync(ordersPath)) {
-        const data = fs.readFileSync(ordersPath, "utf8");
-        const orders = JSON.parse(data);
-        
-        const order = orders.find((o: any) => o.orderId === orderId);
-        if (order && order.status === "paid") {
-          const item = getProductById(productId);
-          return NextResponse.json({
-            verified: true,
-            orderId: orderId,
-            downloadUrl: item?.downloadUrl,
-            productId: order.productId,
-          });
-        }
+      await connectDB();
+      const order = await Order.findOne({ orderId });
+      
+      if (order && order.status === "paid") {
+        const item = getProductById(productId || order.productId);
+        return NextResponse.json({
+          verified: true,
+          orderId: orderId,
+          downloadUrl: item?.downloadUrl,
+          productId: order.productId,
+          order: order
+        });
       }
-    } catch (fileError) {
-      console.error("Error reading orders file:", fileError);
+    } catch (dbError) {
+      console.error("Error checking MongoDB:", dbError);
     }
 
     // Try to verify as Stripe session first

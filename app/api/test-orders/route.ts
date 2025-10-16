@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
+import connectDB from "@/lib/mongodb";
+import Order from "@/lib/models/Order";
 
 export async function GET(request: NextRequest) {
   try {
@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
     
     if (action === "save") {
       // Manually save a test order
-      const order = {
+      const order = new Order({
         orderId: "9L009352AH601417",
         productId: "ea-full",
         productName: "EA ThebenchmarkTrader Full Version",
@@ -18,67 +18,55 @@ export async function GET(request: NextRequest) {
         customerName: "Hoang Kim",
         customerPhone: "0900000000",
         amount: 7900000,
-        createdAt: new Date().toISOString(),
-        paidAt: new Date().toISOString(),
         paymentMethod: "paypal",
-      };
-      
-      const ordersPath = path.join(process.cwd(), "data", "orders.json");
+      });
       
       try {
-        let orders = [];
-        if (fs.existsSync(ordersPath)) {
-          const data = fs.readFileSync(ordersPath, "utf8");
-          orders = JSON.parse(data);
-        }
+        await connectDB();
         
         // Check if order already exists
-        const existingOrder = orders.find((o: any) => o.orderId === order.orderId);
+        const existingOrder = await Order.findOne({ orderId: order.orderId });
         if (existingOrder) {
           return NextResponse.json({
             success: true,
             message: "Order already exists",
             order: existingOrder,
-            allOrders: orders
+            allOrders: await Order.find({})
           });
         }
         
-        orders.push(order);
-        fs.writeFileSync(ordersPath, JSON.stringify(orders, null, 2));
+        const savedOrder = await order.save();
         
         return NextResponse.json({
           success: true,
           message: "Order saved successfully",
-          order: order,
-          allOrders: orders
+          order: savedOrder,
+          allOrders: await Order.find({})
         });
       } catch (fileError) {
         return NextResponse.json(
-          { success: false, error: `File error: ${fileError}` },
+          { success: false, error: `Database error: ${fileError}` },
           { status: 500 }
         );
       }
     }
     
     // Default: return all orders
-    const ordersPath = path.join(process.cwd(), "data", "orders.json");
-    
-    if (!fs.existsSync(ordersPath)) {
+    try {
+      await connectDB();
+      const orders = await Order.find({});
+      
       return NextResponse.json({
         success: true,
-        orders: [],
-        message: "Orders file not found"
+        orders: orders,
+        totalOrders: orders.length
       });
+    } catch (dbError) {
+      return NextResponse.json(
+        { success: false, error: `Database error: ${dbError}` },
+        { status: 500 }
+      );
     }
-    
-    const data = fs.readFileSync(ordersPath, "utf8");
-    const orders = JSON.parse(data);
-    
-    return NextResponse.json({
-      success: true,
-      orders: orders,
-      totalOrders: orders.length
-    });
   } catch (error: any) {
     return NextResponse.json(
       { success: false, error: error.message },
