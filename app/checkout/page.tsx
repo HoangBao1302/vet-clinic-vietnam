@@ -16,6 +16,7 @@ function CheckoutContent() {
   const itemName = searchParams.get("name") || "";
   const itemPrice = parseInt(searchParams.get("price") || "0");
   const paymentMethod = searchParams.get("method") as "stripe" | "paypal" || "stripe";
+  const affiliateCode = searchParams.get("affiliate") || "";
 
   const [formData, setFormData] = useState({
     name: "",
@@ -47,7 +48,8 @@ function CheckoutContent() {
           productName: itemName,
           amount: itemPrice,
           method: paymentMethod,
-          customerInfo: formData
+          customerInfo: formData,
+          affiliateCode: affiliateCode // Add affiliate tracking
         }),
       });
 

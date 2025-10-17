@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import ChatWidget from "@/components/ChatWidget";
+import AffiliateTracker from "@/components/AffiliateTracker";
 import { AuthProvider } from "@/lib/authContext";
 
 export const metadata: Metadata = {
@@ -57,6 +58,7 @@ export default function RootLayout({
         <AuthProvider>
           {children}
           <ChatWidget />
+          <AffiliateTracker />
         </AuthProvider>
       </body>
     </html>

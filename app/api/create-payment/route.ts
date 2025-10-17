@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   try {
-    const { productId, productName, amount, method, customerInfo } = await request.json();
+    const { productId, productName, amount, method, customerInfo, affiliateCode } = await request.json();
 
     // Validate input
     if (!productId || !productName || !amount || !method || !customerInfo) {
@@ -52,6 +52,7 @@ export async function POST(request: NextRequest) {
             productId,
             customerName: customerInfo.name,
             customerPhone: customerInfo.phone,
+            affiliateCode: affiliateCode || '',
           },
         });
 
@@ -87,7 +88,8 @@ export async function POST(request: NextRequest) {
             productId,
             productName,
             amount,
-            customerInfo
+            customerInfo,
+            affiliateCode
           }),
         });
 

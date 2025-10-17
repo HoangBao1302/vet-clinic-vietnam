@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
+import connectDB from "@/lib/mongodb";
+import AffiliateClick from "@/lib/models/AffiliateClick";
+import User from "@/lib/models/User";
 
 export async function POST(request: NextRequest) {
   try {
@@ -55,6 +58,57 @@ export async function POST(request: NextRequest) {
       };
 
       console.log("Order details:", order);
+
+      // Connect to database for affiliate tracking
+      await connectDB();
+
+      // Handle affiliate conversion
+      const affiliateCode = session.metadata?.affiliateCode;
+      if (affiliateCode) {
+        try {
+          // Find the affiliate user
+          const affiliate = await User.findOne({ 
+            affiliateCode, 
+            affiliateStatus: 'approved' 
+          });
+
+          if (affiliate) {
+            // Calculate commission
+            const commissionRates = {
+              'ea-full': affiliate.isPaid ? 0.35 : 0.30,
+              'ea-pro-source': affiliate.isPaid ? 0.35 : 0.30,
+              'indicator-pro': affiliate.isPaid ? 0.35 : 0.30,
+              'course': 0.25,
+              'social-copy': 0.10,
+            };
+
+            const commissionRate = commissionRates[session.metadata?.productId as keyof typeof commissionRates] || 0.30;
+            const commissionAmount = Math.round(session.amount_total * commissionRate);
+
+            // Update affiliate click record
+            await AffiliateClick.updateOne(
+              { affiliateCode },
+              {
+                $set: {
+                  convertedAt: new Date(),
+                  orderId: session.id,
+                  commissionAmount,
+                  productId: session.metadata?.productId,
+                  productName: session.metadata?.productName || 'Unknown Product',
+                  customerEmail: session.customer_email,
+                  customerName: session.metadata?.customerName,
+                  status: 'converted',
+                },
+              },
+              { sort: { clickedAt: -1 } } // Update the most recent click
+            );
+
+            console.log(`Affiliate conversion tracked: ${affiliateCode}, Commission: ${commissionAmount}đ`);
+          }
+        } catch (affiliateError) {
+          console.error('Affiliate conversion tracking error:', affiliateError);
+        }
+      }
 
       // Send email notification using Nodemailer
       if (session.customer_email) {

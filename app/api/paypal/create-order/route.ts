@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   try {
-    const { productId, productName, amount, customerInfo } = await request.json();
+    const { productId, productName, amount, customerInfo, affiliateCode } = await request.json();
 
     // Validate input
     if (!productId || !productName || !amount || !customerInfo) {
@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
             value: (amount / 100 / 24000).toFixed(2), // Convert VND to USD (1 USD ≈ 24,000 VND)
           },
           description: productName,
-          custom_id: productId,
+          custom_id: `${productId}|${affiliateCode || ''}`,
         },
       ],
       application_context: {
