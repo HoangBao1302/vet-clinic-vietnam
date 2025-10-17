@@ -72,7 +72,7 @@ export function middleware(request: NextRequest) {
         console.log('Non-admin user trying to access admin route:', { pathname, userRole: payload.role });
         return NextResponse.redirect(new URL('/unauthorized', request.url));
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log('Invalid token for admin route:', { pathname, error: error.message });
       return NextResponse.redirect(new URL('/login', request.url));
     }
