@@ -59,6 +59,24 @@ export default function AffiliateDashboard() {
     try {
       const token = localStorage.getItem('token');
       
+      // First check affiliate access
+      const accessResponse = await fetch('/api/affiliate/check-access', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (accessResponse.ok) {
+        const accessData = await accessResponse.json();
+        console.log('Affiliate access check:', accessData);
+        
+        if (!accessData.canAccessDashboard) {
+          setError(`Cannot access dashboard: ${accessData.reason}`);
+          setLoading(false);
+          return;
+        }
+      }
+      
       // Fetch tracking links
       const linksResponse = await fetch('/api/affiliate/links', {
         headers: {
@@ -69,6 +87,9 @@ export default function AffiliateDashboard() {
       if (linksResponse.ok) {
         const linksData = await linksResponse.json();
         setTrackingLinks(linksData.products);
+      } else {
+        const errorData = await linksResponse.json();
+        setError(`Failed to fetch links: ${errorData.message}`);
       }
 
       // Fetch stats
@@ -81,9 +102,12 @@ export default function AffiliateDashboard() {
       if (statsResponse.ok) {
         const statsData = await statsResponse.json();
         setStats(statsData.stats);
+      } else {
+        const errorData = await statsResponse.json();
+        console.error('Failed to fetch stats:', errorData);
       }
     } catch (err) {
-      setError('Lỗi tải dữ liệu');
+      setError('Lỗi tải dữ liệu: ' + err.message);
     } finally {
       setLoading(false);
     }
@@ -127,6 +151,10 @@ export default function AffiliateDashboard() {
             </h1>
             <p className="text-green-100 mt-2">
               Mã affiliate: <span className="font-mono font-bold">{user?.affiliateCode}</span>
+            </p>
+            <p className="text-green-100 text-sm mt-1">
+              Status: <span className="font-bold">{user?.affiliateStatus}</span> | 
+              Membership: <span className="font-bold">{user?.membershipTier}</span>
             </p>
           </div>
         </section>
