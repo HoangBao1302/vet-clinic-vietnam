@@ -42,27 +42,40 @@ export default function AffiliateDashboard() {
   const [error, setError] = useState("");
 
   useEffect(() => {
+    console.log('Affiliate Dashboard Auth Check:', {
+      isAuthenticated,
+      user,
+      affiliateStatus: user?.affiliateStatus,
+      hasToken: typeof window !== 'undefined' ? !!localStorage.getItem('token') : false
+    });
+
     // Wait for authentication to be determined
     if (typeof isAuthenticated === 'undefined') {
+      console.log('Auth still loading...');
       return; // Still loading
     }
 
     if (!isAuthenticated) {
+      console.log('Not authenticated, redirecting to login');
       router.push('/login?redirect=/affiliate/dashboard');
       return;
     }
 
     // Check if user has affiliate access
     if (!user) {
+      console.log('User data still loading...');
       return; // Still loading user data
     }
 
+    console.log('User loaded, checking affiliate status:', user.affiliateStatus);
+
     if (user.affiliateStatus !== 'approved') {
-      console.log('User affiliate status:', user.affiliateStatus);
+      console.log('User affiliate status not approved:', user.affiliateStatus);
       router.push('/referral');
       return;
     }
 
+    console.log('All checks passed, fetching data...');
     fetchData();
   }, [isAuthenticated, user, router]);
 
@@ -137,11 +150,23 @@ export default function AffiliateDashboard() {
           <div className="container-custom py-20 text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
             <p className="text-gray-600">Checking affiliate access...</p>
-            <div className="mt-4 text-sm text-gray-500">
-              <p>Debug Info:</p>
-              <p>isAuthenticated: {String(isAuthenticated)}</p>
-              <p>user: {user ? 'loaded' : 'loading'}</p>
-              <p>affiliateStatus: {user?.affiliateStatus || 'none'}</p>
+            <div className="mt-4 text-sm text-gray-500 max-w-md mx-auto">
+              <p className="font-semibold mb-2">Debug Info:</p>
+              <div className="bg-gray-100 p-4 rounded text-left">
+                <p>isAuthenticated: <span className={isAuthenticated ? 'text-green-600' : 'text-red-600'}>{String(isAuthenticated)}</span></p>
+                <p>user: <span className={user ? 'text-green-600' : 'text-yellow-600'}>{user ? 'loaded' : 'loading'}</span></p>
+                <p>affiliateStatus: <span className={user?.affiliateStatus === 'approved' ? 'text-green-600' : 'text-red-600'}>{user?.affiliateStatus || 'none'}</span></p>
+                <p>affiliateCode: <span className="font-mono text-xs">{user?.affiliateCode || 'NOT SET'}</span></p>
+                <p>hasToken: <span className={typeof window !== 'undefined' && localStorage.getItem('token') ? 'text-green-600' : 'text-red-600'}>{typeof window !== 'undefined' && localStorage.getItem('token') ? 'Yes' : 'No'}</span></p>
+              </div>
+              <div className="mt-4">
+                <button
+                  onClick={() => window.location.reload()}
+                  className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                >
+                  🔄 Refresh Page
+                </button>
+              </div>
             </div>
           </div>
         </main>
