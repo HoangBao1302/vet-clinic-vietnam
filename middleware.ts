@@ -55,27 +55,18 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // Let admin routes handle auth on client-side to prevent refresh loops
+  if (isAdminOnlyRoute) {
+    console.log('Admin route: Letting through to client-side auth check');
+    return NextResponse.next();
+  }
+
   // Redirect to login if accessing protected route without token
-  if ((isProtectedRoute || isPaidOnlyRoute || isAdminOnlyRoute) && !token) {
+  if ((isProtectedRoute || isPaidOnlyRoute) && !token) {
     console.log('Redirecting to login:', { pathname, hasToken: !!token });
     const loginUrl = new URL('/login', request.url);
     loginUrl.searchParams.set('redirect', pathname);
     return NextResponse.redirect(loginUrl);
-  }
-
-  // For admin routes, check if user has admin role
-  if (isAdminOnlyRoute && token) {
-    try {
-      // Simple JWT decode without verification (just for role check)
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      if (payload.role !== 'admin') {
-        console.log('Non-admin user trying to access admin route:', { pathname, userRole: payload.role });
-        return NextResponse.redirect(new URL('/unauthorized', request.url));
-      }
-    } catch (error: any) {
-      console.log('Invalid token for admin route:', { pathname, error: error.message });
-      return NextResponse.redirect(new URL('/login', request.url));
-    }
   }
 
   return NextResponse.next();
