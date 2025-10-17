@@ -16,6 +16,8 @@ interface AffiliateStats {
   conversions: number;
   conversionRate: number;
   totalCommission: number;
+  totalCommissionPaid: number;
+  availableBalance: number;
   breakdown: Array<{
     _id: string;
     count: number;
@@ -147,6 +149,20 @@ export default function AffiliateDashboard() {
         setError(`Failed to fetch links: ${errorData.message}`);
       }
 
+      // Fetch user stats to get totalCommissionPaid
+      const userStatsResponse = await fetch('/api/user/stats', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      let totalCommissionPaid = 0;
+      if (userStatsResponse.ok) {
+        const userStatsData = await userStatsResponse.json();
+        totalCommissionPaid = userStatsData.stats?.totalCommissionPaid || 0;
+        console.log('User commission paid:', totalCommissionPaid);
+      }
+
       // Fetch stats
       const statsResponse = await fetch(`/api/affiliate/track?affiliateCode=${user?.affiliateCode}`, {
         headers: {
@@ -156,7 +172,12 @@ export default function AffiliateDashboard() {
 
       if (statsResponse.ok) {
         const statsData = await statsResponse.json();
-        setStats(statsData.stats);
+        const totalCommission = statsData.stats.totalCommission || 0;
+        setStats({
+          ...statsData.stats,
+          totalCommissionPaid,
+          availableBalance: totalCommission - totalCommissionPaid
+        });
       } else {
         const errorData = await statsResponse.json();
         console.error('Failed to fetch stats:', errorData);
@@ -283,8 +304,8 @@ export default function AffiliateDashboard() {
                 </p>
                 <p className="text-sm text-gray-600">Total Commission Earned</p>
                 <div className="mt-2 pt-2 border-t border-gray-200">
-                  <p className="text-xs text-gray-500">Đã rút: {((user as any)?.totalCommissionPaid || 0).toLocaleString('vi-VN')}đ</p>
-                  <p className="text-xs text-green-600 font-semibold">Khả dụng: {((stats?.totalCommission || 0) - ((user as any)?.totalCommissionPaid || 0)).toLocaleString('vi-VN')}đ</p>
+                  <p className="text-xs text-gray-500">Đã rút: {(stats?.totalCommissionPaid || 0).toLocaleString('vi-VN')}đ</p>
+                  <p className="text-xs text-green-600 font-semibold">Khả dụng: {(stats?.availableBalance || 0).toLocaleString('vi-VN')}đ</p>
                 </div>
               </div>
             </div>
