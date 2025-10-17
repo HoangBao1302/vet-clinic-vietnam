@@ -31,6 +31,8 @@ export default function PaymentRequestPage() {
   const router = useRouter();
   const { user, isAuthenticated } = useAuth();
   const [paymentRequests, setPaymentRequests] = useState<PaymentRequest[]>([]);
+  const [availableBalance, setAvailableBalance] = useState(0);
+  const [totalCommission, setTotalCommission] = useState(0);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [showForm, setShowForm] = useState(false);
@@ -64,6 +66,8 @@ export default function PaymentRequestPage() {
   const fetchPaymentRequests = async () => {
     try {
       const token = localStorage.getItem('token');
+      
+      // Fetch payment requests
       const response = await fetch('/api/affiliate/payment-request', {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -73,6 +77,32 @@ export default function PaymentRequestPage() {
       if (response.ok) {
         const data = await response.json();
         setPaymentRequests(data.paymentRequests);
+      }
+
+      // Fetch user stats to get available balance
+      const userStatsResponse = await fetch('/api/user/stats', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (userStatsResponse.ok) {
+        const userStatsData = await userStatsResponse.json();
+        const totalCommissionPaid = userStatsData.stats?.totalCommissionPaid || 0;
+        
+        // Fetch affiliate stats
+        const statsResponse = await fetch(`/api/affiliate/track?affiliateCode=${user?.affiliateCode}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (statsResponse.ok) {
+          const statsData = await statsResponse.json();
+          const totalCommissionEarned = statsData.stats.totalCommission || 0;
+          setTotalCommission(totalCommissionEarned);
+          setAvailableBalance(totalCommissionEarned - totalCommissionPaid);
+        }
       }
     } catch (error) {
       console.error('Error fetching payment requests:', error);
@@ -205,12 +235,47 @@ export default function PaymentRequestPage() {
               </div>
             )}
 
+            {/* Balance Info */}
+            <div className="mb-6 bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-6">
+              <div className="grid md:grid-cols-3 gap-4 text-center mb-4">
+                <div>
+                  <p className="text-sm text-gray-600 mb-1">Tổng kiếm được</p>
+                  <p className="text-2xl font-bold text-gray-800">{totalCommission.toLocaleString('vi-VN')}đ</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-600 mb-1">Đã rút</p>
+                  <p className="text-2xl font-bold text-red-600">-{(totalCommission - availableBalance).toLocaleString('vi-VN')}đ</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-600 mb-1">Khả dụng</p>
+                  <p className="text-2xl font-bold text-green-600">{availableBalance.toLocaleString('vi-VN')}đ</p>
+                </div>
+              </div>
+              
+              {availableBalance < 500000 && (
+                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-sm">
+                  <p className="text-yellow-800 font-semibold mb-1">⚠️ Chưa đủ điều kiện rút tiền</p>
+                  <p className="text-yellow-700 text-xs">
+                    Cần thêm: <span className="font-semibold text-red-600">{(500000 - availableBalance).toLocaleString('vi-VN')}đ</span> để đạt tối thiểu rút tiền (500,000đ)
+                  </p>
+                  <p className="text-yellow-600 text-xs mt-2">
+                    💡 Tiếp tục chia sẻ link affiliate để kiếm thêm hoa hồng!
+                  </p>
+                </div>
+              )}
+            </div>
+
             {/* Action Buttons */}
             <div className="mb-8 flex justify-between items-center">
               <h2 className="text-2xl font-bold text-gray-800">Lịch Sử Yêu Cầu</h2>
               <button
-                onClick={() => setShowForm(!showForm)}
-                className="flex items-center gap-2 px-6 py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors"
+                onClick={() => availableBalance >= 500000 ? setShowForm(!showForm) : alert('Số dư chưa đủ tối thiểu 500,000đ để tạo yêu cầu thanh toán')}
+                className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-colors ${
+                  availableBalance >= 500000 
+                    ? 'bg-green-600 text-white hover:bg-green-700' 
+                    : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                }`}
+                disabled={availableBalance < 500000}
               >
                 <Plus size={20} />
                 Tạo Yêu Cầu Mới

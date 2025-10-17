@@ -395,16 +395,43 @@ export default function AffiliateDashboard() {
                 </div>
               </div>
               <div className="pt-4 border-t border-gray-200 space-y-2">
-                <button
-                  onClick={() => router.push('/affiliate/payment-request')}
-                  className="w-full px-6 py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center justify-center gap-2"
-                >
-                  <DollarSign size={20} />
-                  Yêu Cầu Thanh Toán
-                </button>
-                <p className="text-xs text-center text-gray-500">
-                  💡 Số dư khả dụng: {(stats?.availableBalance || 0).toLocaleString('vi-VN')}đ
-                </p>
+                {(stats?.availableBalance || 0) >= 500000 ? (
+                  <>
+                    <button
+                      onClick={() => router.push('/affiliate/payment-request')}
+                      className="w-full px-6 py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center justify-center gap-2"
+                    >
+                      <DollarSign size={20} />
+                      Yêu Cầu Thanh Toán
+                    </button>
+                    <p className="text-xs text-center text-gray-500">
+                      💡 Số dư khả dụng: {(stats?.availableBalance || 0).toLocaleString('vi-VN')}đ
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      disabled
+                      className="w-full px-6 py-3 bg-gray-300 text-gray-500 rounded-lg font-semibold cursor-not-allowed flex items-center justify-center gap-2"
+                      title="Số dư chưa đủ tối thiểu 500,000đ"
+                    >
+                      <DollarSign size={20} />
+                      Yêu Cầu Thanh Toán
+                    </button>
+                    <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 text-sm">
+                      <p className="text-yellow-800 font-semibold mb-1">⚠️ Chưa đủ điều kiện rút tiền</p>
+                      <p className="text-yellow-700 text-xs">
+                        Số dư hiện tại: <span className="font-semibold">{(stats?.availableBalance || 0).toLocaleString('vi-VN')}đ</span>
+                      </p>
+                      <p className="text-yellow-700 text-xs">
+                        Cần thêm: <span className="font-semibold text-red-600">{(500000 - (stats?.availableBalance || 0)).toLocaleString('vi-VN')}đ</span> để đạt tối thiểu rút tiền (500,000đ)
+                      </p>
+                      <p className="text-yellow-600 text-xs mt-2">
+                        💡 Tiếp tục chia sẻ link affiliate để kiếm thêm hoa hồng!
+                      </p>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </div>
