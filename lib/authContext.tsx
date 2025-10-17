@@ -18,6 +18,7 @@ interface AuthContextType {
   token: string | null;
   login: (token: string, user: User) => void;
   logout: () => void;
+  refreshUser: () => Promise<void>;
   isAuthenticated: boolean;
   isAdmin: boolean;
 }
@@ -156,11 +157,40 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax; Secure';
   };
 
+  const refreshUser = async () => {
+    if (!token) return;
+    
+    try {
+      const response = await fetch('/api/user/refresh', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success && data.user) {
+          setUser(data.user);
+          localStorage.setItem('user', JSON.stringify(data.user));
+          sessionStorage.setItem('user', JSON.stringify(data.user));
+          console.log('User data refreshed:', data.user);
+        }
+      } else {
+        console.error('Failed to refresh user data:', await response.text());
+      }
+    } catch (error) {
+      console.error('Error refreshing user data:', error);
+    }
+  };
+
   const value = {
     user,
     token,
     login,
     logout,
+    refreshUser,
     isAuthenticated: !!token && !!user,
     isAdmin: user?.role === 'admin',
   };

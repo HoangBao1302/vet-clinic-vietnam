@@ -6,7 +6,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 export default function AffiliateTestPage() {
-  const { user, isAuthenticated, token } = useAuth();
+  const { user, isAuthenticated, token, refreshUser } = useAuth();
   const [debugInfo, setDebugInfo] = useState<any>(null);
 
   useEffect(() => {
@@ -110,6 +110,31 @@ export default function AffiliateTestPage() {
 
             <div className="bg-white rounded-lg shadow-md p-6">
               <h2 className="text-2xl font-semibold mb-4">Quick Actions</h2>
+              
+              <div className="mb-6">
+                <button
+                  onClick={async () => {
+                    await refreshUser();
+                    // Refresh debug info after user refresh
+                    const tokenValue = localStorage.getItem('token');
+                    const userValue = localStorage.getItem('user');
+                    setDebugInfo({
+                      isAuthenticated,
+                      user,
+                      token,
+                      localStorageToken: tokenValue ? 'exists' : 'missing',
+                      localStorageUser: userValue ? 'exists' : 'missing',
+                      userParsed: userValue ? JSON.parse(userValue) : null
+                    });
+                  }}
+                  className="w-full px-6 py-3 bg-yellow-600 text-white rounded-lg font-semibold hover:bg-yellow-700 transition-colors"
+                >
+                  🔄 Refresh User Data (Force Update from Database)
+                </button>
+                <p className="text-sm text-gray-500 mt-2 text-center">
+                  Click this if admin approved your affiliate status but you still see "none"
+                </p>
+              </div>
               
               <div className="grid md:grid-cols-2 gap-4">
                 <a
