@@ -28,7 +28,7 @@ export async function GET(request: NextRequest) {
 
     // Get user stats
     const user = await User.findById(decoded.userId).select(
-      'downloadsThisMonth premiumPostsReadThisMonth affiliateStatus affiliateCode membershipTier isPaid totalPostsRead readingTimeMinutes favoriteCategories lastReadDate'
+      'downloadsThisMonth premiumPostsReadThisMonth affiliateStatus affiliateCode membershipTier isPaid totalPostsRead readingTimeMinutes favoriteCategories lastReadDate totalCommissionEarned totalCommissionPaid'
     );
 
     if (!user) {
@@ -64,6 +64,8 @@ export async function GET(request: NextRequest) {
         affiliateCode: user.affiliateCode,
         membershipTier: user.membershipTier,
         isPaid: user.isPaid,
+        totalCommissionEarned: user.totalCommissionEarned || 0,
+        totalCommissionPaid: user.totalCommissionPaid || 0,
       },
     });
   } catch (error: any) {

@@ -11,6 +11,8 @@ interface User {
   membershipTier?: 'free' | 'paid';
   affiliateStatus?: 'none' | 'pending' | 'approved' | 'rejected';
   affiliateCode?: string;
+  totalCommissionEarned?: number;
+  totalCommissionPaid?: number;
 }
 
 interface AuthContextType {

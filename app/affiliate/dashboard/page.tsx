@@ -281,7 +281,11 @@ export default function AffiliateDashboard() {
                 <p className="text-3xl font-bold text-gray-800">
                   {(stats?.totalCommission || 0).toLocaleString('vi-VN')}đ
                 </p>
-                <p className="text-sm text-gray-600">Total Commission</p>
+                <p className="text-sm text-gray-600">Total Commission Earned</p>
+                <div className="mt-2 pt-2 border-t border-gray-200">
+                  <p className="text-xs text-gray-500">Đã rút: {((user as any)?.totalCommissionPaid || 0).toLocaleString('vi-VN')}đ</p>
+                  <p className="text-xs text-green-600 font-semibold">Khả dụng: {((stats?.totalCommission || 0) - ((user as any)?.totalCommissionPaid || 0)).toLocaleString('vi-VN')}đ</p>
+                </div>
               </div>
             </div>
 

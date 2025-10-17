@@ -21,6 +21,8 @@ export interface IUser extends mongoose.Document {
   purchasedProducts: string[];
   affiliateStatus?: 'none' | 'pending' | 'approved' | 'rejected';
   affiliateCode?: string;
+  totalCommissionEarned: number;
+  totalCommissionPaid: number;
   totalPostsRead: number;
   readingTimeMinutes: number;
   favoriteCategories: string[];
@@ -116,6 +118,14 @@ const UserSchema = new Schema<IUser>(
       type: String,
       unique: true,
       sparse: true, // Allows null values to not be unique
+    },
+    totalCommissionEarned: {
+      type: Number,
+      default: 0,
+    },
+    totalCommissionPaid: {
+      type: Number,
+      default: 0,
     },
     totalPostsRead: {
       type: Number,
