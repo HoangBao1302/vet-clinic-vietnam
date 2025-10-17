@@ -117,7 +117,7 @@ const downloads: DownloadItem[] = [
     name: "EA ThebenchmarkTrader Pro + Source Code",
     description: "Phiên bản Pro với source code đầy đủ. Unlimited accounts, cập nhật trọn đời, hỗ trợ VIP.",
     version: "v2.0 Pro",
-    size: "1.2 MB",
+    size: "197 KB",
     type: "ea",
     free: false,
     requiresPayment: true,
