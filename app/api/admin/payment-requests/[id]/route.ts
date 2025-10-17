@@ -44,6 +44,13 @@ export async function PUT(
       return NextResponse.json({ message: 'Payment request not found' }, { status: 404 });
     }
 
+    console.log('Processing payment request:', {
+      requestId: id,
+      currentStatus: paymentRequest.status,
+      newStatus: status,
+      amount: paymentRequest.amount
+    });
+
     // Update payment request
     const updateData: any = {
       status,
@@ -66,13 +73,29 @@ export async function PUT(
     ).populate('userId', 'username email');
 
     // If status is 'paid', update user's commission and send email
+    console.log('Checking if should process payment:', {
+      newStatus: status,
+      oldStatus: paymentRequest.status,
+      shouldProcess: status === 'paid' && paymentRequest.status !== 'paid'
+    });
+
     if (status === 'paid' && paymentRequest.status !== 'paid') {
       const affiliateUser = await User.findById(paymentRequest.userId);
       
       if (affiliateUser) {
+        console.log('Processing payment for affiliate:', {
+          userId: affiliateUser._id,
+          username: affiliateUser.username,
+          currentPaid: affiliateUser.totalCommissionPaid || 0,
+          amountToAdd: paymentRequest.amount,
+          newTotal: (affiliateUser.totalCommissionPaid || 0) + paymentRequest.amount
+        });
+
         // Update user's total commission paid
         affiliateUser.totalCommissionPaid = (affiliateUser.totalCommissionPaid || 0) + paymentRequest.amount;
         await affiliateUser.save();
+
+        console.log('User commission updated successfully');
 
         // Send email notification
         const emailHtml = `
@@ -149,15 +172,19 @@ export async function PUT(
         `;
 
         try {
+          console.log('Sending payment notification email to:', affiliateUser.email);
           await sendEmail({
             to: affiliateUser.email,
             subject: '🎉 Chúc Mừng! Bạn Đã Nhận Thanh Toán Hoa Hồng',
             html: emailHtml,
           });
+          console.log('Email sent successfully');
         } catch (emailError) {
           console.error('Failed to send payment notification email:', emailError);
           // Don't fail the request if email fails
         }
+      } else {
+        console.error('Affiliate user not found for payment request');
       }
     }
 
