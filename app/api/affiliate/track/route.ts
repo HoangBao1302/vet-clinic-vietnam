@@ -108,12 +108,12 @@ export async function GET(request: NextRequest) {
       };
     }
 
-    // Get clicks
+    // Get clicks (for display, limited to recent 100)
     const clicks = await AffiliateClick.find(query)
       .sort({ clickedAt: -1 })
       .limit(100);
 
-    // Get stats
+    // Get stats (aggregate ALL clicks, not just limited ones)
     const stats = await AffiliateClick.aggregate([
       { $match: { affiliateCode } },
       {
@@ -125,10 +125,22 @@ export async function GET(request: NextRequest) {
       },
     ]);
 
-    const totalClicks = clicks.length;
-    const conversions = clicks.filter(c => c.status === 'converted' || c.status === 'paid').length;
+    // Calculate totals from aggregate (ALL data, not just limited clicks)
+    const totalClicks = stats.reduce((sum, stat) => sum + stat.count, 0);
+    const conversions = stats
+      .filter(s => s._id === 'converted' || s._id === 'paid')
+      .reduce((sum, stat) => sum + stat.count, 0);
     const conversionRate = totalClicks > 0 ? (conversions / totalClicks * 100).toFixed(2) : 0;
     const totalCommission = stats.reduce((sum, stat) => sum + (stat.totalCommission || 0), 0);
+
+    console.log('Affiliate Stats Debug:', {
+      affiliateCode,
+      totalClicks,
+      conversions,
+      conversionRate,
+      totalCommission,
+      statsBreakdown: stats
+    });
 
     return NextResponse.json({
       success: true,

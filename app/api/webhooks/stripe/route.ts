@@ -85,9 +85,12 @@ export async function POST(request: NextRequest) {
             const commissionRate = commissionRates[session.metadata?.productId as keyof typeof commissionRates] || 0.30;
             const commissionAmount = Math.round(session.amount_total * commissionRate);
 
-            // Update affiliate click record (most recent click)
-            await AffiliateClick.findOneAndUpdate(
-              { affiliateCode },
+            // Update affiliate click record (most recent click that hasn't been converted yet)
+            const updatedClick = await AffiliateClick.findOneAndUpdate(
+              { 
+                affiliateCode,
+                status: 'clicked' // Only update clicks that haven't been converted
+              },
               {
                 $set: {
                   convertedAt: new Date(),
@@ -100,10 +103,26 @@ export async function POST(request: NextRequest) {
                   status: 'converted',
                 },
               },
-              { sort: { clickedAt: -1 } } // Update the most recent click
+              { sort: { clickedAt: -1 }, new: true } // Update the most recent unconverted click
             );
 
-            console.log(`Affiliate conversion tracked: ${affiliateCode}, Commission: ${commissionAmount}đ`);
+            if (updatedClick) {
+              // Update user's total commission earned
+              affiliate.totalCommissionEarned = (affiliate.totalCommissionEarned || 0) + commissionAmount;
+              await affiliate.save();
+
+              console.log(`✅ Affiliate conversion tracked:`, {
+                affiliateCode,
+                clickId: updatedClick._id,
+                orderId: session.id,
+                commission: commissionAmount,
+                totalEarned: affiliate.totalCommissionEarned,
+                productId: session.metadata?.productId,
+                productName: session.metadata?.productName
+              });
+            } else {
+              console.warn(`⚠️ No unconverted click found for affiliate code: ${affiliateCode}`);
+            }
           }
         } catch (affiliateError) {
           console.error('Affiliate conversion tracking error:', affiliateError);
