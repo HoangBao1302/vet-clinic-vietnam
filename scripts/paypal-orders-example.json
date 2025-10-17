@@ -1,0 +1,30 @@
+{
+  "orders": [
+    {
+      "orderId": "PAYPAL-ORDER-ID-123456",
+      "productId": "ea-full",
+      "productName": "EA ThebenchmarkTrader Full Version",
+      "amount": 790000000,
+      "customerEmail": "customer@example.com",
+      "customerName": "Nguyen Van A",
+      "customerPhone": "+84123456789",
+      "customId": "ea-full|AFF-HOANGKIM-ABC123",
+      "createdAt": "2025-01-15T10:00:00Z",
+      "paidAt": "2025-01-15T10:05:00Z",
+      "paymentMethod": "paypal"
+    },
+    {
+      "orderId": "PAYPAL-ORDER-ID-789012",
+      "productId": "ea-pro-source",
+      "productName": "EA Pro + Source Code",
+      "amount": 1400000000,
+      "customerEmail": "another@example.com",
+      "customerName": "Tran Thi B",
+      "customId": "ea-pro-source|AFF-HOANGKIM-ABC123",
+      "createdAt": "2025-01-16T14:30:00Z",
+      "paidAt": "2025-01-16T14:35:00Z",
+      "paymentMethod": "paypal"
+    }
+  ]
+}
+
