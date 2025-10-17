@@ -42,12 +42,23 @@ export default function AffiliateDashboard() {
   const [error, setError] = useState("");
 
   useEffect(() => {
+    // Wait for authentication to be determined
+    if (typeof isAuthenticated === 'undefined') {
+      return; // Still loading
+    }
+
     if (!isAuthenticated) {
       router.push('/login?redirect=/affiliate/dashboard');
       return;
     }
 
-    if (user?.affiliateStatus !== 'approved') {
+    // Check if user has affiliate access
+    if (!user) {
+      return; // Still loading user data
+    }
+
+    if (user.affiliateStatus !== 'approved') {
+      console.log('User affiliate status:', user.affiliateStatus);
       router.push('/referral');
       return;
     }
@@ -119,7 +130,24 @@ export default function AffiliateDashboard() {
   };
 
   if (!isAuthenticated || user?.affiliateStatus !== 'approved') {
-    return null;
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <main className="pt-20">
+          <div className="container-custom py-20 text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <p className="text-gray-600">Checking affiliate access...</p>
+            <div className="mt-4 text-sm text-gray-500">
+              <p>Debug Info:</p>
+              <p>isAuthenticated: {String(isAuthenticated)}</p>
+              <p>user: {user ? 'loaded' : 'loading'}</p>
+              <p>affiliateStatus: {user?.affiliateStatus || 'none'}</p>
+            </div>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
   }
 
   if (loading) {
