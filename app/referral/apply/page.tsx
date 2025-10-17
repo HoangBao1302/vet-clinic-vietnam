@@ -28,20 +28,48 @@ export default function AffiliateApplyPage() {
   const [checking, setChecking] = useState(true);
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      router.push('/login?redirect=/referral/apply');
-      return;
-    }
-
-    // Check if already applied
-    if (user?.affiliateStatus && user.affiliateStatus !== 'none') {
-      setChecking(false);
-      // Already applied
-      return;
-    }
-
-    setChecking(false);
-  }, [isAuthenticated, user, router]);
+    // Only check authentication once when component mounts
+    const checkAuth = () => {
+      const token = localStorage.getItem('token');
+      const userData = localStorage.getItem('user');
+      
+      console.log('Affiliate apply auth check:', { 
+        hasToken: !!token, 
+        hasUser: !!userData, 
+        isAuthenticated,
+        contextReady: typeof isAuthenticated !== 'undefined'
+      });
+      
+      // If we have auth data in localStorage, wait for context to initialize
+      if (token && userData && !isAuthenticated) {
+        console.log('Auth data exists, waiting for context...');
+        return; // Don't redirect, let context handle it
+      }
+      
+      // Only redirect if we have NO auth data AND context is ready and says not authenticated
+      if (!token && !userData && isAuthenticated === false) {
+        console.log('No auth data found and context confirmed not authenticated, redirecting to login');
+        router.push('/login?redirect=/referral/apply');
+        return;
+      }
+      
+      // If authenticated, check affiliate status
+      if (isAuthenticated && user) {
+        if (user.affiliateStatus && user.affiliateStatus !== 'none') {
+          console.log('User already applied for affiliate:', user.affiliateStatus);
+          setChecking(false);
+          return;
+        }
+        console.log('User can apply for affiliate');
+        setChecking(false);
+      }
+    };
+    
+    // Check after a delay to allow context to fully initialize
+    const timeoutId = setTimeout(checkAuth, 1000);
+    
+    return () => clearTimeout(timeoutId);
+  }, [isAuthenticated, user, router]); // Only run when these values change
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({
@@ -87,14 +115,47 @@ export default function AffiliateApplyPage() {
     }
   };
 
-  if (checking) {
+  // Show loading if not authenticated yet, but only if we have auth data
+  const hasAuthData = typeof window !== 'undefined' && (localStorage.getItem('token') || localStorage.getItem('user'));
+  
+  // Debug info (remove in production)
+  if (process.env.NODE_ENV === 'development') {
+    console.log('Affiliate Apply Debug:', {
+      isAuthenticated,
+      hasUser: !!user,
+      userAffiliateStatus: user?.affiliateStatus,
+      checking,
+      hasAuthData,
+      token: typeof window !== 'undefined' ? localStorage.getItem('token')?.substring(0, 10) + '...' : 'N/A'
+    });
+  }
+  
+  // If we have auth data but context is not ready, show loading
+  if (!isAuthenticated && hasAuthData) {
     return (
       <div className="min-h-screen bg-gray-50">
         <Header />
         <main className="py-20">
           <div className="container-custom text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Đang kiểm tra...</p>
+            <p className="text-gray-600">Đang kiểm tra quyền truy cập...</p>
+            <p className="text-xs text-gray-500 mt-2">Nếu chờ quá lâu, hãy refresh trang</p>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+  
+  // If no auth data and context confirmed not authenticated, show redirect message
+  if (!isAuthenticated && !hasAuthData) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <main className="py-20">
+          <div className="container-custom text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <p className="text-gray-600">Đang chuyển hướng đến trang đăng nhập...</p>
           </div>
         </main>
         <Footer />
