@@ -8,6 +8,7 @@ interface User {
   email: string;
   role: string;
   isPaid?: boolean;
+  membershipTier?: 'free' | 'paid';
   affiliateStatus?: 'none' | 'pending' | 'approved' | 'rejected';
   affiliateCode?: string;
 }

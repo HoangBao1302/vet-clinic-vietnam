@@ -106,7 +106,7 @@ export default function AffiliateDashboard() {
         const errorData = await statsResponse.json();
         console.error('Failed to fetch stats:', errorData);
       }
-    } catch (err) {
+    } catch (err: any) {
       setError('Lỗi tải dữ liệu: ' + err.message);
     } finally {
       setLoading(false);
