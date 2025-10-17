@@ -11,10 +11,54 @@ const mongoose = require('mongoose');
 const fs = require('fs');
 const path = require('path');
 
-// Import models
-const Order = require('../lib/models/Order').default;
-const AffiliateClick = require('../lib/models/AffiliateClick').default;
-const User = require('../lib/models/User').default;
+// Define schemas directly (simpler than importing TS models)
+const OrderSchema = new mongoose.Schema({
+  orderId: String,
+  productId: String,
+  productName: String,
+  status: String,
+  customerEmail: String,
+  customerName: String,
+  customerPhone: String,
+  amount: Number,
+  createdAt: Date,
+  paidAt: Date,
+  paymentMethod: String,
+  customId: String,
+  metadata: mongoose.Schema.Types.Mixed,
+  affiliateCode: String
+});
+
+const AffiliateClickSchema = new mongoose.Schema({
+  affiliateCode: String,
+  clickedAt: Date,
+  ipAddress: String,
+  userAgent: String,
+  referrer: String,
+  convertedAt: Date,
+  orderId: String,
+  commissionAmount: Number,
+  productId: String,
+  productName: String,
+  customerEmail: String,
+  customerName: String,
+  status: String
+}, { timestamps: true });
+
+const UserSchema = new mongoose.Schema({
+  username: String,
+  email: String,
+  affiliateCode: String,
+  affiliateStatus: String,
+  totalCommissionEarned: Number,
+  totalCommissionPaid: Number,
+  isPaid: Boolean
+});
+
+// Get or create models
+const Order = mongoose.models.Order || mongoose.model('Order', OrderSchema);
+const AffiliateClick = mongoose.models.AffiliateClick || mongoose.model('AffiliateClick', AffiliateClickSchema);
+const User = mongoose.models.User || mongoose.model('User', UserSchema);
 
 // Parse command line arguments
 const args = process.argv.slice(2);
