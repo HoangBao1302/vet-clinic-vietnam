@@ -357,6 +357,25 @@ export default function AffiliateDashboard() {
             {/* Commission Info */}
             <div className="mt-8 bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-6">
               <h3 className="text-lg font-semibold text-gray-800 mb-4">💰 Thông tin hoa hồng</h3>
+              
+              {/* Commission Summary */}
+              <div className="bg-white rounded-lg p-4 mb-4 border-l-4 border-green-600">
+                <div className="grid grid-cols-3 gap-4 text-center">
+                  <div>
+                    <p className="text-2xl font-bold text-gray-800">{(stats?.totalCommission || 0).toLocaleString('vi-VN')}đ</p>
+                    <p className="text-xs text-gray-600">Tổng kiếm được</p>
+                  </div>
+                  <div>
+                    <p className="text-2xl font-bold text-red-600">-{(stats?.totalCommissionPaid || 0).toLocaleString('vi-VN')}đ</p>
+                    <p className="text-xs text-gray-600">Đã rút</p>
+                  </div>
+                  <div>
+                    <p className="text-2xl font-bold text-green-600">{(stats?.availableBalance || 0).toLocaleString('vi-VN')}đ</p>
+                    <p className="text-xs text-gray-600">Khả dụng</p>
+                  </div>
+                </div>
+              </div>
+
               <div className="grid md:grid-cols-2 gap-4 text-sm mb-4">
                 <div>
                   <p className="font-semibold text-gray-700">Tỷ lệ hoa hồng:</p>
@@ -375,7 +394,7 @@ export default function AffiliateDashboard() {
                   </ul>
                 </div>
               </div>
-              <div className="pt-4 border-t border-gray-200">
+              <div className="pt-4 border-t border-gray-200 space-y-2">
                 <button
                   onClick={() => router.push('/affiliate/payment-request')}
                   className="w-full px-6 py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center justify-center gap-2"
@@ -383,6 +402,9 @@ export default function AffiliateDashboard() {
                   <DollarSign size={20} />
                   Yêu Cầu Thanh Toán
                 </button>
+                <p className="text-xs text-center text-gray-500">
+                  💡 Số dư khả dụng: {(stats?.availableBalance || 0).toLocaleString('vi-VN')}đ
+                </p>
               </div>
             </div>
           </div>
