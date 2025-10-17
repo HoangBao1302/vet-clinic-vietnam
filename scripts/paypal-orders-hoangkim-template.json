@@ -1,0 +1,76 @@
+{
+  "_comment": "Template for HOANGKIM affiliate PayPal orders",
+  "_instructions": "Fill in the data from Part A checks, then save as paypal-orders-hoangkim.json",
+  
+  "orders": [
+    {
+      "_comment": "Order 1 - Usually already tracked, include for reference",
+      "orderId": "REPLACE_WITH_PAYPAL_ORDER_ID_1",
+      "productId": "ea-full",
+      "productName": "EA ThebenchmarkTrader Full Version",
+      "amount": 790000000,
+      "customerEmail": "REPLACE_WITH_CUSTOMER_EMAIL_1",
+      "customerName": "REPLACE_WITH_CUSTOMER_NAME_1",
+      "customerPhone": "+84123456789",
+      "customId": "ea-full|AFF-HOANGKIM-IBQ095",
+      "createdAt": "2025-01-15T14:30:00+07:00",
+      "paidAt": "2025-01-15T14:35:00+07:00",
+      "paymentMethod": "paypal",
+      "_notes": "This order is likely already tracked. Check if commission = 2,370,000đ"
+    },
+    {
+      "_comment": "Order 2 - May need migration if not tracked",
+      "orderId": "REPLACE_WITH_PAYPAL_ORDER_ID_2",
+      "productId": "ea-full",
+      "productName": "EA ThebenchmarkTrader Full Version",
+      "amount": 790000000,
+      "customerEmail": "REPLACE_WITH_CUSTOMER_EMAIL_2",
+      "customerName": "REPLACE_WITH_CUSTOMER_NAME_2",
+      "customerPhone": "+84987654321",
+      "customId": "ea-full|AFF-HOANGKIM-IBQ095",
+      "createdAt": "2025-01-16T09:15:00+07:00",
+      "paidAt": "2025-01-16T09:20:00+07:00",
+      "paymentMethod": "paypal",
+      "_notes": "Replace with actual data from PayPal"
+    },
+    {
+      "_comment": "Order 3 - May need migration if not tracked",
+      "orderId": "REPLACE_WITH_PAYPAL_ORDER_ID_3",
+      "productId": "ea-full",
+      "productName": "EA ThebenchmarkTrader Full Version",
+      "amount": 790000000,
+      "customerEmail": "REPLACE_WITH_CUSTOMER_EMAIL_3",
+      "customerName": "REPLACE_WITH_CUSTOMER_NAME_3",
+      "customerPhone": "+84999888777",
+      "customId": "ea-full|AFF-HOANGKIM-IBQ095",
+      "createdAt": "2025-01-17T16:45:00+07:00",
+      "paidAt": "2025-01-17T16:50:00+07:00",
+      "paymentMethod": "paypal",
+      "_notes": "Replace with actual data from PayPal"
+    }
+  ],
+  
+  "_field_explanations": {
+    "orderId": "PayPal transaction ID (e.g., 8VS12345ABC123)",
+    "productId": "ea-full | ea-pro-source | indicator-pro | course | social-copy",
+    "amount": "Amount in VND cents. 7,900,000đ = 790000000",
+    "customId": "Format: productId|affiliateCode (e.g., ea-full|AFF-HOANGKIM-IBQ095)",
+    "createdAt": "ISO 8601 format with Vietnam timezone (+07:00)",
+    "paidAt": "Usually 5 minutes after createdAt"
+  },
+  
+  "_amount_conversion": {
+    "USD_to_VND": "Multiply USD by 24,000",
+    "VND_to_cents": "Multiply VND by 100",
+    "example_1": "$329.17 USD × 24,000 = 7,900,080 VND → 790008000 cents",
+    "example_2": "For simplicity, use 7,900,000đ → 790000000 cents"
+  },
+  
+  "_commission_calculation": {
+    "free_member": "7,900,000đ × 30% = 2,370,000đ per order",
+    "paid_member": "7,900,000đ × 35% = 2,765,000đ per order",
+    "3_orders_free": "3 × 2,370,000đ = 7,110,000đ total",
+    "3_orders_paid": "3 × 2,765,000đ = 8,295,000đ total"
+  }
+}
+
