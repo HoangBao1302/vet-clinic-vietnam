@@ -85,8 +85,8 @@ export async function POST(request: NextRequest) {
             const commissionRate = commissionRates[session.metadata?.productId as keyof typeof commissionRates] || 0.30;
             const commissionAmount = Math.round(session.amount_total * commissionRate);
 
-            // Update affiliate click record
-            await AffiliateClick.updateOne(
+            // Update affiliate click record (most recent click)
+            await AffiliateClick.findOneAndUpdate(
               { affiliateCode },
               {
                 $set: {
