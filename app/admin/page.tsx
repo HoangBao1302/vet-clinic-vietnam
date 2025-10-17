@@ -6,7 +6,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { 
   Users, Shield, Award, TrendingUp, Search, 
-  CheckCircle, XCircle, Clock, Crown, Mail 
+  CheckCircle, XCircle, Clock, Crown, Mail, DollarSign, CreditCard, Building2
 } from "lucide-react";
 import { useAuth } from "@/lib/authContext";
 
@@ -27,13 +27,38 @@ interface User {
   createdAt: string;
 }
 
+interface PaymentRequest {
+  _id: string;
+  userId: string;
+  affiliateCode: string;
+  amount: number;
+  status: 'pending' | 'approved' | 'rejected' | 'paid';
+  paymentMethod: 'bank_transfer' | 'paypal';
+  bankInfo?: {
+    accountNumber: string;
+    bankName: string;
+    accountHolderName: string;
+  };
+  paypalEmail?: string;
+  adminNotes?: string;
+  rejectionReason?: string;
+  createdAt: string;
+  processedAt?: string;
+  user?: {
+    username: string;
+    email: string;
+  };
+}
+
 export default function AdminDashboard() {
   const router = useRouter();
   const { user, isAuthenticated } = useAuth();
   const [users, setUsers] = useState<User[]>([]);
+  const [paymentRequests, setPaymentRequests] = useState<PaymentRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");
+  const [activeTab, setActiveTab] = useState<'users' | 'payments'>('users');
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -47,6 +72,7 @@ export default function AdminDashboard() {
     }
 
     fetchUsers();
+    fetchPaymentRequests();
   }, [isAuthenticated, user, router]);
 
   const fetchUsers = async () => {
@@ -66,6 +92,24 @@ export default function AdminDashboard() {
       console.error("Error fetching users:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchPaymentRequests = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch("/api/admin/payment-requests", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setPaymentRequests(data.paymentRequests);
+      }
+    } catch (error) {
+      console.error("Error fetching payment requests:", error);
     }
   };
 
@@ -122,6 +166,33 @@ export default function AdminDashboard() {
     }
   };
 
+  const handlePaymentAction = async (requestId: string, action: 'approve' | 'reject' | 'paid', notes?: string) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`/api/admin/payment-requests/${requestId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          status: action,
+          adminNotes: notes,
+        }),
+      });
+
+      if (response.ok) {
+        alert(`Payment request ${action} successfully!`);
+        fetchPaymentRequests();
+      } else {
+        alert("Failed to update payment request");
+      }
+    } catch (error) {
+      console.error("Error updating payment request:", error);
+      alert("Error updating payment request");
+    }
+  };
+
   const filteredUsers = users.filter((u) => {
     const matchesSearch =
       u.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -136,12 +207,29 @@ export default function AdminDashboard() {
     return matchesSearch;
   });
 
+  const filteredPaymentRequests = paymentRequests.filter((pr) => {
+    const matchesSearch = pr.user?.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      pr.user?.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      pr.affiliateCode.toLowerCase().includes(searchTerm.toLowerCase());
+
+    if (filterStatus === "all") return matchesSearch;
+    if (filterStatus === "pending") return matchesSearch && pr.status === "pending";
+    if (filterStatus === "approved") return matchesSearch && pr.status === "approved";
+    if (filterStatus === "rejected") return matchesSearch && pr.status === "rejected";
+    if (filterStatus === "paid") return matchesSearch && pr.status === "paid";
+
+    return matchesSearch;
+  });
+
   const stats = {
     total: users.length,
     paid: users.filter((u) => u.isPaid).length,
     free: users.filter((u) => !u.isPaid).length,
     affiliates: users.filter((u) => u.affiliateStatus === "approved").length,
     pending: users.filter((u) => u.affiliateStatus === "pending").length,
+    paymentRequests: paymentRequests.length,
+    pendingPayments: paymentRequests.filter((pr) => pr.status === "pending").length,
+    totalPaymentAmount: paymentRequests.reduce((sum, pr) => sum + pr.amount, 0),
   };
 
   if (!isAuthenticated || user?.role !== "admin") {
@@ -167,7 +255,7 @@ export default function AdminDashboard() {
         {/* Stats */}
         <section className="py-8">
           <div className="container-custom">
-            <div className="grid md:grid-cols-5 gap-6 mb-8">
+            <div className="grid md:grid-cols-7 gap-6 mb-8">
               <div className="bg-white rounded-lg shadow-md p-6">
                 <div className="flex items-center justify-between mb-2">
                   <Users className="text-blue-600" size={32} />
@@ -207,6 +295,52 @@ export default function AdminDashboard() {
                 <p className="text-3xl font-bold text-gray-800">{stats.pending}</p>
                 <p className="text-sm text-gray-600">Pending Approval</p>
               </div>
+
+              <div className="bg-white rounded-lg shadow-md p-6">
+                <div className="flex items-center justify-between mb-2">
+                  <DollarSign className="text-green-600" size={32} />
+                </div>
+                <p className="text-3xl font-bold text-gray-800">{stats.paymentRequests}</p>
+                <p className="text-sm text-gray-600">Payment Requests</p>
+              </div>
+
+              <div className="bg-white rounded-lg shadow-md p-6">
+                <div className="flex items-center justify-between mb-2">
+                  <Clock className="text-yellow-600" size={32} />
+                </div>
+                <p className="text-3xl font-bold text-gray-800">{stats.pendingPayments}</p>
+                <p className="text-sm text-gray-600">Pending Payments</p>
+              </div>
+            </div>
+
+            {/* Tabs */}
+            <div className="bg-white rounded-lg shadow-md mb-6">
+              <div className="border-b border-gray-200">
+                <nav className="-mb-px flex space-x-8 px-6">
+                  <button
+                    onClick={() => setActiveTab('users')}
+                    className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                      activeTab === 'users'
+                        ? 'border-purple-500 text-purple-600'
+                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    }`}
+                  >
+                    <Users className="inline mr-2" size={16} />
+                    Users Management
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('payments')}
+                    className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                      activeTab === 'payments'
+                        ? 'border-purple-500 text-purple-600'
+                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    }`}
+                  >
+                    <DollarSign className="inline mr-2" size={16} />
+                    Payment Requests
+                  </button>
+                </nav>
+              </div>
             </div>
 
             {/* Filters */}
@@ -216,7 +350,7 @@ export default function AdminDashboard() {
                   <Search className="absolute left-3 top-3 text-gray-400" size={20} />
                   <input
                     type="text"
-                    placeholder="Tìm kiếm username hoặc email..."
+                    placeholder={activeTab === 'users' ? "Tìm kiếm username hoặc email..." : "Tìm kiếm affiliate code hoặc email..."}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
@@ -228,23 +362,35 @@ export default function AdminDashboard() {
                   onChange={(e) => setFilterStatus(e.target.value)}
                   className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 >
-                  <option value="all">Tất cả users</option>
-                  <option value="paid">Paid Members</option>
-                  <option value="free">Free Members</option>
-                  <option value="affiliate">Active Affiliates</option>
-                  <option value="pending">Pending Approval</option>
+                  {activeTab === 'users' ? (
+                    <>
+                      <option value="all">Tất cả users</option>
+                      <option value="paid">Paid Members</option>
+                      <option value="free">Free Members</option>
+                      <option value="affiliate">Active Affiliates</option>
+                      <option value="pending">Pending Approval</option>
+                    </>
+                  ) : (
+                    <>
+                      <option value="all">Tất cả payment requests</option>
+                      <option value="pending">Pending</option>
+                      <option value="approved">Approved</option>
+                      <option value="rejected">Rejected</option>
+                      <option value="paid">Paid</option>
+                    </>
+                  )}
                 </select>
               </div>
             </div>
 
-            {/* Users Table */}
+            {/* Content */}
             <div className="bg-white rounded-lg shadow-md overflow-hidden">
               {loading ? (
                 <div className="text-center py-12">
                   <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
                   <p className="mt-4 text-gray-600">Đang tải...</p>
                 </div>
-              ) : (
+              ) : activeTab === 'users' ? (
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead className="bg-gray-50">
@@ -352,6 +498,145 @@ export default function AdminDashboard() {
                                 {u.isPaid ? "Downgrade" : "Upgrade"}
                               </button>
                             </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Affiliate
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Amount
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Payment Method
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Status
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Date
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Actions
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {filteredPaymentRequests.map((pr) => (
+                        <tr key={pr._id} className="hover:bg-gray-50">
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div>
+                              <p className="font-semibold text-gray-800">{pr.user?.username}</p>
+                              <p className="text-sm text-gray-600">{pr.user?.email}</p>
+                              <p className="text-xs text-gray-500 font-mono">{pr.affiliateCode}</p>
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <p className="text-lg font-semibold text-gray-800">
+                              {pr.amount.toLocaleString('vi-VN')} VNĐ
+                            </p>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="flex items-center gap-2">
+                              {pr.paymentMethod === 'bank_transfer' ? (
+                                <>
+                                  <Building2 size={16} className="text-green-600" />
+                                  <span className="text-sm text-gray-600">Bank Transfer</span>
+                                </>
+                              ) : (
+                                <>
+                                  <CreditCard size={16} className="text-blue-600" />
+                                  <span className="text-sm text-gray-600">PayPal</span>
+                                </>
+                              )}
+                            </div>
+                            {pr.paymentMethod === 'bank_transfer' && pr.bankInfo && (
+                              <div className="text-xs text-gray-500 mt-1">
+                                <p>{pr.bankInfo.bankName}</p>
+                                <p>{pr.bankInfo.accountHolderName}</p>
+                              </div>
+                            )}
+                            {pr.paymentMethod === 'paypal' && pr.paypalEmail && (
+                              <div className="text-xs text-gray-500 mt-1">
+                                <p>{pr.paypalEmail}</p>
+                              </div>
+                            )}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {pr.status === 'pending' ? (
+                              <span className="inline-flex items-center gap-1 px-3 py-1 bg-yellow-100 text-yellow-700 text-sm rounded-full">
+                                <Clock size={14} />
+                                Pending
+                              </span>
+                            ) : pr.status === 'approved' ? (
+                              <span className="inline-flex items-center gap-1 px-3 py-1 bg-green-100 text-green-700 text-sm rounded-full">
+                                <CheckCircle size={14} />
+                                Approved
+                              </span>
+                            ) : pr.status === 'rejected' ? (
+                              <span className="inline-flex items-center gap-1 px-3 py-1 bg-red-100 text-red-700 text-sm rounded-full">
+                                <XCircle size={14} />
+                                Rejected
+                              </span>
+                            ) : (
+                              <span className="inline-flex items-center gap-1 px-3 py-1 bg-blue-100 text-blue-700 text-sm rounded-full">
+                                <DollarSign size={14} />
+                                Paid
+                              </span>
+                            )}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                            <p>{new Date(pr.createdAt).toLocaleDateString('vi-VN')}</p>
+                            {pr.processedAt && (
+                              <p className="text-xs text-gray-500">
+                                Processed: {new Date(pr.processedAt).toLocaleDateString('vi-VN')}
+                              </p>
+                            )}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {pr.status === 'pending' && (
+                              <div className="flex gap-2">
+                                <button
+                                  onClick={() => handlePaymentAction(pr._id, 'approve')}
+                                  className="px-3 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700"
+                                >
+                                  Approve
+                                </button>
+                                <button
+                                  onClick={() => {
+                                    const reason = prompt('Rejection reason:');
+                                    if (reason) {
+                                      handlePaymentAction(pr._id, 'reject', reason);
+                                    }
+                                  }}
+                                  className="px-3 py-1 bg-red-600 text-white text-sm rounded hover:bg-red-700"
+                                >
+                                  Reject
+                                </button>
+                              </div>
+                            )}
+                            {pr.status === 'approved' && (
+                              <button
+                                onClick={() => handlePaymentAction(pr._id, 'paid')}
+                                className="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700"
+                              >
+                                Mark as Paid
+                              </button>
+                            )}
+                            {pr.adminNotes && (
+                              <div className="text-xs text-gray-500 mt-1">
+                                <p className="font-semibold">Admin Notes:</p>
+                                <p>{pr.adminNotes}</p>
+                              </div>
+                            )}
                           </td>
                         </tr>
                       ))}

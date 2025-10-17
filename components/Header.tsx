@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Facebook, Instagram, Twitter, Menu, X, Phone, Mail, ChevronDown, LogIn, User, LogOut } from "lucide-react";
+import { Facebook, Instagram, Twitter, Menu, X, Phone, Mail, ChevronDown, LogIn, User, LogOut, TrendingUp } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
@@ -303,6 +303,17 @@ export default function Header() {
                       </Link>
                     )}
                     
+                    {user.affiliateStatus === 'approved' && (
+                      <Link
+                        href="/affiliate/dashboard"
+                        onClick={() => setIsUserMenuOpen(false)}
+                        className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-green-50 hover:text-green-600 transition-colors"
+                      >
+                        <TrendingUp size={16} />
+                        <span className="text-sm">Xem Dashboard</span>
+                      </Link>
+                    )}
+                    
                     <Link
                       href="/profile"
                       onClick={() => setIsUserMenuOpen(false)}
@@ -473,6 +484,17 @@ export default function Header() {
                       >
                         <User size={18} />
                         <span>Admin Dashboard</span>
+                      </Link>
+                    )}
+                    
+                    {user.affiliateStatus === 'approved' && (
+                      <Link
+                        href="/affiliate/dashboard"
+                        onClick={() => setIsMenuOpen(false)}
+                        className="flex items-center gap-2 text-gray-700 hover:text-green-600 transition-colors font-medium"
+                      >
+                        <TrendingUp size={18} />
+                        <span>Xem Dashboard</span>
                       </Link>
                     )}
                     

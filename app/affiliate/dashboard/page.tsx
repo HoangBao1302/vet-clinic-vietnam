@@ -332,7 +332,7 @@ export default function AffiliateDashboard() {
             {/* Commission Info */}
             <div className="mt-8 bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-6">
               <h3 className="text-lg font-semibold text-gray-800 mb-4">💰 Thông tin hoa hồng</h3>
-              <div className="grid md:grid-cols-2 gap-4 text-sm">
+              <div className="grid md:grid-cols-2 gap-4 text-sm mb-4">
                 <div>
                   <p className="font-semibold text-gray-700">Tỷ lệ hoa hồng:</p>
                   <ul className="text-gray-600 mt-1 space-y-1">
@@ -346,9 +346,18 @@ export default function AffiliateDashboard() {
                   <ul className="text-gray-600 mt-1 space-y-1">
                     <li>• Cuối mỗi tháng</li>
                     <li>• Tối thiểu: 500.000đ</li>
-                    <li>• Qua chuyển khoản ngân hàng</li>
+                    <li>• Qua chuyển khoản ngân hàng hoặc PayPal</li>
                   </ul>
                 </div>
+              </div>
+              <div className="pt-4 border-t border-gray-200">
+                <button
+                  onClick={() => router.push('/affiliate/payment-request')}
+                  className="w-full px-6 py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center justify-center gap-2"
+                >
+                  <DollarSign size={20} />
+                  Yêu Cầu Thanh Toán
+                </button>
               </div>
             </div>
           </div>

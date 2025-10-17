@@ -242,6 +242,19 @@ export default function ProfilePage() {
                     </button>
                   )}
 
+                  {stats?.affiliateStatus === "approved" && (
+                    <button
+                      onClick={() => router.push("/affiliate/dashboard")}
+                      className="flex items-center gap-3 p-4 border-2 border-green-600 rounded-lg hover:bg-green-50 transition-colors"
+                    >
+                      <TrendingUp className="text-green-600" size={24} />
+                      <div className="text-left">
+                        <p className="font-semibold text-gray-800">Xem Dashboard</p>
+                        <p className="text-sm text-gray-600">Quản lý affiliate và hoa hồng</p>
+                      </div>
+                    </button>
+                  )}
+
                   <button
                     onClick={() => router.push("/downloads")}
                     className="flex items-center gap-3 p-4 border-2 border-blue-600 rounded-lg hover:bg-blue-50 transition-colors"
