@@ -166,6 +166,36 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleResetCommission = async (userId: string, username: string) => {
+    if (!confirm(`Reset commission balance for ${username}? This will recalculate from all paid payment requests.`)) {
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch('/api/admin/reset-commission', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ userId }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        alert(`Commission reset successfully!\nOld: ${data.data.oldPaid.toLocaleString('vi-VN')}đ\nNew: ${data.data.newPaid.toLocaleString('vi-VN')}đ\nFrom ${data.data.paidRequestsCount} paid requests`);
+        fetchPaymentRequests();
+      } else {
+        const errorData = await response.json();
+        alert(`Failed to reset commission: ${errorData.message}`);
+      }
+    } catch (error) {
+      console.error("Error resetting commission:", error);
+      alert("Error resetting commission");
+    }
+  };
+
   const handlePaymentAction = async (requestId: string, action: 'approve' | 'reject' | 'paid', notes?: string) => {
     try {
       const token = localStorage.getItem("token");
@@ -547,6 +577,13 @@ export default function AdminDashboard() {
                               <p className="font-semibold text-gray-800">{pr.user?.username}</p>
                               <p className="text-sm text-gray-600">{pr.user?.email}</p>
                               <p className="text-xs text-gray-500 font-mono">{pr.affiliateCode}</p>
+                              <button
+                                onClick={() => handleResetCommission(pr.userId, pr.user?.username || 'User')}
+                                className="mt-1 text-xs text-blue-600 hover:text-blue-800 underline"
+                                title="Recalculate commission from all paid requests"
+                              >
+                                🔄 Reset Commission
+                              </button>
                             </div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
