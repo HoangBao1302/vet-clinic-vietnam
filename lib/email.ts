@@ -10,7 +10,16 @@ const transporter = nodemailer.createTransport({
   },
   tls: {
     rejectUnauthorized: false
-  }
+  },
+  // Optimize for faster delivery
+  pool: true,
+  maxConnections: 5,
+  maxMessages: 100,
+  rateDelta: 20000, // 20 seconds
+  rateLimit: 5, // max 5 emails per rateDelta
+  connectionTimeout: 60000, // 60 seconds
+  greetingTimeout: 30000, // 30 seconds
+  socketTimeout: 60000, // 60 seconds
 });
 
 export interface SendEmailOptions {
@@ -29,15 +38,26 @@ export async function sendEmail({ to, subject, html }: SendEmailOptions) {
     console.log('📧 To:', to);
     console.log('📧 From:', process.env.SMTP_FROM || 'support@ThebenchmarkTrader.com');
     
+    const startTime = Date.now();
+    
     const info = await transporter.sendMail({
       from: `"EA Forex ThebenchmarkTrader" <${process.env.SMTP_FROM || 'support@ThebenchmarkTrader.com'}>`,
       to,
       subject,
       html,
+      // Add priority for faster delivery
+      priority: 'high',
+      // Add headers for better deliverability
+      headers: {
+        'X-Priority': '1',
+        'X-MSMail-Priority': 'High',
+        'Importance': 'high'
+      }
     });
 
-    console.log('✅ Email sent successfully:', info.messageId);
-    return { success: true, messageId: info.messageId };
+    const deliveryTime = Date.now() - startTime;
+    console.log(`✅ Email sent successfully in ${deliveryTime}ms:`, info.messageId);
+    return { success: true, messageId: info.messageId, deliveryTime };
   } catch (error) {
     console.error('❌ Error sending email:', error);
     console.error('❌ SMTP_USER:', process.env.SMTP_USER);
