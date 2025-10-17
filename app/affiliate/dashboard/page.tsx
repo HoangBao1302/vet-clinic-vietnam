@@ -35,7 +35,7 @@ interface TrackingProduct {
 
 export default function AffiliateDashboard() {
   const router = useRouter();
-  const { user, isAuthenticated, isLoading } = useAuth();
+  const { user, isAuthenticated, isLoading, refreshUser } = useAuth();
   const [stats, setStats] = useState<AffiliateStats | null>(null);
   const [trackingLinks, setTrackingLinks] = useState<TrackingProduct[]>([]);
   const [loading, setLoading] = useState(true);
@@ -76,15 +76,39 @@ export default function AffiliateDashboard() {
 
     console.log('User loaded, checking affiliate status:', user.affiliateStatus);
 
+    // Auto-refresh user data if affiliateStatus is not approved
     if (user.affiliateStatus !== 'approved') {
-      console.log('User affiliate status not approved:', user.affiliateStatus);
-      router.push('/referral');
+      console.log('User affiliate status not approved, attempting to refresh user data...');
+      
+      const refreshAndCheck = async () => {
+        try {
+          await refreshUser();
+          console.log('User data refreshed, checking again...');
+          
+          // After refresh, the useEffect will run again with updated user data
+          // If still not approved after refresh, then redirect to referral
+          const refreshedUser = JSON.parse(localStorage.getItem('user') || '{}');
+          if (refreshedUser.affiliateStatus !== 'approved') {
+            console.log('Still not approved after refresh, redirecting to referral');
+            router.push('/referral');
+            return;
+          }
+          
+          console.log('User approved after refresh, fetching data...');
+          fetchData();
+        } catch (error) {
+          console.error('Error refreshing user data:', error);
+          router.push('/referral');
+        }
+      };
+      
+      refreshAndCheck();
       return;
     }
 
     console.log('All checks passed, fetching data...');
     fetchData();
-  }, [isLoading, isAuthenticated, user, router]);
+  }, [isLoading, isAuthenticated, user, router, refreshUser]);
 
   const fetchData = async () => {
     try {
