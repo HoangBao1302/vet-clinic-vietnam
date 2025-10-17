@@ -20,6 +20,10 @@ const paidOnlyRoutes = [
 // Admin only routes
 const adminOnlyRoutes = [
   '/admin',
+  '/admin/affiliates',
+  '/admin/conversions',
+  '/admin/users',
+  '/admin/newsletter',
 ];
 
 export function middleware(request: NextRequest) {
@@ -59,9 +63,20 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(loginUrl);
   }
 
-  // For paid-only and admin routes, we'll check on the page itself
-  // since we need to verify the JWT token and check user role/tier
-  // Middleware doesn't have easy access to verify JWT without external libs
+  // For admin routes, check if user has admin role
+  if (isAdminOnlyRoute && token) {
+    try {
+      // Simple JWT decode without verification (just for role check)
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      if (payload.role !== 'admin') {
+        console.log('Non-admin user trying to access admin route:', { pathname, userRole: payload.role });
+        return NextResponse.redirect(new URL('/unauthorized', request.url));
+      }
+    } catch (error) {
+      console.log('Invalid token for admin route:', { pathname, error: error.message });
+      return NextResponse.redirect(new URL('/login', request.url));
+    }
+  }
 
   return NextResponse.next();
 }
