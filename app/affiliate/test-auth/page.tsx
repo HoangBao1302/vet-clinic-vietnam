@@ -23,7 +23,7 @@ export default function AffiliateTestPage() {
           localStorageUser: userValue ? 'exists' : 'missing',
           userParsed: userValue ? JSON.parse(userValue) : null
         });
-      } catch (error) {
+      } catch (error: any) {
         setDebugInfo({ error: error.message });
       }
     };
