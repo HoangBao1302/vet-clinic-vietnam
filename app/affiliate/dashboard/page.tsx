@@ -35,7 +35,7 @@ interface TrackingProduct {
 
 export default function AffiliateDashboard() {
   const router = useRouter();
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, isLoading } = useAuth();
   const [stats, setStats] = useState<AffiliateStats | null>(null);
   const [trackingLinks, setTrackingLinks] = useState<TrackingProduct[]>([]);
   const [loading, setLoading] = useState(true);
@@ -43,11 +43,18 @@ export default function AffiliateDashboard() {
 
   useEffect(() => {
     console.log('Affiliate Dashboard Auth Check:', {
+      isLoading,
       isAuthenticated,
       user,
       affiliateStatus: user?.affiliateStatus,
       hasToken: typeof window !== 'undefined' ? !!localStorage.getItem('token') : false
     });
+
+    // Wait for AuthContext to finish loading
+    if (isLoading) {
+      console.log('AuthContext still loading...');
+      return;
+    }
 
     // Wait for authentication to be determined
     if (typeof isAuthenticated === 'undefined') {
@@ -77,7 +84,7 @@ export default function AffiliateDashboard() {
 
     console.log('All checks passed, fetching data...');
     fetchData();
-  }, [isAuthenticated, user, router]);
+  }, [isLoading, isAuthenticated, user, router]);
 
   const fetchData = async () => {
     try {
@@ -142,17 +149,20 @@ export default function AffiliateDashboard() {
     // You could add a toast notification here
   };
 
-  if (!isAuthenticated || user?.affiliateStatus !== 'approved') {
+  if (isLoading || !isAuthenticated || user?.affiliateStatus !== 'approved') {
     return (
       <div className="min-h-screen bg-gray-50">
         <Header />
         <main className="pt-20">
           <div className="container-custom py-20 text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Checking affiliate access...</p>
+            <p className="text-gray-600">
+              {isLoading ? 'Loading authentication...' : 'Checking affiliate access...'}
+            </p>
             <div className="mt-4 text-sm text-gray-500 max-w-md mx-auto">
               <p className="font-semibold mb-2">Debug Info:</p>
               <div className="bg-gray-100 p-4 rounded text-left">
+                <p>isLoading: <span className={isLoading ? 'text-yellow-600' : 'text-green-600'}>{String(isLoading)}</span></p>
                 <p>isAuthenticated: <span className={isAuthenticated ? 'text-green-600' : 'text-red-600'}>{String(isAuthenticated)}</span></p>
                 <p>user: <span className={user ? 'text-green-600' : 'text-yellow-600'}>{user ? 'loaded' : 'loading'}</span></p>
                 <p>affiliateStatus: <span className={user?.affiliateStatus === 'approved' ? 'text-green-600' : 'text-red-600'}>{user?.affiliateStatus || 'none'}</span></p>

@@ -21,6 +21,7 @@ interface AuthContextType {
   refreshUser: () => Promise<void>;
   isAuthenticated: boolean;
   isAdmin: boolean;
+  isLoading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -30,6 +31,7 @@ export { AuthContext };
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // Load from localStorage on mount, with sessionStorage fallback for mobile
@@ -92,6 +94,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         sessionStorage.removeItem('user');
       }
     }
+    
+    // Always set loading to false after initialization
+    setIsLoading(false);
   }, []);
 
   const login = (newToken: string, newUser: User) => {
@@ -193,6 +198,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     refreshUser,
     isAuthenticated: !!token && !!user,
     isAdmin: user?.role === 'admin',
+    isLoading,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
