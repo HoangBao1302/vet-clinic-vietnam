@@ -169,23 +169,33 @@ export default function AdminDashboard() {
   const handlePaymentAction = async (requestId: string, action: 'approve' | 'reject' | 'paid', notes?: string) => {
     try {
       const token = localStorage.getItem("token");
+      
+      const body: any = {
+        status: action === 'approve' ? 'approved' : action === 'reject' ? 'rejected' : 'paid'
+      };
+      
+      if (action === 'reject' && notes) {
+        body.rejectionReason = notes;
+      } else if (notes) {
+        body.adminNotes = notes;
+      }
+      
       const response = await fetch(`/api/admin/payment-requests/${requestId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          status: action,
-          adminNotes: notes,
-        }),
+        body: JSON.stringify(body),
       });
 
       if (response.ok) {
-        alert(`Payment request ${action} successfully!`);
+        const actionText = action === 'approve' ? 'approved' : action === 'reject' ? 'rejected' : 'marked as paid';
+        alert(`Payment request ${actionText} successfully!`);
         fetchPaymentRequests();
       } else {
-        alert("Failed to update payment request");
+        const errorData = await response.json();
+        alert(`Failed to update payment request: ${errorData.message || 'Unknown error'}`);
       }
     } catch (error) {
       console.error("Error updating payment request:", error);

@@ -29,10 +29,18 @@ export async function GET(request: NextRequest) {
     const paymentRequests = await PaymentRequest.find()
       .populate('userId', 'username email')
       .populate('processedBy', 'username')
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 })
+      .lean();
+
+    // Transform data to match frontend expectations
+    const transformedRequests = paymentRequests.map((pr: any) => ({
+      ...pr,
+      user: pr.userId,
+      userId: pr.userId?._id
+    }));
 
     return NextResponse.json({
-      paymentRequests
+      paymentRequests: transformedRequests
     });
 
   } catch (error: any) {
