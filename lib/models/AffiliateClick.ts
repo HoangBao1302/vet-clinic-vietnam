@@ -23,7 +23,6 @@ const AffiliateClickSchema = new Schema<IAffiliateClick>(
     affiliateCode: {
       type: String,
       required: true,
-      index: true,
     },
     clickedAt: {
       type: Date,
@@ -44,7 +43,6 @@ const AffiliateClickSchema = new Schema<IAffiliateClick>(
     },
     orderId: {
       type: String,
-      index: true,
     },
     commissionAmount: {
       type: Number,

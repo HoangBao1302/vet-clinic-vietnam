@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { ExternalLink, Copy, CheckCircle } from "lucide-react";
 
-export default function AffiliateTracker() {
+function AffiliateTrackerContent() {
   const searchParams = useSearchParams();
   const [affiliateCode, setAffiliateCode] = useState<string | null>(null);
   const [tracked, setTracked] = useState(false);
@@ -60,5 +60,13 @@ export default function AffiliateTracker() {
         </p>
       )}
     </div>
+  );
+}
+
+export default function AffiliateTracker() {
+  return (
+    <Suspense fallback={null}>
+      <AffiliateTrackerContent />
+    </Suspense>
   );
 }
