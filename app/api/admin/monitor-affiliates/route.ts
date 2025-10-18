@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import User from '@/lib/models/User';
+import AffiliateClick from '@/lib/models/AffiliateClick';
 
 export async function GET(request: NextRequest) {
   try {
@@ -10,39 +11,62 @@ export async function GET(request: NextRequest) {
     const affiliates = await User.find({ 
       affiliateStatus: 'approved',
       affiliateCode: { $exists: true, $ne: null }
-    }).select('username email affiliateCode affiliateStatus');
+    }).select('username email affiliateCode affiliateStatus totalCommissionEarned totalCommissionPaid');
 
     const affiliateStats = [];
+    const issues = [];
 
     for (const affiliate of affiliates) {
-      // Get stats for each affiliate
-      const statsResponse = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/affiliate/track?affiliateCode=${affiliate.affiliateCode}`);
+      // Get affiliate clicks and conversions
+      const clicks = await AffiliateClick.find({ affiliateCode: affiliate.affiliateCode });
       
-      if (statsResponse.ok) {
-        const statsData = await statsResponse.json();
-        
-        affiliateStats.push({
+      const totalClicks = clicks.length;
+      const conversions = clicks.filter(click => click.status === 'converted').length;
+      const totalCommission = clicks.reduce((sum, click) => sum + (click.commissionAmount || 0), 0);
+      const conversionRate = totalClicks > 0 ? (conversions / totalClicks * 100).toFixed(2) : 0;
+      
+      // Check for potential issues
+      const hasIssues = totalClicks > 0 && conversions === 0;
+      const hasDataInconsistency = affiliate.totalCommissionEarned !== totalCommission;
+      
+      if (hasIssues || hasDataInconsistency) {
+        issues.push({
           email: affiliate.email,
           username: affiliate.username,
           affiliateCode: affiliate.affiliateCode,
-          totalClicks: statsData.stats.totalClicks,
-          conversions: statsData.stats.conversions,
-          conversionRate: statsData.stats.conversionRate,
-          totalCommission: statsData.stats.totalCommission,
-          hasIssues: statsData.stats.totalClicks > 0 && statsData.stats.conversions === 0
+          issue: hasIssues ? 'No conversions despite clicks' : 'Data inconsistency',
+          totalClicks,
+          conversions,
+          totalCommission,
+          userCommissionEarned: affiliate.totalCommissionEarned || 0
         });
       }
+      
+      affiliateStats.push({
+        email: affiliate.email,
+        username: affiliate.username,
+        affiliateCode: affiliate.affiliateCode,
+        totalClicks,
+        conversions,
+        conversionRate: `${conversionRate}%`,
+        totalCommission,
+        userCommissionEarned: affiliate.totalCommissionEarned || 0,
+        hasIssues,
+        hasDataInconsistency
+      });
     }
-
-    // Find affiliates with potential issues
-    const problematicAffiliates = affiliateStats.filter(affiliate => affiliate.hasIssues);
 
     return NextResponse.json({
       success: true,
       totalAffiliates: affiliateStats.length,
-      problematicAffiliates: problematicAffiliates.length,
+      problematicAffiliates: issues.length,
       affiliates: affiliateStats,
-      issues: problematicAffiliates
+      issues: issues,
+      summary: {
+        totalClicks: affiliateStats.reduce((sum, a) => sum + a.totalClicks, 0),
+        totalConversions: affiliateStats.reduce((sum, a) => sum + a.conversions, 0),
+        totalCommission: affiliateStats.reduce((sum, a) => sum + a.totalCommission, 0)
+      }
     });
 
   } catch (error: any) {
