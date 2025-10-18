@@ -4,10 +4,43 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '@/lib/authContext';
 import { useRouter } from 'next/navigation';
 
+interface MonitorData {
+  success: boolean;
+  totalAffiliates: number;
+  problematicAffiliates: number;
+  affiliates: Array<{
+    email: string;
+    username: string;
+    affiliateCode: string;
+    totalClicks: number;
+    conversions: number;
+    conversionRate: string;
+    totalCommission: number;
+    userCommissionEarned: number;
+    hasIssues: boolean;
+    hasDataInconsistency: boolean;
+  }>;
+  issues: Array<{
+    email: string;
+    username: string;
+    affiliateCode: string;
+    issue: string;
+    totalClicks: number;
+    conversions: number;
+    totalCommission: number;
+    userCommissionEarned: number;
+  }>;
+  summary: {
+    totalClicks: number;
+    totalConversions: number;
+    totalCommission: number;
+  };
+}
+
 export default function AdminAutoFixPage() {
   const { user, isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
-  const [monitorData, setMonitorData] = useState(null);
+  const [monitorData, setMonitorData] = useState<MonitorData | null>(null);
   const [loading, setLoading] = useState(false);
   const [autoFixRunning, setAutoFixRunning] = useState(false);
 
