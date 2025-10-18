@@ -37,150 +37,88 @@ interface TrackingProduct {
 
 export default function AffiliateDashboard() {
   const router = useRouter();
-  const { user, isAuthenticated, isLoading, refreshUser } = useAuth();
+  const { user, isAuthenticated, isLoading } = useAuth();
   const [stats, setStats] = useState<AffiliateStats | null>(null);
   const [trackingLinks, setTrackingLinks] = useState<TrackingProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [retryCount, setRetryCount] = useState(0);
 
+  // Simplified loading logic
   useEffect(() => {
-    console.log('Affiliate Dashboard Auth Check:', {
-      isLoading,
-      isAuthenticated,
-      user,
-      affiliateStatus: user?.affiliateStatus,
-      hasToken: typeof window !== 'undefined' ? !!localStorage.getItem('token') : false
-    });
-
-    // Wait for AuthContext to finish loading
-    if (isLoading) {
-      console.log('AuthContext still loading...');
-      return;
-    }
-
-    // Wait for authentication to be determined
-    if (typeof isAuthenticated === 'undefined') {
-      console.log('Auth still loading...');
-      return; // Still loading
-    }
-
-    if (!isAuthenticated) {
-      console.log('Not authenticated, redirecting to login');
-      router.push('/login?redirect=/affiliate/dashboard');
-      return;
-    }
-
-    // Check if user has affiliate access
-    if (!user) {
-      console.log('User data still loading...');
-      return; // Still loading user data
-    }
-
-    console.log('User loaded, checking affiliate status:', user.affiliateStatus);
-
-    // Auto-refresh user data if affiliateStatus is not approved
-    if (user.affiliateStatus !== 'approved') {
-      console.log('User affiliate status not approved, attempting to refresh user data...');
+    const initializeDashboard = async () => {
+      console.log('🚀 Initializing Affiliate Dashboard...');
       
-      const refreshAndCheck = async () => {
-        try {
-          await refreshUser();
-          console.log('User data refreshed, checking again...');
-          
-          // After refresh, the useEffect will run again with updated user data
-          // If still not approved after refresh, then redirect to referral
-          const refreshedUser = JSON.parse(localStorage.getItem('user') || '{}');
-          if (refreshedUser.affiliateStatus !== 'approved') {
-            console.log('Still not approved after refresh, redirecting to referral');
-            router.push('/referral');
-            return;
-          }
-          
-          console.log('User approved after refresh, fetching data...');
-          fetchData();
-        } catch (error) {
-          console.error('Error refreshing user data:', error);
-          router.push('/referral');
-        }
-      };
-      
-      refreshAndCheck();
-      return;
-    }
+      // Wait for auth to be ready
+      if (isLoading) {
+        console.log('⏳ Auth still loading...');
+        return;
+      }
 
-    console.log('All checks passed, fetching data...');
-    fetchData();
-  }, [isLoading, isAuthenticated, user, router, refreshUser]);
+      // Check authentication
+      if (!isAuthenticated) {
+        console.log('❌ Not authenticated, redirecting to login');
+        router.push('/login?redirect=/affiliate/dashboard');
+        return;
+      }
 
-  // Add a separate useEffect to handle initial data loading
-  useEffect(() => {
-    // Only run if we have all required data and haven't loaded yet
-    if (!isLoading && isAuthenticated && user?.affiliateStatus === 'approved' && !stats && !loading) {
-      console.log('Initial data load triggered...');
-      fetchData();
-    }
-  }, [isLoading, isAuthenticated, user?.affiliateStatus, stats, loading]);
+      // Check user data
+      if (!user) {
+        console.log('⏳ User data still loading...');
+        return;
+      }
 
-  const fetchData = async () => {
+      // Check affiliate status
+      if (user.affiliateStatus !== 'approved') {
+        console.log('❌ Affiliate not approved, redirecting to referral');
+        router.push('/referral');
+        return;
+      }
+
+      console.log('✅ All checks passed, loading dashboard data...');
+      await loadDashboardData();
+    };
+
+    initializeDashboard();
+  }, [isLoading, isAuthenticated, user, router]);
+
+  const loadDashboardData = async () => {
     try {
+      setLoading(true);
+      setError("");
+      
       const token = localStorage.getItem('token');
-      
-      // First check affiliate access
-      const accessResponse = await fetch('/api/affiliate/check-access', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (accessResponse.ok) {
-        const accessData = await accessResponse.json();
-        console.log('Affiliate access check:', accessData);
-        
-        if (!accessData.canAccessDashboard) {
-          setError(`Cannot access dashboard: ${accessData.reason}`);
-          setLoading(false);
-          return;
-        }
-      }
-      
-      // Fetch tracking links
-      const linksResponse = await fetch('/api/affiliate/links', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (linksResponse.ok) {
-        const linksData = await linksResponse.json();
-        setTrackingLinks(linksData.products);
-      } else {
-        const errorData = await linksResponse.json();
-        setError(`Failed to fetch links: ${errorData.message}`);
+      if (!token) {
+        throw new Error('No authentication token found');
       }
 
-      // Fetch user stats to get totalCommissionPaid
-      const userStatsResponse = await fetch('/api/user/stats', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      console.log('📊 Loading dashboard data...');
 
-      let totalCommissionPaid = 0;
-      if (userStatsResponse.ok) {
-        const userStatsData = await userStatsResponse.json();
-        totalCommissionPaid = userStatsData.stats?.totalCommissionPaid || 0;
-        console.log('User commission paid:', totalCommissionPaid);
-      }
+      // Load data in parallel
+      const [statsResponse, linksResponse, userStatsResponse] = await Promise.all([
+        fetch(`/api/affiliate/track?affiliateCode=${user?.affiliateCode}`, {
+          headers: { Authorization: `Bearer ${token}` }
+        }),
+        fetch('/api/affiliate/links', {
+          headers: { Authorization: `Bearer ${token}` }
+        }),
+        fetch('/api/user/stats', {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+      ]);
 
-      // Fetch stats
-      const statsResponse = await fetch(`/api/affiliate/track?affiliateCode=${user?.affiliateCode}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
+      // Process stats
       if (statsResponse.ok) {
         const statsData = await statsResponse.json();
+        console.log('📈 Stats loaded:', statsData);
+        
+        // Process user stats for commission paid
+        let totalCommissionPaid = 0;
+        if (userStatsResponse.ok) {
+          const userStatsData = await userStatsResponse.json();
+          totalCommissionPaid = userStatsData.stats?.totalCommissionPaid || 0;
+        }
+
         const totalCommission = statsData.stats.totalCommission || 0;
         setStats({
           ...statsData.stats,
@@ -188,11 +126,31 @@ export default function AffiliateDashboard() {
           availableBalance: totalCommission - totalCommissionPaid
         });
       } else {
-        const errorData = await statsResponse.json();
-        console.error('Failed to fetch stats:', errorData);
+        throw new Error('Failed to load affiliate stats');
       }
+
+      // Process tracking links
+      if (linksResponse.ok) {
+        const linksData = await linksResponse.json();
+        setTrackingLinks(linksData.products || []);
+      } else {
+        console.warn('Failed to load tracking links');
+      }
+
+      console.log('✅ Dashboard data loaded successfully');
+      
     } catch (err: any) {
-      setError('Lỗi tải dữ liệu: ' + err.message);
+      console.error('❌ Error loading dashboard:', err);
+      setError(err.message);
+      
+      // Retry logic
+      if (retryCount < 3) {
+        console.log(`🔄 Retrying... (${retryCount + 1}/3)`);
+        setRetryCount(prev => prev + 1);
+        setTimeout(() => {
+          loadDashboardData();
+        }, 2000);
+      }
     } finally {
       setLoading(false);
     }
@@ -203,7 +161,8 @@ export default function AffiliateDashboard() {
     // You could add a toast notification here
   };
 
-  if (isLoading || !isAuthenticated || user?.affiliateStatus !== 'approved') {
+  // Loading state
+  if (isLoading || loading) {
     return (
       <div className="min-h-screen bg-gray-50">
         <Header />
@@ -211,26 +170,20 @@ export default function AffiliateDashboard() {
           <div className="container-custom py-20 text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
             <p className="text-gray-600">
-              {isLoading ? 'Loading authentication...' : 'Checking affiliate access...'}
+              {isLoading ? 'Loading authentication...' : 'Loading dashboard...'}
             </p>
-            <div className="mt-4 text-sm text-gray-500 max-w-md mx-auto">
-              <p className="font-semibold mb-2">Debug Info:</p>
-              <div className="bg-gray-100 p-4 rounded text-left">
-                <p>isLoading: <span className={isLoading ? 'text-yellow-600' : 'text-green-600'}>{String(isLoading)}</span></p>
-                <p>isAuthenticated: <span className={isAuthenticated ? 'text-green-600' : 'text-red-600'}>{String(isAuthenticated)}</span></p>
-                <p>user: <span className={user ? 'text-green-600' : 'text-yellow-600'}>{user ? 'loaded' : 'loading'}</span></p>
-                <p>affiliateStatus: <span className={user?.affiliateStatus === 'approved' ? 'text-green-600' : 'text-red-600'}>{user?.affiliateStatus || 'none'}</span></p>
-                <p>affiliateCode: <span className="font-mono text-xs">{user?.affiliateCode || 'NOT SET'}</span></p>
-                <p>hasToken: <span className={typeof window !== 'undefined' && localStorage.getItem('token') ? 'text-green-600' : 'text-red-600'}>{typeof window !== 'undefined' && localStorage.getItem('token') ? 'Yes' : 'No'}</span></p>
-              </div>
-              <div className="mt-4">
-                <button
-                  onClick={() => window.location.reload()}
-                  className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-                >
-                  🔄 Refresh Page
-                </button>
-              </div>
+            {retryCount > 0 && (
+              <p className="text-sm text-yellow-600 mt-2">
+                Retrying... ({retryCount}/3)
+              </p>
+            )}
+            <div className="mt-4">
+              <button
+                onClick={() => window.location.reload()}
+                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+              >
+                🔄 Refresh Page
+              </button>
             </div>
           </div>
         </main>
@@ -239,14 +192,32 @@ export default function AffiliateDashboard() {
     );
   }
 
-  if (loading) {
+  // Error state
+  if (error) {
     return (
       <div className="min-h-screen bg-gray-50">
         <Header />
         <main className="pt-20">
           <div className="container-custom py-20 text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Đang tải dashboard...</p>
+            <div className="bg-red-50 border border-red-200 rounded-lg p-6 max-w-md mx-auto">
+              <AlertCircle className="text-red-600 mx-auto mb-4" size={48} />
+              <h2 className="text-xl font-semibold text-red-800 mb-2">Error Loading Dashboard</h2>
+              <p className="text-red-600 mb-4">{error}</p>
+              <div className="space-y-2">
+                <button
+                  onClick={loadDashboardData}
+                  className="w-full px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+                >
+                  🔄 Retry
+                </button>
+                <button
+                  onClick={() => window.location.reload()}
+                  className="w-full px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700"
+                >
+                  🔄 Refresh Page
+                </button>
+              </div>
+            </div>
           </div>
         </main>
         <Footer />
