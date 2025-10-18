@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
       status: 'converted'
     });
 
-    const calculatedCommission = clicks.reduce((sum, click) => sum + (click.commissionAmount || 0), 0);
+    const calculatedCommission = clicks.reduce((sum: number, click: any) => sum + (click.commissionAmount || 0), 0);
     
     // Update user's totalCommissionEarned
     const oldCommission = user.totalCommissionEarned || 0;
