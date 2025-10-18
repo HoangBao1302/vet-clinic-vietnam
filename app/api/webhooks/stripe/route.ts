@@ -64,6 +64,14 @@ export async function POST(request: NextRequest) {
 
       // Handle affiliate conversion
       const affiliateCode = session.metadata?.affiliateCode;
+      console.log('🔍 Stripe Webhook - Processing affiliate conversion:', {
+        orderId: session.id,
+        affiliateCode,
+        customerEmail: session.customer_email,
+        productId: session.metadata?.productId,
+        amount: session.amount_total
+      });
+
       if (affiliateCode) {
         try {
           // Find the affiliate user
@@ -73,6 +81,12 @@ export async function POST(request: NextRequest) {
           });
 
           if (affiliate) {
+            console.log('✅ Affiliate found:', {
+              email: affiliate.email,
+              affiliateCode: affiliate.affiliateCode,
+              isPaid: affiliate.isPaid
+            });
+
             // Calculate commission
             const commissionRates = {
               'ea-full': affiliate.isPaid ? 0.35 : 0.30,
@@ -84,6 +98,13 @@ export async function POST(request: NextRequest) {
 
             const commissionRate = commissionRates[session.metadata?.productId as keyof typeof commissionRates] || 0.30;
             const commissionAmount = Math.round(session.amount_total * commissionRate);
+
+            console.log('💰 Commission calculation:', {
+              productId: session.metadata?.productId,
+              commissionRate,
+              amount: session.amount_total,
+              commissionAmount
+            });
 
             // Update affiliate click record (most recent click that hasn't been converted yet)
             const updatedClick = await AffiliateClick.findOneAndUpdate(
@@ -111,7 +132,7 @@ export async function POST(request: NextRequest) {
               affiliate.totalCommissionEarned = (affiliate.totalCommissionEarned || 0) + commissionAmount;
               await affiliate.save();
 
-              console.log(`✅ Affiliate conversion tracked:`, {
+              console.log(`✅ Affiliate conversion tracked successfully:`, {
                 affiliateCode,
                 clickId: updatedClick._id,
                 orderId: session.id,
@@ -122,11 +143,16 @@ export async function POST(request: NextRequest) {
               });
             } else {
               console.warn(`⚠️ No unconverted click found for affiliate code: ${affiliateCode}`);
+              console.log('🔍 Available clicks for this affiliate:', await AffiliateClick.find({ affiliateCode }).select('status clickedAt'));
             }
+          } else {
+            console.warn(`⚠️ Affiliate not found or not approved: ${affiliateCode}`);
           }
         } catch (affiliateError) {
-          console.error('Affiliate conversion tracking error:', affiliateError);
+          console.error('❌ Affiliate conversion tracking error:', affiliateError);
         }
+      } else {
+        console.log('ℹ️ No affiliate code in payment metadata');
       }
 
       // Send email notification using Nodemailer
