@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Thuanyen API</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .result { background: #f5f5f5; padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .error { background: #ffebee; color: #c62828; }
+        .success { background: #e8f5e8; color: #2e7d32; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+        pre { white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Test Thuanyen API</h1>
+    
+    <div>
+        <h3>1. Test Login</h3>
+        <button onclick="testLogin()">Login as thuanyen</button>
+        <div id="loginResult" class="result"></div>
+    </div>
+
+    <div>
+        <h3>2. Test User Stats API</h3>
+        <button onclick="testUserStats()">Get User Stats</button>
+        <div id="statsResult" class="result"></div>
+    </div>
+
+    <div>
+        <h3>3. Test Affiliate Dashboard Access</h3>
+        <button onclick="testDashboardAccess()">Test Dashboard Access</button>
+        <div id="dashboardResult" class="result"></div>
+    </div>
+
+    <script>
+        let authToken = null;
+
+        async function testLogin() {
+            const resultDiv = document.getElementById('loginResult');
+            resultDiv.innerHTML = '🔄 Testing login...';
+            
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: 'phamthithuanyen93@gmail.com',
+                        password: 'test123' // You may need to update this
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.success && data.token) {
+                    authToken = data.token;
+                    localStorage.setItem('token', data.token);
+                    resultDiv.className = 'result success';
+                    resultDiv.innerHTML = `
+                        <h4>✅ Login Successful</h4>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.innerHTML = `
+                        <h4>❌ Login Failed</h4>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = `
+                    <h4>❌ Login Error</h4>
+                    <pre>${error.message}</pre>
+                `;
+            }
+        }
+
+        async function testUserStats() {
+            const resultDiv = document.getElementById('statsResult');
+            resultDiv.innerHTML = '🔄 Getting user stats...';
+            
+            if (!authToken) {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = '❌ Please login first';
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/user/stats', {
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                    }
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    resultDiv.className = 'result success';
+                    resultDiv.innerHTML = `
+                        <h4>✅ User Stats Retrieved</h4>
+                        <h5>Key Affiliate Info:</h5>
+                        <ul>
+                            <li><strong>Affiliate Status:</strong> ${data.stats.affiliateStatus}</li>
+                            <li><strong>Affiliate Code:</strong> ${data.stats.affiliateCode || 'NOT SET'}</li>
+                            <li><strong>Is Paid:</strong> ${data.stats.isPaid}</li>
+                            <li><strong>Membership Tier:</strong> ${data.stats.membershipTier}</li>
+                        </ul>
+                        <h5>Full Stats:</h5>
+                        <pre>${JSON.stringify(data.stats, null, 2)}</pre>
+                    `;
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.innerHTML = `
+                        <h4>❌ Stats API Failed</h4>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = `
+                    <h4>❌ Stats API Error</h4>
+                    <pre>${error.message}</pre>
+                `;
+            }
+        }
+
+        async function testDashboardAccess() {
+            const resultDiv = document.getElementById('dashboardResult');
+            resultDiv.innerHTML = '🔄 Testing dashboard access...';
+            
+            if (!authToken) {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = '❌ Please login first';
+                return;
+            }
+
+            try {
+                // Test if we can access the affiliate dashboard
+                const response = await fetch('/affiliate/dashboard', {
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                    }
+                });
+
+                if (response.ok) {
+                    resultDiv.className = 'result success';
+                    resultDiv.innerHTML = `
+                        <h4>✅ Dashboard Access OK</h4>
+                        <p>Status: ${response.status}</p>
+                        <p>Can access affiliate dashboard</p>
+                    `;
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.innerHTML = `
+                        <h4>❌ Dashboard Access Denied</h4>
+                        <p>Status: ${response.status}</p>
+                        <p>Cannot access affiliate dashboard</p>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = `
+                    <h4>❌ Dashboard Access Error</h4>
+                    <pre>${error.message}</pre>
+                `;
+            }
+        }
+
+        // Auto-load token if exists
+        window.onload = function() {
+            const savedToken = localStorage.getItem('token');
+            if (savedToken) {
+                authToken = savedToken;
+                document.getElementById('loginResult').innerHTML = '✅ Token loaded from localStorage';
+            }
+        };
+    </script>
+</body>
+</html>

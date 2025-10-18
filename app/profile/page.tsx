@@ -55,7 +55,11 @@ export default function ProfilePage() {
 
       if (response.ok) {
         const data = await response.json();
+        console.log('Profile Page - User Stats:', data.stats);
+        console.log('Profile Page - Affiliate Status:', data.stats?.affiliateStatus);
         setStats(data.stats);
+      } else {
+        console.error('Failed to fetch user stats:', response.status);
       }
     } catch (error) {
       console.error("Error fetching stats:", error);
@@ -241,6 +245,22 @@ export default function ProfilePage() {
                       </div>
                     </button>
                   )}
+
+                  {/* Debug info */}
+                  {loading && (
+                    <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 text-sm">
+                      <p className="text-yellow-800">🔄 Loading affiliate status...</p>
+                    </div>
+                  )}
+                  
+                  {/* Debug affiliate status */}
+                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-3 text-xs mb-4">
+                    <p className="font-semibold mb-1">Debug Info:</p>
+                    <p>Loading: {String(loading)}</p>
+                    <p>Stats loaded: {stats ? 'Yes' : 'No'}</p>
+                    <p>Affiliate Status: {stats?.affiliateStatus || 'Not loaded'}</p>
+                    <p>Should show dashboard: {stats?.affiliateStatus === 'approved' ? 'Yes' : 'No'}</p>
+                  </div>
 
                   {stats?.affiliateStatus === "approved" && (
                     <button

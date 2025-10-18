@@ -161,7 +161,7 @@ export default function DownloadsPage() {
     };
     
     // Check after a longer delay to allow context to fully initialize
-    const timeoutId = setTimeout(checkAuth, 1000);
+    const timeoutId = setTimeout(checkAuth, 2000); // Increased delay
     
     return () => clearTimeout(timeoutId);
   }, []); // Only run once on mount

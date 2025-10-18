@@ -98,7 +98,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
     
     // Always set loading to false after initialization
-    setIsLoading(false);
+    // Add a small delay to ensure context is fully ready
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 100);
   }, []);
 
   const login = (newToken: string, newUser: User) => {

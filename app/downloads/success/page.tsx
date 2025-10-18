@@ -1,19 +1,18 @@
 "use client";
 
-import { useEffect, useState, Suspense, useContext } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { CheckCircle, Download, Mail, ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { AuthContext } from "@/lib/authContext";
+import { useAuth } from "@/lib/authContext";
 
 function SuccessContent() {
   const searchParams = useSearchParams();
   const [orderInfo, setOrderInfo] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const authContext = useContext(AuthContext);
-  const user = authContext?.user;
+  const { user } = useAuth();
   const sessionId = searchParams.get("session_id");
   const orderId = searchParams.get("order") || searchParams.get("token") || searchParams.get("PayerID");
   const paymentMethod = searchParams.get("payment_method") || "stripe";
@@ -42,8 +41,25 @@ function SuccessContent() {
         console.log("PayPal order approved:", orderId);
         
         // Get customer info from AuthContext, URL params, or fallback
-        const customerEmail = searchParams.get("email") || user?.email || "customer@example.com";
-        const customerName = searchParams.get("name") || user?.username || "Customer";
+        // Try to get user info from localStorage first to avoid auth context issues
+        let userEmail = user?.email;
+        let userName = user?.username;
+        
+        if (!userEmail || !userName) {
+          try {
+            const storedUser = localStorage.getItem('user');
+            if (storedUser) {
+              const parsedUser = JSON.parse(storedUser);
+              userEmail = userEmail || parsedUser.email;
+              userName = userName || parsedUser.username;
+            }
+          } catch (error) {
+            console.warn('Error parsing stored user:', error);
+          }
+        }
+        
+        const customerEmail = searchParams.get("email") || userEmail || "customer@example.com";
+        const customerName = searchParams.get("name") || userName || "Customer";
         const customerPhone = searchParams.get("phone") || "0900000000";
         
         // Save order to database

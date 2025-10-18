@@ -112,6 +112,15 @@ export default function AffiliateDashboard() {
     fetchData();
   }, [isLoading, isAuthenticated, user, router, refreshUser]);
 
+  // Add a separate useEffect to handle initial data loading
+  useEffect(() => {
+    // Only run if we have all required data and haven't loaded yet
+    if (!isLoading && isAuthenticated && user?.affiliateStatus === 'approved' && !stats && !loading) {
+      console.log('Initial data load triggered...');
+      fetchData();
+    }
+  }, [isLoading, isAuthenticated, user?.affiliateStatus, stats, loading]);
+
   const fetchData = async () => {
     try {
       const token = localStorage.getItem('token');
