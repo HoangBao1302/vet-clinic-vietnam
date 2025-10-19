@@ -31,7 +31,7 @@ interface UserStats {
 
 export default function ProfilePage() {
   const router = useRouter();
-  const { user, isAuthenticated, logout } = useAuth();
+  const { user, isAuthenticated, logout, refreshUser } = useAuth();
   const [stats, setStats] = useState<UserStats | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -330,9 +330,20 @@ export default function ProfilePage() {
                         
                         if (response.ok) {
                           const data = await response.json();
+                          
+                          // Update localStorage
                           localStorage.setItem('user', JSON.stringify(data.stats));
-                          alert(`✅ User data synced!\n\nAffiliate Status: ${data.stats.affiliateStatus}\nAffiliate Code: ${data.stats.affiliateCode}\n\nRefreshing page...`);
-                          window.location.reload();
+                          
+                          // Update AuthContext
+                          await refreshUser();
+                          
+                          // Update local stats
+                          setStats(data.stats);
+                          
+                          alert(`✅ User data synced successfully!\n\nAffiliate Status: ${data.stats.affiliateStatus}\nAffiliate Code: ${data.stats.affiliateCode}\n\nYou can now access the Affiliate Dashboard!`);
+                          
+                          // Refresh stats to show updated data
+                          await fetchUserStats();
                         } else {
                           alert(`❌ Failed to sync. Status: ${response.status}`);
                         }
@@ -343,6 +354,43 @@ export default function ProfilePage() {
                     className="px-3 py-1 bg-purple-600 text-white rounded text-sm hover:bg-purple-700 ml-2"
                   >
                     🔄 Sync User Data
+                  </button>
+                  
+                  <button
+                    onClick={async () => {
+                      const token = localStorage.getItem('token');
+                      if (!token) {
+                        alert('No token found');
+                        return;
+                      }
+                      
+                      // First sync user data
+                      try {
+                        const response = await fetch('/api/user/stats', {
+                          headers: { 
+                            Authorization: `Bearer ${token}`,
+                            'Cache-Control': 'no-cache'
+                          }
+                        });
+                        
+                        if (response.ok) {
+                          const data = await response.json();
+                          localStorage.setItem('user', JSON.stringify(data.stats));
+                          await refreshUser();
+                          
+                          // Then navigate to dashboard
+                          console.log('Navigating to dashboard with synced data...');
+                          router.push('/affiliate/dashboard');
+                        } else {
+                          alert(`❌ Failed to sync. Status: ${response.status}`);
+                        }
+                      } catch (error: any) {
+                        alert(`❌ Error: ${error.message}`);
+                      }
+                    }}
+                    className="px-3 py-1 bg-green-600 text-white rounded text-sm hover:bg-green-700 ml-2"
+                  >
+                    ✅ Sync & Go to Dashboard
                   </button>
                 </div>
               </div>
