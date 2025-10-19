@@ -239,16 +239,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     isLoading,
   };
 
-  // Debug logging for auth state
-  console.log('AuthContext state:', {
-    hasToken: !!token,
-    hasUser: !!user,
-    isAuthenticated: !!token && !!user,
-    isLoading,
-    userEmail: user?.email,
-    userRole: user?.role,
-    affiliateStatus: user?.affiliateStatus
-  });
+  // Debug logging for auth state (development only)
+  if (process.env.NODE_ENV === 'development') {
+    console.log('AuthContext state:', {
+      hasToken: !!token,
+      hasUser: !!user,
+      isAuthenticated: !!token && !!user,
+      isLoading,
+      userEmail: user?.email,
+      userRole: user?.role,
+      affiliateStatus: user?.affiliateStatus
+    });
+  }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

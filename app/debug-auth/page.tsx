@@ -31,7 +31,7 @@ export default function AuthDebugPage() {
       
       const data = await response.ok ? await response.json() : await response.text();
       setApiTest({ status: response.status, ok: response.ok, data });
-    } catch (error) {
+    } catch (error: any) {
       setApiTest({ error: error.message });
     }
   };
@@ -47,7 +47,7 @@ export default function AuthDebugPage() {
       const data = await response.ok ? await response.json() : await response.text();
       console.log('Affiliate Access Test:', { status: response.status, ok: response.ok, data });
       alert(`Affiliate Access Test:\nStatus: ${response.status}\nOK: ${response.ok}\nData: ${JSON.stringify(data, null, 2)}`);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error testing affiliate access:', error);
       alert(`Error: ${error.message}`);
     }
