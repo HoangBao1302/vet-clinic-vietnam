@@ -311,6 +311,39 @@ export default function ProfilePage() {
                   >
                     Force Navigate to Dashboard
                   </button>
+                  
+                  <button
+                    onClick={async () => {
+                      const token = localStorage.getItem('token');
+                      if (!token) {
+                        alert('No token found');
+                        return;
+                      }
+                      
+                      try {
+                        const response = await fetch('/api/user/stats', {
+                          headers: { 
+                            Authorization: `Bearer ${token}`,
+                            'Cache-Control': 'no-cache'
+                          }
+                        });
+                        
+                        if (response.ok) {
+                          const data = await response.json();
+                          localStorage.setItem('user', JSON.stringify(data.stats));
+                          alert(`✅ User data synced!\n\nAffiliate Status: ${data.stats.affiliateStatus}\nAffiliate Code: ${data.stats.affiliateCode}\n\nRefreshing page...`);
+                          window.location.reload();
+                        } else {
+                          alert(`❌ Failed to sync. Status: ${response.status}`);
+                        }
+                      } catch (error: any) {
+                        alert(`❌ Error: ${error.message}`);
+                      }
+                    }}
+                    className="px-3 py-1 bg-purple-600 text-white rounded text-sm hover:bg-purple-700 ml-2"
+                  >
+                    🔄 Sync User Data
+                  </button>
                 </div>
               </div>
 
