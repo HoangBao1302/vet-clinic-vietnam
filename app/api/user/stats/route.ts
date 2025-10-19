@@ -50,6 +50,52 @@ export async function GET(request: NextRequest) {
       await user.save();
     }
 
+    // Calculate real-time commission from affiliate clicks
+    let totalCommissionEarned = 0;
+    let totalCommissionPaid = 0;
+    
+    if (user.affiliateCode) {
+      try {
+        const AffiliateClick = require('@/models/AffiliateClick').default;
+        
+        // Get total commission earned from all affiliate clicks
+        const commissionStats = await AffiliateClick.aggregate([
+          { $match: { affiliateCode: user.affiliateCode } },
+          {
+            $group: {
+              _id: null,
+              totalEarned: { $sum: '$commissionAmount' },
+              totalPaid: { 
+                $sum: { 
+                  $cond: [
+                    { $eq: ['$status', 'paid'] }, 
+                    '$commissionAmount', 
+                    0
+                  ] 
+                } 
+              }
+            }
+          }
+        ]);
+        
+        if (commissionStats.length > 0) {
+          totalCommissionEarned = commissionStats[0].totalEarned || 0;
+          totalCommissionPaid = commissionStats[0].totalPaid || 0;
+        }
+        
+        console.log('Commission calculation for', user.email, ':', {
+          affiliateCode: user.affiliateCode,
+          totalCommissionEarned,
+          totalCommissionPaid
+        });
+      } catch (error) {
+        console.error('Error calculating commission:', error);
+        // Fallback to user document values
+        totalCommissionEarned = user.totalCommissionEarned || 0;
+        totalCommissionPaid = user.totalCommissionPaid || 0;
+      }
+    }
+
     return NextResponse.json({
       success: true,
       stats: {
@@ -64,8 +110,8 @@ export async function GET(request: NextRequest) {
         affiliateCode: user.affiliateCode,
         membershipTier: user.membershipTier,
         isPaid: user.isPaid,
-        totalCommissionEarned: user.totalCommissionEarned || 0,
-        totalCommissionPaid: user.totalCommissionPaid || 0,
+        totalCommissionEarned,
+        totalCommissionPaid,
       },
     });
   } catch (error: any) {
