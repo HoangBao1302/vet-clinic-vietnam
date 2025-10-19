@@ -29,7 +29,7 @@ interface PaymentRequest {
 
 export default function PaymentRequestPage() {
   const router = useRouter();
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, refreshUser } = useAuth();
   const [paymentRequests, setPaymentRequests] = useState<PaymentRequest[]>([]);
   const [availableBalance, setAvailableBalance] = useState(0);
   const [totalCommission, setTotalCommission] = useState(0);
@@ -48,6 +48,7 @@ export default function PaymentRequestPage() {
   });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [loadingTimeout, setLoadingTimeout] = useState(false);
 
   useEffect(() => {
     console.log('🔍 Payment Request Page - useEffect triggered');
@@ -92,8 +93,10 @@ export default function PaymentRequestPage() {
           if (response.ok) {
             const data = await response.json();
             console.log('📊 User stats fetched:', data.stats?.affiliateStatus);
-            // The AuthContext should update automatically when we call this API
-            // as it likely triggers a refresh
+            
+            // Force refresh AuthContext to update user data
+            console.log('🔄 Refreshing AuthContext...');
+            await refreshUser();
           }
         } catch (error) {
           console.error('Error fetching user data:', error);
@@ -102,7 +105,19 @@ export default function PaymentRequestPage() {
       
       fetchUserData();
     }
-  }, [isAuthenticated, user?.affiliateStatus]);
+  }, [isAuthenticated, user?.affiliateStatus, refreshUser]);
+
+  // Timeout fallback for loading state
+  useEffect(() => {
+    if (!user?.affiliateStatus && isAuthenticated) {
+      const timeout = setTimeout(() => {
+        console.log('⏰ Loading timeout reached, showing fallback');
+        setLoadingTimeout(true);
+      }, 10000); // 10 seconds timeout
+
+      return () => clearTimeout(timeout);
+    }
+  }, [user?.affiliateStatus, isAuthenticated]);
 
   const fetchPaymentRequests = async () => {
     try {
@@ -254,6 +269,28 @@ export default function PaymentRequestPage() {
             <div className="text-center py-12">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4"></div>
               <p className="text-gray-600">Đang tải thông tin affiliate...</p>
+              {loadingTimeout && (
+                <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                  <p className="text-yellow-800 font-semibold mb-2">⚠️ Tải chậm</p>
+                  <p className="text-yellow-700 text-sm mb-3">
+                    Thông tin affiliate đang tải chậm. Bạn có thể:
+                  </p>
+                  <div className="space-y-2">
+                    <button
+                      onClick={() => window.location.reload()}
+                      className="w-full px-4 py-2 bg-yellow-600 text-white rounded hover:bg-yellow-700 text-sm"
+                    >
+                      🔄 Tải lại trang
+                    </button>
+                    <button
+                      onClick={() => router.push('/affiliate/dashboard')}
+                      className="w-full px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700 text-sm"
+                    >
+                      ← Quay về Dashboard
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </main>
