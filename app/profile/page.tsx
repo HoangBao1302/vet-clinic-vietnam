@@ -213,188 +213,6 @@ export default function ProfilePage() {
                 </div>
               )}
 
-              {/* Debug Information - Always show for troubleshooting */}
-              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
-                <h3 className="text-lg font-semibold text-yellow-800 mb-3">🔍 Debug Information</h3>
-                
-                <div className="grid md:grid-cols-2 gap-4 text-sm">
-                  <div>
-                    <h4 className="font-semibold text-yellow-700 mb-2">AuthContext State:</h4>
-                    <div className="space-y-1 text-yellow-600">
-                      <p>• isLoading: {String(loading)}</p>
-                      <p>• isAuthenticated: {String(isAuthenticated)}</p>
-                      <p>• hasUser: {String(!!user)}</p>
-                      <p>• User Email: {user?.email || 'None'}</p>
-                      <p>• Affiliate Status: {user?.affiliateStatus || 'None'}</p>
-                      <p>• Affiliate Code: {user?.affiliateCode || 'None'}</p>
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <h4 className="font-semibold text-yellow-700 mb-2">LocalStorage State:</h4>
-                    <div className="space-y-1 text-yellow-600">
-                      <p>• hasToken: {String(typeof window !== 'undefined' && !!localStorage.getItem('token'))}</p>
-                      <p>• hasUser: {String(typeof window !== 'undefined' && !!localStorage.getItem('user'))}</p>
-                      <p>• Token Length: {typeof window !== 'undefined' ? localStorage.getItem('token')?.length || 0 : 'N/A'}</p>
-                      <p>• Current URL: {typeof window !== 'undefined' ? window.location.href : 'N/A'}</p>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="mt-4 space-y-2">
-                  <button
-                    onClick={async () => {
-                      const token = localStorage.getItem('token');
-                      if (token) {
-                        try {
-                          const response = await fetch('/api/auth/validate', {
-                            headers: { Authorization: `Bearer ${token}` }
-                          });
-                          const data = await response.ok ? await response.json() : await response.text();
-                          alert(`Token Validation:\nStatus: ${response.status}\nOK: ${response.ok}\nData: ${JSON.stringify(data, null, 2)}`);
-                        } catch (error: any) {
-                          alert(`Error: ${error.message}`);
-                        }
-                      } else {
-                        alert('No token found');
-                      }
-                    }}
-                    className="px-3 py-1 bg-blue-600 text-white rounded text-sm hover:bg-blue-700"
-                  >
-                    Test Token Validation
-                  </button>
-                  
-                  <button
-                    onClick={async () => {
-                      const token = localStorage.getItem('token');
-                      if (token) {
-                        try {
-                          const response = await fetch('/api/affiliate/check-access', {
-                            headers: { Authorization: `Bearer ${token}` }
-                          });
-                          const data = await response.ok ? await response.json() : await response.text();
-                          alert(`Affiliate Access Test:\nStatus: ${response.status}\nOK: ${response.ok}\nData: ${JSON.stringify(data, null, 2)}`);
-                        } catch (error: any) {
-                          alert(`Error: ${error.message}`);
-                        }
-                      } else {
-                        alert('No token found');
-                      }
-                    }}
-                    className="px-3 py-1 bg-green-600 text-white rounded text-sm hover:bg-green-700 ml-2"
-                  >
-                    Test Affiliate Access
-                  </button>
-                  
-                  <button
-                    onClick={() => {
-                      console.log('Current URL:', window.location.href);
-                      console.log('AuthContext State:', { user, isAuthenticated, loading });
-                      console.log('LocalStorage:', {
-                        token: localStorage.getItem('token'),
-                        user: localStorage.getItem('user')
-                      });
-                      alert('Debug info logged to console. Press F12 to view.');
-                    }}
-                    className="px-3 py-1 bg-gray-600 text-white rounded text-sm hover:bg-gray-700 ml-2"
-                  >
-                    Log Debug Info
-                  </button>
-                  
-                  <button
-                    onClick={() => {
-                      // Force navigate to affiliate dashboard
-                      console.log('Force navigating to affiliate dashboard...');
-                      window.location.href = '/affiliate/dashboard';
-                    }}
-                    className="px-3 py-1 bg-red-600 text-white rounded text-sm hover:bg-red-700 ml-2"
-                  >
-                    Force Navigate to Dashboard
-                  </button>
-                  
-                  <button
-                    onClick={async () => {
-                      const token = localStorage.getItem('token');
-                      if (!token) {
-                        alert('No token found');
-                        return;
-                      }
-                      
-                      try {
-                        const response = await fetch('/api/user/stats', {
-                          headers: { 
-                            Authorization: `Bearer ${token}`,
-                            'Cache-Control': 'no-cache'
-                          }
-                        });
-                        
-                        if (response.ok) {
-                          const data = await response.json();
-                          
-                          // Update localStorage
-                          localStorage.setItem('user', JSON.stringify(data.stats));
-                          
-                          // Update AuthContext
-                          await refreshUser();
-                          
-                          // Update local stats
-                          setStats(data.stats);
-                          
-                          alert(`✅ User data synced successfully!\n\nAffiliate Status: ${data.stats.affiliateStatus}\nAffiliate Code: ${data.stats.affiliateCode}\n\nYou can now access the Affiliate Dashboard!`);
-                          
-                          // Refresh stats to show updated data
-                          await fetchUserStats();
-                        } else {
-                          alert(`❌ Failed to sync. Status: ${response.status}`);
-                        }
-                      } catch (error: any) {
-                        alert(`❌ Error: ${error.message}`);
-                      }
-                    }}
-                    className="px-3 py-1 bg-purple-600 text-white rounded text-sm hover:bg-purple-700 ml-2"
-                  >
-                    🔄 Sync User Data
-                  </button>
-                  
-                  <button
-                    onClick={async () => {
-                      const token = localStorage.getItem('token');
-                      if (!token) {
-                        alert('No token found');
-                        return;
-                      }
-                      
-                      // First sync user data
-                      try {
-                        const response = await fetch('/api/user/stats', {
-                          headers: { 
-                            Authorization: `Bearer ${token}`,
-                            'Cache-Control': 'no-cache'
-                          }
-                        });
-                        
-                        if (response.ok) {
-                          const data = await response.json();
-                          localStorage.setItem('user', JSON.stringify(data.stats));
-                          await refreshUser();
-                          
-                          // Then navigate to dashboard
-                          console.log('Navigating to dashboard with synced data...');
-                          router.push('/affiliate/dashboard');
-                        } else {
-                          alert(`❌ Failed to sync. Status: ${response.status}`);
-                        }
-                      } catch (error: any) {
-                        alert(`❌ Error: ${error.message}`);
-                      }
-                    }}
-                    className="px-3 py-1 bg-green-600 text-white rounded text-sm hover:bg-green-700 ml-2"
-                  >
-                    ✅ Sync & Go to Dashboard
-                  </button>
-                </div>
-              </div>
-
               {/* Quick Actions */}
               <div className="bg-white rounded-lg shadow-md p-6 mb-8">
                 <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
@@ -431,12 +249,42 @@ export default function ProfilePage() {
 
                   {stats?.affiliateStatus === "approved" && (
                     <button
-                      onClick={() => router.push("/affiliate/dashboard")}
+                      onClick={async () => {
+                        const token = localStorage.getItem('token');
+                        if (!token) {
+                          alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
+                          return;
+                        }
+                        
+                        // Sync user data first
+                        try {
+                          const response = await fetch('/api/user/stats', {
+                            headers: { 
+                              Authorization: `Bearer ${token}`,
+                              'Cache-Control': 'no-cache'
+                            }
+                          });
+                          
+                          if (response.ok) {
+                            const data = await response.json();
+                            localStorage.setItem('user', JSON.stringify(data.stats));
+                            await refreshUser();
+                            
+                            // Navigate to dashboard
+                            router.push('/affiliate/dashboard');
+                          } else {
+                            alert('Không thể đồng bộ dữ liệu. Vui lòng thử lại.');
+                          }
+                        } catch (error: any) {
+                          console.error('Error syncing data:', error);
+                          alert('Có lỗi xảy ra. Vui lòng thử lại.');
+                        }
+                      }}
                       className="flex items-center gap-3 p-4 border-2 border-green-600 rounded-lg hover:bg-green-50 transition-colors"
                     >
                       <TrendingUp className="text-green-600" size={24} />
                       <div className="text-left">
-                        <p className="font-semibold text-gray-800">Xem Dashboard</p>
+                        <p className="font-semibold text-gray-800">Xem Affiliate Dashboard</p>
                         <p className="text-sm text-gray-600">Quản lý affiliate và hoa hồng</p>
                       </div>
                     </button>
