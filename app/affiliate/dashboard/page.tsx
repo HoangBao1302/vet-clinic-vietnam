@@ -43,6 +43,21 @@ export default function AffiliateDashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [retryCount, setRetryCount] = useState(0);
+  
+  // Debug logging for authentication state
+  useEffect(() => {
+    console.log('🔍 Affiliate Dashboard Debug:', {
+      isLoading,
+      isAuthenticated,
+      hasUser: !!user,
+      userEmail: user?.email,
+      affiliateStatus: user?.affiliateStatus,
+      affiliateCode: user?.affiliateCode,
+      hasToken: !!localStorage.getItem('token'),
+      tokenLength: localStorage.getItem('token')?.length,
+      currentUrl: typeof window !== 'undefined' ? window.location.href : 'N/A'
+    });
+  }, [isLoading, isAuthenticated, user]);
 
   // Enhanced loading logic with better authentication handling
   useEffect(() => {
@@ -252,7 +267,7 @@ export default function AffiliateDashboard() {
       // Enhanced retry logic
       if (retryCount < 3) {
         console.log(`🔄 Retrying... (${retryCount + 1}/3)`);
-        setRetryCount(prev => prev + 1);
+        setRetryCount((prev: number) => prev + 1);
         
         // Exponential backoff
         const delay = Math.pow(2, retryCount) * 1000; // 1s, 2s, 4s
