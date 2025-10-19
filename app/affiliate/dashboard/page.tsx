@@ -177,16 +177,22 @@ export default function AffiliateDashboard() {
         const statsData = await statsResponse.value.json();
         console.log('📈 Stats loaded:', statsData);
         
-        // Process user stats for commission paid
+        // Process user stats for commission data
+        let totalCommissionEarned = 0;
         let totalCommissionPaid = 0;
         if (userStatsResponse.status === 'fulfilled' && userStatsResponse.value.ok) {
           const userStatsData = await userStatsResponse.value.json();
+          console.log('🔍 User stats data for dashboard:', userStatsData);
+          totalCommissionEarned = userStatsData.stats?.totalCommissionEarned || 0;
           totalCommissionPaid = userStatsData.stats?.totalCommissionPaid || 0;
         }
 
-        const totalCommission = statsData.stats.totalCommission || 0;
+        // Use commission from user stats instead of affiliate track
+        const totalCommission = totalCommissionEarned || statsData.stats.totalCommission || 0;
         setStats({
           ...statsData.stats,
+          totalCommission: totalCommission,
+          totalCommissionEarned: totalCommissionEarned,
           totalCommissionPaid,
           availableBalance: totalCommission - totalCommissionPaid
         });
