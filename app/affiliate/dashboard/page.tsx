@@ -59,7 +59,7 @@ export default function AffiliateDashboard() {
     });
   }, [isLoading, isAuthenticated, user]);
 
-  // Enhanced loading logic with better authentication handling
+  // Simplified loading logic with API-first validation
   useEffect(() => {
     const initializeDashboard = async () => {
       console.log('🚀 Initializing Affiliate Dashboard...');
@@ -72,13 +72,11 @@ export default function AffiliateDashboard() {
 
       // Check if we have token in localStorage first
       const token = localStorage.getItem('token');
-      const storedUser = localStorage.getItem('user');
       
       console.log('🔍 Auth state check:', {
         isLoading,
         isAuthenticated,
         hasToken: !!token,
-        hasStoredUser: !!storedUser,
         userFromContext: !!user
       });
 
@@ -89,142 +87,61 @@ export default function AffiliateDashboard() {
         return;
       }
 
-      // If we have token but context says not authenticated, wait a bit more
-      if (!isAuthenticated && token) {
-        console.log('⏳ Have token but context not ready, waiting...');
-        // Wait a bit more for context to initialize
-        setTimeout(() => {
-          if (!isAuthenticated) {
-            console.log('❌ Still not authenticated after wait, checking token validity...');
-            
-            // Test token with API before redirecting
-            fetch('/api/auth/validate', {
-              headers: { Authorization: `Bearer ${token}` }
-            }).then(response => {
-              if (response.ok) {
-                console.log('✅ Token is valid, forcing authentication state...');
-                // Token is valid, try to refresh user data
-                fetch('/api/user/stats', {
-                  headers: { Authorization: `Bearer ${token}` }
-                }).then(userResponse => {
-                  if (userResponse.ok) {
-                    userResponse.json().then(userData => {
-                      // Update localStorage with fresh data
-                      localStorage.setItem('user', JSON.stringify(userData.stats));
-                      // Reload page to get updated auth state
-                      window.location.reload();
-                    });
-                  }
-                });
-              } else {
-                console.log('❌ Token invalid, redirecting to login');
-                router.push('/login?redirect=/affiliate/dashboard');
-              }
-            }).catch(error => {
-              console.error('Error validating token:', error);
-              router.push('/login?redirect=/affiliate/dashboard');
-            });
-          }
-        }, 2000); // Increased wait time
-        return;
-      }
-
-      // If authenticated but no user data, wait for it
-      if (isAuthenticated && !user) {
-        console.log('⏳ Authenticated but no user data, waiting...');
-        return;
-      }
-
-      // If we have user data, proceed with affiliate check
-      if (user) {
-        console.log('🔍 Checking affiliate status:', {
-          affiliateStatus: user.affiliateStatus,
-          affiliateCode: user.affiliateCode,
-          email: user.email
+      // Always check with API first for affiliate access
+      try {
+        console.log('📡 Checking affiliate access with API...');
+        const response = await fetch('/api/affiliate/check-access', {
+          headers: { Authorization: `Bearer ${token}` }
         });
-
-        // Check affiliate status
-        if (user.affiliateStatus !== 'approved') {
-          console.log('❌ Affiliate not approved locally, status:', user.affiliateStatus);
+        
+        if (response.ok) {
+          const data = await response.json();
+          console.log('API Response:', data);
           
-          // Double-check with API to ensure data consistency
-          try {
-            const response = await fetch('/api/affiliate/check-access', {
-              headers: { Authorization: `Bearer ${token}` }
-            });
+          if (data.canAccessDashboard) {
+            console.log('✅ API confirms access to dashboard');
             
-            if (response.ok) {
-              const data = await response.json();
-              if (data.canAccessDashboard) {
-                console.log('✅ API confirms access, refreshing user data...');
-                // Refresh user data from API
-                const userStatsResponse = await fetch('/api/user/stats', {
-                  headers: { Authorization: `Bearer ${token}` }
-                });
-                
-                if (userStatsResponse.ok) {
-                  const userStatsData = await userStatsResponse.json();
-                  // Update localStorage with fresh data
-                  localStorage.setItem('user', JSON.stringify(userStatsData.stats));
-                  // Reload the page to get updated user data
-                  window.location.reload();
-                  return;
-                }
+            // Update localStorage with fresh user data
+            if (data.user) {
+              const userStatsResponse = await fetch('/api/user/stats', {
+                headers: { Authorization: `Bearer ${token}` }
+              });
+              
+              if (userStatsResponse.ok) {
+                const userStatsData = await userStatsResponse.json();
+                localStorage.setItem('user', JSON.stringify(userStatsData.stats));
               }
             }
-          } catch (error) {
-            console.error('Error checking API access:', error);
-          }
-          
-          console.log('🔄 Redirecting to referral...');
-          router.push('/referral');
-          return;
-        }
-
-        if (!user.affiliateCode) {
-          console.log('❌ No affiliate code found');
-          
-          // Double-check with API
-          try {
-            const response = await fetch('/api/affiliate/check-access', {
-              headers: { Authorization: `Bearer ${token}` }
-            });
             
-            if (response.ok) {
-              const data = await response.json();
-              if (data.canAccessDashboard && data.user?.affiliateCode) {
-                console.log('✅ API confirms affiliate code, refreshing user data...');
-                // Refresh user data from API
-                const userStatsResponse = await fetch('/api/user/stats', {
-                  headers: { Authorization: `Bearer ${token}` }
-                });
-                
-                if (userStatsResponse.ok) {
-                  const userStatsData = await userStatsResponse.json();
-                  // Update localStorage with fresh data
-                  localStorage.setItem('user', JSON.stringify(userStatsData.stats));
-                  // Reload the page to get updated user data
-                  window.location.reload();
-                  return;
-                }
-              }
-            }
-          } catch (error) {
-            console.error('Error checking API access:', error);
+            // Load dashboard data
+            console.log('✅ Loading dashboard data...');
+            await loadDashboardData();
+          } else {
+            console.log('❌ API denies access:', data.message);
+            router.push('/referral');
           }
-          
-          console.log('🔄 Redirecting to referral...');
-          router.push('/referral');
-          return;
+        } else {
+          console.log('❌ API check failed, status:', response.status);
+          if (response.status === 401) {
+            router.push('/login?redirect=/affiliate/dashboard');
+          } else {
+            router.push('/referral');
+          }
         }
-
-        console.log('✅ All checks passed, loading dashboard data...');
-        await loadDashboardData();
+      } catch (error) {
+        console.error('❌ Error checking affiliate access:', error);
+        // Don't redirect on error, try to continue
+        if (user?.affiliateStatus === 'approved') {
+          console.log('⚠️ API error but user is approved, loading dashboard...');
+          await loadDashboardData();
+        } else {
+          router.push('/referral');
+        }
       }
     };
 
     initializeDashboard();
-  }, [isLoading, isAuthenticated, user, router]);
+  }, [isLoading, router]);
 
   const loadDashboardData = async () => {
     try {
