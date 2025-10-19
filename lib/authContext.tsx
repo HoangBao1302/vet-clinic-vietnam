@@ -55,6 +55,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             userId: userData.id 
           });
           
+          // Validate token with server
+          validateTokenWithServer(storedToken, userData);
+          
           // Mobile-friendly cookie setting
           const setCookieForMobile = () => {
             const isSecure = window.location.protocol === 'https:';
@@ -103,6 +106,36 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setIsLoading(false);
     }, 100);
   }, []);
+
+  const validateTokenWithServer = async (token: string, userData: any) => {
+    try {
+      const response = await fetch('/api/auth/validate', {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success) {
+          console.log('✅ Token validated with server');
+          return true;
+        }
+      }
+      
+      console.warn('❌ Token validation failed, clearing auth data');
+      setToken(null);
+      setUser(null);
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      sessionStorage.removeItem('token');
+      sessionStorage.removeItem('user');
+      return false;
+    } catch (error) {
+      console.error('Error validating token:', error);
+      return false;
+    }
+  };
 
   const login = (newToken: string, newUser: User) => {
     setToken(newToken);

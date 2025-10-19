@@ -44,7 +44,7 @@ export default function AffiliateDashboard() {
   const [error, setError] = useState("");
   const [retryCount, setRetryCount] = useState(0);
 
-  // Enhanced loading logic with API validation
+  // Enhanced loading logic with better authentication handling
   useEffect(() => {
     const initializeDashboard = async () => {
       console.log('🚀 Initializing Affiliate Dashboard...');
@@ -55,34 +55,58 @@ export default function AffiliateDashboard() {
         return;
       }
 
-      // Check authentication
-      if (!isAuthenticated) {
-        console.log('❌ Not authenticated, redirecting to login');
+      // Check if we have token in localStorage first
+      const token = localStorage.getItem('token');
+      const storedUser = localStorage.getItem('user');
+      
+      console.log('🔍 Auth state check:', {
+        isLoading,
+        isAuthenticated,
+        hasToken: !!token,
+        hasStoredUser: !!storedUser,
+        userFromContext: !!user
+      });
+
+      // If no token at all, redirect to login
+      if (!token) {
+        console.log('❌ No token found, redirecting to login');
         router.push('/login?redirect=/affiliate/dashboard');
         return;
       }
 
-      // Check user data
-      if (!user) {
-        console.log('⏳ User data still loading...');
+      // If we have token but context says not authenticated, wait a bit more
+      if (!isAuthenticated && token) {
+        console.log('⏳ Have token but context not ready, waiting...');
+        // Wait a bit more for context to initialize
+        setTimeout(() => {
+          if (!isAuthenticated) {
+            console.log('❌ Still not authenticated after wait, redirecting to login');
+            router.push('/login?redirect=/affiliate/dashboard');
+          }
+        }, 1000);
         return;
       }
 
-      // Enhanced affiliate status check with API validation
-      console.log('🔍 Checking affiliate status:', {
-        affiliateStatus: user.affiliateStatus,
-        affiliateCode: user.affiliateCode,
-        email: user.email
-      });
+      // If authenticated but no user data, wait for it
+      if (isAuthenticated && !user) {
+        console.log('⏳ Authenticated but no user data, waiting...');
+        return;
+      }
 
-      // First check local user data
-      if (user.affiliateStatus !== 'approved') {
-        console.log('❌ Affiliate not approved locally, status:', user.affiliateStatus);
-        
-        // Double-check with API to ensure data consistency
-        try {
-          const token = localStorage.getItem('token');
-          if (token) {
+      // If we have user data, proceed with affiliate check
+      if (user) {
+        console.log('🔍 Checking affiliate status:', {
+          affiliateStatus: user.affiliateStatus,
+          affiliateCode: user.affiliateCode,
+          email: user.email
+        });
+
+        // Check affiliate status
+        if (user.affiliateStatus !== 'approved') {
+          console.log('❌ Affiliate not approved locally, status:', user.affiliateStatus);
+          
+          // Double-check with API to ensure data consistency
+          try {
             const response = await fetch('/api/affiliate/check-access', {
               headers: { Authorization: `Bearer ${token}` }
             });
@@ -106,23 +130,20 @@ export default function AffiliateDashboard() {
                 }
               }
             }
+          } catch (error) {
+            console.error('Error checking API access:', error);
           }
-        } catch (error) {
-          console.error('Error checking API access:', error);
+          
+          console.log('🔄 Redirecting to referral...');
+          router.push('/referral');
+          return;
         }
-        
-        console.log('🔄 Redirecting to referral...');
-        router.push('/referral');
-        return;
-      }
 
-      if (!user.affiliateCode) {
-        console.log('❌ No affiliate code found');
-        
-        // Double-check with API
-        try {
-          const token = localStorage.getItem('token');
-          if (token) {
+        if (!user.affiliateCode) {
+          console.log('❌ No affiliate code found');
+          
+          // Double-check with API
+          try {
             const response = await fetch('/api/affiliate/check-access', {
               headers: { Authorization: `Bearer ${token}` }
             });
@@ -146,18 +167,18 @@ export default function AffiliateDashboard() {
                 }
               }
             }
+          } catch (error) {
+            console.error('Error checking API access:', error);
           }
-        } catch (error) {
-          console.error('Error checking API access:', error);
+          
+          console.log('🔄 Redirecting to referral...');
+          router.push('/referral');
+          return;
         }
-        
-        console.log('🔄 Redirecting to referral...');
-        router.push('/referral');
-        return;
-      }
 
-      console.log('✅ All checks passed, loading dashboard data...');
-      await loadDashboardData();
+        console.log('✅ All checks passed, loading dashboard data...');
+        await loadDashboardData();
+      }
     };
 
     initializeDashboard();
