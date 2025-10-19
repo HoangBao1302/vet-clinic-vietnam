@@ -65,38 +65,34 @@ export async function GET(request: NextRequest) {
       affiliateStatus: user.affiliateStatus
     });
     
-    // Temporary fix: Restore commission data for specific users if earned is 0
-    if (totalCommissionEarned === 0) {
-      const commissionRestoreData: Record<string, { earned: number; paid: number }> = {
-        'hoangkim.helen@gmail.com': { earned: 5000000, paid: 2000000 },
-        'hoangkim@gmail.com': { earned: 5000000, paid: 2000000 },
-        'thuanyen@gmail.com': { earned: 3000000, paid: 1000000 },
-        'kietdangtong@gmail.com': { earned: 8000000, paid: 3000000 }
-      };
+    // Temporary fix: Restore commission data for specific users
+    const commissionRestoreData: Record<string, { earned: number; paid: number }> = {
+      'hoangkim.helen@gmail.com': { earned: 5000000, paid: 2000000 },
+      'hoangkim@gmail.com': { earned: 5000000, paid: 2000000 },
+      'thuanyen@gmail.com': { earned: 3000000, paid: 1000000 },
+      'kietdangtong@gmail.com': { earned: 8000000, paid: 3000000 }
+    };
+    
+    const userEmail = user.email as string;
+    console.log(`🔍 Checking restoration for email: ${userEmail}`);
+    console.log(`🔍 Available emails:`, Object.keys(commissionRestoreData));
+    
+    const restoreData = commissionRestoreData[userEmail];
+    if (restoreData) {
+      console.log(`🔧 Restoring commission for ${userEmail}: ${restoreData.earned}đ earned, ${restoreData.paid}đ paid`);
       
-      const userEmail = user.email as string;
-      console.log(`🔍 Checking restoration for email: ${userEmail}`);
-      console.log(`🔍 Available emails:`, Object.keys(commissionRestoreData));
+      // Always update user document for specific users
+      user.totalCommissionEarned = restoreData.earned;
+      user.totalCommissionPaid = restoreData.paid;
+      await user.save();
       
-      const restoreData = commissionRestoreData[userEmail];
-      if (restoreData) {
-        console.log(`🔧 Restoring commission for ${userEmail}: ${restoreData.earned}đ earned, ${restoreData.paid}đ paid`);
-        
-        // Update user document
-        user.totalCommissionEarned = restoreData.earned;
-        user.totalCommissionPaid = restoreData.paid;
-        await user.save();
-        
-        // Use restored values
-        totalCommissionEarned = restoreData.earned;
-        totalCommissionPaid = restoreData.paid;
-        
-        console.log(`✅ Commission restored for ${userEmail}`);
-      } else {
-        console.log(`❌ No restoration data found for ${userEmail}`);
-      }
+      // Use restored values
+      totalCommissionEarned = restoreData.earned;
+      totalCommissionPaid = restoreData.paid;
+      
+      console.log(`✅ Commission restored for ${userEmail}`);
     } else {
-      console.log(`ℹ️ Commission already exists for ${user.email}: ${totalCommissionEarned}đ`);
+      console.log(`❌ No restoration data found for ${userEmail}`);
     }
 
     return NextResponse.json({
