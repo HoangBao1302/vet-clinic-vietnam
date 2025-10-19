@@ -449,17 +449,17 @@ export default function AffiliateDashboard() {
               
               {/* Commission Summary */}
               <div className="bg-white rounded-lg p-4 mb-4 border-l-4 border-green-600">
-                <div className="grid grid-cols-3 gap-2 text-center">
+                <div className="grid grid-cols-3 gap-1 text-center">
                   <div>
-                    <p className="text-lg md:text-xl font-bold text-gray-800">{(stats?.totalCommission || 0).toLocaleString('vi-VN')}đ</p>
+                    <p className="text-sm md:text-base font-bold text-gray-800">{(stats?.totalCommission || 0).toLocaleString('vi-VN')}đ</p>
                     <p className="text-xs text-gray-600">Tổng kiếm được</p>
                   </div>
                   <div>
-                    <p className="text-lg md:text-xl font-bold text-red-600">-{(stats?.totalCommissionPaid || 0).toLocaleString('vi-VN')}đ</p>
+                    <p className="text-sm md:text-base font-bold text-red-600">-{(stats?.totalCommissionPaid || 0).toLocaleString('vi-VN')}đ</p>
                     <p className="text-xs text-gray-600">Đã rút</p>
                   </div>
                   <div>
-                    <p className="text-lg md:text-xl font-bold text-green-600">{(stats?.availableBalance || 0).toLocaleString('vi-VN')}đ</p>
+                    <p className="text-sm md:text-base font-bold text-green-600">{(stats?.availableBalance || 0).toLocaleString('vi-VN')}đ</p>
                     <p className="text-xs text-gray-600">Khả dụng</p>
                   </div>
                 </div>
