@@ -35,38 +35,11 @@ export function middleware(request: NextRequest) {
   const isPaidOnlyRoute = paidOnlyRoutes.some(route => pathname.startsWith(route));
   const isAdminOnlyRoute = adminOnlyRoutes.some(route => pathname.startsWith(route));
 
-  // Debug logging for downloads route
-  if (pathname === '/downloads') {
-    const userAgent = request.headers.get('user-agent') || '';
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
-    
-    console.log('Downloads middleware check:', {
-      pathname,
-      hasToken: !!token,
-      tokenLength: token?.length || 0,
-      cookies: request.cookies.getAll().map(c => c.name),
-      isMobile,
-      userAgent: userAgent.substring(0, 50)
-    });
-    
-    // For downloads route, always let it through - let client-side handle auth
-    // This prevents middleware redirect loops when localStorage has token but cookie doesn't
-    console.log('Downloads: Letting through to client-side auth check');
+  // For protected routes, let client-side handle authentication
+  // This prevents middleware redirect loops when localStorage has token but cookie doesn't
+  if (isProtectedRoute || isPaidOnlyRoute || isAdminOnlyRoute) {
+    console.log('Protected route: Letting through to client-side auth check', { pathname });
     return NextResponse.next();
-  }
-
-  // Let admin routes handle auth on client-side to prevent refresh loops
-  if (isAdminOnlyRoute) {
-    console.log('Admin route: Letting through to client-side auth check');
-    return NextResponse.next();
-  }
-
-  // Redirect to login if accessing protected route without token
-  if ((isProtectedRoute || isPaidOnlyRoute) && !token) {
-    console.log('Redirecting to login:', { pathname, hasToken: !!token });
-    const loginUrl = new URL('/login', request.url);
-    loginUrl.searchParams.set('redirect', pathname);
-    return NextResponse.redirect(loginUrl);
   }
 
   return NextResponse.next();
