@@ -114,7 +114,7 @@ export default function ProfilePage() {
                         Admin
                       </span>
                     )}
-                    {stats?.affiliateStatus === "approved" && (
+                    {(stats?.affiliateStatus === "approved" || user?.affiliateStatus === "approved") && (
                       <span className="bg-green-500 px-4 py-1 rounded-full text-sm font-semibold flex items-center gap-1">
                         <Award size={14} />
                         Affiliate Partner
@@ -190,21 +190,21 @@ export default function ProfilePage() {
                       <span className="text-sm text-gray-500">Affiliate</span>
                     </div>
                     <p className="text-sm text-gray-600 mb-2">Trạng thái</p>
-                    {stats?.affiliateStatus === "approved" ? (
+                    {(stats?.affiliateStatus === "approved" || user?.affiliateStatus === "approved") ? (
                       <>
                         <p className="text-xl font-bold text-green-600 flex items-center gap-2">
                           <CheckCircle size={20} />
                           Đã duyệt
                         </p>
-                        {stats.affiliateCode && (
+                        {(stats?.affiliateCode || user?.affiliateCode) && (
                           <p className="text-sm text-gray-600 mt-2">
-                            Code: <span className="font-mono font-semibold">{stats.affiliateCode}</span>
+                            Code: <span className="font-mono font-semibold">{stats?.affiliateCode || user?.affiliateCode}</span>
                           </p>
                         )}
                       </>
-                    ) : stats?.affiliateStatus === "pending" ? (
+                    ) : (stats?.affiliateStatus === "pending" || user?.affiliateStatus === "pending") ? (
                       <p className="text-xl font-bold text-yellow-600">Đang chờ duyệt</p>
-                    ) : stats?.affiliateStatus === "rejected" ? (
+                    ) : (stats?.affiliateStatus === "rejected" || user?.affiliateStatus === "rejected") ? (
                       <p className="text-xl font-bold text-red-600">Bị từ chối</p>
                     ) : (
                       <p className="text-xl font-bold text-gray-400">Chưa đăng ký</p>

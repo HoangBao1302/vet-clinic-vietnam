@@ -86,7 +86,8 @@ export async function GET(request: NextRequest) {
         console.log('Commission calculation for', user.email, ':', {
           affiliateCode: user.affiliateCode,
           totalCommissionEarned,
-          totalCommissionPaid
+          totalCommissionPaid,
+          commissionStats: commissionStats
         });
       } catch (error) {
         console.error('Error calculating commission:', error);
