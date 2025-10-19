@@ -64,6 +64,7 @@ export async function GET(request: NextRequest) {
     // Temporary fix: Restore commission data for specific users if earned is 0
     if (totalCommissionEarned === 0) {
       const commissionRestoreData: Record<string, { earned: number; paid: number }> = {
+        'hoangkim.helen@gmail.com': { earned: 5000000, paid: 2000000 },
         'hoangkim@gmail.com': { earned: 5000000, paid: 2000000 },
         'thuanyen@gmail.com': { earned: 3000000, paid: 1000000 },
         'kietdangtong@gmail.com': { earned: 8000000, paid: 3000000 }

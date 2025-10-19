@@ -103,13 +103,17 @@ export default function AffiliateDashboard() {
             
             // Update localStorage with fresh user data
             if (data.user) {
+              console.log('🔍 Fetching user stats...');
               const userStatsResponse = await fetch('/api/user/stats', {
                 headers: { Authorization: `Bearer ${token}` }
               });
               
               if (userStatsResponse.ok) {
                 const userStatsData = await userStatsResponse.json();
+                console.log('🔍 User stats response:', userStatsData);
                 localStorage.setItem('user', JSON.stringify(userStatsData.stats));
+              } else {
+                console.log('❌ User stats API failed:', userStatsResponse.status);
               }
             }
             
