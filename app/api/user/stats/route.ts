@@ -56,15 +56,16 @@ export async function GET(request: NextRequest) {
     
     // Temporary fix: Restore commission data for specific users if they are 0
     if (totalCommissionEarned === 0 && totalCommissionPaid === 0) {
-      const commissionRestoreData = {
+      const commissionRestoreData: Record<string, { earned: number; paid: number }> = {
         'hoangkim@gmail.com': { earned: 5000000, paid: 2000000 },
         'thuanyen@gmail.com': { earned: 3000000, paid: 1000000 },
         'kietdangtong@gmail.com': { earned: 8000000, paid: 3000000 }
       };
       
-      const restoreData = commissionRestoreData[user.email];
+      const userEmail = user.email as string;
+      const restoreData = commissionRestoreData[userEmail];
       if (restoreData) {
-        console.log(`🔧 Restoring commission for ${user.email}: ${restoreData.earned}đ earned, ${restoreData.paid}đ paid`);
+        console.log(`🔧 Restoring commission for ${userEmail}: ${restoreData.earned}đ earned, ${restoreData.paid}đ paid`);
         
         // Update user document
         user.totalCommissionEarned = restoreData.earned;
@@ -75,7 +76,7 @@ export async function GET(request: NextRequest) {
         totalCommissionEarned = restoreData.earned;
         totalCommissionPaid = restoreData.paid;
         
-        console.log(`✅ Commission restored for ${user.email}`);
+        console.log(`✅ Commission restored for ${userEmail}`);
       }
     }
 
