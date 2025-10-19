@@ -50,12 +50,11 @@ export async function GET(request: NextRequest) {
       await user.save();
     }
 
-    // Use existing commission values from user document (restore original logic)
-    let totalCommissionEarned = user.totalCommissionEarned || 0;
-    let totalCommissionPaid = user.totalCommissionPaid || 0;
+    // Always calculate commission from AffiliateClick data for accuracy
+    let totalCommissionEarned = 0;
+    let totalCommissionPaid = 0;
     
-    // Optional: Try to sync with AffiliateClick data if user document values are 0
-    if (user.affiliateCode && (totalCommissionEarned === 0 || totalCommissionPaid === 0)) {
+    if (user.affiliateCode) {
       try {
         const AffiliateClick = require('@/lib/models/AffiliateClick').default;
         
@@ -79,27 +78,35 @@ export async function GET(request: NextRequest) {
         ]);
         
         if (commissionStats.length > 0) {
-          const realTimeEarned = commissionStats[0].totalEarned || 0;
-          const realTimePaid = commissionStats[0].totalPaid || 0;
-          
-          // Use real-time data if user document is 0
-          if (totalCommissionEarned === 0 && realTimeEarned > 0) {
-            totalCommissionEarned = realTimeEarned;
-          }
-          if (totalCommissionPaid === 0 && realTimePaid > 0) {
-            totalCommissionPaid = realTimePaid;
-          }
+          totalCommissionEarned = commissionStats[0].totalEarned || 0;
+          totalCommissionPaid = commissionStats[0].totalPaid || 0;
         }
         
-        console.log('Commission sync for', user.email, ':', {
+        console.log('Commission calculation for', user.email, ':', {
           affiliateCode: user.affiliateCode,
-          userDocument: { earned: user.totalCommissionEarned, paid: user.totalCommissionPaid },
-          realTime: { earned: totalCommissionEarned, paid: totalCommissionPaid }
+          totalCommissionEarned,
+          totalCommissionPaid,
+          commissionStats: commissionStats
         });
+        
+        // Update user document with real-time data
+        if (user.totalCommissionEarned !== totalCommissionEarned || user.totalCommissionPaid !== totalCommissionPaid) {
+          user.totalCommissionEarned = totalCommissionEarned;
+          user.totalCommissionPaid = totalCommissionPaid;
+          await user.save();
+          console.log('Updated user document with real-time commission data');
+        }
+        
       } catch (error) {
-        console.error('Error syncing commission:', error);
-        // Keep original values
+        console.error('Error calculating commission:', error);
+        // Fallback to user document values
+        totalCommissionEarned = user.totalCommissionEarned || 0;
+        totalCommissionPaid = user.totalCommissionPaid || 0;
       }
+    } else {
+      // No affiliate code, use user document values
+      totalCommissionEarned = user.totalCommissionEarned || 0;
+      totalCommissionPaid = user.totalCommissionPaid || 0;
     }
 
     return NextResponse.json({
