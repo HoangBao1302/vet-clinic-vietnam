@@ -247,7 +247,7 @@ export default function ProfilePage() {
                   )}
 
 
-                  {stats?.affiliateStatus === "approved" && (
+                  {(stats?.affiliateStatus === "approved" || user?.affiliateStatus === "approved") && (
                     <button
                       onClick={async () => {
                         const token = localStorage.getItem('token');
@@ -267,11 +267,17 @@ export default function ProfilePage() {
                           
                           if (response.ok) {
                             const data = await response.json();
-                            localStorage.setItem('user', JSON.stringify(data.stats));
-                            await refreshUser();
                             
-                            // Navigate to dashboard
-                            router.push('/affiliate/dashboard');
+                            // Check if user has affiliate access
+                            if (data.stats.affiliateStatus === 'approved') {
+                              localStorage.setItem('user', JSON.stringify(data.stats));
+                              await refreshUser();
+                              
+                              // Navigate to dashboard
+                              router.push('/affiliate/dashboard');
+                            } else {
+                              alert('Bạn chưa được phê duyệt làm affiliate partner. Vui lòng liên hệ admin.');
+                            }
                           } else {
                             alert('Không thể đồng bộ dữ liệu. Vui lòng thử lại.');
                           }
