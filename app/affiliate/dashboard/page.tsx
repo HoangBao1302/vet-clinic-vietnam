@@ -44,7 +44,7 @@ export default function AffiliateDashboard() {
   const [error, setError] = useState("");
   const [retryCount, setRetryCount] = useState(0);
 
-  // Simplified loading logic
+  // Enhanced loading logic with API validation
   useEffect(() => {
     const initializeDashboard = async () => {
       console.log('🚀 Initializing Affiliate Dashboard...');
@@ -68,9 +68,90 @@ export default function AffiliateDashboard() {
         return;
       }
 
-      // Check affiliate status
+      // Enhanced affiliate status check with API validation
+      console.log('🔍 Checking affiliate status:', {
+        affiliateStatus: user.affiliateStatus,
+        affiliateCode: user.affiliateCode,
+        email: user.email
+      });
+
+      // First check local user data
       if (user.affiliateStatus !== 'approved') {
-        console.log('❌ Affiliate not approved, redirecting to referral');
+        console.log('❌ Affiliate not approved locally, status:', user.affiliateStatus);
+        
+        // Double-check with API to ensure data consistency
+        try {
+          const token = localStorage.getItem('token');
+          if (token) {
+            const response = await fetch('/api/affiliate/check-access', {
+              headers: { Authorization: `Bearer ${token}` }
+            });
+            
+            if (response.ok) {
+              const data = await response.json();
+              if (data.canAccessDashboard) {
+                console.log('✅ API confirms access, refreshing user data...');
+                // Refresh user data from API
+                const userStatsResponse = await fetch('/api/user/stats', {
+                  headers: { Authorization: `Bearer ${token}` }
+                });
+                
+                if (userStatsResponse.ok) {
+                  const userStatsData = await userStatsResponse.json();
+                  // Update localStorage with fresh data
+                  localStorage.setItem('user', JSON.stringify(userStatsData.stats));
+                  // Reload the page to get updated user data
+                  window.location.reload();
+                  return;
+                }
+              }
+            }
+          }
+        } catch (error) {
+          console.error('Error checking API access:', error);
+        }
+        
+        console.log('🔄 Redirecting to referral...');
+        router.push('/referral');
+        return;
+      }
+
+      if (!user.affiliateCode) {
+        console.log('❌ No affiliate code found');
+        
+        // Double-check with API
+        try {
+          const token = localStorage.getItem('token');
+          if (token) {
+            const response = await fetch('/api/affiliate/check-access', {
+              headers: { Authorization: `Bearer ${token}` }
+            });
+            
+            if (response.ok) {
+              const data = await response.json();
+              if (data.canAccessDashboard && data.user?.affiliateCode) {
+                console.log('✅ API confirms affiliate code, refreshing user data...');
+                // Refresh user data from API
+                const userStatsResponse = await fetch('/api/user/stats', {
+                  headers: { Authorization: `Bearer ${token}` }
+                });
+                
+                if (userStatsResponse.ok) {
+                  const userStatsData = await userStatsResponse.json();
+                  // Update localStorage with fresh data
+                  localStorage.setItem('user', JSON.stringify(userStatsData.stats));
+                  // Reload the page to get updated user data
+                  window.location.reload();
+                  return;
+                }
+              }
+            }
+          }
+        } catch (error) {
+          console.error('Error checking API access:', error);
+        }
+        
+        console.log('🔄 Redirecting to referral...');
         router.push('/referral');
         return;
       }
@@ -94,8 +175,8 @@ export default function AffiliateDashboard() {
 
       console.log('📊 Loading dashboard data...');
 
-      // Load data in parallel
-      const [statsResponse, linksResponse, userStatsResponse] = await Promise.all([
+      // Load data in parallel with better error handling
+      const [statsResponse, linksResponse, userStatsResponse] = await Promise.allSettled([
         fetch(`/api/affiliate/track?affiliateCode=${user?.affiliateCode}`, {
           headers: { Authorization: `Bearer ${token}` }
         }),
@@ -108,14 +189,14 @@ export default function AffiliateDashboard() {
       ]);
 
       // Process stats
-      if (statsResponse.ok) {
-        const statsData = await statsResponse.json();
+      if (statsResponse.status === 'fulfilled' && statsResponse.value.ok) {
+        const statsData = await statsResponse.value.json();
         console.log('📈 Stats loaded:', statsData);
         
         // Process user stats for commission paid
         let totalCommissionPaid = 0;
-        if (userStatsResponse.ok) {
-          const userStatsData = await userStatsResponse.json();
+        if (userStatsResponse.status === 'fulfilled' && userStatsResponse.value.ok) {
+          const userStatsData = await userStatsResponse.value.json();
           totalCommissionPaid = userStatsData.stats?.totalCommissionPaid || 0;
         }
 
@@ -126,15 +207,19 @@ export default function AffiliateDashboard() {
           availableBalance: totalCommission - totalCommissionPaid
         });
       } else {
-        throw new Error('Failed to load affiliate stats');
+        const errorMsg = statsResponse.status === 'rejected' 
+          ? statsResponse.reason.message 
+          : 'Failed to load affiliate stats';
+        throw new Error(errorMsg);
       }
 
       // Process tracking links
-      if (linksResponse.ok) {
-        const linksData = await linksResponse.json();
+      if (linksResponse.status === 'fulfilled' && linksResponse.value.ok) {
+        const linksData = await linksResponse.value.json();
         setTrackingLinks(linksData.products || []);
       } else {
-        console.warn('Failed to load tracking links');
+        console.warn('Failed to load tracking links, using empty array');
+        setTrackingLinks([]);
       }
 
       console.log('✅ Dashboard data loaded successfully');
@@ -143,13 +228,18 @@ export default function AffiliateDashboard() {
       console.error('❌ Error loading dashboard:', err);
       setError(err.message);
       
-      // Retry logic
+      // Enhanced retry logic
       if (retryCount < 3) {
         console.log(`🔄 Retrying... (${retryCount + 1}/3)`);
         setRetryCount(prev => prev + 1);
+        
+        // Exponential backoff
+        const delay = Math.pow(2, retryCount) * 1000; // 1s, 2s, 4s
         setTimeout(() => {
           loadDashboardData();
-        }, 2000);
+        }, delay);
+      } else {
+        console.error('❌ Max retries reached, showing error');
       }
     } finally {
       setLoading(false);
@@ -192,23 +282,37 @@ export default function AffiliateDashboard() {
     );
   }
 
-  // Error state
+  // Enhanced error state with debug info
   if (error) {
     return (
       <div className="min-h-screen bg-gray-50">
         <Header />
         <main className="pt-20">
           <div className="container-custom py-20 text-center">
-            <div className="bg-red-50 border border-red-200 rounded-lg p-6 max-w-md mx-auto">
+            <div className="bg-red-50 border border-red-200 rounded-lg p-6 max-w-2xl mx-auto">
               <AlertCircle className="text-red-600 mx-auto mb-4" size={48} />
               <h2 className="text-xl font-semibold text-red-800 mb-2">Error Loading Dashboard</h2>
               <p className="text-red-600 mb-4">{error}</p>
+              
+              {/* Debug Information */}
+              <div className="bg-gray-100 rounded-lg p-4 mb-4 text-left">
+                <h3 className="font-semibold text-gray-800 mb-2">Debug Information:</h3>
+                <div className="text-sm text-gray-600 space-y-1">
+                  <p>• User Email: {user?.email || 'Not loaded'}</p>
+                  <p>• Affiliate Status: {user?.affiliateStatus || 'Not loaded'}</p>
+                  <p>• Affiliate Code: {user?.affiliateCode || 'Not loaded'}</p>
+                  <p>• Membership Tier: {user?.membershipTier || 'Not loaded'}</p>
+                  <p>• Is Paid: {user?.isPaid ? 'Yes' : 'No'}</p>
+                  <p>• Retry Count: {retryCount}/3</p>
+                </div>
+              </div>
+              
               <div className="space-y-2">
                 <button
                   onClick={loadDashboardData}
                   className="w-full px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
                 >
-                  🔄 Retry
+                  🔄 Retry Loading
                 </button>
                 <button
                   onClick={() => window.location.reload()}
@@ -216,6 +320,21 @@ export default function AffiliateDashboard() {
                 >
                   🔄 Refresh Page
                 </button>
+                <button
+                  onClick={() => {
+                    // Clear localStorage and redirect to login
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                    router.push('/login');
+                  }}
+                  className="w-full px-4 py-2 bg-yellow-600 text-white rounded hover:bg-yellow-700"
+                >
+                  🔑 Clear Auth & Login Again
+                </button>
+              </div>
+              
+              <div className="mt-4 text-xs text-gray-500">
+                <p>If the problem persists, please contact support with the debug information above.</p>
               </div>
             </div>
           </div>
