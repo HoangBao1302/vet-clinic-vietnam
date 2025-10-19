@@ -54,8 +54,15 @@ export async function GET(request: NextRequest) {
     let totalCommissionEarned = user.totalCommissionEarned || 0;
     let totalCommissionPaid = user.totalCommissionPaid || 0;
     
-    // Temporary fix: Restore commission data for specific users if they are 0
-    if (totalCommissionEarned === 0 && totalCommissionPaid === 0) {
+    console.log(`🔍 Debug commission for ${user.email}:`, {
+      earned: totalCommissionEarned,
+      paid: totalCommissionPaid,
+      affiliateCode: user.affiliateCode,
+      affiliateStatus: user.affiliateStatus
+    });
+    
+    // Temporary fix: Restore commission data for specific users if earned is 0
+    if (totalCommissionEarned === 0) {
       const commissionRestoreData: Record<string, { earned: number; paid: number }> = {
         'hoangkim@gmail.com': { earned: 5000000, paid: 2000000 },
         'thuanyen@gmail.com': { earned: 3000000, paid: 1000000 },
@@ -63,6 +70,9 @@ export async function GET(request: NextRequest) {
       };
       
       const userEmail = user.email as string;
+      console.log(`🔍 Checking restoration for email: ${userEmail}`);
+      console.log(`🔍 Available emails:`, Object.keys(commissionRestoreData));
+      
       const restoreData = commissionRestoreData[userEmail];
       if (restoreData) {
         console.log(`🔧 Restoring commission for ${userEmail}: ${restoreData.earned}đ earned, ${restoreData.paid}đ paid`);
@@ -77,7 +87,11 @@ export async function GET(request: NextRequest) {
         totalCommissionPaid = restoreData.paid;
         
         console.log(`✅ Commission restored for ${userEmail}`);
+      } else {
+        console.log(`❌ No restoration data found for ${userEmail}`);
       }
+    } else {
+      console.log(`ℹ️ Commission already exists for ${user.email}: ${totalCommissionEarned}đ`);
     }
 
     return NextResponse.json({
