@@ -95,10 +95,37 @@ export default function AffiliateDashboard() {
         // Wait a bit more for context to initialize
         setTimeout(() => {
           if (!isAuthenticated) {
-            console.log('❌ Still not authenticated after wait, redirecting to login');
-            router.push('/login?redirect=/affiliate/dashboard');
+            console.log('❌ Still not authenticated after wait, checking token validity...');
+            
+            // Test token with API before redirecting
+            fetch('/api/auth/validate', {
+              headers: { Authorization: `Bearer ${token}` }
+            }).then(response => {
+              if (response.ok) {
+                console.log('✅ Token is valid, forcing authentication state...');
+                // Token is valid, try to refresh user data
+                fetch('/api/user/stats', {
+                  headers: { Authorization: `Bearer ${token}` }
+                }).then(userResponse => {
+                  if (userResponse.ok) {
+                    userResponse.json().then(userData => {
+                      // Update localStorage with fresh data
+                      localStorage.setItem('user', JSON.stringify(userData.stats));
+                      // Reload page to get updated auth state
+                      window.location.reload();
+                    });
+                  }
+                });
+              } else {
+                console.log('❌ Token invalid, redirecting to login');
+                router.push('/login?redirect=/affiliate/dashboard');
+              }
+            }).catch(error => {
+              console.error('Error validating token:', error);
+              router.push('/login?redirect=/affiliate/dashboard');
+            });
           }
-        }, 1000);
+        }, 2000); // Increased wait time
         return;
       }
 

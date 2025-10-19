@@ -213,96 +213,106 @@ export default function ProfilePage() {
                 </div>
               )}
 
-              {/* Debug Information - Only show in development */}
-              {process.env.NODE_ENV === 'development' && (
-                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
-                  <h3 className="text-lg font-semibold text-yellow-800 mb-3">🔍 Debug Information</h3>
-                  
-                  <div className="grid md:grid-cols-2 gap-4 text-sm">
-                    <div>
-                      <h4 className="font-semibold text-yellow-700 mb-2">AuthContext State:</h4>
-                      <div className="space-y-1 text-yellow-600">
-                        <p>• isLoading: {String(loading)}</p>
-                        <p>• isAuthenticated: {String(isAuthenticated)}</p>
-                        <p>• hasUser: {String(!!user)}</p>
-                        <p>• User Email: {user?.email || 'None'}</p>
-                        <p>• Affiliate Status: {user?.affiliateStatus || 'None'}</p>
-                        <p>• Affiliate Code: {user?.affiliateCode || 'None'}</p>
-                      </div>
-                    </div>
-                    
-                    <div>
-                      <h4 className="font-semibold text-yellow-700 mb-2">LocalStorage State:</h4>
-                      <div className="space-y-1 text-yellow-600">
-                        <p>• hasToken: {String(typeof window !== 'undefined' && !!localStorage.getItem('token'))}</p>
-                        <p>• hasUser: {String(typeof window !== 'undefined' && !!localStorage.getItem('user'))}</p>
-                        <p>• Token Length: {typeof window !== 'undefined' ? localStorage.getItem('token')?.length || 0 : 'N/A'}</p>
-                      </div>
+              {/* Debug Information - Always show for troubleshooting */}
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+                <h3 className="text-lg font-semibold text-yellow-800 mb-3">🔍 Debug Information</h3>
+                
+                <div className="grid md:grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <h4 className="font-semibold text-yellow-700 mb-2">AuthContext State:</h4>
+                    <div className="space-y-1 text-yellow-600">
+                      <p>• isLoading: {String(loading)}</p>
+                      <p>• isAuthenticated: {String(isAuthenticated)}</p>
+                      <p>• hasUser: {String(!!user)}</p>
+                      <p>• User Email: {user?.email || 'None'}</p>
+                      <p>• Affiliate Status: {user?.affiliateStatus || 'None'}</p>
+                      <p>• Affiliate Code: {user?.affiliateCode || 'None'}</p>
                     </div>
                   </div>
                   
-                  <div className="mt-4 space-y-2">
-                    <button
-                      onClick={async () => {
-                        const token = localStorage.getItem('token');
-                        if (token) {
-                          try {
-                            const response = await fetch('/api/auth/validate', {
-                              headers: { Authorization: `Bearer ${token}` }
-                            });
-                            const data = await response.ok ? await response.json() : await response.text();
-                            alert(`Token Validation:\nStatus: ${response.status}\nOK: ${response.ok}\nData: ${JSON.stringify(data, null, 2)}`);
-                          } catch (error: any) {
-                            alert(`Error: ${error.message}`);
-                          }
-                        } else {
-                          alert('No token found');
-                        }
-                      }}
-                      className="px-3 py-1 bg-blue-600 text-white rounded text-sm hover:bg-blue-700"
-                    >
-                      Test Token Validation
-                    </button>
-                    
-                    <button
-                      onClick={async () => {
-                        const token = localStorage.getItem('token');
-                        if (token) {
-                          try {
-                            const response = await fetch('/api/affiliate/check-access', {
-                              headers: { Authorization: `Bearer ${token}` }
-                            });
-                            const data = await response.ok ? await response.json() : await response.text();
-                            alert(`Affiliate Access Test:\nStatus: ${response.status}\nOK: ${response.ok}\nData: ${JSON.stringify(data, null, 2)}`);
-                          } catch (error: any) {
-                            alert(`Error: ${error.message}`);
-                          }
-                        } else {
-                          alert('No token found');
-                        }
-                      }}
-                      className="px-3 py-1 bg-green-600 text-white rounded text-sm hover:bg-green-700 ml-2"
-                    >
-                      Test Affiliate Access
-                    </button>
-                    
-                    <button
-                      onClick={() => {
-                        console.log('Current URL:', window.location.href);
-                        console.log('AuthContext State:', { user, isAuthenticated, loading });
-                        console.log('LocalStorage:', {
-                          token: localStorage.getItem('token'),
-                          user: localStorage.getItem('user')
-                        });
-                        alert('Debug info logged to console. Press F12 to view.');
-                      }}
-                      className="px-3 py-1 bg-gray-600 text-white rounded text-sm hover:bg-gray-700 ml-2"
-                    >
-                      Log Debug Info
-                    </button>
+                  <div>
+                    <h4 className="font-semibold text-yellow-700 mb-2">LocalStorage State:</h4>
+                    <div className="space-y-1 text-yellow-600">
+                      <p>• hasToken: {String(typeof window !== 'undefined' && !!localStorage.getItem('token'))}</p>
+                      <p>• hasUser: {String(typeof window !== 'undefined' && !!localStorage.getItem('user'))}</p>
+                      <p>• Token Length: {typeof window !== 'undefined' ? localStorage.getItem('token')?.length || 0 : 'N/A'}</p>
+                      <p>• Current URL: {typeof window !== 'undefined' ? window.location.href : 'N/A'}</p>
+                    </div>
                   </div>
                 </div>
-              )}
+                
+                <div className="mt-4 space-y-2">
+                  <button
+                    onClick={async () => {
+                      const token = localStorage.getItem('token');
+                      if (token) {
+                        try {
+                          const response = await fetch('/api/auth/validate', {
+                            headers: { Authorization: `Bearer ${token}` }
+                          });
+                          const data = await response.ok ? await response.json() : await response.text();
+                          alert(`Token Validation:\nStatus: ${response.status}\nOK: ${response.ok}\nData: ${JSON.stringify(data, null, 2)}`);
+                        } catch (error: any) {
+                          alert(`Error: ${error.message}`);
+                        }
+                      } else {
+                        alert('No token found');
+                      }
+                    }}
+                    className="px-3 py-1 bg-blue-600 text-white rounded text-sm hover:bg-blue-700"
+                  >
+                    Test Token Validation
+                  </button>
+                  
+                  <button
+                    onClick={async () => {
+                      const token = localStorage.getItem('token');
+                      if (token) {
+                        try {
+                          const response = await fetch('/api/affiliate/check-access', {
+                            headers: { Authorization: `Bearer ${token}` }
+                          });
+                          const data = await response.ok ? await response.json() : await response.text();
+                          alert(`Affiliate Access Test:\nStatus: ${response.status}\nOK: ${response.ok}\nData: ${JSON.stringify(data, null, 2)}`);
+                        } catch (error: any) {
+                          alert(`Error: ${error.message}`);
+                        }
+                      } else {
+                        alert('No token found');
+                      }
+                    }}
+                    className="px-3 py-1 bg-green-600 text-white rounded text-sm hover:bg-green-700 ml-2"
+                  >
+                    Test Affiliate Access
+                  </button>
+                  
+                  <button
+                    onClick={() => {
+                      console.log('Current URL:', window.location.href);
+                      console.log('AuthContext State:', { user, isAuthenticated, loading });
+                      console.log('LocalStorage:', {
+                        token: localStorage.getItem('token'),
+                        user: localStorage.getItem('user')
+                      });
+                      alert('Debug info logged to console. Press F12 to view.');
+                    }}
+                    className="px-3 py-1 bg-gray-600 text-white rounded text-sm hover:bg-gray-700 ml-2"
+                  >
+                    Log Debug Info
+                  </button>
+                  
+                  <button
+                    onClick={() => {
+                      // Force navigate to affiliate dashboard
+                      console.log('Force navigating to affiliate dashboard...');
+                      window.location.href = '/affiliate/dashboard';
+                    }}
+                    className="px-3 py-1 bg-red-600 text-white rounded text-sm hover:bg-red-700 ml-2"
+                  >
+                    Force Navigate to Dashboard
+                  </button>
+                </div>
+              </div>
 
               {/* Quick Actions */}
               <div className="bg-white rounded-lg shadow-md p-6 mb-8">
