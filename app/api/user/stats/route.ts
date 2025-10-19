@@ -5,6 +5,7 @@ import { verifyToken } from '@/lib/auth';
 
 export async function GET(request: NextRequest) {
   try {
+    console.log('🔍 User Stats API called');
     // Get token from Authorization header
     const authHeader = request.headers.get('authorization');
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -32,11 +33,14 @@ export async function GET(request: NextRequest) {
     );
 
     if (!user) {
+      console.log('❌ User not found for userId:', decoded.userId);
       return NextResponse.json(
         { success: false, message: 'User not found' },
         { status: 404 }
       );
     }
+
+    console.log('✅ User found:', user.email);
 
     // Check if need to reset monthly counters
     const now = new Date();
