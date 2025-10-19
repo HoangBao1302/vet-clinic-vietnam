@@ -233,7 +233,9 @@ export default function ProfilePage() {
                     </button>
                   )}
                   
-                  {stats?.affiliateStatus === "none" && (
+                  {/* Show Apply Affiliate button only if not approved */}
+                  {((stats?.affiliateStatus === "none" || stats?.affiliateStatus === "pending") && 
+                    (user?.affiliateStatus === "none" || user?.affiliateStatus === "pending" || !user?.affiliateStatus)) && (
                     <button
                       onClick={() => router.push("/referral/apply")}
                       className="flex items-center gap-3 p-4 border-2 border-green-600 rounded-lg hover:bg-green-50 transition-colors"
@@ -246,21 +248,23 @@ export default function ProfilePage() {
                     </button>
                   )}
 
-
-                  {/* Always show Affiliate Dashboard button */}
-                  <button
-                    onClick={() => {
-                      console.log('Navigating to Affiliate Dashboard...');
-                      router.push('/affiliate/dashboard');
-                    }}
-                    className="flex items-center gap-3 p-4 border-2 border-green-600 rounded-lg hover:bg-green-50 transition-colors"
-                  >
-                    <TrendingUp className="text-green-600" size={24} />
-                    <div className="text-left">
-                      <p className="font-semibold text-gray-800">Xem Affiliate Dashboard</p>
-                      <p className="text-sm text-gray-600">Quản lý affiliate và hoa hồng</p>
-                    </div>
-                  </button>
+                  {/* Show Affiliate Dashboard button if approved */}
+                  {((stats?.affiliateStatus === "approved" || user?.affiliateStatus === "approved") && 
+                    (stats?.affiliateCode || user?.affiliateCode)) && (
+                    <button
+                      onClick={() => {
+                        console.log('Navigating to Affiliate Dashboard...');
+                        router.push('/affiliate/dashboard');
+                      }}
+                      className="flex items-center gap-3 p-4 border-2 border-green-600 rounded-lg hover:bg-green-50 transition-colors"
+                    >
+                      <TrendingUp className="text-green-600" size={24} />
+                      <div className="text-left">
+                        <p className="font-semibold text-gray-800">Xem Affiliate Dashboard</p>
+                        <p className="text-sm text-gray-600">Quản lý affiliate và hoa hồng</p>
+                      </div>
+                    </button>
+                  )}
 
                   <button
                     onClick={() => router.push("/downloads")}
