@@ -247,6 +247,7 @@ export default function ProfilePage() {
                   )}
 
 
+                  {/* Always show Affiliate Dashboard button */}
                   <button
                     onClick={() => {
                       console.log('Navigating to Affiliate Dashboard...');

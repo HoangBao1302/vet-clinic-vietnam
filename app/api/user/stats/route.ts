@@ -50,15 +50,15 @@ export async function GET(request: NextRequest) {
       await user.save();
     }
 
-    // Calculate real-time commission from affiliate clicks
-    let totalCommissionEarned = 0;
-    let totalCommissionPaid = 0;
+    // Use existing commission values from user document (restore original logic)
+    let totalCommissionEarned = user.totalCommissionEarned || 0;
+    let totalCommissionPaid = user.totalCommissionPaid || 0;
     
-    if (user.affiliateCode) {
+    // Optional: Try to sync with AffiliateClick data if user document values are 0
+    if (user.affiliateCode && (totalCommissionEarned === 0 || totalCommissionPaid === 0)) {
       try {
         const AffiliateClick = require('@/models/AffiliateClick').default;
         
-        // Get total commission earned from all affiliate clicks
         const commissionStats = await AffiliateClick.aggregate([
           { $match: { affiliateCode: user.affiliateCode } },
           {
@@ -79,21 +79,26 @@ export async function GET(request: NextRequest) {
         ]);
         
         if (commissionStats.length > 0) {
-          totalCommissionEarned = commissionStats[0].totalEarned || 0;
-          totalCommissionPaid = commissionStats[0].totalPaid || 0;
+          const realTimeEarned = commissionStats[0].totalEarned || 0;
+          const realTimePaid = commissionStats[0].totalPaid || 0;
+          
+          // Use real-time data if user document is 0
+          if (totalCommissionEarned === 0 && realTimeEarned > 0) {
+            totalCommissionEarned = realTimeEarned;
+          }
+          if (totalCommissionPaid === 0 && realTimePaid > 0) {
+            totalCommissionPaid = realTimePaid;
+          }
         }
         
-        console.log('Commission calculation for', user.email, ':', {
+        console.log('Commission sync for', user.email, ':', {
           affiliateCode: user.affiliateCode,
-          totalCommissionEarned,
-          totalCommissionPaid,
-          commissionStats: commissionStats
+          userDocument: { earned: user.totalCommissionEarned, paid: user.totalCommissionPaid },
+          realTime: { earned: totalCommissionEarned, paid: totalCommissionPaid }
         });
       } catch (error) {
-        console.error('Error calculating commission:', error);
-        // Fallback to user document values
-        totalCommissionEarned = user.totalCommissionEarned || 0;
-        totalCommissionPaid = user.totalCommissionPaid || 0;
+        console.error('Error syncing commission:', error);
+        // Keep original values
       }
     }
 
