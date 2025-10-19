@@ -59,15 +59,50 @@ export default function PaymentRequestPage() {
       return;
     }
 
-    if (user?.affiliateStatus !== 'approved') {
+    // Only redirect if affiliateStatus is explicitly not 'approved' (not undefined)
+    if (user?.affiliateStatus && user.affiliateStatus !== 'approved') {
       console.log('❌ Not approved affiliate, redirecting to dashboard');
       router.push('/affiliate/dashboard');
+      return;
+    }
+
+    // If affiliateStatus is undefined, wait for AuthContext to load or fetch user data
+    if (!user?.affiliateStatus) {
+      console.log('⏳ Affiliate status not loaded yet, waiting...');
       return;
     }
 
     console.log('✅ User is authenticated and approved, fetching payment requests');
     fetchPaymentRequests();
   }, [isAuthenticated, user, router]);
+
+  // Additional useEffect to fetch user data if affiliateStatus is missing
+  useEffect(() => {
+    if (isAuthenticated && !user?.affiliateStatus) {
+      console.log('🔄 Fetching user data to get affiliate status...');
+      const fetchUserData = async () => {
+        try {
+          const token = localStorage.getItem('token');
+          const response = await fetch('/api/user/stats', {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          
+          if (response.ok) {
+            const data = await response.json();
+            console.log('📊 User stats fetched:', data.stats?.affiliateStatus);
+            // The AuthContext should update automatically when we call this API
+            // as it likely triggers a refresh
+          }
+        } catch (error) {
+          console.error('Error fetching user data:', error);
+        }
+      };
+      
+      fetchUserData();
+    }
+  }, [isAuthenticated, user?.affiliateStatus]);
 
   const fetchPaymentRequests = async () => {
     try {
@@ -205,7 +240,31 @@ export default function PaymentRequestPage() {
     }
   };
 
-  if (!isAuthenticated || user?.affiliateStatus !== 'approved') {
+  if (!isAuthenticated) {
+    return null;
+  }
+
+  // Show loading if affiliateStatus is not loaded yet
+  if (!user?.affiliateStatus) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <main className="pt-20">
+          <div className="container-custom">
+            <div className="text-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4"></div>
+              <p className="text-gray-600">Đang tải thông tin affiliate...</p>
+            </div>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  // Redirect if not approved (only after we know the status)
+  if (user.affiliateStatus !== 'approved') {
+    router.push('/affiliate/dashboard');
     return null;
   }
 
