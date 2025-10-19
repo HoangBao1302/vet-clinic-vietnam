@@ -50,16 +50,22 @@ export default function PaymentRequestPage() {
   const [success, setSuccess] = useState('');
 
   useEffect(() => {
+    console.log('🔍 Payment Request Page - useEffect triggered');
+    console.log('🔍 Auth state:', { isAuthenticated, user: user?.email, affiliateStatus: user?.affiliateStatus });
+    
     if (!isAuthenticated) {
+      console.log('❌ Not authenticated, redirecting to login');
       router.push('/login?redirect=/affiliate/payment-request');
       return;
     }
 
     if (user?.affiliateStatus !== 'approved') {
+      console.log('❌ Not approved affiliate, redirecting to dashboard');
       router.push('/affiliate/dashboard');
       return;
     }
 
+    console.log('✅ User is authenticated and approved, fetching payment requests');
     fetchPaymentRequests();
   }, [isAuthenticated, user, router]);
 

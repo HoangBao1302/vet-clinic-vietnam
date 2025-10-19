@@ -7,6 +7,7 @@ const protectedRoutes = [
   '/profile',
   '/affiliate/apply',
   '/affiliate/dashboard',
+  '/affiliate/payment-request',
   '/dashboard',
 ];
 

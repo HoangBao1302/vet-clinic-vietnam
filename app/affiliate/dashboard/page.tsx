@@ -487,7 +487,12 @@ export default function AffiliateDashboard() {
                 {(stats?.availableBalance || 0) >= 500000 ? (
                   <>
                     <button
-                      onClick={() => router.push('/affiliate/payment-request')}
+                      onClick={() => {
+                        console.log('🔍 Payment request button clicked');
+                        console.log('🔍 Available balance:', stats?.availableBalance);
+                        console.log('🔍 User affiliate status:', user?.affiliateStatus);
+                        router.push('/affiliate/payment-request');
+                      }}
                       className="w-full px-6 py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center justify-center gap-2"
                     >
                       <DollarSign size={20} />
