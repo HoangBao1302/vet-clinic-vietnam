@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import User from '@/lib/models/User';
+import PaymentRequest from '@/lib/models/PaymentRequest';
 import { verifyToken } from '@/lib/auth';
 
 export async function GET(request: NextRequest) {
@@ -54,46 +55,57 @@ export async function GET(request: NextRequest) {
       await user.save();
     }
 
-    // Use existing commission values from user document (restore original logic completely)
-    let totalCommissionEarned = user.totalCommissionEarned || 0;
-    let totalCommissionPaid = user.totalCommissionPaid || 0;
-    
-    console.log(`🔍 Debug commission for ${user.email}:`, {
-      earned: totalCommissionEarned,
-      paid: totalCommissionPaid,
-      affiliateCode: user.affiliateCode,
-      affiliateStatus: user.affiliateStatus
-    });
-    
-    // Temporary fix: Restore commission data for specific users
-    const commissionRestoreData: Record<string, { earned: number; paid: number }> = {
-      'hoangkim.helen@gmail.com': { earned: 5000000, paid: 2000000 },
-      'hoangkim@gmail.com': { earned: 5000000, paid: 2000000 },
-      'thuanyen@gmail.com': { earned: 3000000, paid: 1000000 },
-      'kietdangtong@gmail.com': { earned: 8000000, paid: 3000000 }
-    };
-    
-    const userEmail = user.email as string;
-    console.log(`🔍 Checking restoration for email: ${userEmail}`);
-    console.log(`🔍 Available emails:`, Object.keys(commissionRestoreData));
-    
-    const restoreData = commissionRestoreData[userEmail];
-    if (restoreData) {
-      console.log(`🔧 Restoring commission for ${userEmail}: ${restoreData.earned}đ earned, ${restoreData.paid}đ paid`);
-      
-      // Always update user document for specific users
-      user.totalCommissionEarned = restoreData.earned;
-      user.totalCommissionPaid = restoreData.paid;
-      await user.save();
-      
-      // Use restored values
-      totalCommissionEarned = restoreData.earned;
-      totalCommissionPaid = restoreData.paid;
-      
-      console.log(`✅ Commission restored for ${userEmail}`);
-    } else {
-      console.log(`❌ No restoration data found for ${userEmail}`);
-    }
+            // Calculate totalCommissionPaid from actual PaymentRequest data
+            let totalCommissionPaid = 0;
+            try {
+              const paidRequests = await PaymentRequest.find({
+                userId: user._id,
+                status: 'paid'
+              });
+              
+              totalCommissionPaid = paidRequests.reduce((sum, request) => sum + request.amount, 0);
+              console.log(`💰 Calculated totalCommissionPaid from PaymentRequest: ${totalCommissionPaid}đ (${paidRequests.length} requests)`);
+            } catch (error) {
+              console.error('Error calculating totalCommissionPaid:', error);
+              totalCommissionPaid = user.totalCommissionPaid || 0;
+            }
+
+            // Use existing commission values from user document for earned amount
+            let totalCommissionEarned = user.totalCommissionEarned || 0;
+            
+            console.log(`🔍 Debug commission for ${user.email}:`, {
+              earned: totalCommissionEarned,
+              paid: totalCommissionPaid,
+              affiliateCode: user.affiliateCode,
+              affiliateStatus: user.affiliateStatus
+            });
+            
+            // Temporary fix: Restore commission data for specific users (only earned amount)
+            const commissionRestoreData: Record<string, { earned: number }> = {
+              'hoangkim.helen@gmail.com': { earned: 5000000 },
+              'hoangkim@gmail.com': { earned: 5000000 },
+              'thuanyen@gmail.com': { earned: 3000000 },
+              'kietdangtong@gmail.com': { earned: 8000000 }
+            };
+            
+            const userEmail = user.email as string;
+            console.log(`🔍 Checking restoration for email: ${userEmail}`);
+            
+            const restoreData = commissionRestoreData[userEmail];
+            if (restoreData) {
+              console.log(`🔧 Restoring commission earned for ${userEmail}: ${restoreData.earned}đ`);
+              
+              // Update user document for earned amount only
+              user.totalCommissionEarned = restoreData.earned;
+              await user.save();
+              
+              // Use restored earned value
+              totalCommissionEarned = restoreData.earned;
+              
+              console.log(`✅ Commission earned restored for ${userEmail}`);
+            } else {
+              console.log(`❌ No restoration data found for ${userEmail}`);
+            }
 
     return NextResponse.json({
       success: true,
