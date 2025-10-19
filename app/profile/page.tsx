@@ -249,42 +249,9 @@ export default function ProfilePage() {
 
                   {(stats?.affiliateStatus === "approved" || user?.affiliateStatus === "approved") && (
                     <button
-                      onClick={async () => {
-                        const token = localStorage.getItem('token');
-                        if (!token) {
-                          alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
-                          return;
-                        }
-                        
-                        // Sync user data first
-                        try {
-                          const response = await fetch('/api/user/stats', {
-                            headers: { 
-                              Authorization: `Bearer ${token}`,
-                              'Cache-Control': 'no-cache'
-                            }
-                          });
-                          
-                          if (response.ok) {
-                            const data = await response.json();
-                            
-                            // Check if user has affiliate access
-                            if (data.stats.affiliateStatus === 'approved') {
-                              localStorage.setItem('user', JSON.stringify(data.stats));
-                              await refreshUser();
-                              
-                              // Navigate to dashboard
-                              router.push('/affiliate/dashboard');
-                            } else {
-                              alert('Bạn chưa được phê duyệt làm affiliate partner. Vui lòng liên hệ admin.');
-                            }
-                          } else {
-                            alert('Không thể đồng bộ dữ liệu. Vui lòng thử lại.');
-                          }
-                        } catch (error: any) {
-                          console.error('Error syncing data:', error);
-                          alert('Có lỗi xảy ra. Vui lòng thử lại.');
-                        }
+                      onClick={() => {
+                        console.log('Navigating to Affiliate Dashboard...');
+                        router.push('/affiliate/dashboard');
                       }}
                       className="flex items-center gap-3 p-4 border-2 border-green-600 rounded-lg hover:bg-green-50 transition-colors"
                     >
