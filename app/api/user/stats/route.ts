@@ -50,64 +50,9 @@ export async function GET(request: NextRequest) {
       await user.save();
     }
 
-    // Always calculate commission from AffiliateClick data for accuracy
-    let totalCommissionEarned = 0;
-    let totalCommissionPaid = 0;
-    
-    if (user.affiliateCode) {
-      try {
-        const AffiliateClick = require('@/lib/models/AffiliateClick').default;
-        
-        const commissionStats = await AffiliateClick.aggregate([
-          { $match: { affiliateCode: user.affiliateCode } },
-          {
-            $group: {
-              _id: null,
-              totalEarned: { $sum: '$commissionAmount' },
-              totalPaid: { 
-                $sum: { 
-                  $cond: [
-                    { $eq: ['$status', 'paid'] }, 
-                    '$commissionAmount', 
-                    0
-                  ] 
-                } 
-              }
-            }
-          }
-        ]);
-        
-        if (commissionStats.length > 0) {
-          totalCommissionEarned = commissionStats[0].totalEarned || 0;
-          totalCommissionPaid = commissionStats[0].totalPaid || 0;
-        }
-        
-        console.log('Commission calculation for', user.email, ':', {
-          affiliateCode: user.affiliateCode,
-          totalCommissionEarned,
-          totalCommissionPaid,
-          commissionStats: commissionStats
-        });
-        
-        // Update user document with real-time data
-        if (user.totalCommissionEarned !== totalCommissionEarned || user.totalCommissionPaid !== totalCommissionPaid) {
-          user.totalCommissionEarned = totalCommissionEarned;
-          user.totalCommissionPaid = totalCommissionPaid;
-          await user.save();
-          console.log('Updated user document with real-time commission data');
-        }
-        
-      } catch (error) {
-        console.error('Error calculating commission:', error);
-        // Fallback to user document values
-        totalCommissionEarned = user.totalCommissionEarned || 0;
-        totalCommissionPaid = user.totalCommissionPaid || 0;
-      }
-    } else {
-      // No affiliate code, use user document values
-      totalCommissionEarned = user.totalCommissionEarned || 0;
-      totalCommissionPaid = user.totalCommissionPaid || 0;
-    }
+    // Use existing commission values from user document (restore original logic completely)
+    const totalCommissionEarned = user.totalCommissionEarned || 0;
+    const totalCommissionPaid = user.totalCommissionPaid || 0;
 
     return NextResponse.json({
       success: true,
