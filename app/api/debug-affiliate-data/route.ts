@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { connectDB } from '@/lib/mongodb';
+import connectDB from '@/lib/mongodb';
 
 export async function GET(request: NextRequest) {
   try {
@@ -45,7 +45,7 @@ export async function GET(request: NextRequest) {
       success: true,
       affiliateCode,
       totalClicks: clicks.length,
-      clicks: clicks.map(click => ({
+      clicks: clicks.map((click: any) => ({
         id: click._id,
         clickedAt: click.clickedAt,
         status: click.status,

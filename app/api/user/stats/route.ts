@@ -57,7 +57,7 @@ export async function GET(request: NextRequest) {
     // Optional: Try to sync with AffiliateClick data if user document values are 0
     if (user.affiliateCode && (totalCommissionEarned === 0 || totalCommissionPaid === 0)) {
       try {
-        const AffiliateClick = require('@/models/AffiliateClick').default;
+        const AffiliateClick = require('@/lib/models/AffiliateClick').default;
         
         const commissionStats = await AffiliateClick.aggregate([
           { $match: { affiliateCode: user.affiliateCode } },
