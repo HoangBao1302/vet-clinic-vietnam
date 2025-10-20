@@ -82,8 +82,8 @@ export async function POST(request: NextRequest) {
     const productsToProcess = products || customer.purchasedProducts || [];
 
     for (const productId of productsToProcess) {
-      const productPrice = productPrices[productId] || 0;
-      const commissionRate = commissionRates[productId] || 0.30;
+      const productPrice = productPrices[productId as keyof typeof productPrices] || 0;
+      const commissionRate = commissionRates[productId as keyof typeof commissionRates] || 0.30;
       const commissionAmount = Math.round(productPrice * commissionRate);
 
       if (commissionAmount > 0) {
