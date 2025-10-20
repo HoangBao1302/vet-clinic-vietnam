@@ -79,11 +79,15 @@ export async function POST(request: NextRequest) {
     const commissionRecords = [];
 
     // Use provided products or customer's purchased products
-    const productsToProcess = products || customer.purchasedProducts || [];
+    type ProductId = keyof typeof productPrices;
+    const productsToProcess: string[] = (products as string[] | undefined) 
+      || (customer.purchasedProducts as string[] | undefined) 
+      || [];
 
     for (const productId of productsToProcess) {
-      const productPrice = productPrices[productId as keyof typeof productPrices] || 0;
-      const commissionRate = commissionRates[productId as keyof typeof commissionRates] || 0.30;
+      const id = productId as ProductId;
+      const productPrice = productPrices[id] || 0;
+      const commissionRate = commissionRates[id] || 0.30;
       const commissionAmount = Math.round(productPrice * commissionRate);
 
       if (commissionAmount > 0) {
@@ -100,7 +104,7 @@ export async function POST(request: NextRequest) {
           orderId: `manual-fix-${Date.now()}-${productId}`,
           commissionAmount: commissionAmount,
           productId: productId,
-          productName: productNames[productId] || productId,
+          productName: productNames[id] || productId,
           customerEmail: customer.email,
           customerName: customer.username,
           status: 'converted'
@@ -109,7 +113,7 @@ export async function POST(request: NextRequest) {
         await clickRecord.save();
         commissionRecords.push({
           productId,
-          productName: productNames[productId] || productId,
+          productName: productNames[id] || productId,
           price: productPrice,
           commissionRate: commissionRate * 100,
           commissionAmount
