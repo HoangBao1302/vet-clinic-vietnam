@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import AffiliateClick from "@/lib/models/AffiliateClick";
 import User from "@/lib/models/User";
+import Order from "@/lib/models/Order";
 
 export async function POST(request: NextRequest) {
   try {
@@ -40,19 +41,40 @@ export async function POST(request: NextRequest) {
         });
         
         // Create order record
-        const order = {
+        const orderData = {
           orderId: orderId,
-          productId: productId,
+          productId: productId || 'unknown',
+          productName: 'Unknown Product', // Will be updated below
           status: "paid",
           customerEmail: payerEmail,
           customerName: `${payerName?.given_name || ''} ${payerName?.surname || ''}`.trim(),
+          customerPhone: '', // PayPal doesn't provide phone
           amount: amount,
-          createdAt: new Date().toISOString(),
-          paidAt: new Date().toISOString(),
           paymentMethod: "paypal",
+          createdAt: new Date(),
+          paidAt: new Date(),
         };
+
+        // Get product name
+        const productNames: Record<string, string> = {
+          'ea-full': 'EA ThebenchmarkTrader Full Version',
+          'ea-pro-source': 'EA ThebenchmarkTrader Pro + Source Code',
+          'indicator-pro': 'Multi-Indicator Pro Pack',
+          'course': 'Khóa học Forex Trading',
+          'social-copy': 'Copy Social Trading',
+        };
+        orderData.productName = productNames[productId] || 'Unknown Product';
         
-        console.log("Order created:", order);
+        // Save order to database
+        try {
+          await connectDB();
+          const order = new Order(orderData);
+          await order.save();
+          console.log("✅ PayPal order saved to MongoDB:", orderData);
+        } catch (dbError) {
+          console.error("❌ Failed to save PayPal order to MongoDB:", dbError);
+          // Continue processing even if DB save fails
+        }
         
         // Handle affiliate conversion
         if (affiliateCode && affiliateCode !== '') {

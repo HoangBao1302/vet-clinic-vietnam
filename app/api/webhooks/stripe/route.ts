@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import AffiliateClick from "@/lib/models/AffiliateClick";
 import User from "@/lib/models/User";
+import Order from "@/lib/models/Order";
 
 export async function POST(request: NextRequest) {
   try {
@@ -43,21 +44,31 @@ export async function POST(request: NextRequest) {
       // Log the successful payment
       console.log("Payment successful:", session.id);
 
-      // For now, just log the order details
-      // In production, you would save to database or external service
-      const order = {
+      // Save order to MongoDB
+      const orderData = {
         orderId: session.id,
-        productId: session.metadata?.productId,
+        productId: session.metadata?.productId || 'unknown',
+        productName: session.metadata?.productName || 'Unknown Product',
         status: "paid",
         customerEmail: session.customer_email,
-        customerName: session.metadata?.customerName,
-        customerPhone: session.metadata?.customerPhone,
+        customerName: session.metadata?.customerName || 'Unknown Customer',
+        customerPhone: session.metadata?.customerPhone || '',
         amount: session.amount_total,
-        createdAt: new Date().toISOString(),
-        paidAt: new Date().toISOString(),
+        paymentMethod: "stripe",
+        createdAt: new Date(),
+        paidAt: new Date(),
       };
 
-      console.log("Order details:", order);
+      // Save order to database
+      try {
+        await connectDB();
+        const order = new Order(orderData);
+        await order.save();
+        console.log("✅ Stripe order saved to MongoDB:", orderData);
+      } catch (dbError) {
+        console.error("❌ Failed to save Stripe order to MongoDB:", dbError);
+        // Continue processing even if DB save fails
+      }
 
       // Connect to database for affiliate tracking
       await connectDB();
