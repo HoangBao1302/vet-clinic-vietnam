@@ -37,6 +37,26 @@ function CheckoutContent() {
     setLoading(true);
 
     try {
+      // Get enhanced tracking data from localStorage
+      const affiliateSession = localStorage.getItem('affiliate_session');
+      let enhancedTrackingData = {};
+      
+      if (affiliateSession) {
+        try {
+          const sessionData = JSON.parse(affiliateSession);
+          enhancedTrackingData = {
+            sessionId: sessionData.sessionId,
+            ipAddress: '', // Will be set by server
+            fingerprint: '', // Will be set by server
+            trackingMethod: 'enhanced',
+            timestamp: sessionData.timestamp
+          };
+          console.log('✅ Using enhanced tracking data:', sessionData);
+        } catch (error) {
+          console.log('⚠️ Could not parse affiliate session data');
+        }
+      }
+
       // Create order and get payment URL
       const response = await fetch("/api/create-payment", {
         method: "POST",
@@ -48,7 +68,10 @@ function CheckoutContent() {
           productName: itemName,
           amount: itemPrice,
           method: paymentMethod,
-          customerInfo: formData,
+          customerInfo: {
+            ...formData,
+            ...enhancedTrackingData
+          },
           affiliateCode: affiliateCode // Add affiliate tracking
         }),
       });
