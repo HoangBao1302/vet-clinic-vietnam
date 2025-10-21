@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
     // Get IP and User Agent
     const ipAddress = request.headers.get('x-forwarded-for') || 
                      request.headers.get('x-real-ip') || 
-                     request.ip || 'unknown';
+                     'unknown';
     const userAgent = request.headers.get('user-agent') || 'unknown';
     const referrer = request.headers.get('referer') || 'direct';
 
