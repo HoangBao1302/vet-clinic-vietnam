@@ -108,8 +108,8 @@ export async function GET(request: NextRequest) {
 
     // Sort alerts by priority
     alerts.sort((a, b) => {
-      const priorityOrder = { high: 3, medium: 2, low: 1 };
-      return priorityOrder[b.priority] - priorityOrder[a.priority];
+      const priorityOrder: { [key: string]: number } = { high: 3, medium: 2, low: 1 };
+      return (priorityOrder[b.priority] || 0) - (priorityOrder[a.priority] || 0);
     });
 
     // Generate summary recommendations
