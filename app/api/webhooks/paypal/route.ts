@@ -76,14 +76,43 @@ export async function POST(request: NextRequest) {
           // Continue processing even if DB save fails
         }
         
-        // Handle affiliate conversion
-        if (affiliateCode && affiliateCode !== '') {
+        // Handle affiliate conversion with URL parameter fallback
+        let finalAffiliateCode = affiliateCode;
+        
+        // URL Parameter Fallback: If no affiliateCode in custom_id, try to find from recent clicks
+        if (!finalAffiliateCode || finalAffiliateCode === '') {
+          console.log('🔍 No affiliateCode in PayPal custom_id, trying URL parameter fallback...');
+          
+          // Find recent clicks for this customer email (within last 30 days)
+          const recentClicks = await AffiliateClick.find({
+            customerEmail: payerEmail,
+            clickedAt: { $gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) }, // Last 30 days
+            status: 'clicked' // Only unconverted clicks
+          }).sort({ clickedAt: -1 }).limit(5);
+          
+          if (recentClicks.length > 0) {
+            // Use the most recent click
+            finalAffiliateCode = recentClicks[0].affiliateCode;
+            console.log(`✅ Found affiliateCode from recent click: ${finalAffiliateCode}`);
+          }
+        }
+        
+        console.log('🔍 PayPal Webhook - Processing affiliate conversion:', {
+          orderId,
+          affiliateCode: finalAffiliateCode,
+          customerEmail: payerEmail,
+          productId,
+          amount,
+          fallbackUsed: !affiliateCode || affiliateCode === ''
+        });
+
+        if (finalAffiliateCode && finalAffiliateCode !== '') {
           try {
             await connectDB();
             
             // Find the affiliate user
             const affiliate = await User.findOne({ 
-              affiliateCode, 
+              affiliateCode: finalAffiliateCode, 
               affiliateStatus: 'approved' 
             });
 
@@ -112,7 +141,7 @@ export async function POST(request: NextRequest) {
               // Update affiliate click record (most recent click that hasn't been converted yet)
               const updatedClick = await AffiliateClick.findOneAndUpdate(
                 { 
-                  affiliateCode,
+                  affiliateCode: finalAffiliateCode,
                   status: 'clicked' // Only update clicks that haven't been converted
                 },
                 {
@@ -136,19 +165,20 @@ export async function POST(request: NextRequest) {
                 await affiliate.save();
 
                 console.log(`✅ PayPal Affiliate conversion tracked:`, {
-                  affiliateCode,
+                  affiliateCode: finalAffiliateCode,
                   clickId: updatedClick._id,
                   orderId: orderId,
                   commission: commissionAmount,
                   totalEarned: affiliate.totalCommissionEarned,
                   productId,
-                  productName: productNames[productId]
+                  productName: productNames[productId],
+                  fallbackUsed: !affiliateCode || affiliateCode === ''
                 });
               } else {
-                console.warn(`⚠️ No unconverted click found for PayPal affiliate code: ${affiliateCode}`);
+                console.warn(`⚠️ No unconverted click found for PayPal affiliate code: ${finalAffiliateCode}`);
               }
             } else {
-              console.warn(`⚠️ Affiliate not found or not approved: ${affiliateCode}`);
+              console.warn(`⚠️ Affiliate not found or not approved: ${finalAffiliateCode}`);
             }
           } catch (affiliateError) {
             console.error('PayPal Affiliate conversion tracking error:', affiliateError);

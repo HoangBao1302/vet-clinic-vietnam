@@ -73,17 +73,37 @@ export async function POST(request: NextRequest) {
       // Connect to database for affiliate tracking
       await connectDB();
 
-      // Handle affiliate conversion
-      const affiliateCode = session.metadata?.affiliateCode;
+      // Handle affiliate conversion with URL parameter fallback
+      let affiliateCode = session.metadata?.affiliateCode;
+      
+      // URL Parameter Fallback: If no affiliateCode in metadata, try to find from recent clicks
+      if (!affiliateCode || affiliateCode === '') {
+        console.log('🔍 No affiliateCode in metadata, trying URL parameter fallback...');
+        
+        // Find recent clicks for this customer email (within last 30 days)
+        const recentClicks = await AffiliateClick.find({
+          customerEmail: session.customer_email,
+          clickedAt: { $gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) }, // Last 30 days
+          status: 'clicked' // Only unconverted clicks
+        }).sort({ clickedAt: -1 }).limit(5);
+        
+        if (recentClicks.length > 0) {
+          // Use the most recent click
+          affiliateCode = recentClicks[0].affiliateCode;
+          console.log(`✅ Found affiliateCode from recent click: ${affiliateCode}`);
+        }
+      }
+      
       console.log('🔍 Stripe Webhook - Processing affiliate conversion:', {
         orderId: session.id,
         affiliateCode,
         customerEmail: session.customer_email,
         productId: session.metadata?.productId,
-        amount: session.amount_total
+        amount: session.amount_total,
+        fallbackUsed: !session.metadata?.affiliateCode
       });
 
-      if (affiliateCode) {
+      if (affiliateCode && affiliateCode !== '') {
         try {
           // Find the affiliate user
           const affiliate = await User.findOne({ 

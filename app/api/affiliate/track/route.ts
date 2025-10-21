@@ -39,8 +39,10 @@ export async function POST(request: NextRequest) {
     // Get user agent
     const userAgent = request.headers.get('user-agent') || 'unknown';
 
-    // Get referrer
+    // Get referrer and check for customer email in URL parameters
     const referrer = request.headers.get('referer') || 'direct';
+    const url = new URL(request.url);
+    const customerEmail = url.searchParams.get('email') || '';
 
     // Create affiliate click record
     const click = await AffiliateClick.create({
@@ -50,6 +52,7 @@ export async function POST(request: NextRequest) {
       referrer,
       productId,
       productName,
+      customerEmail: customerEmail || undefined, // Store email if available
       status: 'clicked',
     });
 
