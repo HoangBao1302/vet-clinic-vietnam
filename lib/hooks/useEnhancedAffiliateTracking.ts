@@ -6,8 +6,8 @@ import { useSearchParams } from 'next/navigation';
 
 export function useEnhancedAffiliateTracking() {
   const searchParams = useSearchParams();
-  const [trackingData, setTrackingData] = useState(null);
-  const [sessionId, setSessionId] = useState(null);
+  const [trackingData, setTrackingData] = useState<any>(null);
+  const [sessionId, setSessionId] = useState<string | null>(null);
 
   useEffect(() => {
     // Get affiliate parameters from URL
@@ -68,6 +68,11 @@ function getProductName(productId: string): string {
 function generateBrowserFingerprint(): string {
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
+  
+  if (!ctx) {
+    return 'no-canvas';
+  }
+  
   ctx.textBaseline = 'top';
   ctx.font = '14px Arial';
   ctx.fillText('Browser fingerprint', 2, 2);
