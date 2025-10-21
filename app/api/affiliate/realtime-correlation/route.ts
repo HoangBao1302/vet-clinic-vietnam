@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
         {
           $set: {
             status: 'converted',
-            convertedAt: new Date(paidAt),
+            convertedAt: paidAt ? new Date(paidAt) : new Date(),
             orderId: orderId,
             customerEmail: customerEmail,
             customerName: customerName,
