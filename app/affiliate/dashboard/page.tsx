@@ -443,6 +443,103 @@ export default function AffiliateDashboard() {
               </div>
             </div>
 
+            {/* Click Analysis */}
+            {stats && stats.totalClicks > 0 && (
+              <div className="mt-8 bg-white rounded-lg shadow-md p-6">
+                <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                  <BarChart3 size={20} />
+                  Phân tích hiệu suất
+                </h3>
+                
+                <div className="grid md:grid-cols-2 gap-6">
+                  {/* Conversion Analysis */}
+                  <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4">
+                    <h4 className="font-semibold text-gray-800 mb-3">📊 Tỷ lệ chuyển đổi</h4>
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-gray-600">Tổng clicks:</span>
+                        <span className="font-semibold">{stats.totalClicks}</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-gray-600">Conversions:</span>
+                        <span className="font-semibold text-green-600">{stats.conversions}</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-gray-600">Conversion Rate:</span>
+                        <span className={`font-semibold ${
+                          stats.conversionRate >= 20 ? 'text-green-600' : 
+                          stats.conversionRate >= 10 ? 'text-yellow-600' : 'text-red-600'
+                        }`}>
+                          {stats.conversionRate}%
+                        </span>
+                      </div>
+                    </div>
+                    
+                    {/* Performance indicator */}
+                    <div className="mt-3 pt-3 border-t border-gray-200">
+                      {stats.conversionRate >= 20 ? (
+                        <div className="flex items-center gap-2 text-green-600">
+                          <CheckCircle size={16} />
+                          <span className="text-sm font-medium">Xuất sắc!</span>
+                        </div>
+                      ) : stats.conversionRate >= 10 ? (
+                        <div className="flex items-center gap-2 text-yellow-600">
+                          <Clock size={16} />
+                          <span className="text-sm font-medium">Cần cải thiện</span>
+                        </div>
+                      ) : stats.conversionRate > 0 ? (
+                        <div className="flex items-center gap-2 text-orange-600">
+                          <AlertCircle size={16} />
+                          <span className="text-sm font-medium">Cần hỗ trợ</span>
+                        </div>
+                      ) : (
+                        <div className="flex items-center gap-2 text-red-600">
+                          <AlertCircle size={16} />
+                          <span className="text-sm font-medium">Chưa có conversion</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  
+                  {/* Tips based on performance */}
+                  <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg p-4">
+                    <h4 className="font-semibold text-gray-800 mb-3">💡 Lời khuyên</h4>
+                    <div className="space-y-2 text-sm">
+                      {stats.conversionRate === 0 ? (
+                        <>
+                          <p className="text-gray-700">• Có {stats.totalClicks} click nhưng chưa có conversion</p>
+                          <p className="text-gray-700">• Kiểm tra chất lượng traffic</p>
+                          <p className="text-gray-700">• Cải thiện landing page</p>
+                          <p className="text-gray-700">• Thêm social proof</p>
+                        </>
+                      ) : stats.conversionRate < 10 ? (
+                        <>
+                          <p className="text-gray-700">• Conversion rate thấp ({stats.conversionRate}%)</p>
+                          <p className="text-gray-700">• Tối ưu hóa targeting</p>
+                          <p className="text-gray-700">• Cải thiện call-to-action</p>
+                          <p className="text-gray-700">• A/B test các message</p>
+                        </>
+                      ) : stats.conversionRate < 20 ? (
+                        <>
+                          <p className="text-gray-700">• Conversion rate trung bình ({stats.conversionRate}%)</p>
+                          <p className="text-gray-700">• Tăng cường trust signals</p>
+                          <p className="text-gray-700">• Cải thiện follow-up</p>
+                          <p className="text-gray-700">• Scale up traffic</p>
+                        </>
+                      ) : (
+                        <>
+                          <p className="text-gray-700">• Conversion rate xuất sắc ({stats.conversionRate}%)</p>
+                          <p className="text-gray-700">• Tiếp tục strategy hiện tại</p>
+                          <p className="text-gray-700">• Scale up budget</p>
+                          <p className="text-gray-700">• Mentor các affiliate khác</p>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Commission Info */}
             <div className="mt-8 bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-6">
               <h3 className="text-lg font-semibold text-gray-800 mb-4">💰 Thông tin hoa hồng</h3>
