@@ -73,24 +73,98 @@ export async function POST(request: NextRequest) {
       // Connect to database for affiliate tracking
       await connectDB();
 
-      // Handle affiliate conversion with URL parameter fallback
+      // Enhanced affiliate conversion with multi-layer fallback
       let affiliateCode = session.metadata?.affiliateCode;
+      let correlationMethod = 'metadata';
       
-      // URL Parameter Fallback: If no affiliateCode in metadata, try to find from recent clicks
+      // Multi-layer fallback system
       if (!affiliateCode || affiliateCode === '') {
-        console.log('🔍 No affiliateCode in metadata, trying URL parameter fallback...');
+        console.log('🔍 No affiliateCode in metadata, trying multi-layer fallback...');
         
-        // Find recent clicks for this customer email (within last 30 days)
-        const recentClicks = await AffiliateClick.find({
-          customerEmail: session.customer_email,
-          clickedAt: { $gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) }, // Last 30 days
-          status: 'clicked' // Only unconverted clicks
-        }).sort({ clickedAt: -1 }).limit(5);
+        // Layer 1: Session-based correlation
+        const sessionId = session.metadata?.sessionId;
+        if (sessionId) {
+          const sessionClick = await AffiliateClick.findOne({
+            sessionId: sessionId,
+            status: 'clicked',
+            productId: session.metadata?.productId
+          }).sort({ clickedAt: -1 });
+          
+          if (sessionClick) {
+            affiliateCode = sessionClick.affiliateCode;
+            correlationMethod = 'session';
+            console.log(`✅ Layer 1: Session correlation found - ${affiliateCode}`);
+          }
+        }
         
-        if (recentClicks.length > 0) {
-          // Use the most recent click
-          affiliateCode = recentClicks[0].affiliateCode;
-          console.log(`✅ Found affiliateCode from recent click: ${affiliateCode}`);
+        // Layer 2: Email-based correlation
+        if (!affiliateCode && session.customer_email) {
+          const emailClick = await AffiliateClick.findOne({
+            customerEmail: session.customer_email,
+            status: 'clicked',
+            productId: session.metadata?.productId,
+            clickedAt: { $gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) } // Last 7 days
+          }).sort({ clickedAt: -1 });
+          
+          if (emailClick) {
+            affiliateCode = emailClick.affiliateCode;
+            correlationMethod = 'email';
+            console.log(`✅ Layer 2: Email correlation found - ${affiliateCode}`);
+          }
+        }
+        
+        // Layer 3: IP + Time + Product correlation
+        if (!affiliateCode) {
+          const orderTime = new Date();
+          const timeWindow = 2 * 60 * 60 * 1000; // 2 hours window
+          
+          const ipClick = await AffiliateClick.findOne({
+            ipAddress: session.metadata?.ipAddress || 'unknown',
+            productId: session.metadata?.productId,
+            status: 'clicked',
+            clickedAt: { 
+              $gte: new Date(orderTime.getTime() - timeWindow),
+              $lte: orderTime
+            }
+          }).sort({ clickedAt: -1 });
+          
+          if (ipClick) {
+            affiliateCode = ipClick.affiliateCode;
+            correlationMethod = 'ip_time_product';
+            console.log(`✅ Layer 3: IP + Time + Product correlation found - ${affiliateCode}`);
+          }
+        }
+        
+        // Layer 4: Device fingerprinting (if available)
+        if (!affiliateCode && session.metadata?.fingerprint) {
+          const fingerprintClick = await AffiliateClick.findOne({
+            'trackingData.fingerprint': session.metadata.fingerprint,
+            status: 'clicked',
+            productId: session.metadata?.productId,
+            clickedAt: { $gte: new Date(Date.now() - 24 * 60 * 60 * 1000) } // Last 24 hours
+          }).sort({ clickedAt: -1 });
+          
+          if (fingerprintClick) {
+            affiliateCode = fingerprintClick.affiliateCode;
+            correlationMethod = 'fingerprint';
+            console.log(`✅ Layer 4: Device fingerprinting correlation found - ${affiliateCode}`);
+          }
+        }
+        
+        // Layer 5: Name-based correlation (last resort)
+        if (!affiliateCode && session.metadata?.customerName) {
+          const nameClick = await AffiliateClick.findOne({
+            customerName: session.metadata.customerName,
+            status: 'clicked',
+            productId: session.metadata?.productId,
+            clickedAt: { $gte: new Date(Date.now() - 24 * 60 * 60 * 1000) } // Last 24 hours
+          }).sort({ clickedAt: -1 });
+          
+          if (nameClick) {
+            affiliateCode = nameClick.affiliateCode;
+            correlationMethod = 'name';
+            console.log(`✅ Layer 5: Name correlation found - ${affiliateCode}`);
+          }
         }
       }
       
@@ -100,7 +174,8 @@ export async function POST(request: NextRequest) {
         customerEmail: session.customer_email,
         productId: session.metadata?.productId,
         amount: session.amount_total,
-        fallbackUsed: !session.metadata?.affiliateCode
+        correlationMethod,
+        fallbackUsed: correlationMethod !== 'metadata'
       });
 
       if (affiliateCode && affiliateCode !== '') {

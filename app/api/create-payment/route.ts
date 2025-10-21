@@ -53,6 +53,12 @@ export async function POST(request: NextRequest) {
             customerName: customerInfo.name,
             customerPhone: customerInfo.phone,
             affiliateCode: affiliateCode || '',
+            // Enhanced tracking metadata
+            sessionId: customerInfo.sessionId || '',
+            ipAddress: customerInfo.ipAddress || '',
+            fingerprint: customerInfo.fingerprint || '',
+            trackingMethod: 'enhanced',
+            timestamp: new Date().toISOString()
           },
         });
 
