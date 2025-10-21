@@ -37,11 +37,31 @@ async function performComprehensiveMonitoring() {
       totalCommission: 0,
       conversionRate: 0,
       issuesFound: 0,
-      recommendations: []
+      recommendations: [] as Array<{
+        type: string;
+        priority: string;
+        title: string;
+        description: string;
+        action: string;
+      }>
     },
-    issues: [],
-    performance: {},
-    recommendations: []
+    issues: [] as Array<{
+      type: string;
+      severity: string;
+      clickId?: any;
+      affiliateCode?: string;
+      productId?: string;
+      hoursSinceClick?: number;
+      recommendation?: string;
+    }>,
+    performance: {} as any,
+    recommendations: [] as Array<{
+      type: string;
+      priority: string;
+      title: string;
+      description: string;
+      action: string;
+    }>
   };
 
   // 1. Check for orphaned clicks (clicks without conversions)
@@ -95,7 +115,7 @@ async function performComprehensiveMonitoring() {
     totalCommission: totalCommission,
     conversionRate: allClicks.length > 0 ? (convertedClicks.length / allClicks.length) * 100 : 0,
     issuesFound: results.issues.length,
-    recommendations: recommendations.length
+    recommendations: recommendations
   };
 
   console.log('📊 Monitoring Results:', results.summary);
@@ -104,8 +124,24 @@ async function performComprehensiveMonitoring() {
 }
 
 // Find potential correlations between orders and clicks
-async function findPotentialCorrelations() {
-  const issues = [];
+async function findPotentialCorrelations(): Promise<Array<{
+  type: string;
+  severity: string;
+  clickId?: any;
+  affiliateCode?: string;
+  productId?: string;
+  hoursSinceClick?: number;
+  recommendation?: string;
+}>> {
+  const issues: Array<{
+    type: string;
+    severity: string;
+    clickId?: any;
+    affiliateCode?: string;
+    productId?: string;
+    hoursSinceClick?: number;
+    recommendation?: string;
+  }> = [];
 
   // This would implement logic to find orders that might be correlated with clicks
   // For now, return empty array as it requires more complex implementation
@@ -114,8 +150,40 @@ async function findPotentialCorrelations() {
 }
 
 // Analyze affiliate performance
-async function analyzePerformance() {
-  const performance = {
+async function analyzePerformance(): Promise<{
+  topPerformers: Array<{
+    affiliateCode: string;
+    username: string;
+    conversionRate: number;
+    totalCommission: number;
+  }>;
+  underPerformers: Array<{
+    affiliateCode: string;
+    username: string;
+    conversionRate: number;
+    totalCommission: number;
+    clicks: number;
+  }>;
+  conversionRates: Record<string, number>;
+  commissionTotals: Record<string, number>;
+}> {
+  const performance: {
+    topPerformers: Array<{
+      affiliateCode: string;
+      username: string;
+      conversionRate: number;
+      totalCommission: number;
+    }>;
+    underPerformers: Array<{
+      affiliateCode: string;
+      username: string;
+      conversionRate: number;
+      totalCommission: number;
+      clicks: number;
+    }>;
+    conversionRates: Record<string, number>;
+    commissionTotals: Record<string, number>;
+  } = {
     topPerformers: [],
     underPerformers: [],
     conversionRates: {},
@@ -163,11 +231,50 @@ async function analyzePerformance() {
 }
 
 // Generate recommendations based on monitoring results
-async function generateRecommendations(results: any) {
-  const recommendations = [];
+async function generateRecommendations(results: {
+  issues: Array<{
+    type: string;
+    severity: string;
+    clickId?: any;
+    affiliateCode?: string;
+    productId?: string;
+    hoursSinceClick?: number;
+    recommendation?: string;
+  }>;
+  performance: {
+    topPerformers: Array<{
+      affiliateCode: string;
+      username: string;
+      conversionRate: number;
+      totalCommission: number;
+    }>;
+    underPerformers: Array<{
+      affiliateCode: string;
+      username: string;
+      conversionRate: number;
+      totalCommission: number;
+      clicks: number;
+    }>;
+    conversionRates: Record<string, number>;
+    commissionTotals: Record<string, number>;
+  };
+}): Promise<Array<{
+  type: string;
+  priority: string;
+  title: string;
+  description: string;
+  action: string;
+}>> {
+  const recommendations: Array<{
+    type: string;
+    priority: string;
+    title: string;
+    description: string;
+    action: string;
+  }> = [];
 
   // Recommendation based on orphaned clicks
-  if (results.issues.filter(issue => issue.type === 'orphaned_click').length > 0) {
+  if (results.issues.filter((issue: any) => issue.type === 'orphaned_click').length > 0) {
     recommendations.push({
       type: 'tracking_improvement',
       priority: 'high',
