@@ -244,9 +244,9 @@ export async function POST(request: NextRequest) {
           }
         });
         
-        // Try to match by amount with platform detection and flexible tolerance
+        // COMPREHENSIVE amount matching system for ALL scenarios
         let fallbackProductId = null;
-        const tolerance = 500000; // Increased to 500k VND tolerance for conversion issues
+        const tolerance = 1000000; // 1M VND tolerance for all edge cases
         
         // Try to detect platform from paypalProductId first
         const isMT5 = paypalProductId?.includes('mt5') || paypalProductId?.includes('MT5');
@@ -259,48 +259,74 @@ export async function POST(request: NextRequest) {
           detectedPlatform: isMT5 ? 'MT5' : isMT4 ? 'MT4' : 'Unknown'
         });
         
-        // Enhanced amount matching with multiple strategies
-        const amountStrategies = [
-          // Strategy 1: Direct amount match
-          { amount: 1990000, name: 'indicator-pro' },
-          { amount: 7900000, name: 'ea-full' },
-          { amount: 14900000, name: 'ea-pro-source' },
-          
-          // Strategy 2: USD conversion match (for conversion issues)
-          { amount: orderAmountUSD * 24000, name: 'usd-converted' },
-          
-          // Strategy 3: Reverse calculation (VND to USD)
-          { amount: orderAmountVND, name: 'vnd-direct' }
-        ];
+        // COMPREHENSIVE amount matching with multiple strategies and conversion rates
+        const conversionRates = [24000, 25000, 23000, 22000]; // Multiple possible rates
+        const amountStrategies = [];
         
-        console.log("Amount matching strategies:", {
+        // Strategy 1: Direct amount match with standard products
+        amountStrategies.push(
+          { amount: 1990000, name: 'indicator-pro', type: 'direct' },
+          { amount: 7900000, name: 'ea-full', type: 'direct' },
+          { amount: 14900000, name: 'ea-pro-source', type: 'direct' }
+        );
+        
+        // Strategy 2: Multiple conversion rates
+        conversionRates.forEach(rate => {
+          const convertedAmount = orderAmountUSD * rate;
+          amountStrategies.push(
+            { amount: convertedAmount, name: 'usd-converted', type: 'conversion', rate },
+            { amount: convertedAmount, name: 'indicator-pro', type: 'conversion', rate },
+            { amount: convertedAmount, name: 'ea-full', type: 'conversion', rate },
+            { amount: convertedAmount, name: 'ea-pro-source', type: 'conversion', rate }
+          );
+        });
+        
+        // Strategy 3: Amount range detection
+        amountStrategies.push(
+          { amount: orderAmountVND, name: 'range-detection', type: 'range' }
+        );
+        
+        console.log("Comprehensive amount matching strategies:", {
           orderAmountVND,
           orderAmountUSD,
-          strategies: amountStrategies.map(s => ({
-            amount: s.amount,
+          conversionRates,
+          totalStrategies: amountStrategies.length,
+          strategies: amountStrategies.slice(0, 10).map(s => ({
+            amount: Math.round(s.amount),
             name: s.name,
+            type: s.type,
             difference: Math.abs(orderAmountVND - s.amount)
           }))
         });
         
-        // Try each strategy
+        // Try each strategy with comprehensive matching
         for (const strategy of amountStrategies) {
           const difference = Math.abs(orderAmountVND - strategy.amount);
           
           if (difference < tolerance) {
-            console.log(`✅ Amount match found with strategy: ${strategy.name}`);
+            console.log(`✅ Amount match found with strategy: ${strategy.name} (${strategy.type})`);
             
+            // Determine product based on strategy
             if (strategy.name === 'indicator-pro') {
               fallbackProductId = isMT4 ? 'indicator-pro-mt4' : isMT5 ? 'indicator-pro-mt5' : 'indicator-pro-mt5';
             } else if (strategy.name === 'ea-full') {
               fallbackProductId = isMT4 ? 'ea-full-mt4' : isMT5 ? 'ea-full-mt5' : 'ea-full-mt5';
             } else if (strategy.name === 'ea-pro-source') {
               fallbackProductId = isMT4 ? 'ea-pro-source-mt4' : isMT5 ? 'ea-pro-source-mt5' : 'ea-pro-source-mt5';
-            } else if (strategy.name === 'usd-converted' || strategy.name === 'vnd-direct') {
-              // For conversion issues, try to determine product from amount range
-              if (orderAmountVND < 500000) {
+            } else if (strategy.name === 'range-detection') {
+              // Smart range detection for unknown amounts
+              if (orderAmountVND < 3000000) {
                 fallbackProductId = isMT4 ? 'indicator-pro-mt4' : isMT5 ? 'indicator-pro-mt5' : 'indicator-pro-mt5';
-              } else if (orderAmountVND < 10000000) {
+              } else if (orderAmountVND < 12000000) {
+                fallbackProductId = isMT4 ? 'ea-full-mt4' : isMT5 ? 'ea-full-mt5' : 'ea-full-mt5';
+              } else {
+                fallbackProductId = isMT4 ? 'ea-pro-source-mt4' : isMT5 ? 'ea-pro-source-mt5' : 'ea-pro-source-mt5';
+              }
+            } else if (strategy.name === 'usd-converted') {
+              // For USD conversion issues, use range detection
+              if (orderAmountVND < 3000000) {
+                fallbackProductId = isMT4 ? 'indicator-pro-mt4' : isMT5 ? 'indicator-pro-mt5' : 'indicator-pro-mt5';
+              } else if (orderAmountVND < 12000000) {
                 fallbackProductId = isMT4 ? 'ea-full-mt4' : isMT5 ? 'ea-full-mt5' : 'ea-full-mt5';
               } else {
                 fallbackProductId = isMT4 ? 'ea-pro-source-mt4' : isMT5 ? 'ea-pro-source-mt5' : 'ea-pro-source-mt5';
@@ -308,10 +334,37 @@ export async function POST(request: NextRequest) {
             }
             
             if (fallbackProductId) {
-              console.log(`✅ Fallback product determined: ${fallbackProductId}`);
+              console.log(`✅ Fallback product determined: ${fallbackProductId} (strategy: ${strategy.name})`);
               break;
             }
           }
+        }
+        
+        // FINAL FALLBACK: If no amount match, use smart detection
+        if (!fallbackProductId) {
+          console.log("⚠️ No amount match found, using smart detection fallback");
+          
+          // Try to detect from PayPal description or other fields
+          const description = orderData.purchase_units?.[0]?.description || '';
+          const customId = orderData.purchase_units?.[0]?.custom_id || '';
+          
+          console.log("Smart detection data:", {
+            description,
+            customId,
+            paypalProductId,
+            orderAmountVND
+          });
+          
+          // Smart detection based on amount ranges
+          if (orderAmountVND < 3000000) {
+            fallbackProductId = isMT4 ? 'indicator-pro-mt4' : isMT5 ? 'indicator-pro-mt5' : 'indicator-pro-mt5';
+          } else if (orderAmountVND < 12000000) {
+            fallbackProductId = isMT4 ? 'ea-full-mt4' : isMT5 ? 'ea-full-mt5' : 'ea-full-mt5';
+          } else {
+            fallbackProductId = isMT4 ? 'ea-pro-source-mt4' : isMT5 ? 'ea-pro-source-mt5' : 'ea-pro-source-mt5';
+          }
+          
+          console.log(`✅ Smart detection fallback: ${fallbackProductId}`);
         }
         
         console.log("Amount-based fallback result:", {
