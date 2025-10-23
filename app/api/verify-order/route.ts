@@ -72,6 +72,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    console.log("Order verification request:", {
+      orderId,
+      frontendProductId: productId,
+      note: "Frontend productId is ignored - we determine product from PayPal order"
+    });
+
     // First check MongoDB
     try {
       const db = await connectDB();
@@ -168,28 +174,31 @@ export async function POST(request: NextRequest) {
           orderId,
           paypalProductId,
           frontendProductId: productId,
-          orderData: orderData
+          orderData: orderData,
+          note: "Ignoring frontend productId - determining from PayPal order only"
         });
         
-        // Try different productId combinations with more variations
+        // Determine product from PayPal order only (ignore frontend productId)
+        const orderAmountUSD = parseFloat(orderData.purchase_units?.[0]?.amount?.value || '0');
+        const orderAmountVND = orderAmountUSD * 24000; // Convert USD to VND
+        
+        console.log("Determining product from PayPal order:", {
+          paypalProductId,
+          orderAmountUSD,
+          orderAmountVND
+        });
+        
+        // Try different productId combinations based on PayPal order
         const possibleProductIds = [
           paypalProductId,           // Use PayPal reference_id first
-          productId,                 // Then frontend productId
           // Try common variations
           paypalProductId?.replace('-mt5', '').replace('-mt4', ''),
-          productId?.replace('-mt5', '').replace('-mt4', ''),
-          // Try legacy versions
-          paypalProductId?.replace('-mt5', '').replace('-mt4', '') || productId?.replace('-mt5', '').replace('-mt4', ''),
           // Try adding platform suffixes
           paypalProductId ? `${paypalProductId}-mt5` : null,
           paypalProductId ? `${paypalProductId}-mt4` : null,
-          productId ? `${productId}-mt5` : null,
-          productId ? `${productId}-mt4` : null,
           // Try removing platform suffixes and adding different ones
           paypalProductId?.replace('-mt5', '-mt4'),
-          paypalProductId?.replace('-mt4', '-mt5'),
-          productId?.replace('-mt5', '-mt4'),
-          productId?.replace('-mt4', '-mt5')
+          paypalProductId?.replace('-mt4', '-mt5')
         ].filter(Boolean); // Remove undefined/null values
         
         console.log("Trying productIds:", possibleProductIds);
@@ -223,9 +232,7 @@ export async function POST(request: NextRequest) {
           orderAmount: orderData.purchase_units?.[0]?.amount?.value
         });
         
-        // Fallback: Try to determine product from amount
-        const orderAmountUSD = parseFloat(orderData.purchase_units?.[0]?.amount?.value || '0');
-        const orderAmountVND = orderAmountUSD * 24000; // Convert USD to VND
+        // Fallback: Try to determine product from amount (already calculated above)
         
         console.log("Trying amount-based fallback:", {
           orderAmountUSD,
