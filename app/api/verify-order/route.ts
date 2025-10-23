@@ -164,40 +164,69 @@ export async function POST(request: NextRequest) {
         // Get productId from PayPal order reference_id
         const paypalProductId = orderData.purchase_units[0]?.reference_id;
         
-        // Use the productId from PayPal order, not from frontend
-        const finalProductId = paypalProductId || productId;
-        
         console.log("PayPal Order Debug:", {
           orderId,
           paypalProductId,
           frontendProductId: productId,
-          finalProductId,
           orderData: orderData
         });
         
-        const item = getProductById(finalProductId);
+        // Try different productId combinations
+        const possibleProductIds = [
+          paypalProductId,           // Use PayPal reference_id first
+          productId,                 // Then frontend productId
+          // Try common variations
+          paypalProductId?.replace('-mt5', '').replace('-mt4', ''),
+          productId?.replace('-mt5', '').replace('-mt4', ''),
+          // Try legacy versions
+          paypalProductId?.replace('-mt5', '').replace('-mt4', '') || productId?.replace('-mt5', '').replace('-mt4', '')
+        ].filter(Boolean); // Remove undefined/null values
         
-        if (!item) {
-          console.error("Product not found:", {
-            finalProductId,
-            paypalProductId,
-            frontendProductId: productId,
-            availableProducts: Object.keys(getProductById("") || {})
-          });
+        console.log("Trying productIds:", possibleProductIds);
+        
+        // Try each productId until we find one that works
+        for (const testProductId of possibleProductIds) {
+          const item = getProductById(testProductId);
           
-          return NextResponse.json(
-            { verified: false, error: `Product not found: ${finalProductId}` },
-            { status: 404 }
-          );
+          if (item) {
+            console.log(`✅ Found product with ID: ${testProductId}`);
+            return NextResponse.json({
+              verified: true,
+              orderId: orderId,
+              downloadUrl: item.downloadUrl,
+              productId: testProductId,
+              paypalOrderData: orderData,
+              debug: {
+                paypalProductId,
+                frontendProductId: productId,
+                finalProductId: testProductId
+              }
+            });
+          }
         }
         
-        return NextResponse.json({
-          verified: true,
-          orderId: orderId,
-          downloadUrl: item.downloadUrl,
-          productId: finalProductId,
-          paypalOrderData: orderData
+        // If no product found, return detailed error
+        console.error("Product not found with any ID:", {
+          paypalProductId,
+          frontendProductId: productId,
+          possibleProductIds,
+          availableProducts: Object.keys({
+            "indicator-pro-mt4": true,
+            "ea-full-mt4": true,
+            "ea-pro-source-mt4": true,
+            "indicator-pro-mt5": true,
+            "ea-full-mt5": true,
+            "ea-pro-source-mt5": true,
+            "indicator-pro": true,
+            "ea-full": true,
+            "ea-pro-source": true
+          })
         });
+        
+        return NextResponse.json(
+          { verified: false, error: `Product not found. PayPal ID: ${paypalProductId}, Frontend ID: ${productId}` },
+          { status: 404 }
+        );
       }
     } catch (paypalError) {
       console.error("PayPal verification error:", paypalError);
