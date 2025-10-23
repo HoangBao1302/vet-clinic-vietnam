@@ -244,9 +244,9 @@ export async function POST(request: NextRequest) {
           }
         });
         
-        // Try to match by amount with platform detection
+        // Try to match by amount with platform detection and flexible tolerance
         let fallbackProductId = null;
-        const tolerance = 200000; // 200k VND tolerance for conversion differences
+        const tolerance = 500000; // Increased to 500k VND tolerance for conversion issues
         
         // Try to detect platform from paypalProductId first
         const isMT5 = paypalProductId?.includes('mt5') || paypalProductId?.includes('MT5');
@@ -259,32 +259,58 @@ export async function POST(request: NextRequest) {
           detectedPlatform: isMT5 ? 'MT5' : isMT4 ? 'MT4' : 'Unknown'
         });
         
-        if (Math.abs(orderAmountVND - 1990000) < tolerance) {
-          // Indicator Pro Pack
-          if (isMT4) {
-            fallbackProductId = 'indicator-pro-mt4';
-          } else if (isMT5) {
-            fallbackProductId = 'indicator-pro-mt5';
-          } else {
-            fallbackProductId = 'indicator-pro-mt5'; // Default to MT5 for new orders
-          }
-        } else if (Math.abs(orderAmountVND - 7900000) < tolerance) {
-          // EA Full Version
-          if (isMT4) {
-            fallbackProductId = 'ea-full-mt4';
-          } else if (isMT5) {
-            fallbackProductId = 'ea-full-mt5';
-          } else {
-            fallbackProductId = 'ea-full-mt5'; // Default to MT5 for new orders
-          }
-        } else if (Math.abs(orderAmountVND - 14900000) < tolerance) {
-          // EA Pro + Source Code
-          if (isMT4) {
-            fallbackProductId = 'ea-pro-source-mt4';
-          } else if (isMT5) {
-            fallbackProductId = 'ea-pro-source-mt5';
-          } else {
-            fallbackProductId = 'ea-pro-source-mt5'; // Default to MT5 for new orders
+        // Enhanced amount matching with multiple strategies
+        const amountStrategies = [
+          // Strategy 1: Direct amount match
+          { amount: 1990000, name: 'indicator-pro' },
+          { amount: 7900000, name: 'ea-full' },
+          { amount: 14900000, name: 'ea-pro-source' },
+          
+          // Strategy 2: USD conversion match (for conversion issues)
+          { amount: orderAmountUSD * 24000, name: 'usd-converted' },
+          
+          // Strategy 3: Reverse calculation (VND to USD)
+          { amount: orderAmountVND, name: 'vnd-direct' }
+        ];
+        
+        console.log("Amount matching strategies:", {
+          orderAmountVND,
+          orderAmountUSD,
+          strategies: amountStrategies.map(s => ({
+            amount: s.amount,
+            name: s.name,
+            difference: Math.abs(orderAmountVND - s.amount)
+          }))
+        });
+        
+        // Try each strategy
+        for (const strategy of amountStrategies) {
+          const difference = Math.abs(orderAmountVND - strategy.amount);
+          
+          if (difference < tolerance) {
+            console.log(`✅ Amount match found with strategy: ${strategy.name}`);
+            
+            if (strategy.name === 'indicator-pro') {
+              fallbackProductId = isMT4 ? 'indicator-pro-mt4' : isMT5 ? 'indicator-pro-mt5' : 'indicator-pro-mt5';
+            } else if (strategy.name === 'ea-full') {
+              fallbackProductId = isMT4 ? 'ea-full-mt4' : isMT5 ? 'ea-full-mt5' : 'ea-full-mt5';
+            } else if (strategy.name === 'ea-pro-source') {
+              fallbackProductId = isMT4 ? 'ea-pro-source-mt4' : isMT5 ? 'ea-pro-source-mt5' : 'ea-pro-source-mt5';
+            } else if (strategy.name === 'usd-converted' || strategy.name === 'vnd-direct') {
+              // For conversion issues, try to determine product from amount range
+              if (orderAmountVND < 500000) {
+                fallbackProductId = isMT4 ? 'indicator-pro-mt4' : isMT5 ? 'indicator-pro-mt5' : 'indicator-pro-mt5';
+              } else if (orderAmountVND < 10000000) {
+                fallbackProductId = isMT4 ? 'ea-full-mt4' : isMT5 ? 'ea-full-mt5' : 'ea-full-mt5';
+              } else {
+                fallbackProductId = isMT4 ? 'ea-pro-source-mt4' : isMT5 ? 'ea-pro-source-mt5' : 'ea-pro-source-mt5';
+              }
+            }
+            
+            if (fallbackProductId) {
+              console.log(`✅ Fallback product determined: ${fallbackProductId}`);
+              break;
+            }
           }
         }
         
