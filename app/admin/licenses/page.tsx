@@ -2,9 +2,10 @@ import { listRecentLicenses, searchLicenses, createDemo, revokeLicense, extendLi
 
 export const dynamic = "force-dynamic";
 
-export default async function AdminLicensesPage({ searchParams }: { searchParams: Record<string,string|undefined> }) {
-  const productId = (searchParams.productId || "").toString();
-  const accountNumber = searchParams.accountNumber ? Number(searchParams.accountNumber) : undefined;
+export default async function AdminLicensesPage({ searchParams }: { searchParams: Promise<Record<string, string | undefined>> }) {
+  const resolvedSearchParams = await searchParams;
+  const productId = (resolvedSearchParams.productId || "").toString();
+  const accountNumber = resolvedSearchParams.accountNumber ? Number(resolvedSearchParams.accountNumber) : undefined;
 
   const data = productId || accountNumber
     ? await searchLicenses(productId, accountNumber)
