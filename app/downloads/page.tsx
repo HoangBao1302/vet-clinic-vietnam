@@ -20,6 +20,7 @@ interface DownloadItem {
   downloadUrl?: string;
   requiresPayment?: boolean;
   price?: number;
+  platform?: "MT4" | "MT5";
 }
 
 const downloads: DownloadItem[] = [
@@ -88,9 +89,10 @@ const downloads: DownloadItem[] = [
   },
 
   // Section 3: Paid Products
+  // MT4 Products
   {
-    id: "indicator-pro",
-    name: "Multi-Indicator Pro Pack",
+    id: "indicator-pro-mt4",
+    name: "Multi-Indicator Pro Pack (MT4)",
     description: "Bộ 10 indicators chuyên nghiệp: SR, Trend, Momentum, Volume, Fibonacci auto và nhiều hơn.",
     version: "v5.0 Pro",
     size: "2.8 MB",
@@ -98,11 +100,12 @@ const downloads: DownloadItem[] = [
     free: false,
     requiresPayment: true,
     price: 1990000,
-    downloadUrl: "/downloads/files/Indicator-Pro-Pack.zip"
+    downloadUrl: "/downloads/files/Indicator-Pro-Pack-MT4.zip",
+    platform: "MT4"
   },
   {
-    id: "ea-full",
-    name: "EA ThebenchmarkTrader Full Version",
+    id: "ea-full-mt4",
+    name: "EA ThebenchmarkTrader Full Version (MT4)",
     description: "Phiên bản đầy đủ cho tài khoản thực. License 3 tài khoản, cập nhật miễn phí 1 năm.",
     version: "v2.0 Full",
     size: "680 KB",
@@ -110,11 +113,12 @@ const downloads: DownloadItem[] = [
     free: false,
     requiresPayment: true,
     price: 7900000,
-    downloadUrl: "/downloads/files/ThebenchmarkTrader-Full.ex4"
+    downloadUrl: "/downloads/files/ThebenchmarkTrader-Full-MT4.ex4",
+    platform: "MT4"
   },
   {
-    id: "ea-pro-source",
-    name: "EA ThebenchmarkTrader Pro + Source Code",
+    id: "ea-pro-source-mt4",
+    name: "EA ThebenchmarkTrader Pro + Source Code (MT4)",
     description: "Phiên bản Pro với source code đầy đủ. Unlimited accounts, cập nhật trọn đời, hỗ trợ VIP.",
     version: "v2.0 Pro",
     size: "197 KB",
@@ -122,7 +126,49 @@ const downloads: DownloadItem[] = [
     free: false,
     requiresPayment: true,
     price: 14900000,
-    downloadUrl: "/downloads/files/ThebenchmarkTrader-Pro-Source.zip"
+    downloadUrl: "/downloads/files/ThebenchmarkTrader-Pro-Source-MT4.zip",
+    platform: "MT4"
+  },
+
+  // MT5 Products
+  {
+    id: "indicator-pro-mt5",
+    name: "Multi-Indicator Pro Pack (MT5)",
+    description: "Bộ 10 indicators chuyên nghiệp: SR, Trend, Momentum, Volume, Fibonacci auto và nhiều hơn.",
+    version: "v5.0 Pro",
+    size: "2.8 MB",
+    type: "indicator",
+    free: false,
+    requiresPayment: true,
+    price: 1990000,
+    downloadUrl: "/downloads/files/Indicator-Pro-Pack-MT5.zip",
+    platform: "MT5"
+  },
+  {
+    id: "ea-full-mt5",
+    name: "EA ThebenchmarkTrader Full Version (MT5)",
+    description: "Phiên bản đầy đủ cho tài khoản thực. License 3 tài khoản, cập nhật miễn phí 1 năm.",
+    version: "v2.0 Full",
+    size: "680 KB",
+    type: "ea",
+    free: false,
+    requiresPayment: true,
+    price: 7900000,
+    downloadUrl: "/downloads/files/ThebenchmarkTrader-Full-MT5.ex5",
+    platform: "MT5"
+  },
+  {
+    id: "ea-pro-source-mt5",
+    name: "EA ThebenchmarkTrader Pro + Source Code (MT5)",
+    description: "Phiên bản Pro với source code đầy đủ. Unlimited accounts, cập nhật trọn đời, hỗ trợ VIP.",
+    version: "v2.0 Pro",
+    size: "197 KB",
+    type: "ea",
+    free: false,
+    requiresPayment: true,
+    price: 14900000,
+    downloadUrl: "/downloads/files/ThebenchmarkTrader-Pro-Source-MT5.zip",
+    platform: "MT5"
   }
 ];
 
@@ -425,99 +471,209 @@ export default function DownloadsPage() {
               </div>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-              {paidItems.map((item) => (
-                <div key={item.id} className="bg-white border-2 border-purple-200 rounded-xl p-6 hover:border-purple-500 hover:shadow-2xl transition-all">
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="p-3 bg-purple-100 rounded-lg">
-                      <Lock className="text-purple-600" size={24} />
+            {/* MT4 Products */}
+            <div className="mb-8">
+              <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+                MetaTrader 4 (MT4)
+              </h3>
+              <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                {paidItems.filter(item => item.platform === "MT4").map((item) => (
+                  <div key={item.id} className="bg-white border-2 border-purple-200 rounded-xl p-6 hover:border-purple-500 hover:shadow-2xl transition-all">
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="p-3 bg-purple-100 rounded-lg">
+                        <Lock className="text-purple-600" size={24} />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <span className="px-3 py-1 bg-purple-100 text-purple-700 text-xs font-semibold rounded-full">
+                          PRO
+                        </span>
+                        <span className="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full text-center">
+                          MT4
+                        </span>
+                      </div>
                     </div>
-                    <span className="px-3 py-1 bg-purple-100 text-purple-700 text-xs font-semibold rounded-full">
-                      PRO
-                    </span>
-                  </div>
 
-                  <h3 className="text-xl font-bold text-gray-800 mb-2">
-                    {item.name}
-                  </h3>
-                  
-                  <p className="text-gray-600 text-sm mb-4 leading-relaxed">
-                    {item.description}
-                  </p>
-
-                  <div className="flex items-center justify-between text-xs text-gray-500 mb-4">
-                    <span>{item.version}</span>
-                    <span>{item.size}</span>
-                  </div>
-
-                  <div className="mb-4 p-4 bg-purple-50 rounded-lg">
-                    <div className="text-3xl font-bold text-purple-600 mb-1">
-                      {item.price?.toLocaleString("vi-VN")}đ
-                    </div>
-                    <div className="text-xs text-gray-600">
-                      Mua 1 lần, sử dụng trọn đời
-                    </div>
-                    <div className="text-xs text-blue-600 mt-1">
-                      PayPal: ${((item.price || 0) / 24000).toFixed(2)} USD
-                      <span className="text-orange-600 ml-1">(Sandbox)</span>
-                    </div>
-                  </div>
-
-                  {/* Purchase Buttons */}
-                  <div className="space-y-2 mb-4">
-                    <button
-                      onClick={() => handlePurchase(item, "stripe")}
-                      className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
-                    >
-                      <CreditCard size={18} />
-                      <span>Mua với Stripe</span>
-                    </button>
-                    <button
-                      onClick={() => handlePurchase(item, "paypal")}
-                      className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-yellow-500 text-white rounded-lg font-semibold hover:bg-yellow-600 transition-colors"
-                    >
-                      <CreditCard size={18} />
-                      <span>Mua với PayPal</span>
-                    </button>
-                  </div>
-
-                  {/* Or Verify Order */}
-                  <div className="pt-4 border-t border-gray-200">
-                    <p className="text-xs text-gray-600 mb-2 text-center">
-                      Đã thanh toán? Nhập mã để tải:
+                    <h3 className="text-xl font-bold text-gray-800 mb-2">
+                      {item.name.replace(" (MT4)", "")}
+                    </h3>
+                    
+                    <p className="text-gray-600 text-sm mb-4 leading-relaxed">
+                      {item.description}
                     </p>
-                    <div className="flex gap-2">
-                      <input
-                        type="text"
-                        placeholder="Mã đơn hàng"
-                        value={verifyingOrder === item.id ? orderCode : ""}
-                        onChange={(e) => setOrderCode(e.target.value)}
-                        onFocus={() => setVerifyingOrder(item.id)}
-                        className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                      />
+
+                    <div className="flex items-center justify-between text-xs text-gray-500 mb-4">
+                      <span>{item.version}</span>
+                      <span>{item.size}</span>
+                    </div>
+
+                    <div className="mb-4 p-4 bg-purple-50 rounded-lg">
+                      <div className="text-3xl font-bold text-purple-600 mb-1">
+                        {item.price?.toLocaleString("vi-VN")}đ
+                      </div>
+                      <div className="text-xs text-gray-600">
+                        Mua 1 lần, sử dụng trọn đời
+                      </div>
+                      <div className="text-xs text-blue-600 mt-1">
+                        PayPal: ${((item.price || 0) / 24000).toFixed(2)} USD
+                        <span className="text-orange-600 ml-1">(Sandbox)</span>
+                      </div>
+                    </div>
+
+                    {/* Purchase Buttons */}
+                    <div className="space-y-2 mb-4">
                       <button
-                        onClick={() => handleVerifyOrder(item.id)}
-                        disabled={verifyingOrder === item.id && orderCode.trim() === ""}
-                        className="px-4 py-2 bg-gray-800 text-white rounded text-sm font-medium hover:bg-gray-900 disabled:opacity-50 disabled:cursor-not-allowed"
+                        onClick={() => handlePurchase(item, "stripe")}
+                        className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
                       >
-                        Xác thực
+                        <CreditCard size={18} />
+                        <span>Mua với Stripe</span>
+                      </button>
+                      <button
+                        onClick={() => handlePurchase(item, "paypal")}
+                        className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-yellow-500 text-white rounded-lg font-semibold hover:bg-yellow-600 transition-colors"
+                      >
+                        <CreditCard size={18} />
+                        <span>Mua với PayPal</span>
                       </button>
                     </div>
-                    {verifyingOrder === item.id && verifyMessage && (
-                      <p className={`text-xs mt-2 ${
-                        verifyMessage.includes("✅") ? "text-green-600" : "text-red-600"
-                      }`}>
-                        {verifyMessage}
+
+                    {/* Or Verify Order */}
+                    <div className="pt-4 border-t border-gray-200">
+                      <p className="text-xs text-gray-600 mb-2 text-center">
+                        Đã thanh toán? Nhập mã để tải:
                       </p>
-                    )}
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          placeholder="Mã đơn hàng"
+                          value={verifyingOrder === item.id ? orderCode : ""}
+                          onChange={(e) => setOrderCode(e.target.value)}
+                          onFocus={() => setVerifyingOrder(item.id)}
+                          className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        />
+                        <button
+                          onClick={() => handleVerifyOrder(item.id)}
+                          disabled={verifyingOrder === item.id && orderCode.trim() === ""}
+                          className="px-4 py-2 bg-gray-800 text-white rounded text-sm font-medium hover:bg-gray-900 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          Xác thực
+                        </button>
+                      </div>
+                      {verifyingOrder === item.id && verifyMessage && (
+                        <p className={`text-xs mt-2 ${
+                          verifyMessage.includes("✅") ? "text-green-600" : "text-red-600"
+                        }`}>
+                          {verifyMessage}
+                        </p>
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
+            </div>
+
+            {/* MT5 Products */}
+            <div>
+              <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+                MetaTrader 5 (MT5)
+              </h3>
+              <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                {paidItems.filter(item => item.platform === "MT5").map((item) => (
+                  <div key={item.id} className="bg-white border-2 border-purple-200 rounded-xl p-6 hover:border-purple-500 hover:shadow-2xl transition-all">
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="p-3 bg-purple-100 rounded-lg">
+                        <Lock className="text-purple-600" size={24} />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <span className="px-3 py-1 bg-purple-100 text-purple-700 text-xs font-semibold rounded-full">
+                          PRO
+                        </span>
+                        <span className="px-2 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-full text-center">
+                          MT5
+                        </span>
+                      </div>
+                    </div>
+
+                    <h3 className="text-xl font-bold text-gray-800 mb-2">
+                      {item.name.replace(" (MT5)", "")}
+                    </h3>
+                    
+                    <p className="text-gray-600 text-sm mb-4 leading-relaxed">
+                      {item.description}
+                    </p>
+
+                    <div className="flex items-center justify-between text-xs text-gray-500 mb-4">
+                      <span>{item.version}</span>
+                      <span>{item.size}</span>
+                    </div>
+
+                    <div className="mb-4 p-4 bg-purple-50 rounded-lg">
+                      <div className="text-3xl font-bold text-purple-600 mb-1">
+                        {item.price?.toLocaleString("vi-VN")}đ
+                      </div>
+                      <div className="text-xs text-gray-600">
+                        Mua 1 lần, sử dụng trọn đời
+                      </div>
+                      <div className="text-xs text-blue-600 mt-1">
+                        PayPal: ${((item.price || 0) / 24000).toFixed(2)} USD
+                        <span className="text-orange-600 ml-1">(Sandbox)</span>
+                      </div>
+                    </div>
+
+                    {/* Purchase Buttons */}
+                    <div className="space-y-2 mb-4">
+                      <button
+                        onClick={() => handlePurchase(item, "stripe")}
+                        className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+                      >
+                        <CreditCard size={18} />
+                        <span>Mua với Stripe</span>
+                      </button>
+                      <button
+                        onClick={() => handlePurchase(item, "paypal")}
+                        className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-yellow-500 text-white rounded-lg font-semibold hover:bg-yellow-600 transition-colors"
+                      >
+                        <CreditCard size={18} />
+                        <span>Mua với PayPal</span>
+                      </button>
+                    </div>
+
+                    {/* Or Verify Order */}
+                    <div className="pt-4 border-t border-gray-200">
+                      <p className="text-xs text-gray-600 mb-2 text-center">
+                        Đã thanh toán? Nhập mã để tải:
+                      </p>
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          placeholder="Mã đơn hàng"
+                          value={verifyingOrder === item.id ? orderCode : ""}
+                          onChange={(e) => setOrderCode(e.target.value)}
+                          onFocus={() => setVerifyingOrder(item.id)}
+                          className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        />
+                        <button
+                          onClick={() => handleVerifyOrder(item.id)}
+                          disabled={verifyingOrder === item.id && orderCode.trim() === ""}
+                          className="px-4 py-2 bg-gray-800 text-white rounded text-sm font-medium hover:bg-gray-900 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          Xác thực
+                        </button>
+                      </div>
+                      {verifyingOrder === item.id && verifyMessage && (
+                        <p className={`text-xs mt-2 ${
+                          verifyMessage.includes("✅") ? "text-green-600" : "text-red-600"
+                        }`}>
+                          {verifyMessage}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </section>
-
-        {/* Support Section */}
         <section className="py-20 bg-blue-50">
           <div className="container-custom text-center">
             <h2 className="text-3xl font-bold text-gray-800 mb-4">

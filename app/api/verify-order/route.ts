@@ -205,6 +205,27 @@ async function getPayPalAccessToken(): Promise<string | null> {
 function getProductById(productId: string) {
   // This should match the downloads array in the frontend
   const products = {
+    // MT4 Products
+    "indicator-pro-mt4": {
+      downloadUrl: "/downloads/files/Indicator-Pro-Pack-MT4.zip"
+    },
+    "ea-full-mt4": {
+      downloadUrl: "/downloads/files/ThebenchmarkTrader-Full-MT4.ex4"
+    },
+    "ea-pro-source-mt4": {
+      downloadUrl: "/downloads/files/ThebenchmarkTrader-Pro-Source-MT4.zip"
+    },
+    // MT5 Products
+    "indicator-pro-mt5": {
+      downloadUrl: "/downloads/files/Indicator-Pro-Pack-MT5.zip"
+    },
+    "ea-full-mt5": {
+      downloadUrl: "/downloads/files/ThebenchmarkTrader-Full-MT5.ex5"
+    },
+    "ea-pro-source-mt5": {
+      downloadUrl: "/downloads/files/ThebenchmarkTrader-Pro-Source-MT5.zip"
+    },
+    // Legacy products (for backward compatibility)
     "indicator-pro": {
       downloadUrl: "/downloads/files/Indicator-Pro-Pack.zip"
     },
