@@ -161,16 +161,32 @@ export async function POST(request: NextRequest) {
       const orderData = await response.json();
 
       if (response.ok && orderData.status === "COMPLETED") {
-        const item = getProductById(productId);
+        // Get productId from PayPal order reference_id
+        const paypalProductId = orderData.purchase_units[0]?.reference_id;
+        
+        // Use the productId from PayPal order, not from frontend
+        const finalProductId = paypalProductId || productId;
+        
+        const item = getProductById(finalProductId);
+        
+        if (!item) {
+          return NextResponse.json(
+            { verified: false, error: "Product not found" },
+            { status: 404 }
+          );
+        }
+        
         return NextResponse.json({
           verified: true,
           orderId: orderId,
-          downloadUrl: item?.downloadUrl,
-          productId: orderData.purchase_units[0]?.reference_id,
+          downloadUrl: item.downloadUrl,
+          productId: finalProductId,
+          paypalOrderData: orderData
         });
       }
     } catch (paypalError) {
-      // Order not found or invalid
+      console.error("PayPal verification error:", paypalError);
+      // Continue to return error below
     }
 
     return NextResponse.json(
