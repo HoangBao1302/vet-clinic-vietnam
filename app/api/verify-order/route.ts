@@ -78,7 +78,16 @@ export async function POST(request: NextRequest) {
       const order = await Order.findOne({ orderId });
       
       if (order && order.status === "paid") {
-        const item = getProductById(productId || order.productId);
+        // CRITICAL: Verify that the requested productId matches the purchased productId
+        const requestedProductId = productId || order.productId;
+        if (requestedProductId !== order.productId) {
+          return NextResponse.json(
+            { verified: false, error: "Order is for a different product" },
+            { status: 403 }
+          );
+        }
+        
+        const item = getProductById(order.productId);
         return NextResponse.json({
           verified: true,
           orderId: orderId,
