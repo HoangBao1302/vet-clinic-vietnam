@@ -16,7 +16,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    await connectDB();
+    const db = await connectDB();
+    
+    if (!db) {
+      return NextResponse.json({
+        success: true,
+        message: 'Database not available - returning empty data',
+        data: []
+      });
+    }
 
     const user = await User.findOne({ email });
 

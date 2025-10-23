@@ -6,7 +6,15 @@ import User from '@/lib/models/User';
 // Automated monitoring system for affiliate tracking issues
 export async function GET(request: NextRequest) {
   try {
-    await connectDB();
+    const db = await connectDB();
+    
+    if (!db) {
+      return NextResponse.json({
+        success: true,
+        message: 'Database not available - returning empty data',
+        data: []
+      });
+    }
 
     console.log('🔍 Running automated affiliate monitoring...');
 

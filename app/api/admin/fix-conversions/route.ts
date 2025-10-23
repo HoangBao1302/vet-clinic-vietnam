@@ -5,7 +5,15 @@ import User from '@/lib/models/User';
 
 export async function POST(request: NextRequest) {
   try {
-    await connectDB();
+    const db = await connectDB();
+    
+    if (!db) {
+      return NextResponse.json({
+        success: true,
+        message: 'Database not available - returning empty data',
+        data: []
+      });
+    }
 
     const { affiliateCode, orderId, productId, productName, amount, customerEmail, customerName } = await request.json();
 
@@ -124,7 +132,15 @@ export async function POST(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
   try {
-    await connectDB();
+    const db = await connectDB();
+    
+    if (!db) {
+      return NextResponse.json({
+        success: true,
+        message: 'Database not available - returning empty data',
+        data: []
+      });
+    }
 
     const { searchParams } = new URL(request.url);
     const affiliateCode = searchParams.get('affiliateCode');

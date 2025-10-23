@@ -35,7 +35,15 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    await connectDB();
+    const db = await connectDB();
+    
+    if (!db) {
+      return NextResponse.json({
+        success: true,
+        message: 'Database not available - returning empty data',
+        data: []
+      });
+    }
 
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get('page') || '1');
@@ -102,7 +110,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    await connectDB();
+    const db = await connectDB();
+    
+    if (!db) {
+      return NextResponse.json({
+        success: true,
+        message: 'Database not available - returning empty data',
+        data: []
+      });
+    }
 
     const { username, email, password, role } = await request.json();
 

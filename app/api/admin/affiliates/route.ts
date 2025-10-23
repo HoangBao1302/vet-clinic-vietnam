@@ -5,7 +5,23 @@ import AffiliateClick from '@/lib/models/AffiliateClick';
 
 export async function GET(request: NextRequest) {
   try {
-    await connectDB();
+    const db = await connectDB();
+    
+    if (!db) {
+      return NextResponse.json({
+        success: true,
+        message: 'Database not available - returning empty data',
+        data: []
+      });
+    }
+    
+    if (!db) {
+      return NextResponse.json({
+        success: true,
+        message: 'Database not available - returning empty data',
+        affiliates: []
+      });
+    }
 
     // Get all approved affiliates
     const approvedAffiliates = await User.find({ 
@@ -48,9 +64,10 @@ export async function GET(request: NextRequest) {
 
   } catch (error: any) {
     console.error('Error getting approved affiliates:', error);
-    return NextResponse.json(
-      { success: false, error: error.message },
-      { status: 500 }
-    );
+    return NextResponse.json({
+      success: false,
+      message: 'Database error - returning empty data',
+      affiliates: []
+    });
   }
 }

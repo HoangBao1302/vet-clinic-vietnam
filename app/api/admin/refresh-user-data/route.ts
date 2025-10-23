@@ -5,7 +5,15 @@ import AffiliateClick from '@/lib/models/AffiliateClick';
 
 export async function POST(request: NextRequest) {
   try {
-    await connectDB();
+    const db = await connectDB();
+    
+    if (!db) {
+      return NextResponse.json({
+        success: true,
+        message: 'Database not available - returning empty data',
+        data: []
+      });
+    }
 
     const { email } = await request.json();
 

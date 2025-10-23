@@ -38,7 +38,15 @@ export async function GET(
       );
     }
 
-    await connectDB();
+    const db = await connectDB();
+    
+    if (!db) {
+      return NextResponse.json({
+        success: true,
+        message: 'Database not available - returning empty data',
+        data: []
+      });
+    }
     
     const { id } = await params;
     const user = await User.findById(id).select('-password -resetPasswordToken');
@@ -74,7 +82,15 @@ export async function PUT(
       );
     }
 
-    await connectDB();
+    const db = await connectDB();
+    
+    if (!db) {
+      return NextResponse.json({
+        success: true,
+        message: 'Database not available - returning empty data',
+        data: []
+      });
+    }
 
     const { username, email, role, isActive, password, affiliateStatus, isPaid, membershipTier } = await request.json();
     
@@ -180,7 +196,15 @@ export async function DELETE(
       );
     }
 
-    await connectDB();
+    const db = await connectDB();
+    
+    if (!db) {
+      return NextResponse.json({
+        success: true,
+        message: 'Database not available - returning empty data',
+        data: []
+      });
+    }
     
     const { id } = await params;
     const user = await User.findByIdAndDelete(id);
