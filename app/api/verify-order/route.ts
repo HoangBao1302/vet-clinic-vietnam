@@ -244,15 +244,28 @@ export async function POST(request: NextRequest) {
           }
         });
         
-        // Try to match by amount
+        // Try to match by amount with more flexible tolerance
         let fallbackProductId = null;
-        if (Math.abs(orderAmountVND - 1990000) < 100000) {
+        const tolerance = 200000; // 200k VND tolerance for conversion differences
+        
+        if (Math.abs(orderAmountVND - 1990000) < tolerance) {
           fallbackProductId = 'indicator-pro-mt5'; // Default to MT5 for new orders
-        } else if (Math.abs(orderAmountVND - 7900000) < 100000) {
+        } else if (Math.abs(orderAmountVND - 7900000) < tolerance) {
           fallbackProductId = 'ea-full-mt5'; // Default to MT5 for new orders
-        } else if (Math.abs(orderAmountVND - 14900000) < 100000) {
+        } else if (Math.abs(orderAmountVND - 14900000) < tolerance) {
           fallbackProductId = 'ea-pro-source-mt5'; // Default to MT5 for new orders
         }
+        
+        console.log("Amount-based fallback result:", {
+          orderAmountVND,
+          fallbackProductId,
+          tolerance,
+          matches: {
+            indicator: Math.abs(orderAmountVND - 1990000) < tolerance,
+            full: Math.abs(orderAmountVND - 7900000) < tolerance,
+            proSource: Math.abs(orderAmountVND - 14900000) < tolerance
+          }
+        });
         
         if (fallbackProductId) {
           const fallbackItem = getProductById(fallbackProductId);

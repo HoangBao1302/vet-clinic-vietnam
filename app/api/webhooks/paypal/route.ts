@@ -252,7 +252,7 @@ export async function POST(request: NextRequest) {
                       <p><strong>Mã đơn hàng:</strong> ${orderId}</p>
                       <p><strong>Sản phẩm:</strong> ${productName}</p>
                       <p><strong>Phương thức:</strong> PayPal</p>
-                      ${amount > 0 ? `<p><strong>Số tiền:</strong> ${(amount / 100).toLocaleString('vi-VN')}đ</p>` : ''}
+                      ${amount > 0 ? `<p><strong>Số tiền:</strong> ${(amount / 100).toLocaleString('vi-VN')}₫</p>` : ''}
                     </div>
                     
                     <div style="text-align: center; margin: 30px 0;">
