@@ -167,11 +167,26 @@ export async function POST(request: NextRequest) {
         // Use the productId from PayPal order, not from frontend
         const finalProductId = paypalProductId || productId;
         
+        console.log("PayPal Order Debug:", {
+          orderId,
+          paypalProductId,
+          frontendProductId: productId,
+          finalProductId,
+          orderData: orderData
+        });
+        
         const item = getProductById(finalProductId);
         
         if (!item) {
+          console.error("Product not found:", {
+            finalProductId,
+            paypalProductId,
+            frontendProductId: productId,
+            availableProducts: Object.keys(getProductById("") || {})
+          });
+          
           return NextResponse.json(
-            { verified: false, error: "Product not found" },
+            { verified: false, error: `Product not found: ${finalProductId}` },
             { status: 404 }
           );
         }
@@ -268,6 +283,12 @@ function getProductById(productId: string) {
       downloadUrl: "/downloads/files/ThebenchmarkTrader-Pro-Source.zip"
     }
   };
+
+  console.log("getProductById called:", {
+    productId,
+    found: !!products[productId as keyof typeof products],
+    availableProducts: Object.keys(products)
+  });
 
   return products[productId as keyof typeof products];
 }
