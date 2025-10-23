@@ -171,7 +171,7 @@ export async function POST(request: NextRequest) {
           orderData: orderData
         });
         
-        // Try different productId combinations
+        // Try different productId combinations with more variations
         const possibleProductIds = [
           paypalProductId,           // Use PayPal reference_id first
           productId,                 // Then frontend productId
@@ -179,7 +179,17 @@ export async function POST(request: NextRequest) {
           paypalProductId?.replace('-mt5', '').replace('-mt4', ''),
           productId?.replace('-mt5', '').replace('-mt4', ''),
           // Try legacy versions
-          paypalProductId?.replace('-mt5', '').replace('-mt4', '') || productId?.replace('-mt5', '').replace('-mt4', '')
+          paypalProductId?.replace('-mt5', '').replace('-mt4', '') || productId?.replace('-mt5', '').replace('-mt4', ''),
+          // Try adding platform suffixes
+          paypalProductId ? `${paypalProductId}-mt5` : null,
+          paypalProductId ? `${paypalProductId}-mt4` : null,
+          productId ? `${productId}-mt5` : null,
+          productId ? `${productId}-mt4` : null,
+          // Try removing platform suffixes and adding different ones
+          paypalProductId?.replace('-mt5', '-mt4'),
+          paypalProductId?.replace('-mt4', '-mt5'),
+          productId?.replace('-mt5', '-mt4'),
+          productId?.replace('-mt4', '-mt5')
         ].filter(Boolean); // Remove undefined/null values
         
         console.log("Trying productIds:", possibleProductIds);
@@ -205,26 +215,61 @@ export async function POST(request: NextRequest) {
           }
         }
         
-        // If no product found, return detailed error
+        // If no product found, try to determine the correct productId from order amount
         console.error("Product not found with any ID:", {
           paypalProductId,
           frontendProductId: productId,
           possibleProductIds,
-          availableProducts: Object.keys({
-            "indicator-pro-mt4": true,
-            "ea-full-mt4": true,
-            "ea-pro-source-mt4": true,
-            "indicator-pro-mt5": true,
-            "ea-full-mt5": true,
-            "ea-pro-source-mt5": true,
-            "indicator-pro": true,
-            "ea-full": true,
-            "ea-pro-source": true
-          })
+          orderAmount: orderData.purchase_units?.[0]?.amount?.value
         });
         
+        // Fallback: Try to determine product from amount
+        const orderAmountUSD = parseFloat(orderData.purchase_units?.[0]?.amount?.value || '0');
+        const orderAmountVND = orderAmountUSD * 24000; // Convert USD to VND
+        
+        console.log("Trying amount-based fallback:", {
+          orderAmountUSD,
+          orderAmountVND,
+          possibleAmounts: {
+            "indicator-pro": 1990000,
+            "ea-full": 7900000,
+            "ea-pro-source": 14900000
+          }
+        });
+        
+        // Try to match by amount
+        let fallbackProductId = null;
+        if (Math.abs(orderAmountVND - 1990000) < 100000) {
+          fallbackProductId = 'indicator-pro-mt5'; // Default to MT5 for new orders
+        } else if (Math.abs(orderAmountVND - 7900000) < 100000) {
+          fallbackProductId = 'ea-full-mt5'; // Default to MT5 for new orders
+        } else if (Math.abs(orderAmountVND - 14900000) < 100000) {
+          fallbackProductId = 'ea-pro-source-mt5'; // Default to MT5 for new orders
+        }
+        
+        if (fallbackProductId) {
+          const fallbackItem = getProductById(fallbackProductId);
+          if (fallbackItem) {
+            console.log(`✅ Found product by amount fallback: ${fallbackProductId}`);
+            return NextResponse.json({
+              verified: true,
+              orderId: orderId,
+              downloadUrl: fallbackItem.downloadUrl,
+              productId: fallbackProductId,
+              paypalOrderData: orderData,
+              debug: {
+                paypalProductId,
+                frontendProductId: productId,
+                finalProductId: fallbackProductId,
+                fallbackUsed: true,
+                orderAmount: orderAmountVND
+              }
+            });
+          }
+        }
+        
         return NextResponse.json(
-          { verified: false, error: `Product not found. PayPal ID: ${paypalProductId}, Frontend ID: ${productId}` },
+          { verified: false, error: `Product not found. PayPal ID: ${paypalProductId}, Frontend ID: ${productId}, Amount: ${orderAmountVND}đ` },
           { status: 404 }
         );
       }
