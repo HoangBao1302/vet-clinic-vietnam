@@ -6,7 +6,14 @@ import crypto from 'crypto';
 
 export async function POST(request: NextRequest) {
   try {
-    await connectDB();
+    const db = await connectDB();
+    
+    if (!db) {
+      return NextResponse.json(
+        { success: false, message: 'Database không khả dụng' },
+        { status: 503 }
+      );
+    }
 
     // Get token from header
     const authHeader = request.headers.get('authorization');

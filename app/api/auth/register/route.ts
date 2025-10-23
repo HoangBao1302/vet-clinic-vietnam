@@ -6,7 +6,14 @@ import { sendEmail, getWelcomeEmail } from '@/lib/email';
 
 export async function POST(request: NextRequest) {
   try {
-    await connectDB();
+    const db = await connectDB();
+    
+    if (!db) {
+      return NextResponse.json(
+        { success: false, message: 'Database không khả dụng' },
+        { status: 503 }
+      );
+    }
 
     const { username, email, password } = await request.json();
 

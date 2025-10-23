@@ -74,7 +74,14 @@ export async function POST(request: NextRequest) {
 
     // First check MongoDB
     try {
-      await connectDB();
+      const db = await connectDB();
+    
+    if (!db) {
+      return NextResponse.json(
+        { success: false, message: 'Database không khả dụng' },
+        { status: 503 }
+      );
+    }
       const order = await Order.findOne({ orderId });
       
       if (order && order.status === "paid") {
