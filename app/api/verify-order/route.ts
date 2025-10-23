@@ -244,16 +244,48 @@ export async function POST(request: NextRequest) {
           }
         });
         
-        // Try to match by amount with more flexible tolerance
+        // Try to match by amount with platform detection
         let fallbackProductId = null;
         const tolerance = 200000; // 200k VND tolerance for conversion differences
         
+        // Try to detect platform from paypalProductId first
+        const isMT5 = paypalProductId?.includes('mt5') || paypalProductId?.includes('MT5');
+        const isMT4 = paypalProductId?.includes('mt4') || paypalProductId?.includes('MT4');
+        
+        console.log("Platform detection from PayPal:", {
+          paypalProductId,
+          isMT5,
+          isMT4,
+          detectedPlatform: isMT5 ? 'MT5' : isMT4 ? 'MT4' : 'Unknown'
+        });
+        
         if (Math.abs(orderAmountVND - 1990000) < tolerance) {
-          fallbackProductId = 'indicator-pro-mt5'; // Default to MT5 for new orders
+          // Indicator Pro Pack
+          if (isMT4) {
+            fallbackProductId = 'indicator-pro-mt4';
+          } else if (isMT5) {
+            fallbackProductId = 'indicator-pro-mt5';
+          } else {
+            fallbackProductId = 'indicator-pro-mt5'; // Default to MT5 for new orders
+          }
         } else if (Math.abs(orderAmountVND - 7900000) < tolerance) {
-          fallbackProductId = 'ea-full-mt5'; // Default to MT5 for new orders
+          // EA Full Version
+          if (isMT4) {
+            fallbackProductId = 'ea-full-mt4';
+          } else if (isMT5) {
+            fallbackProductId = 'ea-full-mt5';
+          } else {
+            fallbackProductId = 'ea-full-mt5'; // Default to MT5 for new orders
+          }
         } else if (Math.abs(orderAmountVND - 14900000) < tolerance) {
-          fallbackProductId = 'ea-pro-source-mt5'; // Default to MT5 for new orders
+          // EA Pro + Source Code
+          if (isMT4) {
+            fallbackProductId = 'ea-pro-source-mt4';
+          } else if (isMT5) {
+            fallbackProductId = 'ea-pro-source-mt5';
+          } else {
+            fallbackProductId = 'ea-pro-source-mt5'; // Default to MT5 for new orders
+          }
         }
         
         console.log("Amount-based fallback result:", {
