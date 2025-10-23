@@ -195,6 +195,15 @@ export async function POST(request: NextRequest) {
 
             // Calculate commission
             const commissionRates = {
+              // MT4 Products
+              'indicator-pro-mt4': affiliate.isPaid ? 0.35 : 0.30,
+              'ea-full-mt4': affiliate.isPaid ? 0.35 : 0.30,
+              'ea-pro-source-mt4': affiliate.isPaid ? 0.35 : 0.30,
+              // MT5 Products
+              'indicator-pro-mt5': affiliate.isPaid ? 0.35 : 0.30,
+              'ea-full-mt5': affiliate.isPaid ? 0.35 : 0.30,
+              'ea-pro-source-mt5': affiliate.isPaid ? 0.35 : 0.30,
+              // Legacy products (for backward compatibility)
               'ea-full': affiliate.isPaid ? 0.35 : 0.30,
               'ea-pro-source': affiliate.isPaid ? 0.35 : 0.30,
               'indicator-pro': affiliate.isPaid ? 0.35 : 0.30,
@@ -266,6 +275,25 @@ export async function POST(request: NextRequest) {
         try {
           const { sendEmail } = await import("@/lib/email");
           
+          // Get product name with MT4/MT5 distinction (same as PayPal)
+          const productNames: Record<string, string> = {
+            // MT4 Products
+            'indicator-pro-mt4': 'Multi-Indicator Pro Pack (MT4)',
+            'ea-full-mt4': 'EA ThebenchmarkTrader Full Version (MT4)',
+            'ea-pro-source-mt4': 'EA ThebenchmarkTrader Pro + Source Code (MT4)',
+            // MT5 Products
+            'indicator-pro-mt5': 'Multi-Indicator Pro Pack (MT5)',
+            'ea-full-mt5': 'EA ThebenchmarkTrader Full Version (MT5)',
+            'ea-pro-source-mt5': 'EA ThebenchmarkTrader Pro + Source Code (MT5)',
+            // Legacy products (for backward compatibility)
+            'ea-full': 'EA ThebenchmarkTrader Full Version',
+            'ea-pro-source': 'EA ThebenchmarkTrader Pro + Source Code',
+            'indicator-pro': 'Multi-Indicator Pro Pack',
+            'course': 'Khóa học Forex Trading',
+            'social-copy': 'Copy Social Trading',
+          };
+          const productName = productNames[session.metadata?.productId] || session.metadata?.productName || 'EA ThebenchmarkTrader';
+          
           await sendEmail({
             to: session.customer_email,
             subject: "✅ Thanh toán thành công - Download EA ThebenchmarkTrader",
@@ -280,12 +308,13 @@ export async function POST(request: NextRequest) {
                   
                   <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0;">
                     <p><strong>Mã đơn hàng:</strong> ${session.id}</p>
-                    <p><strong>Sản phẩm:</strong> ${session.metadata?.productName || "EA ThebenchmarkTrader"}</p>
-                    <p><strong>Số tiền:</strong> ${(session.amount_total / 100).toLocaleString("vi-VN")}đ</p>
+                    <p><strong>Sản phẩm:</strong> ${productName}</p>
+                    <p><strong>Phương thức:</strong> Stripe</p>
+                    <p><strong>Số tiền:</strong> ${(session.amount_total / 100).toLocaleString("vi-VN")}₫</p>
                   </div>
                   
                   <div style="text-align: center; margin: 30px 0;">
-                    <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'https://ThebenchmarkTrader.com'}/downloads?order=${session.id}" 
+                    <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'https://ThebenchmarkTrader.com'}/downloads?order=${session.id}&productId=${session.metadata?.productId}" 
                        style="display: inline-block; padding: 15px 40px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 18px;">
                       Tải xuống ngay
                     </a>
@@ -293,12 +322,23 @@ export async function POST(request: NextRequest) {
                   
                   <div style="background: #e0f2fe; padding: 20px; border-radius: 8px; margin: 20px 0;">
                     <h3 style="color: #1e40af; margin-top: 0;">📋 Hướng dẫn cài đặt:</h3>
-                    <ol style="color: #1e3a8a; margin: 10px 0; padding-left: 20px;">
-                      <li>Giải nén file (nếu là .zip)</li>
-                      <li>Copy file .ex4 vào thư mục MT4/MQL4/Experts</li>
-                      <li>Restart MetaTrader</li>
-                      <li>Drag EA lên chart và configure</li>
-                    </ol>
+                    ${session.metadata?.productId?.includes('mt5') ? `
+                      <ol style="color: #1e3a8a; margin: 10px 0; padding-left: 20px;">
+                        <li>Giải nén file (nếu là .zip)</li>
+                        <li>Copy file .ex5 vào thư mục MT5/MQL5/Experts</li>
+                        <li>Restart MetaTrader 5</li>
+                        <li>Drag EA lên chart và configure</li>
+                      </ol>
+                      <p style="color: #059669; font-weight: bold;">📱 Phiên bản MT5 - Dành cho MetaTrader 5</p>
+                    ` : `
+                      <ol style="color: #1e3a8a; margin: 10px 0; padding-left: 20px;">
+                        <li>Giải nén file (nếu là .zip)</li>
+                        <li>Copy file .ex4 vào thư mục MT4/MQL4/Experts</li>
+                        <li>Restart MetaTrader 4</li>
+                        <li>Drag EA lên chart và configure</li>
+                      </ol>
+                      <p style="color: #059669; font-weight: bold;">📱 Phiên bản MT4 - Dành cho MetaTrader 4</p>
+                    `}
                   </div>
                   
                   <h3>Cần hỗ trợ?</h3>
