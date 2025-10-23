@@ -25,11 +25,31 @@ const adminOnlyRoutes = [
   '/admin/conversions',
   '/admin/users',
   '/admin/newsletter',
+  '/admin/licenses',
 ];
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get('token')?.value;
+
+  // Handle basic auth for admin license routes
+  if (pathname.startsWith('/admin/licenses')) {
+    const auth = request.headers.get("authorization") || "";
+    const [scheme, encoded] = auth.split(" ");
+    if (scheme !== "Basic" || !encoded) {
+      return new NextResponse("Auth required", {
+        status: 401,
+        headers: { "WWW-Authenticate": 'Basic realm="Admin Area"' }
+      });
+    }
+
+    const [user, pass] = Buffer.from(encoded, "base64").toString().split(":");
+    if (user !== process.env.BASIC_AUTH_USER || pass !== process.env.BASIC_AUTH_PASS) {
+      return new NextResponse("Forbidden", { status: 403 });
+    }
+
+    return NextResponse.next();
+  }
 
   // Check if route requires authentication
   const isProtectedRoute = protectedRoutes.some(route => pathname.startsWith(route));
