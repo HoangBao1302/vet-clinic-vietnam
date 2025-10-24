@@ -1,171 +1,187 @@
-import { listRecentLicenses, searchLicenses, createDemo, revokeLicense, extendLicense, createLicenseMulti, deleteLicense, testVerifyLicense, testActivateLicense } from "../admin-actions";
+"use client";
 
-export const dynamic = "force-dynamic";
+import { useState, useEffect } from "react";
 
-async function createDemoAction(formData: FormData) {
-  "use server";
-  const productId = String(formData.get("productId") || "");
-  const accountNumber = Number(formData.get("accountNumber") || 0);
-  const note = String(formData.get("note") || "");
-  await createDemo(productId, accountNumber, note);
-}
+export default function AdminLicensesPage() {
+  const [data, setData] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [searchProductId, setSearchProductId] = useState("");
+  const [searchAccountNumber, setSearchAccountNumber] = useState("");
 
-async function createMultiAction(formData: FormData) {
-  "use server";
-  await createLicenseMulti({
-    productId: String(formData.get("productId") || ""),
-    accountsCSV: String(formData.get("accountsCSV") || ""),
-    plan: String(formData.get("plan") || "DEMO"),
-    mode: String(formData.get("mode") || "BOTH"),
-    days: formData.get("days") ? Number(formData.get("days")) : undefined,
-    maxAccounts: formData.get("maxAccounts") ? Number(formData.get("maxAccounts")) : undefined,
-    note: String(formData.get("note") || "")
-  });
-}
+  useEffect(() => {
+    loadLicenses();
+  }, []);
 
-async function revokeAction(formData: FormData) {
-  "use server";
-  await revokeLicense(
-    String(formData.get("productId") || ""),
-    Number(formData.get("accountNumber") || 0),
-    String(formData.get("note") || "")
-  );
-}
-
-async function extendAction(formData: FormData) {
-  "use server";
-  await extendLicense(
-    String(formData.get("productId") || ""),
-    Number(formData.get("accountNumber") || 0),
-    Number(formData.get("days") || 30),
-    String(formData.get("note") || "")
-  );
-}
-
-async function deleteAction(formData: FormData) {
-  "use server";
-  await deleteLicense(
-    String(formData.get("productId") || ""),
-    Number(formData.get("accountNumber") || 0),
-    String(formData.get("note") || "")
-  );
-}
-
-async function verifyAction(formData: FormData) {
-  "use server";
-  const result = await testVerifyLicense(
-    String(formData.get("productId") || ""),
-    Number(formData.get("accountNumber") || 0),
-    String(formData.get("mode") || "REAL"),
-    String(formData.get("version") || "1.0.0")
-  );
-  console.log("Verify result:", result);
-}
-
-async function activateTestAction(formData: FormData) {
-  "use server";
-  const result = await testActivateLicense({
-    productId: String(formData.get("productId") || ""),
-    accountNumber: formData.get("accountNumber") ? Number(formData.get("accountNumber")) : undefined,
-    accountNumbers: String(formData.get("accountNumbers") || ""),
-    mode: String(formData.get("mode") || "BOTH"),
-    plan: String(formData.get("plan") || "DEMO"),
-    days: formData.get("days") ? Number(formData.get("days")) : undefined,
-    maxAccounts: formData.get("maxAccounts") ? Number(formData.get("maxAccounts")) : undefined,
-    note: String(formData.get("note") || "")
-  });
-  console.log("Activate result:", result);
-}
-
-export default async function AdminLicensesPage({ searchParams }: { searchParams: Promise<Record<string, string | undefined>> }) {
-  try {
-    const resolvedSearchParams = await searchParams;
-    const productId = (resolvedSearchParams.productId || "").toString();
-    const accountNumber = resolvedSearchParams.accountNumber ? Number(resolvedSearchParams.accountNumber) : undefined;
-
-    let data;
+  async function loadLicenses() {
     try {
-      data = productId || accountNumber
-        ? await searchLicenses(productId, accountNumber)
-        : await listRecentLicenses();
-    } catch (dbError) {
-      console.error("Database error:", dbError);
-      data = []; // Fallback to empty array
+      setLoading(true);
+      const response = await fetch("/api/admin/licenses/list");
+      if (!response.ok) throw new Error("Failed to load licenses");
+      const result = await response.json();
+      setData(result.licenses || []);
+      setError(null);
+    } catch (err: any) {
+      setError(err.message);
+      setData([]);
+    } finally {
+      setLoading(false);
     }
+  }
+
+  async function handleSearch(e: React.FormEvent) {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      const params = new URLSearchParams();
+      if (searchProductId) params.append("productId", searchProductId);
+      if (searchAccountNumber) params.append("accountNumber", searchAccountNumber);
+      
+      const response = await fetch(`/api/admin/licenses/list?${params.toString()}`);
+      if (!response.ok) throw new Error("Failed to search licenses");
+      const result = await response.json();
+      setData(result.licenses || []);
+      setError(null);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handleDelete(productId: string, accountNumber: number) {
+    if (!confirm(`Xóa license ${productId} - Account ${accountNumber}?`)) return;
+    
+    try {
+      const response = await fetch("/api/admin/licenses/delete", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ productId, accountNumber })
+      });
+      
+      if (!response.ok) throw new Error("Failed to delete license");
+      
+      alert("License đã được xóa!");
+      loadLicenses();
+    } catch (err: any) {
+      alert(`Lỗi: ${err.message}`);
+    }
+  }
+
+  if (loading) {
+    return (
+      <main style={{ padding: 24, fontFamily: "ui-sans-serif,system-ui" }}>
+        <h1 style={{ fontSize: 24, fontWeight: 700 }}>License Admin</h1>
+        <p>Loading...</p>
+      </main>
+    );
+  }
+
+  if (error) {
+    return (
+      <main style={{ padding: 24, fontFamily: "ui-sans-serif,system-ui" }}>
+        <h1 style={{ fontSize: 24, fontWeight: 700, color: "#dc2626" }}>License Admin - Error</h1>
+        <div style={{ marginTop: 16, padding: 16, backgroundColor: "#fef2f2", border: "1px solid #fecaca", borderRadius: 8 }}>
+          <p style={{ color: "#dc2626", margin: 0 }}>
+            <strong>Error:</strong> {error}
+          </p>
+          <button onClick={loadLicenses} style={{ marginTop: 12, padding: "8px 16px", backgroundColor: "#2563eb", color: "white", border: "none", borderRadius: 4, cursor: "pointer" }}>
+            Retry
+          </button>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main style={{ padding: 24, fontFamily: "ui-sans-serif,system-ui" }}>
       <h1 style={{ fontSize: 24, fontWeight: 700 }}>License Admin</h1>
 
       <section style={{ marginTop: 16 }}>
-        <form>
-          <input name="productId" placeholder="productId" defaultValue={productId} style={{ padding: 8, marginRight: 8 }} />
-          <input name="accountNumber" placeholder="accountNumber (optional)" defaultValue={accountNumber || ""} style={{ padding: 8, marginRight: 8 }} />
-          <button formAction="/admin/licenses" style={{ padding: "8px 12px" }}>Search</button>
+        <form onSubmit={handleSearch}>
+          <input 
+            value={searchProductId}
+            onChange={(e) => setSearchProductId(e.target.value)}
+            placeholder="productId" 
+            style={{ padding: 8, marginRight: 8 }} 
+          />
+          <input 
+            value={searchAccountNumber}
+            onChange={(e) => setSearchAccountNumber(e.target.value)}
+            placeholder="accountNumber (optional)" 
+            style={{ padding: 8, marginRight: 8 }} 
+          />
+          <button type="submit" style={{ padding: "8px 12px" }}>Search</button>
+          <button type="button" onClick={loadLicenses} style={{ padding: "8px 12px", marginLeft: 8 }}>Reset</button>
         </form>
       </section>
 
       <section style={{ marginTop: 24, display: "grid", gap: 16 }}>
         <details open>
           <summary style={{ fontWeight: 600 }}>Create DEMO 60 ngày (1 account)</summary>
-          <form action={createDemoAction} style={{ marginTop: 8 }}>
+          <form onSubmit={async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.currentTarget);
+            try {
+              const response = await fetch("/api/admin/licenses/create-demo", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  productId: formData.get("productId"),
+                  accountNumber: Number(formData.get("accountNumber")),
+                  note: formData.get("note")
+                })
+              });
+              if (!response.ok) throw new Error("Failed to create demo");
+              alert("Demo license created!");
+              loadLicenses();
+              e.currentTarget.reset();
+            } catch (err: any) {
+              alert(`Error: ${err.message}`);
+            }
+          }} style={{ marginTop: 8 }}>
             <input name="productId" placeholder="productId" required style={{ padding: 8, marginRight: 8 }} />
             <input name="accountNumber" type="number" placeholder="accountNumber" required style={{ padding: 8, marginRight: 8 }} />
             <input name="note" placeholder="note (optional)" style={{ padding: 8, marginRight: 8 }} />
             <button style={{ padding: "8px 12px" }}>Create</button>
-          </form>
-        </details>
-
-        <details>
-          <summary style={{ fontWeight: 600 }}>Create license N account</summary>
-          <form action={createMultiAction} style={{ marginTop: 8, display: "grid", gap: 8 }}>
-            <input name="productId" placeholder="productId" required style={{ padding: 8 }} />
-            <textarea name="accountsCSV" required placeholder="Danh sách account, ví dụ: 1234567,1234568,1234569" rows={3} style={{ padding: 8 }} />
-            <div style={{ display: "flex", gap: 8 }}>
-              <input name="plan" placeholder="DEMO/PAID/TRIAL" defaultValue="DEMO" style={{ padding: 8 }} />
-              <input name="mode" placeholder="BOTH/REAL/DEMO" defaultValue="BOTH" style={{ padding: 8 }} />
-              <input name="days" type="number" placeholder="days (ví dụ DEMO 60)" style={{ padding: 8 }} />
-              <input name="maxAccounts" type="number" placeholder="max accounts (vd 3/10)" style={{ padding: 8 }} />
-            </div>
-            <input name="note" placeholder="note (optional)" style={{ padding: 8 }} />
-            <button style={{ padding: "8px 12px" }}>Create</button>
-          </form>
-        </details>
-
-        <details>
-          <summary style={{ fontWeight: 600 }}>Revoke (khóa)</summary>
-          <form action={revokeAction} style={{ marginTop: 8 }}>
-            <input name="productId" placeholder="productId" required style={{ padding: 8, marginRight: 8 }} />
-            <input name="accountNumber" type="number" placeholder="accountNumber" required style={{ padding: 8, marginRight: 8 }} />
-            <input name="note" placeholder="note (optional)" style={{ padding: 8, marginRight: 8 }} />
-            <button style={{ padding: "8px 12px" }}>Revoke</button>
-          </form>
-        </details>
-
-        <details>
-          <summary style={{ fontWeight: 600 }}>Extend (gia hạn)</summary>
-          <form action={extendAction} style={{ marginTop: 8 }}>
-            <input name="productId" placeholder="productId" required style={{ padding: 8, marginRight: 8 }} />
-            <input name="accountNumber" type="number" placeholder="accountNumber" required style={{ padding: 8, marginRight: 8 }} />
-            <input name="days" type="number" placeholder="days (default 30)" style={{ padding: 8, marginRight: 8 }} />
-            <input name="note" placeholder="note (optional)" style={{ padding: 8, marginRight: 8 }} />
-            <button style={{ padding: "8px 12px" }}>Extend</button>
           </form>
         </details>
 
         <details>
           <summary style={{ fontWeight: 600, color: "#dc2626" }}>Delete (xóa hoàn toàn)</summary>
-          <form action={deleteAction} style={{ marginTop: 8 }}>
+          <form onSubmit={async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.currentTarget);
+            const productId = String(formData.get("productId"));
+            const accountNumber = Number(formData.get("accountNumber"));
+            await handleDelete(productId, accountNumber);
+            e.currentTarget.reset();
+          }} style={{ marginTop: 8 }}>
             <input name="productId" placeholder="productId" required style={{ padding: 8, marginRight: 8 }} />
             <input name="accountNumber" type="number" placeholder="accountNumber" required style={{ padding: 8, marginRight: 8 }} />
-            <input name="note" placeholder="note (optional)" style={{ padding: 8, marginRight: 8 }} />
             <button style={{ padding: "8px 12px", backgroundColor: "#dc2626", color: "white", border: "none" }}>🗑️ Delete</button>
           </form>
         </details>
 
         <details>
           <summary style={{ fontWeight: 600, color: "#059669" }}>Test Verify License</summary>
-          <form action={verifyAction} style={{ marginTop: 8 }}>
+          <form onSubmit={async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.currentTarget);
+            try {
+              const params = new URLSearchParams({
+                productId: String(formData.get("productId")),
+                accountNumber: String(formData.get("accountNumber")),
+                mode: String(formData.get("mode") || "REAL"),
+                version: String(formData.get("version") || "1.0.0")
+              });
+              const response = await fetch(`/api/license/test-verify?${params.toString()}`);
+              const result = await response.json();
+              alert(`Verify Result:\n${JSON.stringify(result, null, 2)}`);
+            } catch (err: any) {
+              alert(`Error: ${err.message}`);
+            }
+          }} style={{ marginTop: 8 }}>
             <input name="productId" placeholder="productId" required style={{ padding: 8, marginRight: 8 }} />
             <input name="accountNumber" type="number" placeholder="accountNumber" required style={{ padding: 8, marginRight: 8 }} />
             <input name="mode" placeholder="REAL/DEMO/BOTH" defaultValue="REAL" style={{ padding: 8, marginRight: 8 }} />
@@ -176,7 +192,31 @@ export default async function AdminLicensesPage({ searchParams }: { searchParams
 
         <details>
           <summary style={{ fontWeight: 600, color: "#2563eb" }}>Test Activate License</summary>
-          <form action={activateTestAction} style={{ marginTop: 8, display: "grid", gap: 8 }}>
+          <form onSubmit={async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.currentTarget);
+            try {
+              const response = await fetch("/api/license/test-activate", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  productId: formData.get("productId"),
+                  accountNumber: formData.get("accountNumber") ? Number(formData.get("accountNumber")) : undefined,
+                  accountNumbers: formData.get("accountNumbers"),
+                  mode: formData.get("mode") || "BOTH",
+                  plan: formData.get("plan") || "DEMO",
+                  days: formData.get("days") ? Number(formData.get("days")) : undefined,
+                  maxAccounts: formData.get("maxAccounts") ? Number(formData.get("maxAccounts")) : undefined,
+                  note: formData.get("note")
+                })
+              });
+              const result = await response.json();
+              alert(`Activate Result:\n${JSON.stringify(result, null, 2)}`);
+              loadLicenses();
+            } catch (err: any) {
+              alert(`Error: ${err.message}`);
+            }
+          }} style={{ marginTop: 8, display: "grid", gap: 8 }}>
             <input name="productId" placeholder="productId" required style={{ padding: 8 }} />
             <div style={{ display: "flex", gap: 8 }}>
               <input name="accountNumber" type="number" placeholder="accountNumber (single)" style={{ padding: 8 }} />
@@ -195,7 +235,7 @@ export default async function AdminLicensesPage({ searchParams }: { searchParams
       </section>
 
       <section style={{ marginTop: 24 }}>
-        <h2 style={{ fontWeight: 600 }}>Recent / Search Results</h2>
+        <h2 style={{ fontWeight: 600 }}>Recent / Search Results ({data.length})</h2>
         <div style={{ marginTop: 12, border: "1px solid #ddd", borderRadius: 8, overflow: "hidden" }}>
           <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 14 }}>
             <thead>
@@ -228,30 +268,20 @@ export default async function AdminLicensesPage({ searchParams }: { searchParams
                     <td style={{ padding: 8 }}>{new Date(x.expireAt).toLocaleString()}</td>
                     <td style={{ padding: 8 }}>{x.note || ""}</td>
                     <td style={{ padding: 8 }}>
-                      <form action={deleteAction} style={{ display: "inline" }}>
-                        <input type="hidden" name="productId" value={x.productId} />
-                        <input type="hidden" name="accountNumber" value={firstAccount} />
-                        <input type="hidden" name="note" value={`Deleted from admin panel - ${new Date().toISOString()}`} />
-                        <button 
-                          type="submit" 
-                          style={{ 
-                            padding: "4px 8px", 
-                            backgroundColor: "#dc2626", 
-                            color: "white", 
-                            border: "none", 
-                            borderRadius: "4px",
-                            fontSize: "12px",
-                            cursor: "pointer"
-                          }}
-                          onClick={(e) => {
-                            if (!confirm(`Xóa license ${x.productId} - Account ${firstAccount}?`)) {
-                              e.preventDefault();
-                            }
-                          }}
-                        >
-                          🗑️
-                        </button>
-                      </form>
+                      <button 
+                        onClick={() => handleDelete(x.productId, firstAccount)}
+                        style={{ 
+                          padding: "4px 8px", 
+                          backgroundColor: "#dc2626", 
+                          color: "white", 
+                          border: "none", 
+                          borderRadius: "4px",
+                          fontSize: "12px",
+                          cursor: "pointer"
+                        }}
+                      >
+                        🗑️
+                      </button>
                     </td>
                   </tr>
                 );
@@ -262,20 +292,4 @@ export default async function AdminLicensesPage({ searchParams }: { searchParams
       </section>
     </main>
   );
-  } catch (error) {
-    console.error("Admin licenses page error:", error);
-    return (
-      <main style={{ padding: 24, fontFamily: "ui-sans-serif,system-ui" }}>
-        <h1 style={{ fontSize: 24, fontWeight: 700, color: "#dc2626" }}>License Admin - Error</h1>
-        <div style={{ marginTop: 16, padding: 16, backgroundColor: "#fef2f2", border: "1px solid #fecaca", borderRadius: 8 }}>
-          <p style={{ color: "#dc2626", margin: 0 }}>
-            <strong>Error loading license data:</strong> {error instanceof Error ? error.message : "Unknown error"}
-          </p>
-          <p style={{ color: "#6b7280", margin: "8px 0 0 0", fontSize: "14px" }}>
-            Please check the server logs for more details.
-          </p>
-        </div>
-      </main>
-    );
-  }
 }
