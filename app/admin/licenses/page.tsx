@@ -2,89 +2,96 @@ import { listRecentLicenses, searchLicenses, createDemo, revokeLicense, extendLi
 
 export const dynamic = "force-dynamic";
 
+async function createDemoAction(formData: FormData) {
+  "use server";
+  const productId = String(formData.get("productId") || "");
+  const accountNumber = Number(formData.get("accountNumber") || 0);
+  const note = String(formData.get("note") || "");
+  await createDemo(productId, accountNumber, note);
+}
+
+async function createMultiAction(formData: FormData) {
+  "use server";
+  await createLicenseMulti({
+    productId: String(formData.get("productId") || ""),
+    accountsCSV: String(formData.get("accountsCSV") || ""),
+    plan: String(formData.get("plan") || "DEMO"),
+    mode: String(formData.get("mode") || "BOTH"),
+    days: formData.get("days") ? Number(formData.get("days")) : undefined,
+    maxAccounts: formData.get("maxAccounts") ? Number(formData.get("maxAccounts")) : undefined,
+    note: String(formData.get("note") || "")
+  });
+}
+
+async function revokeAction(formData: FormData) {
+  "use server";
+  await revokeLicense(
+    String(formData.get("productId") || ""),
+    Number(formData.get("accountNumber") || 0),
+    String(formData.get("note") || "")
+  );
+}
+
+async function extendAction(formData: FormData) {
+  "use server";
+  await extendLicense(
+    String(formData.get("productId") || ""),
+    Number(formData.get("accountNumber") || 0),
+    Number(formData.get("days") || 30),
+    String(formData.get("note") || "")
+  );
+}
+
+async function deleteAction(formData: FormData) {
+  "use server";
+  await deleteLicense(
+    String(formData.get("productId") || ""),
+    Number(formData.get("accountNumber") || 0),
+    String(formData.get("note") || "")
+  );
+}
+
+async function verifyAction(formData: FormData) {
+  "use server";
+  const result = await testVerifyLicense(
+    String(formData.get("productId") || ""),
+    Number(formData.get("accountNumber") || 0),
+    String(formData.get("mode") || "REAL"),
+    String(formData.get("version") || "1.0.0")
+  );
+  console.log("Verify result:", result);
+}
+
+async function activateTestAction(formData: FormData) {
+  "use server";
+  const result = await testActivateLicense({
+    productId: String(formData.get("productId") || ""),
+    accountNumber: formData.get("accountNumber") ? Number(formData.get("accountNumber")) : undefined,
+    accountNumbers: String(formData.get("accountNumbers") || ""),
+    mode: String(formData.get("mode") || "BOTH"),
+    plan: String(formData.get("plan") || "DEMO"),
+    days: formData.get("days") ? Number(formData.get("days")) : undefined,
+    maxAccounts: formData.get("maxAccounts") ? Number(formData.get("maxAccounts")) : undefined,
+    note: String(formData.get("note") || "")
+  });
+  console.log("Activate result:", result);
+}
+
 export default async function AdminLicensesPage({ searchParams }: { searchParams: Promise<Record<string, string | undefined>> }) {
-  const resolvedSearchParams = await searchParams;
-  const productId = (resolvedSearchParams.productId || "").toString();
-  const accountNumber = resolvedSearchParams.accountNumber ? Number(resolvedSearchParams.accountNumber) : undefined;
+  try {
+    const resolvedSearchParams = await searchParams;
+    const productId = (resolvedSearchParams.productId || "").toString();
+    const accountNumber = resolvedSearchParams.accountNumber ? Number(resolvedSearchParams.accountNumber) : undefined;
 
-  const data = productId || accountNumber
-    ? await searchLicenses(productId, accountNumber)
-    : await listRecentLicenses();
-
-  async function createDemoAction(formData: FormData) {
-    "use server";
-    const productId = String(formData.get("productId") || "");
-    const accountNumber = Number(formData.get("accountNumber") || 0);
-    const note = String(formData.get("note") || "");
-    await createDemo(productId, accountNumber, note);
-  }
-
-  async function createMultiAction(formData: FormData) {
-    "use server";
-    await createLicenseMulti({
-      productId: String(formData.get("productId") || ""),
-      accountsCSV: String(formData.get("accountsCSV") || ""),
-      plan: String(formData.get("plan") || "DEMO"),
-      mode: String(formData.get("mode") || "BOTH"),
-      days: formData.get("days") ? Number(formData.get("days")) : undefined,
-      maxAccounts: formData.get("maxAccounts") ? Number(formData.get("maxAccounts")) : undefined,
-      note: String(formData.get("note") || "")
-    });
-  }
-
-  async function revokeAction(formData: FormData) {
-    "use server";
-    await revokeLicense(
-      String(formData.get("productId") || ""),
-      Number(formData.get("accountNumber") || 0),
-      String(formData.get("note") || "")
-    );
-  }
-
-  async function extendAction(formData: FormData) {
-    "use server";
-    await extendLicense(
-      String(formData.get("productId") || ""),
-      Number(formData.get("accountNumber") || 0),
-      Number(formData.get("days") || 30),
-      String(formData.get("note") || "")
-    );
-  }
-
-  async function deleteAction(formData: FormData) {
-    "use server";
-    await deleteLicense(
-      String(formData.get("productId") || ""),
-      Number(formData.get("accountNumber") || 0),
-      String(formData.get("note") || "")
-    );
-  }
-
-  async function verifyAction(formData: FormData) {
-    "use server";
-    const result = await testVerifyLicense(
-      String(formData.get("productId") || ""),
-      Number(formData.get("accountNumber") || 0),
-      String(formData.get("mode") || "REAL"),
-      String(formData.get("version") || "1.0.0")
-    );
-    console.log("Verify result:", result);
-  }
-
-  async function activateTestAction(formData: FormData) {
-    "use server";
-    const result = await testActivateLicense({
-      productId: String(formData.get("productId") || ""),
-      accountNumber: formData.get("accountNumber") ? Number(formData.get("accountNumber")) : undefined,
-      accountNumbers: String(formData.get("accountNumbers") || ""),
-      mode: String(formData.get("mode") || "BOTH"),
-      plan: String(formData.get("plan") || "DEMO"),
-      days: formData.get("days") ? Number(formData.get("days")) : undefined,
-      maxAccounts: formData.get("maxAccounts") ? Number(formData.get("maxAccounts")) : undefined,
-      note: String(formData.get("note") || "")
-    });
-    console.log("Activate result:", result);
-  }
+    let data;
+    try {
+      data = productId || accountNumber
+        ? await searchLicenses(productId, accountNumber)
+        : await listRecentLicenses();
+    } catch (dbError) {
+      console.error("Database error:", dbError);
+      data = []; // Fallback to empty array
+    }
 
   return (
     <main style={{ padding: 24, fontFamily: "ui-sans-serif,system-ui" }}>
@@ -255,4 +262,20 @@ export default async function AdminLicensesPage({ searchParams }: { searchParams
       </section>
     </main>
   );
+  } catch (error) {
+    console.error("Admin licenses page error:", error);
+    return (
+      <main style={{ padding: 24, fontFamily: "ui-sans-serif,system-ui" }}>
+        <h1 style={{ fontSize: 24, fontWeight: 700, color: "#dc2626" }}>License Admin - Error</h1>
+        <div style={{ marginTop: 16, padding: 16, backgroundColor: "#fef2f2", border: "1px solid #fecaca", borderRadius: 8 }}>
+          <p style={{ color: "#dc2626", margin: 0 }}>
+            <strong>Error loading license data:</strong> {error instanceof Error ? error.message : "Unknown error"}
+          </p>
+          <p style={{ color: "#6b7280", margin: "8px 0 0 0", fontSize: "14px" }}>
+            Please check the server logs for more details.
+          </p>
+        </div>
+      </main>
+    );
+  }
 }
