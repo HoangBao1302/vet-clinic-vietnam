@@ -118,7 +118,7 @@ export default function AdminLicensesPage() {
 
       <section style={{ marginTop: 24, display: "grid", gap: 16 }}>
         <details open>
-          <summary style={{ fontWeight: 600 }}>Create DEMO 60 ngày (1 account)</summary>
+          <summary style={{ fontWeight: 600, color: "#8b5cf6" }}>Create DEMO (1 account)</summary>
           <form onSubmit={async (e) => {
             e.preventDefault();
             const formData = new FormData(e.currentTarget);
@@ -143,7 +143,79 @@ export default function AdminLicensesPage() {
             <input name="productId" placeholder="productId" required style={{ padding: 8, marginRight: 8 }} />
             <input name="accountNumber" type="number" placeholder="accountNumber" required style={{ padding: 8, marginRight: 8 }} />
             <input name="note" placeholder="note (optional)" style={{ padding: 8, marginRight: 8 }} />
-            <button style={{ padding: "8px 12px" }}>Create</button>
+            <button style={{ padding: "8px 12px", backgroundColor: "#8b5cf6", color: "white", border: "none" }}>Create DEMO (60 days)</button>
+          </form>
+        </details>
+
+        <details>
+          <summary style={{ fontWeight: 600, color: "#10b981" }}>Create BOTH (Demo + Real)</summary>
+          <form onSubmit={async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.currentTarget);
+            try {
+              const response = await fetch("/api/license/test-activate", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  productId: formData.get("productId"),
+                  accountNumber: Number(formData.get("accountNumber")),
+                  mode: "BOTH",
+                  plan: "DEMO",
+                  days: Number(formData.get("days")) || 60,
+                  maxAccounts: 1,
+                  note: formData.get("note")
+                })
+              });
+              if (!response.ok) throw new Error("Failed to create BOTH license");
+              const result = await response.json();
+              alert("BOTH license created!");
+              loadLicenses();
+              e.currentTarget.reset();
+            } catch (err: any) {
+              alert(`Error: ${err.message}`);
+            }
+          }} style={{ marginTop: 8 }}>
+            <input name="productId" placeholder="productId" required style={{ padding: 8, marginRight: 8 }} />
+            <input name="accountNumber" type="number" placeholder="accountNumber" required style={{ padding: 8, marginRight: 8 }} />
+            <input name="days" type="number" placeholder="days (default 60)" defaultValue="60" style={{ padding: 8, marginRight: 8, width: "150px" }} />
+            <input name="note" placeholder="note (optional)" style={{ padding: 8, marginRight: 8 }} />
+            <button style={{ padding: "8px 12px", backgroundColor: "#10b981", color: "white", border: "none" }}>Create BOTH</button>
+          </form>
+        </details>
+
+        <details>
+          <summary style={{ fontWeight: 600, color: "#3b82f6" }}>Create REAL (Chỉ tài khoản thực)</summary>
+          <form onSubmit={async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.currentTarget);
+            try {
+              const response = await fetch("/api/license/test-activate", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  productId: formData.get("productId"),
+                  accountNumber: Number(formData.get("accountNumber")),
+                  mode: "REAL",
+                  plan: "DEMO",
+                  days: Number(formData.get("days")) || 60,
+                  maxAccounts: 1,
+                  note: formData.get("note")
+                })
+              });
+              if (!response.ok) throw new Error("Failed to create REAL license");
+              const result = await response.json();
+              alert("REAL license created!");
+              loadLicenses();
+              e.currentTarget.reset();
+            } catch (err: any) {
+              alert(`Error: ${err.message}`);
+            }
+          }} style={{ marginTop: 8 }}>
+            <input name="productId" placeholder="productId" required style={{ padding: 8, marginRight: 8 }} />
+            <input name="accountNumber" type="number" placeholder="accountNumber" required style={{ padding: 8, marginRight: 8 }} />
+            <input name="days" type="number" placeholder="days (default 60)" defaultValue="60" style={{ padding: 8, marginRight: 8, width: "150px" }} />
+            <input name="note" placeholder="note (optional)" style={{ padding: 8, marginRight: 8 }} />
+            <button style={{ padding: "8px 12px", backgroundColor: "#3b82f6", color: "white", border: "none" }}>Create REAL</button>
           </form>
         </details>
 
