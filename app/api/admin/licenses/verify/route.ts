@@ -3,18 +3,23 @@ import { dbConnect } from "@/lib/mongodb";
 import License from "@/lib/models/License";
 
 export async function POST(req: NextRequest) {
-  // ===== API KEY AUTHENTICATION =====
-  if (req.headers.get("x-api-key") !== process.env.LICENSE_API_KEY) {
-    return NextResponse.json({ ok: false, error: "FORBIDDEN" }, { status: 403 });
-  }
-
   try {
     await dbConnect();
     
     const body = await req.json();
-    const { productId, accountNumber, mode } = body;
+    const { key, productId, accountNumber, mode } = body;
     
-    console.log("🔍 Verify request:", { productId, accountNumber, mode });
+    console.log("🔍 Verify request:", { productId, accountNumber, mode, hasKey: !!key });
+    
+    // ===== API KEY AUTHENTICATION (from body OR header) =====
+    const headerKey = req.headers.get("x-api-key");
+    const bodyKey = key;
+    const validKey = process.env.LICENSE_API_KEY;
+    
+    if (bodyKey !== validKey && headerKey !== validKey) {
+      console.log("❌ FORBIDDEN - Invalid API key");
+      return NextResponse.json({ ok: false, error: "FORBIDDEN" }, { status: 403 });
+    }
     
     // ===== VALIDATE INPUT =====
     if (!productId || !accountNumber) {
@@ -106,4 +111,3 @@ export async function POST(req: NextRequest) {
     );
   }
 }
-
