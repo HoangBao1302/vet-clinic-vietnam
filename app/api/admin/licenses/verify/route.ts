@@ -1,0 +1,109 @@
+import { NextRequest, NextResponse } from "next/server";
+import { dbConnect } from "@/lib/mongodb";
+import License from "@/lib/models/License";
+
+export async function POST(req: NextRequest) {
+  // ===== API KEY AUTHENTICATION =====
+  if (req.headers.get("x-api-key") !== process.env.LICENSE_API_KEY) {
+    return NextResponse.json({ ok: false, error: "FORBIDDEN" }, { status: 403 });
+  }
+
+  try {
+    await dbConnect();
+    
+    const body = await req.json();
+    const { productId, accountNumber, mode } = body;
+    
+    console.log("🔍 Verify request:", { productId, accountNumber, mode });
+    
+    // ===== VALIDATE INPUT =====
+    if (!productId || !accountNumber) {
+      return NextResponse.json(
+        { ok: false, error: "MISSING_PARAMS: productId and accountNumber required" },
+        { status: 400 }
+      );
+    }
+
+    // ===== FIND LICENSE =====
+    const license = await License.findOne({
+      productId: productId,
+      $or: [
+        { accountNumber: Number(accountNumber) },
+        { accountNumbers: Number(accountNumber) }
+      ],
+      isActive: true
+    });
+
+    if (!license) {
+      console.log("❌ License not found:", { productId, accountNumber });
+      return NextResponse.json(
+        { ok: false, error: "LICENSE_NOT_FOUND" },
+        { status: 404 }
+      );
+    }
+
+    console.log("✓ License found:", {
+      id: license._id,
+      productId: license.productId,
+      accounts: license.accountNumbers || [license.accountNumber],
+      plan: license.plan,
+      mode: license.mode
+    });
+
+    // ===== CHECK EXPIRY =====
+    const now = new Date();
+    if (license.expireAt && new Date(license.expireAt) < now) {
+      console.log("❌ License expired:", license.expireAt);
+      return NextResponse.json(
+        { ok: false, error: "LICENSE_EXPIRED", expireAt: license.expireAt },
+        { status: 403 }
+      );
+    }
+
+    // ===== CHECK MODE =====
+    const requestMode = String(mode || "REAL").toUpperCase();
+    const licenseMode = String(license.mode || "BOTH").toUpperCase();
+    
+    if (licenseMode !== "BOTH" && licenseMode !== requestMode) {
+      console.log("❌ Mode mismatch:", { licenseMode, requestMode });
+      return NextResponse.json(
+        { ok: false, error: `LICENSE_MODE_MISMATCH: License only valid for ${licenseMode}` },
+        { status: 403 }
+      );
+    }
+
+    // ===== SUCCESS RESPONSE =====
+    const expireEpoch = license.expireAt 
+      ? Math.floor(new Date(license.expireAt).getTime() / 1000) 
+      : 0;
+
+    console.log("✅ License verified successfully");
+    
+    return NextResponse.json({
+      ok: true,
+      license: {
+        productId: license.productId,
+        accountNumber: Number(accountNumber),
+        accounts: license.accountNumbers?.length 
+          ? license.accountNumbers 
+          : [license.accountNumber],
+        mode: license.mode,
+        plan: license.plan,
+        maxAccounts: license.maxAccounts || 1,
+        startAt: license.startAt,
+        expireAt: license.expireAt,
+        expEpoch: expireEpoch,
+        isActive: license.isActive,
+        note: license.note || ""
+      }
+    });
+
+  } catch (error: any) {
+    console.error("❌ Verify error:", error);
+    return NextResponse.json(
+      { ok: false, error: "INTERNAL_ERROR", message: error.message },
+      { status: 500 }
+    );
+  }
+}
+
