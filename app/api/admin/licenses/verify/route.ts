@@ -6,7 +6,35 @@ export async function POST(req: NextRequest) {
   try {
     await dbConnect();
     
-    const body = await req.json();
+    // Log raw body for debugging
+    const rawBody = await req.text();
+    console.log("📥 Raw request body:", rawBody);
+    console.log("📥 Body length:", rawBody.length);
+    console.log("📥 Body bytes:", Buffer.from(rawBody).toString('hex'));
+    
+    // Clean up potential issues
+    const cleanBody = rawBody.trim().replace(/\0/g, ''); // Remove null chars
+    console.log("🧹 Cleaned body:", cleanBody);
+    
+    let body;
+    try {
+      body = JSON.parse(cleanBody);
+    } catch (parseError: any) {
+      console.error("❌ JSON parse error:", parseError.message);
+      console.error("❌ Failed at position:", parseError.message.match(/\d+/)?.[0]);
+      
+      // Try to show problematic area
+      const pos = parseInt(parseError.message.match(/\d+/)?.[0] || "0");
+      const start = Math.max(0, pos - 20);
+      const end = Math.min(cleanBody.length, pos + 20);
+      console.error("❌ Context:", cleanBody.substring(start, end));
+      
+      return NextResponse.json(
+        { ok: false, error: "INVALID_JSON", message: parseError.message, rawLength: rawBody.length },
+        { status: 400 }
+      );
+    }
+    
     const { key, productId, accountNumber, mode } = body;
     
     console.log("🔍 Verify request:", { productId, accountNumber, mode, hasKey: !!key });
