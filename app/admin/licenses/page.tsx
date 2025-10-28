@@ -153,16 +153,13 @@ export default function AdminLicensesPage() {
             e.preventDefault();
             const formData = new FormData(e.currentTarget);
             try {
-              const response = await fetch("/api/license/test-activate", {
+              const response = await fetch("/api/admin/licenses/create-both", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                   productId: formData.get("productId"),
                   accountNumber: Number(formData.get("accountNumber")),
-                  mode: "BOTH",
-                  plan: "DEMO",
                   days: Number(formData.get("days")) || 60,
-                  maxAccounts: 1,
                   note: formData.get("note")
                 })
               });
@@ -189,16 +186,13 @@ export default function AdminLicensesPage() {
             e.preventDefault();
             const formData = new FormData(e.currentTarget);
             try {
-              const response = await fetch("/api/license/test-activate", {
+              const response = await fetch("/api/admin/licenses/create-real", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                   productId: formData.get("productId"),
                   accountNumber: Number(formData.get("accountNumber")),
-                  mode: "REAL",
-                  plan: "DEMO",
                   days: Number(formData.get("days")) || 60,
-                  maxAccounts: 1,
                   note: formData.get("note")
                 })
               });
