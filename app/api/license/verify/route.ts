@@ -3,12 +3,19 @@ import { dbConnect } from "@/lib/mongodb";
 import License from "@/lib/models/License";
 
 export async function POST(req: NextRequest) {
-  if (req.headers.get("x-api-key") !== process.env.LICENSE_API_KEY) {
+  // API key từ header hoặc body
+  const ip = req.headers.get("x-forwarded-for") || req.headers.get("x-real-ip") || "";
+  const body = await req.json();
+  const { productId, accountNumber, mode, version = "", key } = body;
+  
+  const headerKey = req.headers.get("x-api-key");
+  const bodyKey = key;
+  const validKey = process.env.LICENSE_API_KEY;
+  
+  // Check API key from header OR body
+  if (bodyKey !== validKey && headerKey !== validKey) {
     return new NextResponse("FORBIDDEN", { status: 403 });
   }
-
-  const ip = req.headers.get("x-forwarded-for") || req.headers.get("x-real-ip") || "";
-  const { productId, accountNumber, mode, version = "" } = await req.json();
 
   if (!productId || !accountNumber || !mode) {
     return new NextResponse("ERR|MISSING_PARAMS", { status: 400 });
