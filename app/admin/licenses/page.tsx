@@ -121,7 +121,8 @@ export default function AdminLicensesPage() {
           <summary style={{ fontWeight: 600, color: "#8b5cf6" }}>Create DEMO (1 account)</summary>
           <form onSubmit={async (e) => {
             e.preventDefault();
-            const formData = new FormData(e.currentTarget);
+            const form = e.currentTarget;
+            const formData = new FormData(form);
             try {
               const response = await fetch("/api/admin/licenses/create-demo", {
                 method: "POST",
@@ -134,8 +135,8 @@ export default function AdminLicensesPage() {
               });
               if (!response.ok) throw new Error("Failed to create demo");
               alert("Demo license created!");
-              loadLicenses();
-              e.currentTarget.reset();
+              await loadLicenses();
+              form.reset();
             } catch (err: any) {
               alert(`Error: ${err.message}`);
             }
@@ -151,7 +152,8 @@ export default function AdminLicensesPage() {
           <summary style={{ fontWeight: 600, color: "#10b981" }}>Create BOTH (Demo + Real)</summary>
           <form onSubmit={async (e) => {
             e.preventDefault();
-            const formData = new FormData(e.currentTarget);
+            const form = e.currentTarget;
+            const formData = new FormData(form);
             try {
               const response = await fetch("/api/admin/licenses/create-both", {
                 method: "POST",
@@ -166,8 +168,8 @@ export default function AdminLicensesPage() {
               if (!response.ok) throw new Error("Failed to create BOTH license");
               const result = await response.json();
               alert("BOTH license created!");
-              loadLicenses();
-              e.currentTarget.reset();
+              await loadLicenses();
+              form.reset();
             } catch (err: any) {
               alert(`Error: ${err.message}`);
             }
@@ -184,7 +186,8 @@ export default function AdminLicensesPage() {
           <summary style={{ fontWeight: 600, color: "#3b82f6" }}>Create REAL (Chỉ tài khoản thực)</summary>
           <form onSubmit={async (e) => {
             e.preventDefault();
-            const formData = new FormData(e.currentTarget);
+            const form = e.currentTarget;
+            const formData = new FormData(form);
             try {
               const response = await fetch("/api/admin/licenses/create-real", {
                 method: "POST",
@@ -199,8 +202,8 @@ export default function AdminLicensesPage() {
               if (!response.ok) throw new Error("Failed to create REAL license");
               const result = await response.json();
               alert("REAL license created!");
-              loadLicenses();
-              e.currentTarget.reset();
+              await loadLicenses();
+              form.reset();
             } catch (err: any) {
               alert(`Error: ${err.message}`);
             }
@@ -217,11 +220,12 @@ export default function AdminLicensesPage() {
           <summary style={{ fontWeight: 600, color: "#dc2626" }}>Delete (xóa hoàn toàn)</summary>
           <form onSubmit={async (e) => {
             e.preventDefault();
-            const formData = new FormData(e.currentTarget);
+            const form = e.currentTarget;
+            const formData = new FormData(form);
             const productId = String(formData.get("productId"));
             const accountNumber = Number(formData.get("accountNumber"));
             await handleDelete(productId, accountNumber);
-            e.currentTarget.reset();
+            form.reset();
           }} style={{ marginTop: 8 }}>
             <input name="productId" placeholder="productId" required style={{ padding: 8, marginRight: 8 }} />
             <input name="accountNumber" type="number" placeholder="accountNumber" required style={{ padding: 8, marginRight: 8 }} />
