@@ -57,8 +57,11 @@ export async function POST(req: NextRequest) {
   const matchedAccount = lic.accountNumbers?.includes(accNum) ? accNum : (lic.accountNumber ?? accNum);
   const payloadText = `OK|${matchedAccount}|${lic.mode}|${expiryEpoch}|${lic.plan}|${lic.note || ""}`;
 
+  console.log("✅ License verified, response:", payloadText);
+  console.log("Response length:", payloadText.length);
+
   return new NextResponse(payloadText, {
     status: 200,
-    headers: { "Content-Type": "text/plain" }
+    headers: { "Content-Type": "text/plain; charset=utf-8" }
   });
 }
