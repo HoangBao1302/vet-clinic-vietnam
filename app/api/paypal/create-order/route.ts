@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
           reference_id: productId,
           amount: {
             currency_code: "USD",
-            value: (amount / 100 / 24000).toFixed(2), // Convert VND to USD (1 USD ≈ 24,000 VND)
+            value: (amount / 24000).toFixed(2), // Convert VND to USD (1 USD ≈ 24,000 VND)
           },
           description: productName,
           custom_id: `${productId}|${affiliateCode || ''}`,

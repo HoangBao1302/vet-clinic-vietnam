@@ -44,7 +44,7 @@ const OrderSchema: Schema = new Schema({
   },
   customerPhone: {
     type: String,
-    required: true
+    required: false  // Optional - PayPal may not provide phone
   },
   amount: {
     type: Number,
