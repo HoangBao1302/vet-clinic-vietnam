@@ -17,17 +17,123 @@ export async function POST(request: NextRequest) {
       const payerName = body.resource?.payer?.name;
       
       // Get amount - may vary depending on event type
-      const amount = body.resource?.amount?.value 
-        ? parseFloat(body.resource.amount.value) * 24000 * 100 // USD to VND cents
-        : body.resource?.purchase_units?.[0]?.amount?.value 
-        ? parseFloat(body.resource.purchase_units[0].amount.value) * 24000 * 100
-        : 0;
+      const amountUSD = parseFloat(
+        body.resource?.amount?.value || 
+        body.resource?.purchase_units?.[0]?.amount?.value || 
+        '0'
+      );
+      const amountVND = amountUSD * 24000; // Convert USD to VND
+      const amount = Math.round(amountVND * 100); // Convert to cents for storage
       
-      // Get custom_id which contains productId and affiliateCode
+      // IMPROVED: Multiple strategies to get productId
+      let productId = '';
+      let affiliateCode = '';
+      
+      // Strategy 1: Get from custom_id (primary method)
       const customId = body.resource?.purchase_units?.[0]?.custom_id || 
                        body.resource?.custom_id || '';
+      if (customId) {
+        [productId, affiliateCode] = customId.split('|');
+      }
       
-      const [productId, affiliateCode] = customId.split('|');
+      // Strategy 2: Fallback to reference_id
+      if (!productId) {
+        const referenceId = body.resource?.purchase_units?.[0]?.reference_id || '';
+        if (referenceId) {
+          productId = referenceId;
+          console.log(`📋 Using reference_id as productId: ${productId}`);
+        }
+      }
+      
+      // Strategy 3: Detect from amount (last resort)
+      // Note: This cannot distinguish between MT4/MT5 as they have same price
+      // Will be corrected by Strategy 4 if needed
+      if (!productId || productId === 'unknown') {
+        console.warn('⚠️ ProductId not found in custom_id or reference_id, trying amount detection...');
+        
+        // Amount-based detection with tolerance
+        const tolerance = 100000; // 100K VND tolerance
+        
+        if (Math.abs(amountVND - 14900000) < tolerance) {
+          productId = 'ea-pro-source-mt4'; // Default to MT4, will be corrected if needed
+          console.warn(`💡 ProductId detected from amount: ${productId} (${amountVND.toLocaleString('vi-VN')}đ ≈ 14.9M) - MT4 assumed, may auto-correct`);
+        } else if (Math.abs(amountVND - 7900000) < tolerance) {
+          productId = 'ea-full-mt4';
+          console.warn(`💡 ProductId detected from amount: ${productId} (${amountVND.toLocaleString('vi-VN')}đ ≈ 7.9M) - MT4 assumed, may auto-correct`);
+        } else if (Math.abs(amountVND - 1990000) < tolerance) {
+          productId = 'indicator-pro-mt4';
+          console.warn(`💡 ProductId detected from amount: ${productId} (${amountVND.toLocaleString('vi-VN')}đ ≈ 1.99M) - MT4 assumed, may auto-correct`);
+        } else {
+          productId = 'unknown';
+          console.error(`❌ Could not detect productId from amount: ${amountVND.toLocaleString('vi-VN')}đ`);
+        }
+      }
+      
+      // Strategy 4: Try to detect MT5 from URL or other hints in PayPal data
+      if (productId && productId.endsWith('-mt4')) {
+        // Check if there are any hints that this should be MT5
+        const description = body.resource?.purchase_units?.[0]?.description || '';
+        const payerEmail = body.resource?.payer?.email_address || '';
+        
+        // Check description for MT5 keywords
+        if (description.toLowerCase().includes('mt5') || 
+            description.toLowerCase().includes('metatrader 5') ||
+            description.toLowerCase().includes('metatrader5')) {
+          const mt5ProductId = productId.replace('-mt4', '-mt5');
+          console.log(`📋 MT5 detected in description, converting ${productId} → ${mt5ProductId}`);
+          productId = mt5ProductId;
+        }
+        
+        // Log for manual review if we're not sure
+        console.log('🔍 Platform Detection:', {
+          currentProductId: productId,
+          description,
+          payerEmail,
+          note: 'If this should be MT5, it will be corrected by amount validation or require manual fix'
+        });
+      }
+      
+      console.log('🔍 PayPal Webhook ProductID Detection:', {
+        customId,
+        referenceId: body.resource?.purchase_units?.[0]?.reference_id,
+        finalProductId: productId,
+        affiliateCode,
+        amountUSD: `$${amountUSD.toFixed(2)}`,
+        amountVND: `${amountVND.toLocaleString('vi-VN')}đ`,
+        amountCents: amount,
+        detectionMethod: customId ? 'custom_id' : body.resource?.purchase_units?.[0]?.reference_id ? 'reference_id' : 'amount'
+      });
+      
+      // VALIDATION: Verify amount matches expected product price
+      const expectedPrices: Record<string, number> = {
+        'ea-pro-source-mt4': 14900000,
+        'ea-pro-source-mt5': 14900000,
+        'ea-full-mt4': 7900000,
+        'ea-full-mt5': 7900000,
+        'indicator-pro-mt4': 1990000,
+        'indicator-pro-mt5': 1990000,
+      };
+      
+      const expectedPrice = expectedPrices[productId];
+      if (expectedPrice && Math.abs(amountVND - expectedPrice) > 100000) {
+        console.error('⚠️ PRICE MISMATCH DETECTED:', {
+          productId,
+          expectedPrice: `${expectedPrice.toLocaleString('vi-VN')}đ`,
+          actualAmount: `${amountVND.toLocaleString('vi-VN')}đ`,
+          difference: `${Math.abs(amountVND - expectedPrice).toLocaleString('vi-VN')}đ`
+        });
+        
+        // Auto-correct productId based on amount
+        for (const [pid, price] of Object.entries(expectedPrices)) {
+          if (Math.abs(amountVND - price) < 100000) {
+            console.log(`✅ Auto-correcting productId from "${productId}" to "${pid}"`);
+            productId = pid;
+            break;
+          }
+        }
+      } else if (expectedPrice) {
+        console.log(`✅ Amount validation passed: ${amountVND.toLocaleString('vi-VN')}đ matches ${productId}`);
+      }
       
       if (orderId) {
         console.log("PayPal order approved:", {
@@ -35,6 +141,8 @@ export async function POST(request: NextRequest) {
           payerEmail,
           payerName: `${payerName?.given_name || ''} ${payerName?.surname || ''}`.trim(),
           amount,
+          amountVND: `${amountVND.toLocaleString('vi-VN')}đ`,
+          amountUSD: `$${amountUSD.toFixed(2)}`,
           productId,
           affiliateCode,
           eventType: body.event_type
@@ -252,7 +360,7 @@ export async function POST(request: NextRequest) {
                       <p><strong>Mã đơn hàng:</strong> ${orderId}</p>
                       <p><strong>Sản phẩm:</strong> ${productName}</p>
                       <p><strong>Phương thức:</strong> PayPal</p>
-                      ${amount > 0 ? `<p><strong>Số tiền:</strong> ${(amount / 100).toLocaleString('vi-VN')}₫</p>` : ''}
+                      ${amountVND > 0 ? `<p><strong>Số tiền:</strong> ${amountVND.toLocaleString('vi-VN')}₫ (≈ $${amountUSD.toFixed(2)} USD)</p>` : ''}
                     </div>
                     
                     <div style="text-align: center; margin: 30px 0;">

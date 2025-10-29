@@ -50,6 +50,7 @@ export async function POST(request: NextRequest) {
           customer_email: customerInfo.email,
           metadata: {
             productId,
+            productName,  // IMPORTANT: Add productName for webhook processing
             customerName: customerInfo.name,
             customerPhone: customerInfo.phone,
             affiliateCode: affiliateCode || '',

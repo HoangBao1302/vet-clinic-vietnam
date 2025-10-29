@@ -44,11 +44,68 @@ export async function POST(request: NextRequest) {
       // Log the successful payment
       console.log("Payment successful:", session.id);
 
+      // IMPROVED: Extract productId with validation
+      let productId = session.metadata?.productId || 'unknown';
+      let productName = session.metadata?.productName || 'Unknown Product';
+      
+      // Amount in VND (Stripe stores in smallest currency unit - cents for VND)
+      const amountVND = session.amount_total / 100;
+      
+      console.log('🔍 Stripe Webhook ProductID Detection:', {
+        productId,
+        productName,
+        amountVND: `${amountVND.toLocaleString('vi-VN')}đ`,
+        amountCents: session.amount_total,
+        customerEmail: session.customer_email
+      });
+      
+      // VALIDATION: Verify amount matches expected product price
+      const expectedPrices: Record<string, number> = {
+        'ea-pro-source-mt4': 14900000,
+        'ea-pro-source-mt5': 14900000,
+        'ea-full-mt4': 7900000,
+        'ea-full-mt5': 7900000,
+        'indicator-pro-mt4': 1990000,
+        'indicator-pro-mt5': 1990000,
+      };
+      
+      const expectedPrice = expectedPrices[productId];
+      if (expectedPrice && Math.abs(amountVND - expectedPrice) > 100000) {
+        console.error('⚠️ STRIPE PRICE MISMATCH DETECTED:', {
+          productId,
+          expectedPrice: `${expectedPrice.toLocaleString('vi-VN')}đ`,
+          actualAmount: `${amountVND.toLocaleString('vi-VN')}đ`,
+          difference: `${Math.abs(amountVND - expectedPrice).toLocaleString('vi-VN')}đ`
+        });
+        
+        // Auto-correct productId based on amount
+        for (const [pid, price] of Object.entries(expectedPrices)) {
+          if (Math.abs(amountVND - price) < 100000) {
+            console.log(`✅ Auto-correcting productId from "${productId}" to "${pid}"`);
+            productId = pid;
+            
+            // Update productName
+            const productNames: Record<string, string> = {
+              'indicator-pro-mt4': 'Multi-Indicator Pro Pack (MT4)',
+              'ea-full-mt4': 'EA ThebenchmarkTrader Full Version (MT4)',
+              'ea-pro-source-mt4': 'EA ThebenchmarkTrader Pro + Source Code (MT4)',
+              'indicator-pro-mt5': 'Multi-Indicator Pro Pack (MT5)',
+              'ea-full-mt5': 'EA ThebenchmarkTrader Full Version (MT5)',
+              'ea-pro-source-mt5': 'EA ThebenchmarkTrader Pro + Source Code (MT5)',
+            };
+            productName = productNames[pid] || productName;
+            break;
+          }
+        }
+      } else if (expectedPrice) {
+        console.log(`✅ Amount validation passed: ${amountVND.toLocaleString('vi-VN')}đ matches ${productId}`);
+      }
+
       // Save order to MongoDB
       const orderData = {
         orderId: session.id,
-        productId: session.metadata?.productId || 'unknown',
-        productName: session.metadata?.productName || 'Unknown Product',
+        productId: productId,
+        productName: productName,
         status: "paid",
         customerEmail: session.customer_email,
         customerName: session.metadata?.customerName || 'Unknown Customer',
