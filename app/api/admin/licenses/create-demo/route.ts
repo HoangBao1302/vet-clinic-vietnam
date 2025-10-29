@@ -6,11 +6,21 @@ export async function POST(request: NextRequest) {
   try {
     await dbConnect();
     
-    const { productId, accountNumber, note = "" } = await request.json();
+    const { productId, accountNumber, accountNumbers, note = "" } = await request.json();
 
-    if (!productId || !accountNumber) {
+    if (!productId) {
       return NextResponse.json(
-        { success: false, error: "Missing productId or accountNumber" },
+        { success: false, error: "Missing productId" },
+        { status: 400 }
+      );
+    }
+
+    // Support both single accountNumber and multiple accountNumbers
+    const accounts = accountNumbers || (accountNumber ? [Number(accountNumber)] : []);
+    
+    if (accounts.length === 0) {
+      return NextResponse.json(
+        { success: false, error: "Missing accountNumber(s)" },
         { status: 400 }
       );
     }
@@ -20,11 +30,11 @@ export async function POST(request: NextRequest) {
 
     const license = await License.create({
       productId,
-      accountNumber: Number(accountNumber),
-      accountNumbers: [Number(accountNumber)],
+      accountNumber: accounts[0], // For backward compatibility
+      accountNumbers: accounts,
       mode: "BOTH",
       plan: "DEMO",
-      maxAccounts: 1,
+      maxAccounts: accounts.length,
       startAt: now,
       expireAt,
       isActive: true,

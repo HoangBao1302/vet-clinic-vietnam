@@ -118,23 +118,31 @@ export default function AdminLicensesPage() {
 
       <section style={{ marginTop: 24, display: "grid", gap: 16 }}>
         <details open>
-          <summary style={{ fontWeight: 600, color: "#8b5cf6" }}>Create DEMO (1 account)</summary>
+          <summary style={{ fontWeight: 600, color: "#8b5cf6" }}>Create DEMO (multiple accounts supported)</summary>
           <form onSubmit={async (e) => {
             e.preventDefault();
             const form = e.currentTarget;
             const formData = new FormData(form);
             try {
+              const accountStr = String(formData.get("accountNumber"));
+              const accounts = accountStr.split(",").map(s => Number(s.trim())).filter(n => !isNaN(n));
+              
+              if (accounts.length === 0) {
+                alert("Please enter at least one account number");
+                return;
+              }
+              
               const response = await fetch("/api/admin/licenses/create-demo", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                   productId: formData.get("productId"),
-                  accountNumber: Number(formData.get("accountNumber")),
+                  accountNumbers: accounts,
                   note: formData.get("note")
                 })
               });
               if (!response.ok) throw new Error("Failed to create demo");
-              alert("Demo license created!");
+              alert(`Demo license created for ${accounts.length} account(s)!`);
               await loadLicenses();
               form.reset();
             } catch (err: any) {
@@ -142,32 +150,40 @@ export default function AdminLicensesPage() {
             }
           }} style={{ marginTop: 8 }}>
             <input name="productId" placeholder="productId" required style={{ padding: 8, marginRight: 8 }} />
-            <input name="accountNumber" type="number" placeholder="accountNumber" required style={{ padding: 8, marginRight: 8 }} />
+            <input name="accountNumber" placeholder="accountNumber (e.g. 123 or 123,456,789)" required style={{ padding: 8, marginRight: 8, width: "300px" }} />
             <input name="note" placeholder="note (optional)" style={{ padding: 8, marginRight: 8 }} />
             <button style={{ padding: "8px 12px", backgroundColor: "#8b5cf6", color: "white", border: "none" }}>Create DEMO (60 days)</button>
           </form>
         </details>
 
         <details>
-          <summary style={{ fontWeight: 600, color: "#10b981" }}>Create BOTH (Demo + Real)</summary>
+          <summary style={{ fontWeight: 600, color: "#10b981" }}>Create BOTH (Demo + Real, multiple accounts)</summary>
           <form onSubmit={async (e) => {
             e.preventDefault();
             const form = e.currentTarget;
             const formData = new FormData(form);
             try {
+              const accountStr = String(formData.get("accountNumber"));
+              const accounts = accountStr.split(",").map(s => Number(s.trim())).filter(n => !isNaN(n));
+              
+              if (accounts.length === 0) {
+                alert("Please enter at least one account number");
+                return;
+              }
+              
               const response = await fetch("/api/admin/licenses/create-both", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                   productId: formData.get("productId"),
-                  accountNumber: Number(formData.get("accountNumber")),
+                  accountNumbers: accounts,
                   days: Number(formData.get("days")) || 60,
                   note: formData.get("note")
                 })
               });
               if (!response.ok) throw new Error("Failed to create BOTH license");
               const result = await response.json();
-              alert("BOTH license created!");
+              alert(`BOTH license created for ${accounts.length} account(s)!`);
               await loadLicenses();
               form.reset();
             } catch (err: any) {
@@ -175,7 +191,7 @@ export default function AdminLicensesPage() {
             }
           }} style={{ marginTop: 8 }}>
             <input name="productId" placeholder="productId" required style={{ padding: 8, marginRight: 8 }} />
-            <input name="accountNumber" type="number" placeholder="accountNumber" required style={{ padding: 8, marginRight: 8 }} />
+            <input name="accountNumber" placeholder="accountNumber (e.g. 123 or 123,456,789)" required style={{ padding: 8, marginRight: 8, width: "300px" }} />
             <input name="days" type="number" placeholder="days (default 60)" defaultValue="60" style={{ padding: 8, marginRight: 8, width: "150px" }} />
             <input name="note" placeholder="note (optional)" style={{ padding: 8, marginRight: 8 }} />
             <button style={{ padding: "8px 12px", backgroundColor: "#10b981", color: "white", border: "none" }}>Create BOTH</button>
@@ -183,25 +199,33 @@ export default function AdminLicensesPage() {
         </details>
 
         <details>
-          <summary style={{ fontWeight: 600, color: "#3b82f6" }}>Create REAL (Chỉ tài khoản thực)</summary>
+          <summary style={{ fontWeight: 600, color: "#3b82f6" }}>Create REAL (multiple accounts)</summary>
           <form onSubmit={async (e) => {
             e.preventDefault();
             const form = e.currentTarget;
             const formData = new FormData(form);
             try {
+              const accountStr = String(formData.get("accountNumber"));
+              const accounts = accountStr.split(",").map(s => Number(s.trim())).filter(n => !isNaN(n));
+              
+              if (accounts.length === 0) {
+                alert("Please enter at least one account number");
+                return;
+              }
+              
               const response = await fetch("/api/admin/licenses/create-real", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                   productId: formData.get("productId"),
-                  accountNumber: Number(formData.get("accountNumber")),
+                  accountNumbers: accounts,
                   days: Number(formData.get("days")) || 60,
                   note: formData.get("note")
                 })
               });
               if (!response.ok) throw new Error("Failed to create REAL license");
               const result = await response.json();
-              alert("REAL license created!");
+              alert(`REAL license created for ${accounts.length} account(s)!`);
               await loadLicenses();
               form.reset();
             } catch (err: any) {
@@ -209,7 +233,7 @@ export default function AdminLicensesPage() {
             }
           }} style={{ marginTop: 8 }}>
             <input name="productId" placeholder="productId" required style={{ padding: 8, marginRight: 8 }} />
-            <input name="accountNumber" type="number" placeholder="accountNumber" required style={{ padding: 8, marginRight: 8 }} />
+            <input name="accountNumber" placeholder="accountNumber (e.g. 123 or 123,456,789)" required style={{ padding: 8, marginRight: 8, width: "300px" }} />
             <input name="days" type="number" placeholder="days (default 60)" defaultValue="60" style={{ padding: 8, marginRight: 8, width: "150px" }} />
             <input name="note" placeholder="note (optional)" style={{ padding: 8, marginRight: 8 }} />
             <button style={{ padding: "8px 12px", backgroundColor: "#3b82f6", color: "white", border: "none" }}>Create REAL</button>
