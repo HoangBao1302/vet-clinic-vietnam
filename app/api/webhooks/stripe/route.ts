@@ -4,6 +4,7 @@ import AffiliateClick from "@/lib/models/AffiliateClick";
 import User from "@/lib/models/User";
 import Order from "@/lib/models/Order";
 
+// Force rebuild: 2024-10-29 21:15 - Fix Stripe webhook deployment issue
 export async function POST(request: NextRequest) {
   try {
     // Check if Stripe is configured
