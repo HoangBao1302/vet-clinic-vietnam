@@ -87,18 +87,31 @@ export async function POST(request: NextRequest) {
         }
       }
       
-      // Strategy 4: Try to detect MT5 from URL or other hints in PayPal data
+      // Strategy 4: Try to detect MT5 from multiple sources
       if (productId && productId.endsWith('-mt4')) {
-        // Check if there are any hints that this should be MT5
+        // Check multiple sources for MT5 keywords
         const description = body.resource?.purchase_units?.[0]?.description || '';
         const payerEmail = body.resource?.payer?.email_address || '';
         
-        // Check description for MT5 keywords
-        if (description.toLowerCase().includes('mt5') || 
-            description.toLowerCase().includes('metatrader 5') ||
-            description.toLowerCase().includes('metatrader5')) {
+        // IMPORTANT: Also check custom_id which contains the actual product name from checkout
+        const customIdLower = customId.toLowerCase();
+        
+        // Check all possible sources for MT5 keywords
+        const isMT5 = 
+          description.toLowerCase().includes('mt5') || 
+          description.toLowerCase().includes('metatrader 5') ||
+          description.toLowerCase().includes('metatrader5') ||
+          customIdLower.includes('mt5') ||  // Check custom_id
+          customIdLower.includes('metatrader 5') ||
+          customIdLower.includes('metatrader5');
+        
+        if (isMT5) {
           const mt5ProductId = productId.replace('-mt4', '-mt5');
-          console.log(`📋 MT5 detected in description, converting ${productId} → ${mt5ProductId}`);
+          console.log(`📋 MT5 detected, converting ${productId} → ${mt5ProductId}`, {
+            source: customIdLower.includes('mt5') ? 'custom_id' : 'description',
+            customId,
+            description
+          });
           productId = mt5ProductId;
         }
         
@@ -106,8 +119,9 @@ export async function POST(request: NextRequest) {
         console.log('🔍 Platform Detection:', {
           currentProductId: productId,
           description,
-          payerEmail,
-          note: 'If this should be MT5, it will be corrected by amount validation or require manual fix'
+          customId,
+          isMT5,
+          note: isMT5 ? 'MT5 detected and corrected' : 'MT4 assumed (no MT5 keywords found)'
         });
       }
       
