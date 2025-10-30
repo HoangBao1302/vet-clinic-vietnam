@@ -65,19 +65,20 @@ export async function POST(request: NextRequest) {
         }
       }
       
-      // Strategy 2: If amount is very small (< 1M), it's likely corrupted
-      // Default to ea-pro-source-mt4 (most common product)
+      // Strategy 2: If amount is very small (< 1M), it's corrupted
+      // CANNOT auto-detect - return error for manual intervention
       if (!found && actualPrice < 1000000) {
-        console.warn(`⚠️ Amount too small (${actualPrice}đ), defaulting to ea-pro-source-mt4`);
-        detectedProductId = 'ea-pro-source-mt4';
-      }
-      
-      // Strategy 3: Check customer email for hints
-      if (!found && actualPrice < 1000000) {
-        const email = order.customerEmail?.toLowerCase() || '';
-        // Most orders are Pro+Source, so default to that
-        detectedProductId = 'ea-pro-source-mt4';
-        console.log(`📧 Using default product for ${email}: ${detectedProductId}`);
+        console.error(`❌ Cannot detect product from corrupted amount: ${actualPrice}đ`);
+        return NextResponse.json(
+          { 
+            error: `Cannot detect product from amount ${actualPrice.toLocaleString('vi-VN')}đ. Please check email confirmation and fix manually in MongoDB.`,
+            orderId: order.orderId,
+            customerEmail: order.customerEmail,
+            actualAmount: actualPrice,
+            suggestion: 'Check email to determine correct product'
+          },
+          { status: 400 }
+        );
       }
     }
     
