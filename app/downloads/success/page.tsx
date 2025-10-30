@@ -58,61 +58,9 @@ function SuccessContent() {
           }
         }
         
-        const customerEmail = searchParams.get("email") || userEmail || "customer@example.com";
-        const customerName = searchParams.get("name") || userName || "Customer";
-        const customerPhone = searchParams.get("phone") || "0900000000";
-        
-        // Save order to database
-        try {
-          const saveResponse = await fetch("/api/save-order", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              orderId: orderId,
-              productId: "ea-full", // Default product ID
-              productName: "EA ThebenchmarkTrader Full Version",
-              amount: 7900000, // Default amount
-              customerInfo: {
-                email: customerEmail,
-                name: customerName,
-                phone: customerPhone
-              },
-              paymentMethod: "paypal",
-            }),
-          });
-          
-          if (saveResponse.ok) {
-            console.log("Order saved successfully");
-            
-            // Send email notification
-            try {
-              const emailResponse = await fetch("/api/send-order-email", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                  orderId: orderId,
-                  customerEmail: customerEmail,
-                  customerName: customerName,
-                  productName: "EA ThebenchmarkTrader Full Version",
-                  amount: 7900000,
-                  paymentMethod: "paypal"
-                }),
-              });
-              
-              if (emailResponse.ok) {
-                console.log("Email sent successfully");
-              }
-            } catch (emailError) {
-              console.error("Error sending email:", emailError);
-            }
-          }
-        } catch (saveError) {
-          console.error("Error saving order:", saveError);
-        }
+        // NOTE: Order saving and email sending are now handled by PayPal webhook
+        // No need to manually save order here - webhook already did it
+        console.log("PayPal order will be processed by webhook automatically")
         
         setOrderInfo({
           orderId: orderId,
