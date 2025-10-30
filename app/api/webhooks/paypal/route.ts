@@ -578,7 +578,45 @@ export async function POST(request: NextRequest) {
                   fallbackUsed: !affiliateCode || affiliateCode === ''
                 });
               } else {
-                console.warn(`⚠️ No unconverted click found for PayPal affiliate code: ${finalAffiliateCode}`);
+                // CRITICAL FIX: No click record found - create virtual click for direct purchase
+                // This handles cases where user bookmarks affiliate link or pastes it directly
+                console.warn(`⚠️ No unconverted click found for affiliate code: ${finalAffiliateCode}`);
+                console.log('📌 Creating virtual click for direct purchase with affiliate code...');
+                
+                try {
+                  const virtualClick = await AffiliateClick.create({
+                    affiliateCode: finalAffiliateCode,
+                    orderId: orderId,
+                    customerEmail: finalCustomerEmail,
+                    customerName: finalCustomerName,
+                    productId: productId,
+                    productName: productNames[productId] || productId,
+                    commissionAmount: commissionAmount,
+                    status: 'converted',
+                    clickedAt: new Date(),
+                    convertedAt: new Date(),
+                    ipAddress: 'direct-purchase',
+                    userAgent: 'direct-purchase-with-code',
+                    referrer: 'direct'
+                  });
+                  
+                  // Still credit affiliate for direct purchase
+                  affiliate.totalCommissionEarned = (affiliate.totalCommissionEarned || 0) + commissionAmount;
+                  await affiliate.save();
+                  
+                  console.log('✅ Virtual click created and commission credited:', {
+                    affiliateCode: finalAffiliateCode,
+                    clickId: virtualClick._id,
+                    orderId: orderId,
+                    commission: commissionAmount,
+                    totalEarned: affiliate.totalCommissionEarned,
+                    productId,
+                    productName: productNames[productId],
+                    type: 'virtual-click-direct-purchase'
+                  });
+                } catch (virtualClickError) {
+                  console.error('❌ Failed to create virtual click:', virtualClickError);
+                }
               }
             } else {
               console.warn(`⚠️ Affiliate not found or not approved: ${finalAffiliateCode}`);
