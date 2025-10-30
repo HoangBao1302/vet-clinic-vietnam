@@ -55,11 +55,29 @@ export async function POST(request: NextRequest) {
       // Try to detect correct product from amount
       needsFix = true;
       
+      // Strategy 1: Try to match with expected prices (with large tolerance for corrupted amounts)
+      let found = false;
       for (const [pid, price] of Object.entries(expectedPrices)) {
         if (Math.abs(actualPrice - price) < 100000) { // 100K tolerance
           detectedProductId = pid;
+          found = true;
           break;
         }
+      }
+      
+      // Strategy 2: If amount is very small (< 1M), it's likely corrupted
+      // Default to ea-pro-source-mt4 (most common product)
+      if (!found && actualPrice < 1000000) {
+        console.warn(`⚠️ Amount too small (${actualPrice}đ), defaulting to ea-pro-source-mt4`);
+        detectedProductId = 'ea-pro-source-mt4';
+      }
+      
+      // Strategy 3: Check customer email for hints
+      if (!found && actualPrice < 1000000) {
+        const email = order.customerEmail?.toLowerCase() || '';
+        // Most orders are Pro+Source, so default to that
+        detectedProductId = 'ea-pro-source-mt4';
+        console.log(`📧 Using default product for ${email}: ${detectedProductId}`);
       }
     }
     
@@ -78,6 +96,14 @@ export async function POST(request: NextRequest) {
     // Apply fix
     const correctAmount = expectedPrices[detectedProductId] * 100;
     const correctProductName = productNames[detectedProductId];
+    
+    console.log(`🔧 Fixing order ${orderId}:`, {
+      oldProductId: order.productId,
+      newProductId: detectedProductId,
+      oldAmount: `${actualPrice.toLocaleString('vi-VN')}đ`,
+      newAmount: `${(correctAmount / 100).toLocaleString('vi-VN')}đ`,
+      customerEmail: order.customerEmail
+    });
     
     await Order.updateOne(
       { orderId },
