@@ -395,18 +395,12 @@ export async function POST(request: NextRequest) {
               });
               wasOrderUpdated = true;
               
-              // CRITICAL: Only send email for PAYMENT.CAPTURE.COMPLETED event
-              // This ensures customer only receives ONE email with CORRECT data
-              if (eventType === "PAYMENT.CAPTURE.COMPLETED") {
-                shouldSendEmail = true;
-                console.log("📧 Sending corrected email (PAYMENT.CAPTURE.COMPLETED with accurate data)");
-                
-                if (existingOrder.emailSent) {
-                  console.warn("⚠️ Previous email may have had incorrect data - sending corrected version");
-                }
-              } else {
-                shouldSendEmail = false;
-                console.log("⏭️ Skipping email for CHECKOUT.ORDER.APPROVED (will send on PAYMENT.CAPTURE.COMPLETED)");
+              // Send corrected email (data was updated with correct values)
+              shouldSendEmail = true;
+              console.log("📧 Sending corrected email (order data was updated with accurate values)");
+              
+              if (existingOrder.emailSent) {
+                console.warn("⚠️ Previous email may have had incorrect data - sending corrected version");
               }
             } else {
               console.log("✅ Order data is already correct, no update needed");
@@ -427,8 +421,7 @@ export async function POST(request: NextRequest) {
               }
             );
             
-            // CRITICAL: Only send email for PAYMENT.CAPTURE.COMPLETED event
-            // CHECKOUT.ORDER.APPROVED creates order but doesn't send email
+            // Check if order was created successfully
             if (result) {
               console.log("✅ PayPal order saved to MongoDB successfully:", {
                 orderId: orderData.orderId,
@@ -436,20 +429,18 @@ export async function POST(request: NextRequest) {
                 customerEmail: orderData.customerEmail,
                 customerName: orderData.customerName,
                 amount: orderData.amount,
-                eventType: eventType
+                eventType: eventType,
+                wasNew: !result.emailSent
               });
               wasOrderCreated = true;
               
-              // Only send email if this is PAYMENT.CAPTURE.COMPLETED event
-              if (eventType === "PAYMENT.CAPTURE.COMPLETED" && !result.emailSent) {
+              // Send email if this is first time and email not sent yet
+              if (!result.emailSent) {
                 shouldSendEmail = true;
-                console.log("📧 Will send email (PAYMENT.CAPTURE.COMPLETED event with correct data)");
-              } else if (eventType === "CHECKOUT.ORDER.APPROVED") {
-                shouldSendEmail = false;
-                console.log("⏭️ Skipping email for CHECKOUT.ORDER.APPROVED (waiting for PAYMENT.CAPTURE.COMPLETED)");
+                console.log("📧 Will send email (new order created)");
               } else {
                 shouldSendEmail = false;
-                console.log("✅ Email already sent, no duplicate");
+                console.log("✅ Email already sent for this order, no duplicate");
               }
             } else {
               console.log("ℹ️ Order was created by parallel webhook event, no action needed");
