@@ -559,7 +559,7 @@ export async function POST(request: NextRequest) {
               to: emailRecipient,
               orderId,
               productId,
-              reason: !existingOrder ? 'New order' : 'Order updated with correct data'
+              reason: wasOrderCreated ? 'New order' : 'Order updated with correct data'
             });
             
             // Get product name for email with MT4/MT5 distinction
