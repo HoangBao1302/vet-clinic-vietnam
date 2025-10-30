@@ -338,6 +338,52 @@ export async function POST(request: NextRequest) {
           const existingOrder = await Order.findOne({ orderId: orderId });
           if (existingOrder) {
             console.log("ℹ️ Order already exists in MongoDB:", orderId);
+            
+            // CRITICAL FIX: If existing order has wrong data, UPDATE it!
+            const needsUpdate = 
+              existingOrder.productId !== orderData.productId ||
+              existingOrder.amount !== orderData.amount ||
+              existingOrder.customerEmail !== orderData.customerEmail;
+            
+            if (needsUpdate) {
+              console.warn("⚠️ Existing order has incorrect data, updating...", {
+                orderId,
+                old: {
+                  productId: existingOrder.productId,
+                  amount: existingOrder.amount,
+                  customerEmail: existingOrder.customerEmail
+                },
+                new: {
+                  productId: orderData.productId,
+                  amount: orderData.amount,
+                  customerEmail: orderData.customerEmail
+                }
+              });
+              
+              await Order.updateOne(
+                { orderId: orderId },
+                {
+                  $set: {
+                    productId: orderData.productId,
+                    productName: orderData.productName,
+                    amount: orderData.amount,
+                    customerEmail: orderData.customerEmail,
+                    customerName: orderData.customerName,
+                    customerPhone: orderData.customerPhone,
+                    status: orderData.status,
+                    paidAt: orderData.paidAt
+                  }
+                }
+              );
+              
+              console.log("✅ Order updated successfully in MongoDB:", {
+                orderId: orderData.orderId,
+                productId: orderData.productId,
+                amount: orderData.amount
+              });
+            } else {
+              console.log("✅ Order data is already correct, no update needed");
+            }
           } else {
             const order = new Order(orderData);
             await order.save();
