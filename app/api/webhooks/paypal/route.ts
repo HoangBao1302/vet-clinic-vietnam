@@ -42,41 +42,71 @@ export async function POST(request: NextRequest) {
       let realCustomerName = '';
       let realCustomerPhone = '';
       
-      // Strategy 1: Get from custom_id (primary method)
+      // Strategy 1: Get from custom_id (PRIMARY and MOST RELIABLE method)
       // Format: productId|affiliateCode|customerEmail|customerName|customerPhone
       const customId = body.resource?.purchase_units?.[0]?.custom_id || 
                        body.resource?.custom_id || '';
+      
+      console.log('🔍 RAW PayPal Data:', {
+        customId,
+        referenceId: body.resource?.purchase_units?.[0]?.reference_id,
+        description: body.resource?.purchase_units?.[0]?.description,
+        amountUSD: `$${amountUSD.toFixed(2)}`,
+        amountVND: `${amountVND.toLocaleString('vi-VN')}đ`
+      });
+      
       if (customId) {
         const parts = customId.split('|');
-        productId = parts[0] || '';
+        const extractedProductId = parts[0] || '';
         affiliateCode = parts[1] || '';
         realCustomerEmail = parts[2] || '';
         realCustomerName = parts[3] || '';
         realCustomerPhone = parts[4] || '';
         
-        console.log('📋 Customer info extracted from custom_id:', {
-          productId,
-          affiliateCode,
-          realCustomerEmail,
-          realCustomerName,
-          realCustomerPhone
-        });
+        // CRITICAL: Validate productId from custom_id
+        const validProductIds = [
+          'ea-pro-source-mt4', 'ea-pro-source-mt5',
+          'ea-full-mt4', 'ea-full-mt5',
+          'indicator-pro-mt4', 'indicator-pro-mt5',
+          'ea-full', 'ea-pro-source', 'indicator-pro', // Legacy
+          'course', 'social-copy'
+        ];
+        
+        if (validProductIds.includes(extractedProductId)) {
+          productId = extractedProductId;
+          console.log('✅ VALID ProductId from custom_id:', {
+            productId,
+            affiliateCode,
+            realCustomerEmail,
+            realCustomerName,
+            realCustomerPhone,
+            source: 'custom_id (TRUSTED)'
+          });
+        } else {
+          console.error('❌ INVALID ProductId in custom_id:', {
+            extractedProductId,
+            customId,
+            validProductIds
+          });
+        }
+      } else {
+        console.warn('⚠️ No custom_id found in PayPal webhook!');
       }
       
-      // Strategy 2: Fallback to reference_id
+      // Strategy 2: Fallback to reference_id (ONLY if custom_id failed)
       if (!productId) {
         const referenceId = body.resource?.purchase_units?.[0]?.reference_id || '';
         if (referenceId) {
           productId = referenceId;
-          console.log(`📋 Using reference_id as productId: ${productId}`);
+          console.log(`📋 Fallback: Using reference_id as productId: ${productId}`);
         }
       }
       
-      // Strategy 3: Detect from amount (last resort)
+      // Strategy 3: Detect from amount (LAST RESORT - least reliable)
       // Note: This cannot distinguish between MT4/MT5 as they have same price
       // Will be corrected by Strategy 4 if needed
       if (!productId || productId === 'unknown') {
-        console.warn('⚠️ ProductId not found in custom_id or reference_id, trying amount detection...');
+        console.warn('⚠️ ProductId not found in custom_id or reference_id, trying amount detection (UNRELIABLE)...');
         
         // Amount-based detection with tolerance
         const tolerance = 100000; // 100K VND tolerance
@@ -144,6 +174,69 @@ export async function POST(request: NextRequest) {
         amountCents: amount,
         detectionMethod: customId ? 'custom_id' : body.resource?.purchase_units?.[0]?.reference_id ? 'reference_id' : 'amount'
       });
+      
+      // CRITICAL PROTECTION: If productId is still invalid, DO NOT SAVE TO DATABASE
+      if (!productId || productId === 'unknown') {
+        console.error('❌ CRITICAL: Cannot determine productId - REFUSING to save to database!', {
+          orderId,
+          customId,
+          referenceId: body.resource?.purchase_units?.[0]?.reference_id,
+          amountVND: `${amountVND.toLocaleString('vi-VN')}đ`,
+          action: 'Skipping database save - manual intervention required'
+        });
+        
+        // Still send email notification but warn about missing productId
+        if (realCustomerEmail || payerEmail) {
+          const emailRecipient = realCustomerEmail || payerEmail;
+          try {
+            const { sendEmail } = await import("@/lib/email");
+            await sendEmail({
+              to: emailRecipient,
+              subject: "⚠️ Thanh toán thành công - Cần xác nhận thông tin",
+              html: `
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                  <div style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; padding: 40px 20px; text-align: center;">
+                    <h1 style="margin: 0; font-size: 32px;">⚠️ Thanh toán thành công</h1>
+                  </div>
+                  
+                  <div style="padding: 40px 20px; background: #f8f9fa;">
+                    <h2 style="color: #333;">Cảm ơn bạn đã thanh toán!</h2>
+                    
+                    <div style="background: #fef3c7; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #f59e0b;">
+                      <p style="color: #92400e; margin: 0;">
+                        <strong>⚠️ Lưu ý:</strong> Hệ thống đang xử lý đơn hàng của bạn. 
+                        Vui lòng liên hệ support để được hỗ trợ download sản phẩm.
+                      </p>
+                    </div>
+                    
+                    <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                      <p><strong>Mã đơn hàng:</strong> ${orderId}</p>
+                      <p><strong>Phương thức:</strong> PayPal</p>
+                      ${amountVND > 0 ? `<p><strong>Số tiền:</strong> ${amountVND.toLocaleString('vi-VN')}₫</p>` : ''}
+                    </div>
+                    
+                    <h3>Liên hệ hỗ trợ:</h3>
+                    <ul style="list-style: none; padding: 0;">
+                      <li>📧 Email: support@thebenchmarktrader.com</li>
+                      <li>📱 Telegram Group: t.me/+0ETUdIuYUzdhZWQ1</li>
+                      <li>📞 Hotline: +84 765 452 515</li>
+                    </ul>
+                  </div>
+                </div>
+              `,
+            });
+            console.log("⚠️ Warning email sent to:", emailRecipient);
+          } catch (emailError) {
+            console.error("❌ Error sending warning email:", emailError);
+          }
+        }
+        
+        return NextResponse.json({ 
+          success: false, 
+          error: "Cannot determine product - manual intervention required",
+          orderId 
+        });
+      }
       
       // VALIDATION: Verify amount matches expected product price
       const expectedPrices: Record<string, number> = {
