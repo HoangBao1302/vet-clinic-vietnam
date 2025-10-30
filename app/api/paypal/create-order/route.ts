@@ -35,6 +35,16 @@ export async function POST(request: NextRequest) {
     }
 
     // Create PayPal order
+    // Store customer info in custom_id for webhook retrieval
+    // Format: productId|affiliateCode|customerEmail|customerName|customerPhone
+    const customIdData = [
+      productId,
+      affiliateCode || '',
+      customerInfo.email,
+      customerInfo.name,
+      customerInfo.phone || ''
+    ].join('|');
+    
     const orderData: any = {
       intent: "CAPTURE",
       purchase_units: [
@@ -45,7 +55,7 @@ export async function POST(request: NextRequest) {
             value: (amount / 24000).toFixed(2), // Convert VND to USD (1 USD ≈ 24,000 VND)
           },
           description: productName,
-          custom_id: `${productId}|${affiliateCode || ''}`,
+          custom_id: customIdData,
         },
       ],
       application_context: {

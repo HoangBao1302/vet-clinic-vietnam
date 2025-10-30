@@ -40,11 +40,13 @@ const OrderSchema: Schema = new Schema({
   },
   customerName: {
     type: String,
-    required: true
+    required: false,  // Optional - may not always be available
+    default: 'Customer'
   },
   customerPhone: {
     type: String,
-    required: false  // Optional - PayPal may not provide phone
+    required: false,  // Optional - PayPal may not provide phone
+    default: ''
   },
   amount: {
     type: Number,

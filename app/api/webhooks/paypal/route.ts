@@ -26,15 +26,32 @@ export async function POST(request: NextRequest) {
       const amountVND = amountUSD * 24000; // Convert USD to VND
       const amount = Math.round(amountVND * 100); // Convert to cents for storage
       
-      // IMPROVED: Multiple strategies to get productId
+      // IMPROVED: Multiple strategies to get productId and customer info
       let productId = '';
       let affiliateCode = '';
+      let realCustomerEmail = '';
+      let realCustomerName = '';
+      let realCustomerPhone = '';
       
       // Strategy 1: Get from custom_id (primary method)
+      // Format: productId|affiliateCode|customerEmail|customerName|customerPhone
       const customId = body.resource?.purchase_units?.[0]?.custom_id || 
                        body.resource?.custom_id || '';
       if (customId) {
-        [productId, affiliateCode] = customId.split('|');
+        const parts = customId.split('|');
+        productId = parts[0] || '';
+        affiliateCode = parts[1] || '';
+        realCustomerEmail = parts[2] || '';
+        realCustomerName = parts[3] || '';
+        realCustomerPhone = parts[4] || '';
+        
+        console.log('📋 Customer info extracted from custom_id:', {
+          productId,
+          affiliateCode,
+          realCustomerEmail,
+          realCustomerName,
+          realCustomerPhone
+        });
       }
       
       // Strategy 2: Fallback to reference_id
@@ -150,14 +167,26 @@ export async function POST(request: NextRequest) {
         });
         
         // Create order record
+        // Use real customer info from custom_id if available, otherwise fallback to PayPal payer info
+        const finalCustomerEmail = realCustomerEmail || payerEmail;
+        const finalCustomerName = realCustomerName || `${payerName?.given_name || ''} ${payerName?.surname || ''}`.trim();
+        const finalCustomerPhone = realCustomerPhone || '';
+        
+        console.log('✅ Using customer info:', {
+          email: finalCustomerEmail,
+          name: finalCustomerName,
+          phone: finalCustomerPhone,
+          source: realCustomerEmail ? 'custom_id (real customer)' : 'PayPal payer (sandbox)'
+        });
+        
         const orderData = {
           orderId: orderId,
           productId: productId || 'unknown',
           productName: 'Unknown Product', // Will be updated below
           status: "paid",
-          customerEmail: payerEmail,
-          customerName: `${payerName?.given_name || ''} ${payerName?.surname || ''}`.trim(),
-          customerPhone: '', // PayPal doesn't provide phone
+          customerEmail: finalCustomerEmail,
+          customerName: finalCustomerName,
+          customerPhone: finalCustomerPhone,
           amount: amount,
           paymentMethod: "paypal",
           createdAt: new Date(),
@@ -186,12 +215,34 @@ export async function POST(request: NextRequest) {
         // Save order to database
         try {
           await connectDB();
-          const order = new Order(orderData);
-          await order.save();
-          console.log("✅ PayPal order saved to MongoDB:", orderData);
-        } catch (dbError) {
-          console.error("❌ Failed to save PayPal order to MongoDB:", dbError);
-          // Continue processing even if DB save fails
+          
+          // Check if order already exists to avoid duplicates
+          const existingOrder = await Order.findOne({ orderId: orderId });
+          if (existingOrder) {
+            console.log("ℹ️ Order already exists in MongoDB:", orderId);
+          } else {
+            const order = new Order(orderData);
+            await order.save();
+            console.log("✅ PayPal order saved to MongoDB successfully:", {
+              orderId: orderData.orderId,
+              productId: orderData.productId,
+              customerEmail: orderData.customerEmail,
+              customerName: orderData.customerName,
+              amount: orderData.amount
+            });
+          }
+        } catch (dbError: any) {
+          console.error("❌ Failed to save PayPal order to MongoDB:", {
+            error: dbError.message,
+            stack: dbError.stack,
+            orderData: {
+              orderId: orderData.orderId,
+              productId: orderData.productId,
+              customerEmail: orderData.customerEmail,
+              customerName: orderData.customerName
+            }
+          });
+          // Continue processing even if DB save fails - email will still be sent
         }
         
         // Handle affiliate conversion with URL parameter fallback
@@ -202,8 +253,9 @@ export async function POST(request: NextRequest) {
           console.log('🔍 No affiliateCode in PayPal custom_id, trying URL parameter fallback...');
           
           // Find recent clicks for this customer email (within last 30 days)
+          // Use real customer email if available
           const recentClicks = await AffiliateClick.find({
-            customerEmail: payerEmail,
+            customerEmail: finalCustomerEmail,
             clickedAt: { $gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) }, // Last 30 days
             status: 'clicked' // Only unconverted clicks
           }).sort({ clickedAt: -1 }).limit(5);
@@ -218,7 +270,7 @@ export async function POST(request: NextRequest) {
         console.log('🔍 PayPal Webhook - Processing affiliate conversion:', {
           orderId,
           affiliateCode: finalAffiliateCode,
-          customerEmail: payerEmail,
+          customerEmail: finalCustomerEmail,
           productId,
           amount,
           fallbackUsed: !affiliateCode || affiliateCode === ''
@@ -287,8 +339,8 @@ export async function POST(request: NextRequest) {
                     commissionAmount,
                     productId: productId,
                     productName: productNames[productId] || productId,
-                    customerEmail: payerEmail,
-                    customerName: `${payerName?.given_name || ''} ${payerName?.surname || ''}`.trim(),
+                    customerEmail: finalCustomerEmail,
+                    customerName: finalCustomerName,
                     status: 'converted',
                   },
                 },
@@ -322,7 +374,10 @@ export async function POST(request: NextRequest) {
         }
         
         // Send email notification
-        if (payerEmail) {
+        // Use real customer email if available
+        const emailRecipient = finalCustomerEmail;
+        
+        if (emailRecipient) {
           try {
             const { sendEmail } = await import("@/lib/email");
             
@@ -345,8 +400,10 @@ export async function POST(request: NextRequest) {
             };
             const productName = productNames[productId] || 'EA ThebenchmarkTrader';
             
+            console.log('📧 Sending email to:', emailRecipient, '(real customer email)');
+            
             await sendEmail({
-              to: payerEmail,
+              to: emailRecipient,
               subject: "✅ Thanh toán thành công - Download EA ThebenchmarkTrader",
               html: `
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -407,10 +464,12 @@ export async function POST(request: NextRequest) {
               `,
             });
             
-            console.log("Email sent successfully to:", payerEmail);
+            console.log("✅ Email sent successfully to:", emailRecipient);
           } catch (emailError) {
-            console.error("Error sending email:", emailError);
+            console.error("❌ Error sending email:", emailError);
           }
+        } else {
+          console.warn("⚠️ No email recipient found - skipping email notification");
         }
         
         return NextResponse.json({ success: true, message: "Order processed" });
