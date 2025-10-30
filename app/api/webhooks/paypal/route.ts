@@ -333,6 +333,7 @@ export async function POST(request: NextRequest) {
         // Track if order was created or updated (for email notification)
         let wasOrderCreated = false;
         let wasOrderUpdated = false;
+        let shouldSendEmail = false;
         
         // Save order to database
         try {
@@ -355,7 +356,8 @@ export async function POST(request: NextRequest) {
                 old: {
                   productId: existingOrder.productId,
                   amount: existingOrder.amount,
-                  customerEmail: existingOrder.customerEmail
+                  customerEmail: existingOrder.customerEmail,
+                  emailSent: existingOrder.emailSent
                 },
                 new: {
                   productId: orderData.productId,
@@ -386,8 +388,17 @@ export async function POST(request: NextRequest) {
                 amount: orderData.amount
               });
               wasOrderUpdated = true;
+              
+              // CRITICAL: Only send email if not sent before
+              if (!existingOrder.emailSent) {
+                shouldSendEmail = true;
+                console.log("📧 Email not sent yet, will send notification");
+              } else {
+                console.log("✅ Email already sent, skipping duplicate notification");
+              }
             } else {
               console.log("✅ Order data is already correct, no update needed");
+              shouldSendEmail = false; // Data correct, no email needed
             }
           } else {
             const order = new Order(orderData);
@@ -400,6 +411,7 @@ export async function POST(request: NextRequest) {
               amount: orderData.amount
             });
             wasOrderCreated = true;
+            shouldSendEmail = true; // New order, send email
           }
         } catch (dbError: any) {
           console.error("❌ Failed to save PayPal order to MongoDB:", {
@@ -547,10 +559,8 @@ export async function POST(request: NextRequest) {
         // Use real customer email if available
         const emailRecipient = finalCustomerEmail;
         
-        // IMPORTANT: Only send email if order was newly created or updated
-        // Skip if order already exists with correct data (avoid duplicate emails)
-        const shouldSendEmail = wasOrderCreated || wasOrderUpdated;
-        
+        // CRITICAL: Use shouldSendEmail flag set during DB operation
+        // This prevents duplicate emails from multiple webhook events
         if (emailRecipient && shouldSendEmail) {
           try {
             const { sendEmail } = await import("@/lib/email");
@@ -646,11 +656,23 @@ export async function POST(request: NextRequest) {
             });
             
             console.log("✅ Email sent successfully to:", emailRecipient);
+            
+            // CRITICAL: Mark email as sent to prevent duplicates
+            try {
+              await connectDB();
+              await Order.updateOne(
+                { orderId: orderId },
+                { $set: { emailSent: true } }
+              );
+              console.log("✅ Order marked as emailSent = true");
+            } catch (updateError) {
+              console.error("❌ Failed to update emailSent flag:", updateError);
+            }
           } catch (emailError) {
             console.error("❌ Error sending email:", emailError);
           }
         } else {
-          console.warn("⚠️ No email recipient found - skipping email notification");
+          console.warn("⚠️ No email recipient found or email already sent - skipping email notification");
         }
         
         return NextResponse.json({ success: true, message: "Order processed" });

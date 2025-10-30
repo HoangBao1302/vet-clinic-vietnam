@@ -12,6 +12,7 @@ export interface IOrder extends Document {
   createdAt: Date;
   paidAt: Date;
   paymentMethod: string;
+  emailSent: boolean;
 }
 
 const OrderSchema: Schema = new Schema({
@@ -64,6 +65,11 @@ const OrderSchema: Schema = new Schema({
     type: String,
     required: true,
     default: 'paypal'
+  },
+  emailSent: {
+    type: Boolean,
+    required: false,
+    default: false
   }
 });
 
