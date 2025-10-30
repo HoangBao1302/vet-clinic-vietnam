@@ -69,39 +69,45 @@ async function fixOrder() {
     console.log(`  Phone: ${order.customerPhone || 'N/A'}`);
     console.log('');
 
-    // IMPORTANT: Based on the email confirmation, determine what product was purchased
-    // You need to tell me:
-    // 1. What product did hoangkim buy? (ea-full-mt4, ea-pro-source-mt4, etc.)
-    // 2. What was the price?
-    
-    // Example fix (ADJUST BASED ON ACTUAL PURCHASE):
-    const correctProductId = 'ea-pro-source-mt4'; // CHANGE THIS!
+    // ✅ CONFIRMED from email: EA ThebenchmarkTrader Pro + Source Code (MT4)
+    // Price: 14.900.000₫
+    const correctProductId = 'ea-pro-source-mt4';
     const correctAmount = 14900000 * 100; // 14.9M VND in cents
     const correctProductName = 'EA ThebenchmarkTrader Pro + Source Code (MT4)';
 
-    console.log('🔧 Proposed fix:');
+    console.log('🔧 Applying fix:');
     console.log(`  Product ID: ${order.productId} → ${correctProductId}`);
     console.log(`  Product Name: ${order.productName} → ${correctProductName}`);
     console.log(`  Amount: ${order.amount} cents → ${correctAmount} cents`);
     console.log(`  Amount VND: ${(order.amount / 100).toLocaleString('vi-VN')}đ → ${(correctAmount / 100).toLocaleString('vi-VN')}đ`);
     console.log('');
 
-    // Uncomment to apply fix:
-    /*
-    await Order.updateOne(
-      { orderId },
-      {
-        $set: {
-          productId: correctProductId,
-          productName: correctProductName,
-          amount: correctAmount
+    // Check if fix is needed
+    if (order.productId === correctProductId && 
+        order.amount === correctAmount && 
+        order.productName === correctProductName) {
+      console.log('✅ Order is already correct - no fix needed!');
+    } else {
+      // Apply fix
+      await Order.updateOne(
+        { orderId },
+        {
+          $set: {
+            productId: correctProductId,
+            productName: correctProductName,
+            amount: correctAmount
+          }
         }
-      }
-    );
-    console.log('✅ Order updated successfully!');
-    */
-    
-    console.log('⚠️ Fix NOT applied - uncomment the update code and adjust values first!');
+      );
+      console.log('✅ Order updated successfully!');
+      
+      // Verify update
+      const updatedOrder = await Order.findOne({ orderId });
+      console.log('\n📋 Updated order details:');
+      console.log(`  Product ID: ${updatedOrder.productId}`);
+      console.log(`  Product Name: ${updatedOrder.productName}`);
+      console.log(`  Amount: ${updatedOrder.amount} cents (${(updatedOrder.amount / 100).toLocaleString('vi-VN')}đ)`);
+    }
 
   } catch (error) {
     console.error('❌ Error:', error);
