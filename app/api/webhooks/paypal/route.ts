@@ -377,7 +377,8 @@ export async function POST(request: NextRequest) {
                     customerName: orderData.customerName,
                     customerPhone: orderData.customerPhone,
                     status: orderData.status,
-                    paidAt: orderData.paidAt
+                    paidAt: orderData.paidAt,
+                    emailSent: false // CRITICAL: Reset emailSent when data is corrected
                   }
                 }
               );
@@ -389,12 +390,13 @@ export async function POST(request: NextRequest) {
               });
               wasOrderUpdated = true;
               
-              // CRITICAL: Only send email if not sent before
-              if (!existingOrder.emailSent) {
-                shouldSendEmail = true;
-                console.log("📧 Email not sent yet, will send notification");
-              } else {
-                console.log("✅ Email already sent, skipping duplicate notification");
+              // CRITICAL: Always send email when updating incorrect data
+              // This ensures customer gets correct information
+              shouldSendEmail = true;
+              console.log("📧 Sending corrected email notification (data was updated)");
+              
+              if (existingOrder.emailSent) {
+                console.warn("⚠️ Previous email had incorrect data - sending corrected version");
               }
             } else {
               console.log("✅ Order data is already correct, no update needed");
