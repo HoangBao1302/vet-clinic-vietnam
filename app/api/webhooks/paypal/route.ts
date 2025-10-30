@@ -335,16 +335,17 @@ export async function POST(request: NextRequest) {
         let wasOrderUpdated = false;
         let shouldSendEmail = false;
         
-        // Save order to database
+        // Save order to database with atomic upsert to handle race conditions
         try {
           await connectDB();
           
-          // Check if order already exists to avoid duplicates
+          // First, check if order already exists
           const existingOrder = await Order.findOne({ orderId: orderId });
+          
           if (existingOrder) {
             console.log("ℹ️ Order already exists in MongoDB:", orderId);
             
-            // CRITICAL FIX: If existing order has wrong data, UPDATE it!
+            // Check if existing order has wrong data
             const needsUpdate = 
               existingOrder.productId !== orderData.productId ||
               existingOrder.amount !== orderData.amount ||
@@ -366,6 +367,7 @@ export async function POST(request: NextRequest) {
                 }
               });
               
+              // Update with corrected data and reset emailSent flag
               await Order.updateOne(
                 { orderId: orderId },
                 {
@@ -378,7 +380,7 @@ export async function POST(request: NextRequest) {
                     customerPhone: orderData.customerPhone,
                     status: orderData.status,
                     paidAt: orderData.paidAt,
-                    emailSent: false // CRITICAL: Reset emailSent when data is corrected
+                    emailSent: false // Reset to send corrected email
                   }
                 }
               );
@@ -389,31 +391,45 @@ export async function POST(request: NextRequest) {
                 amount: orderData.amount
               });
               wasOrderUpdated = true;
-              
-              // CRITICAL: Always send email when updating incorrect data
-              // This ensures customer gets correct information
-              shouldSendEmail = true;
-              console.log("📧 Sending corrected email notification (data was updated)");
+              shouldSendEmail = true; // Send corrected email
               
               if (existingOrder.emailSent) {
                 console.warn("⚠️ Previous email had incorrect data - sending corrected version");
               }
             } else {
               console.log("✅ Order data is already correct, no update needed");
-              shouldSendEmail = false; // Data correct, no email needed
+              shouldSendEmail = false;
             }
           } else {
-            const order = new Order(orderData);
-            await order.save();
-            console.log("✅ PayPal order saved to MongoDB successfully:", {
-              orderId: orderData.orderId,
-              productId: orderData.productId,
-              customerEmail: orderData.customerEmail,
-              customerName: orderData.customerName,
-              amount: orderData.amount
-            });
-            wasOrderCreated = true;
-            shouldSendEmail = true; // New order, send email
+            // Use upsert to handle race conditions from multiple webhook events
+            // This prevents E11000 duplicate key errors
+            const result = await Order.findOneAndUpdate(
+              { orderId: orderId },
+              {
+                $setOnInsert: orderData // Only set these fields if creating new document
+              },
+              {
+                upsert: true, // Create if doesn't exist
+                new: true, // Return the new document
+                runValidators: true
+              }
+            );
+            
+            // Check if this was a new insert or already existed
+            if (result && !result.emailSent) {
+              console.log("✅ PayPal order saved to MongoDB successfully:", {
+                orderId: orderData.orderId,
+                productId: orderData.productId,
+                customerEmail: orderData.customerEmail,
+                customerName: orderData.customerName,
+                amount: orderData.amount
+              });
+              wasOrderCreated = true;
+              shouldSendEmail = true;
+            } else {
+              console.log("ℹ️ Order was created by parallel webhook event, no action needed");
+              shouldSendEmail = false;
+            }
           }
         } catch (dbError: any) {
           console.error("❌ Failed to save PayPal order to MongoDB:", {
