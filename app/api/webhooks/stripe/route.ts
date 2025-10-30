@@ -312,11 +312,65 @@ export async function POST(request: NextRequest) {
                 commission: commissionAmount,
                 totalEarned: affiliate.totalCommissionEarned,
                 productId: session.metadata?.productId,
-                productName: session.metadata?.productName
+                productName: session.metadata?.productName,
+                correlationMethod
               });
             } else {
+              // CRITICAL FIX: No click record found - create virtual click for direct purchase
+              // This handles cases where user bookmarks affiliate link or pastes it directly
               console.warn(`⚠️ No unconverted click found for affiliate code: ${affiliateCode}`);
-              console.log('🔍 Available clicks for this affiliate:', await AffiliateClick.find({ affiliateCode }).select('status clickedAt'));
+              console.log('📌 Creating virtual click for direct purchase with affiliate code...');
+              
+              try {
+                // Get product names for virtual click
+                const productNames: Record<string, string> = {
+                  'indicator-pro-mt4': 'Multi-Indicator Pro Pack (MT4)',
+                  'ea-full-mt4': 'EA ThebenchmarkTrader Full Version (MT4)',
+                  'ea-pro-source-mt4': 'EA ThebenchmarkTrader Pro + Source Code (MT4)',
+                  'indicator-pro-mt5': 'Multi-Indicator Pro Pack (MT5)',
+                  'ea-full-mt5': 'EA ThebenchmarkTrader Full Version (MT5)',
+                  'ea-pro-source-mt5': 'EA ThebenchmarkTrader Pro + Source Code (MT5)',
+                  'ea-full': 'EA ThebenchmarkTrader Full Version',
+                  'ea-pro-source': 'EA ThebenchmarkTrader Pro + Source Code',
+                  'indicator-pro': 'Multi-Indicator Pro Pack',
+                  'course': 'Khóa học Forex Trading',
+                  'social-copy': 'Copy Social Trading',
+                };
+                
+                const virtualClick = await AffiliateClick.create({
+                  affiliateCode: affiliateCode,
+                  orderId: session.id,
+                  customerEmail: session.customer_email,
+                  customerName: session.metadata?.customerName || 'Unknown',
+                  productId: session.metadata?.productId,
+                  productName: productNames[session.metadata?.productId as string] || session.metadata?.productName || 'Unknown Product',
+                  commissionAmount: commissionAmount,
+                  status: 'converted',
+                  clickedAt: new Date(),
+                  convertedAt: new Date(),
+                  ipAddress: 'direct-purchase-stripe',
+                  userAgent: 'direct-purchase-with-code',
+                  referrer: 'direct'
+                });
+                
+                // Still credit affiliate for direct purchase
+                affiliate.totalCommissionEarned = (affiliate.totalCommissionEarned || 0) + commissionAmount;
+                await affiliate.save();
+                
+                console.log('✅ Virtual click created and commission credited:', {
+                  affiliateCode: affiliateCode,
+                  clickId: virtualClick._id,
+                  orderId: session.id,
+                  commission: commissionAmount,
+                  totalEarned: affiliate.totalCommissionEarned,
+                  productId: session.metadata?.productId,
+                  productName: session.metadata?.productName,
+                  type: 'virtual-click-direct-purchase',
+                  correlationMethod
+                });
+              } catch (virtualClickError) {
+                console.error('❌ Failed to create virtual click for Stripe:', virtualClickError);
+              }
             }
           } else {
             console.warn(`⚠️ Affiliate not found or not approved: ${affiliateCode}`);
