@@ -83,6 +83,24 @@ export default function OrdersDashboard() {
     }
   };
 
+  const fixAllLegacy = async () => {
+    if (!confirm('Bạn có chắc muốn fix TẤT CẢ orders legacy (ea-full, ea-pro-source → ea-full-mt4, ea-pro-source-mt4)?')) return;
+    
+    try {
+      const response = await fetch('/api/admin/orders/fix-all-legacy', {
+        method: 'POST',
+      });
+      
+      if (!response.ok) throw new Error('Failed to fix legacy orders');
+      
+      const result = await response.json();
+      alert(`✅ Đã fix ${result.fixed} orders thành công!`);
+      fetchStats(); // Refresh data
+    } catch (err: any) {
+      alert(`❌ Lỗi: ${err.message}`);
+    }
+  };
+
   if (!authenticated) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 flex items-center justify-center p-4">
@@ -170,12 +188,20 @@ export default function OrdersDashboard() {
         <div className="bg-white rounded-lg shadow-xl p-6 mb-6">
           <div className="flex justify-between items-center">
             <h1 className="text-3xl font-bold text-gray-900">📊 Orders Dashboard</h1>
-            <button
-              onClick={() => fetchStats()}
-              className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition"
-            >
-              🔄 Refresh
-            </button>
+            <div className="flex gap-2">
+              <button
+                onClick={fixAllLegacy}
+                className="bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 transition"
+              >
+                🔧 Fix All Legacy
+              </button>
+              <button
+                onClick={() => fetchStats()}
+                className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition"
+              >
+                🔄 Refresh
+              </button>
+            </div>
           </div>
         </div>
 
