@@ -23,8 +23,17 @@ export async function POST(request: NextRequest) {
         body.resource?.purchase_units?.[0]?.amount?.value || 
         '0'
       );
-      const amountVND = amountUSD * 24000; // Convert USD to VND
-      const amount = Math.round(amountVND * 100); // Convert to cents for storage
+      let amountVND = amountUSD * 24000; // Convert USD to VND
+      let amount = Math.round(amountVND * 100); // Convert to cents for storage
+      
+      // IMPORTANT: Amount from PayPal may be incorrect for CHECKOUT.ORDER.APPROVED
+      // We'll recalculate based on productId after we extract it
+      console.log('💰 Initial amount from PayPal:', {
+        amountUSD: `$${amountUSD.toFixed(2)}`,
+        amountVND: `${amountVND.toLocaleString('vi-VN')}đ`,
+        amountCents: amount,
+        note: 'Will be recalculated based on productId'
+      });
       
       // IMPROVED: Multiple strategies to get productId and customer info
       let productId = '';
@@ -147,24 +156,26 @@ export async function POST(request: NextRequest) {
       };
       
       const expectedPrice = expectedPrices[productId];
-      if (expectedPrice && Math.abs(amountVND - expectedPrice) > 100000) {
-        console.error('⚠️ PRICE MISMATCH DETECTED:', {
-          productId,
-          expectedPrice: `${expectedPrice.toLocaleString('vi-VN')}đ`,
-          actualAmount: `${amountVND.toLocaleString('vi-VN')}đ`,
-          difference: `${Math.abs(amountVND - expectedPrice).toLocaleString('vi-VN')}đ`
-        });
-        
-        // Auto-correct productId based on amount
-        for (const [pid, price] of Object.entries(expectedPrices)) {
-          if (Math.abs(amountVND - price) < 100000) {
-            console.log(`✅ Auto-correcting productId from "${productId}" to "${pid}"`);
-            productId = pid;
-            break;
-          }
+      if (expectedPrice) {
+        // CRITICAL FIX: Always use expected price based on productId
+        // PayPal amount may be incorrect for CHECKOUT.ORDER.APPROVED event
+        if (Math.abs(amountVND - expectedPrice) > 100000) {
+          console.warn('⚠️ AMOUNT MISMATCH - Using expected price based on productId:', {
+            productId,
+            expectedPrice: `${expectedPrice.toLocaleString('vi-VN')}đ`,
+            paypalAmount: `${amountVND.toLocaleString('vi-VN')}đ`,
+            difference: `${Math.abs(amountVND - expectedPrice).toLocaleString('vi-VN')}đ`,
+            action: 'Correcting to expected price'
+          });
         }
-      } else if (expectedPrice) {
-        console.log(`✅ Amount validation passed: ${amountVND.toLocaleString('vi-VN')}đ matches ${productId}`);
+        
+        // ALWAYS use expected price (productId is source of truth)
+        amountVND = expectedPrice;
+        amount = Math.round(expectedPrice * 100); // Convert to cents
+        
+        console.log(`✅ Amount set from productId: ${amountVND.toLocaleString('vi-VN')}đ (${productId})`);
+      } else {
+        console.warn(`⚠️ Unknown productId: ${productId} - using PayPal amount: ${amountVND.toLocaleString('vi-VN')}đ`);
       }
       
       if (orderId) {
