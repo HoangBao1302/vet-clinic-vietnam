@@ -347,64 +347,63 @@ export async function POST(request: NextRequest) {
           if (existingOrder) {
             console.log("ℹ️ Order already exists in MongoDB:", orderId);
             
-            // Check if existing order has wrong data
-            const needsUpdate = 
-              existingOrder.productId !== orderData.productId ||
-              existingOrder.amount !== orderData.amount ||
-              existingOrder.customerEmail !== orderData.customerEmail;
-            
-            if (needsUpdate) {
-              console.warn("⚠️ Existing order has incorrect data, updating...", {
-                orderId,
-                old: {
-                  productId: existingOrder.productId,
-                  amount: existingOrder.amount,
-                  customerEmail: existingOrder.customerEmail,
-                  emailSent: existingOrder.emailSent
-                },
-                new: {
+            // CRITICAL: If email already sent, DON'T update (data is locked)
+            // This prevents later webhook events from overwriting correct data with wrong data
+            if (existingOrder.emailSent) {
+              console.log("✅ Order already processed and email sent, ignoring subsequent webhook events");
+              shouldSendEmail = false;
+            } else {
+              // Check if existing order has wrong data
+              const needsUpdate = 
+                existingOrder.productId !== orderData.productId ||
+                existingOrder.amount !== orderData.amount ||
+                existingOrder.customerEmail !== orderData.customerEmail;
+              
+              if (needsUpdate) {
+                console.warn("⚠️ Existing order has incorrect data, updating...", {
+                  orderId,
+                  old: {
+                    productId: existingOrder.productId,
+                    amount: existingOrder.amount,
+                    customerEmail: existingOrder.customerEmail
+                  },
+                  new: {
+                    productId: orderData.productId,
+                    amount: orderData.amount,
+                    customerEmail: orderData.customerEmail
+                  }
+                });
+                
+                // Update with corrected data
+                await Order.updateOne(
+                  { orderId: orderId },
+                  {
+                    $set: {
+                      productId: orderData.productId,
+                      productName: orderData.productName,
+                      amount: orderData.amount,
+                      customerEmail: orderData.customerEmail,
+                      customerName: orderData.customerName,
+                      customerPhone: orderData.customerPhone,
+                      status: orderData.status,
+                      paidAt: orderData.paidAt
+                    }
+                  }
+                );
+                
+                console.log("✅ Order updated successfully in MongoDB:", {
+                  orderId: orderData.orderId,
                   productId: orderData.productId,
                   amount: orderData.amount,
-                  customerEmail: orderData.customerEmail
-                }
-              });
-              
-              // Update with corrected data and reset emailSent flag
-              await Order.updateOne(
-                { orderId: orderId },
-                {
-                  $set: {
-                    productId: orderData.productId,
-                    productName: orderData.productName,
-                    amount: orderData.amount,
-                    customerEmail: orderData.customerEmail,
-                    customerName: orderData.customerName,
-                    customerPhone: orderData.customerPhone,
-                    status: orderData.status,
-                    paidAt: orderData.paidAt,
-                    emailSent: false // Reset to send corrected email
-                  }
-                }
-              );
-              
-              console.log("✅ Order updated successfully in MongoDB:", {
-                orderId: orderData.orderId,
-                productId: orderData.productId,
-                amount: orderData.amount,
-                eventType: eventType
-              });
-              wasOrderUpdated = true;
-              
-              // Send corrected email (data was updated with correct values)
-              shouldSendEmail = true;
-              console.log("📧 Sending corrected email (order data was updated with accurate values)");
-              
-              if (existingOrder.emailSent) {
-                console.warn("⚠️ Previous email may have had incorrect data - sending corrected version");
+                  eventType: eventType
+                });
+                wasOrderUpdated = true;
+                shouldSendEmail = true;
+                console.log("📧 Will send email with updated data");
+              } else {
+                console.log("✅ Order data is already correct, no update needed");
+                shouldSendEmail = false;
               }
-            } else {
-              console.log("✅ Order data is already correct, no update needed");
-              shouldSendEmail = false;
             }
           } else {
             // Use upsert to handle race conditions from multiple webhook events
