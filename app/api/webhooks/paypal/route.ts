@@ -330,6 +330,10 @@ export async function POST(request: NextRequest) {
         };
         orderData.productName = productNames[productId] || 'Unknown Product';
         
+        // Track if order was created or updated (for email notification)
+        let wasOrderCreated = false;
+        let wasOrderUpdated = false;
+        
         // Save order to database
         try {
           await connectDB();
@@ -381,6 +385,7 @@ export async function POST(request: NextRequest) {
                 productId: orderData.productId,
                 amount: orderData.amount
               });
+              wasOrderUpdated = true;
             } else {
               console.log("✅ Order data is already correct, no update needed");
             }
@@ -394,6 +399,7 @@ export async function POST(request: NextRequest) {
               customerName: orderData.customerName,
               amount: orderData.amount
             });
+            wasOrderCreated = true;
           }
         } catch (dbError: any) {
           console.error("❌ Failed to save PayPal order to MongoDB:", {
@@ -541,9 +547,20 @@ export async function POST(request: NextRequest) {
         // Use real customer email if available
         const emailRecipient = finalCustomerEmail;
         
-        if (emailRecipient) {
+        // IMPORTANT: Only send email if order was newly created or updated
+        // Skip if order already exists with correct data (avoid duplicate emails)
+        const shouldSendEmail = wasOrderCreated || wasOrderUpdated;
+        
+        if (emailRecipient && shouldSendEmail) {
           try {
             const { sendEmail } = await import("@/lib/email");
+            
+            console.log('📧 Sending email notification:', {
+              to: emailRecipient,
+              orderId,
+              productId,
+              reason: !existingOrder ? 'New order' : 'Order updated with correct data'
+            });
             
             // Get product name for email with MT4/MT5 distinction
             const productNames: Record<string, string> = {
