@@ -91,21 +91,31 @@ export async function POST(request: NextRequest) {
       const order = await Order.findOne({ orderId });
       
       if (order && order.status === "paid") {
-        // CRITICAL: Verify that the requested productId matches the purchased productId
-        const requestedProductId = productId || order.productId;
-        if (requestedProductId !== order.productId) {
+        // Use productId from database (not from frontend request)
+        // This ensures customer gets the correct product they paid for
+        console.log("✅ Order found in MongoDB:", {
+          orderId: order.orderId,
+          productId: order.productId,
+          customerEmail: order.customerEmail,
+          frontendProductId: productId,
+          note: "Using database productId (ignoring frontend productId)"
+        });
+        
+        const item = getProductById(order.productId);
+        
+        if (!item) {
+          console.error("❌ Product not found for productId:", order.productId);
           return NextResponse.json(
-            { verified: false, error: "Order is for a different product" },
-            { status: 403 }
+            { verified: false, error: `Product configuration error: ${order.productId}` },
+            { status: 500 }
           );
         }
         
-        const item = getProductById(order.productId);
         return NextResponse.json({
           verified: true,
           orderId: orderId,
-          downloadUrl: item?.downloadUrl,
-          productId: order.productId,
+          downloadUrl: item.downloadUrl,
+          productId: order.productId, // Return the actual product they paid for
           order: order
         });
       }
