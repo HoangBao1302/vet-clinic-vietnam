@@ -281,7 +281,8 @@ export default function DownloadsPage() {
         },
         body: JSON.stringify({
           orderId: orderCode,
-          productId: itemId
+          productId: itemId,
+          strictMatch: true // Enable strict matching to prevent wrong product downloads
         }),
       });
 
@@ -290,17 +291,28 @@ export default function DownloadsPage() {
       if (result.verified) {
         setVerifyMessage("✅ Xác thực thành công! Đang tải file...");
         
-        // Download file after verification
+        // Download file after verification - use downloadUrl from API (source of truth)
         setTimeout(() => {
-          const item = downloads.find(d => d.id === itemId);
-          if (item?.downloadUrl) {
-            window.open(result.downloadUrl || item.downloadUrl, "_blank");
+          if (result.downloadUrl) {
+            window.open(result.downloadUrl, "_blank");
           }
           setVerifyingOrder(null);
           setOrderCode("");
+          setVerifyMessage("");
         }, 1500);
       } else {
-        setVerifyMessage("❌ " + (result.error || "Mã đơn hàng không hợp lệ hoặc chưa thanh toán"));
+        // Show detailed error message
+        let errorMsg = result.error || "Mã đơn hàng không hợp lệ hoặc chưa thanh toán";
+        
+        // If product mismatch, show which product the order is for
+        if (result.actualProductId && result.requestedProductId) {
+          const actualProduct = downloads.find(d => d.id === result.actualProductId);
+          if (actualProduct) {
+            errorMsg += ` Mã này dành cho: ${actualProduct.name}`;
+          }
+        }
+        
+        setVerifyMessage("❌ " + errorMsg);
       }
     } catch (error) {
       setVerifyMessage("❌ Lỗi kết nối. Vui lòng thử lại.");
@@ -309,7 +321,7 @@ export default function DownloadsPage() {
         if (verifyMessage.includes("❌")) {
           setVerifyingOrder(null);
         }
-      }, 3000);
+      }, 5000); // Increased timeout to read error message
     }
   };
 

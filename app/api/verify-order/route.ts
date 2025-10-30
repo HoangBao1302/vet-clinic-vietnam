@@ -63,7 +63,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const { orderId, productId } = await request.json();
+    const { orderId, productId, strictMatch } = await request.json();
 
     if (!orderId) {
       return NextResponse.json(
@@ -75,7 +75,8 @@ export async function POST(request: NextRequest) {
     console.log("Order verification request:", {
       orderId,
       frontendProductId: productId,
-      note: "Frontend productId is ignored - we determine product from PayPal order"
+      strictMatch,
+      note: strictMatch ? "Strict matching enabled - must match exact product" : "Flexible matching - use database productId"
     });
 
     // First check MongoDB
@@ -91,14 +92,34 @@ export async function POST(request: NextRequest) {
       const order = await Order.findOne({ orderId });
       
       if (order && order.status === "paid") {
-        // Use productId from database (not from frontend request)
-        // This ensures customer gets the correct product they paid for
+        // STRICT MATCHING: If strictMatch is true, verify productId matches
+        if (strictMatch && productId && productId !== order.productId) {
+          console.warn("⚠️ Product mismatch detected:", {
+            orderId: order.orderId,
+            requestedProductId: productId,
+            actualProductId: order.productId,
+            customerEmail: order.customerEmail
+          });
+          
+          return NextResponse.json(
+            { 
+              verified: false, 
+              error: `Mã đơn hàng này dành cho sản phẩm khác. Vui lòng nhập mã vào đúng sản phẩm bạn đã mua.`,
+              actualProductId: order.productId,
+              requestedProductId: productId
+            },
+            { status: 403 }
+          );
+        }
+        
+        // Use productId from database (source of truth)
         console.log("✅ Order found in MongoDB:", {
           orderId: order.orderId,
           productId: order.productId,
           customerEmail: order.customerEmail,
           frontendProductId: productId,
-          note: "Using database productId (ignoring frontend productId)"
+          strictMatch,
+          note: strictMatch ? "Strict match passed" : "Using database productId"
         });
         
         const item = getProductById(order.productId);
@@ -106,7 +127,7 @@ export async function POST(request: NextRequest) {
         if (!item) {
           console.error("❌ Product not found for productId:", order.productId);
           return NextResponse.json(
-            { verified: false, error: `Product configuration error: ${order.productId}` },
+            { verified: false, error: `Lỗi cấu hình sản phẩm: ${order.productId}. Vui lòng liên hệ support.` },
             { status: 500 }
           );
         }
