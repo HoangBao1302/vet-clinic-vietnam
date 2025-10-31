@@ -1,8 +1,7 @@
 import { redirect } from 'next/navigation';
-import { defaultLocale } from '@/i18n';
 
-// Root redirect to default locale
+// Root redirect to default locale (Vietnamese)
 export default function RootPage() {
-  redirect(`/${defaultLocale}`);
+  redirect('/vi');
 }
 

@@ -1,13 +1,11 @@
 import createMiddleware from 'next-intl/middleware';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { locales, defaultLocale } from './i18n';
+import { routing } from './routing';
 
-// Create next-intl middleware
+// Create next-intl middleware with routing config
 const intlMiddleware = createMiddleware({
-  locales,
-  defaultLocale,
-  localePrefix: 'always', // Always show locale in URL: /vi, /en
+  ...routing,
   localeDetection: false // Disable auto-detection - always use default locale (vi) for root
 });
 
@@ -42,6 +40,11 @@ const staffAllowedRoutes = [
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  // Handle root path - redirect to default locale (vi)
+  if (pathname === '/') {
+    return NextResponse.redirect(new URL('/vi', request.url));
+  }
 
   // Exclude admin routes from locale routing - keep them as /admin (always Vietnamese)
   if (pathname.startsWith('/admin')) {

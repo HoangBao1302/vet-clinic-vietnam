@@ -1,16 +1,17 @@
 import { notFound } from 'next/navigation';
 import { getRequestConfig } from 'next-intl/server';
+import { routing } from './routing';
 
-// Supported locales
-export const locales = ['vi', 'en'] as const;
-export type Locale = (typeof locales)[number];
+// Supported locales - export from routing for consistency
+export const locales = routing.locales;
+export type Locale = (typeof routing.locales)[number];
 
 // Default locale
-export const defaultLocale: Locale = 'vi';
+export const defaultLocale = routing.defaultLocale;
 
 export default getRequestConfig(async ({ locale }) => {
   // Validate that the incoming `locale` parameter is valid
-  if (!locale || !locales.includes(locale as Locale)) {
+  if (!locale || !routing.locales.includes(locale as Locale)) {
     notFound();
   }
 
