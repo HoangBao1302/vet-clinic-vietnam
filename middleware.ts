@@ -1,14 +1,13 @@
 import createMiddleware from 'next-intl/middleware';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { routing } from './routing';
 
-// Create next-intl middleware with routing config
-// Pass routing object directly (it already includes all config)
+// Create next-intl middleware with explicit config
+// Using simple config without routing.ts to avoid middleware invocation errors
 const intlMiddleware = createMiddleware({
-  locales: routing.locales,
-  defaultLocale: routing.defaultLocale,
-  localePrefix: routing.localePrefix,
+  locales: ['vi', 'en'],
+  defaultLocale: 'vi',
+  localePrefix: 'always',
   localeDetection: false // Disable auto-detection - always use default locale (vi) for root
 });
 
