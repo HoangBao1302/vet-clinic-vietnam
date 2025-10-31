@@ -7,23 +7,85 @@ import Footer from "@/components/Footer";
 import StickyCallToAction from "@/components/StickyCallToAction";
 import Link from "next/link";
 import Image from "next/image";
-import { Calendar, Clock, ArrowLeft, Share2, Crown } from "lucide-react";
-import { blogPosts, categories } from "@/data/blogPosts";
+import { Calendar, Clock, ArrowLeft, Share2, Crown, Loader } from "lucide-react";
 import PremiumBlogGate from "@/components/PremiumBlogGate";
+
+interface BlogPost {
+  _id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  content: string;
+  category: string;
+  image: string;
+  author: {
+    name: string;
+    avatar?: string;
+  };
+  tags: string[];
+  featured: boolean;
+  isPremium: boolean;
+  status: string;
+  views: number;
+  readTime: string;
+  publishedAt?: string;
+  createdAt: string;
+}
+
+const categoryNames: Record<string, string> = {
+  news: "📰 Tin Tức",
+  education: "🎓 Đào Tạo & Phân Tích",
+  "ea-leopard": "🤖 EA ThebenchmarkTrader",
+};
 
 export default function BlogPostPage() {
   const params = useParams();
-  const [slug, setSlug] = useState<string>("");
+  const [post, setPost] = useState<BlogPost | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   
   useEffect(() => {
     if (params.slug) {
-      setSlug(params.slug as string);
+      fetchPost(params.slug as string);
     }
-  }, [params]);
-  
-  const post = blogPosts.find(p => p.id === slug);
+  }, [params.slug]);
 
-  if (!post) {
+  const fetchPost = async (slug: string) => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await fetch(`/api/blog/posts/${slug}`);
+      
+      if (!response.ok) {
+        throw new Error("Bài viết không tồn tại");
+      }
+      
+      const data = await response.json();
+      setPost(data.post);
+    } catch (err) {
+      console.error("Error fetching post:", err);
+      setError(err instanceof Error ? err.message : "Có lỗi xảy ra");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen">
+        <Header />
+        <main className="pt-20">
+          <div className="container-custom py-20 text-center">
+            <Loader className="animate-spin h-12 w-12 text-blue-600 mx-auto mb-4" />
+            <p className="text-gray-600">Đang tải bài viết...</p>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (error || !post) {
     return (
       <div className="min-h-screen">
         <Header />
@@ -33,7 +95,7 @@ export default function BlogPostPage() {
               Bài viết không tồn tại
             </h1>
             <p className="text-lg text-gray-600 mb-8">
-              Bài viết bạn đang tìm kiếm không tồn tại hoặc đã bị xóa.
+              {error || "Bài viết bạn đang tìm kiếm không tồn tại hoặc đã bị xóa."}
             </p>
             <Link href="/blog" className="btn-primary">
               Quay lại Blog
@@ -44,6 +106,9 @@ export default function BlogPostPage() {
       </div>
     );
   }
+
+  const categoryName = categoryNames[post.category] || post.category;
+  const postDate = post.publishedAt || post.createdAt;
 
   return (
     <div className="min-h-screen">
@@ -64,7 +129,7 @@ export default function BlogPostPage() {
 
               <div className="mb-6 flex items-center gap-3">
                 <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
-                  {categories.find(c => c.id === post.category)?.name || post.category}
+                  {categoryName}
                 </span>
                 {post.isPremium && (
                   <span className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-3 py-1 rounded-full text-sm font-medium flex items-center gap-1">
@@ -86,13 +151,13 @@ export default function BlogPostPage() {
                 <div className="flex items-center space-x-6 text-gray-500">
                   <div className="flex items-center space-x-2">
                     <Calendar size={16} />
-                    <span>{new Date(post.date).toLocaleDateString('vi-VN')}</span>
+                    <span>{new Date(postDate).toLocaleDateString('vi-VN')}</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <Clock size={16} />
                     <span>{post.readTime}</span>
                   </div>
-                  <span>bởi {post.author}</span>
+                  <span>bởi {post.author.name}</span>
                 </div>
 
                 <button className="flex items-center space-x-2 text-gray-500 hover:text-blue-600">
@@ -130,7 +195,7 @@ export default function BlogPostPage() {
                 <div className="lg:col-span-3">
                   <PremiumBlogGate 
                     isPremium={post.isPremium || false}
-                    previewContent={post.previewContent}
+                    previewContent={post.excerpt}
                   >
                     <div 
                       className="prose prose-lg max-w-none"
@@ -140,6 +205,22 @@ export default function BlogPostPage() {
                       }}
                     />
                   </PremiumBlogGate>
+
+                  {/* Tags */}
+                  {post.tags && post.tags.length > 0 && (
+                    <div className="mt-8 pt-8 border-t border-gray-200">
+                      <div className="flex flex-wrap gap-2">
+                        {post.tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm"
+                          >
+                            #{tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
 
                   {/* Article Footer */}
                   <div className="mt-12 pt-8 border-t border-gray-200">
@@ -165,58 +246,20 @@ export default function BlogPostPage() {
                 {/* Sidebar */}
                 <div className="lg:col-span-1">
                   <div className="sticky top-24 space-y-8">
-                    {/* Table of Contents */}
+                    {/* Stats */}
                     <div className="bg-gray-50 p-6 rounded-lg">
                       <h3 className="font-semibold text-gray-800 mb-4">
-                        Nội dung bài viết
+                        Thống kê
                       </h3>
-                      <ul className="space-y-2 text-sm">
-                        <li>
-                          <a href="#profit-factor" className="text-blue-600 hover:text-blue-700">
-                            Profit Factor là gì?
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#drawdown" className="text-blue-600 hover:text-blue-700">
-                            Maximum Drawdown
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#win-rate" className="text-blue-600 hover:text-blue-700">
-                            Win Rate và Risk:Reward
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#luu-y" className="text-blue-600 hover:text-blue-700">
-                            Lưu ý quan trọng
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-
-                    {/* Related Articles */}
-                    <div className="bg-gray-50 p-6 rounded-lg">
-                      <h3 className="font-semibold text-gray-800 mb-4">
-                        Bài viết liên quan
-                      </h3>
-                      <div className="space-y-4">
-                        <Link href="/blog/chon-broker-phu-hop-ea" className="block">
-                          <div className="text-sm">
-                            <h4 className="font-medium text-gray-800 hover:text-blue-600 mb-1">
-                              Cách chọn broker phù hợp cho EA
-                            </h4>
-                            <p className="text-gray-600 text-xs">6 phút đọc</p>
-                          </div>
-                        </Link>
-                        
-                        <Link href="/blog/quan-tri-rui-ro-ea" className="block">
-                          <div className="text-sm">
-                            <h4 className="font-medium text-gray-800 hover:text-blue-600 mb-1">
-                              Quản trị rủi ro khi sử dụng EA
-                            </h4>
-                            <p className="text-gray-600 text-xs">10 phút đọc</p>
-                          </div>
-                        </Link>
+                      <div className="space-y-2 text-sm">
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">Lượt xem:</span>
+                          <span className="font-medium">{post.views}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">Thời gian đọc:</span>
+                          <span className="font-medium">{post.readTime}</span>
+                        </div>
                       </div>
                     </div>
 
@@ -245,4 +288,3 @@ export default function BlogPostPage() {
     </div>
   );
 }
-
