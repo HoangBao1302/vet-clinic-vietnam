@@ -1,37 +1,18 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css";
 
 // Dynamically import ReactQuill to avoid SSR issues
-const ReactQuill = dynamic(
-  async () => {
-    const { default: RQ } = await import("react-quill");
-    // @ts-ignore - Suppress findDOMNode warning
-    const React = await import("react");
-    const originalError = console.error;
-    console.error = (...args: any[]) => {
-      if (
-        typeof args[0] === "string" &&
-        args[0].includes("findDOMNode")
-      ) {
-        return;
-      }
-      originalError.call(console, ...args);
-    };
-    
-    return ({ forwardedRef, ...props }: any) => <RQ ref={forwardedRef} {...props} />;
-  },
-  {
-    ssr: false,
-    loading: () => (
-      <div className="w-full h-96 bg-gray-100 rounded-lg animate-pulse flex items-center justify-center">
-        <p className="text-gray-500">Đang tải trình soạn thảo...</p>
-      </div>
-    ),
-  }
-);
+const ReactQuill = dynamic(() => import("react-quill"), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-96 bg-gray-100 rounded-lg animate-pulse flex items-center justify-center">
+      <p className="text-gray-500">Đang tải trình soạn thảo...</p>
+    </div>
+  ),
+});
 
 interface RichTextEditorProps {
   value: string;
@@ -47,7 +28,6 @@ export default function RichTextEditor({
   className = "",
 }: RichTextEditorProps) {
   const [isMounted, setIsMounted] = useState(false);
-  const quillRef = useRef<any>(null);
 
   useEffect(() => {
     setIsMounted(true);
@@ -95,14 +75,12 @@ export default function RichTextEditor({
   return (
     <div className={`rich-text-editor ${className}`}>
       <ReactQuill
-        forwardedRef={quillRef}
         theme="snow"
         value={value}
         onChange={onChange}
         modules={modules}
         formats={formats}
         placeholder={placeholder}
-        className="bg-white"
       />
       
       <style jsx global>{`
@@ -132,4 +110,3 @@ export default function RichTextEditor({
     </div>
   );
 }
-
