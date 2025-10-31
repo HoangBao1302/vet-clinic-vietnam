@@ -3,7 +3,9 @@
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { EditorState, convertToRaw, ContentState } from "draft-js";
+// @ts-ignore - No types available
 import draftToHtml from "draftjs-to-html";
+// @ts-ignore - No types available
 import htmlToDraft from "html-to-draftjs";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
