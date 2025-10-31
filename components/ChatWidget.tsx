@@ -115,19 +115,11 @@ export default function ChatWidget() {
         }, 1000);
       } else if (reply.action === "live-results") {
         setTimeout(() => {
-          // Get current locale from pathname or default to 'vi'
-          const currentPath = window.location.pathname;
-          const localeMatch = currentPath.match(/^\/(vi|en)/);
-          const locale = localeMatch ? localeMatch[1] : 'vi';
-          window.location.href = `/${locale}/live-results`;
+          window.location.href = "/live-results";
         }, 2000);
       } else if (reply.action === "pricing") {
         setTimeout(() => {
-          // Get current locale from pathname or default to 'vi'
-          const currentPath = window.location.pathname;
-          const localeMatch = currentPath.match(/^\/(vi|en)/);
-          const locale = localeMatch ? localeMatch[1] : 'vi';
-          window.location.href = `/${locale}/pricing`;
+          window.location.href = "/pricing";
         }, 2000);
       }
     }, 800);

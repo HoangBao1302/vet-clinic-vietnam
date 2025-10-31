@@ -2,19 +2,10 @@
 
 import { ExternalLink, TrendingUp, CheckCircle, Youtube } from "lucide-react";
 import Link from "next/link";
-import { useLocale } from 'next-intl';
 import { featuredAccounts } from "@/data/featuredAccounts";
 import type { FeaturedAccount } from "@/data/featuredAccounts";
 
 export default function LiveResults() {
-  // Get locale safely
-  let locale = 'vi';
-  try {
-    locale = useLocale();
-  } catch {
-    locale = 'vi';
-  }
-  
   // Filter only active featured accounts and sort by order
   const activeFeaturedAccounts = featuredAccounts
     .filter(a => a.active)
@@ -129,13 +120,13 @@ export default function LiveResults() {
             
             <div className="space-y-4">
               <Link
-                href={`/${locale}/live-results`}
+                href="/live-results"
                 className="block text-center px-6 py-4 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors"
               >
                 Xem Tất Cả Kết Quả Thực Tế →
               </Link>
               <Link
-                href={`/${locale}/pricing`}
+                href="/pricing"
                 className="block text-center px-6 py-4 border-2 border-blue-600 text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-colors"
               >
                 Hoặc Mua EA Ngay

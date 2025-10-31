@@ -4,42 +4,12 @@ import { useState, useEffect } from "react";
 import { Facebook, Instagram, Twitter, Phone, Mail, MessageCircle, Youtube } from "lucide-react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
-import { useLocale } from 'next-intl';
 import Newsletter from "./Newsletter";
 
 export default function Footer() {
   const [isClient, setIsClient] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
-  
-  // Get locale safely
-  let locale = 'vi';
-  try {
-    locale = useLocale();
-  } catch {
-    locale = 'vi';
-  }
-  
-  // Helper to create localized links
-  const localizeLink = (path: string): string => {
-    if (
-      path.startsWith('/admin') ||
-      path.startsWith('/api') ||
-      path.startsWith('/affiliate') ||
-      path.startsWith('/profile') ||
-      path.startsWith('/login') ||
-      path.startsWith('/register')
-    ) {
-      return path;
-    }
-    
-    if (path === '/') {
-      return `/${locale}`;
-    }
-    
-    const cleanPath = path.startsWith('/') ? path.slice(1) : path;
-    return `/${locale}/${cleanPath}`;
-  };
 
   useEffect(() => {
     setIsClient(true);
@@ -47,15 +17,13 @@ export default function Footer() {
 
   const scrollToSection = (sectionId: string) => {
     if (typeof window !== "undefined") {
-      // Check if we're on homepage (with or without locale)
-      const isHomepage = pathname === `/${locale}` || pathname === `/${locale}/` || pathname === '/';
-      
-      if (!isHomepage) {
-        router.push(`/${locale}/#${sectionId}`);
+      // Nếu không ở trang chủ, navigate về trang chủ trước
+      if (pathname !== "/") {
+        router.push(`/#${sectionId}`);
         return;
       }
       
-      // If already on homepage, scroll directly
+      // Nếu đã ở trang chủ, scroll trực tiếp
       const element = document.getElementById(sectionId);
       if (element) {
         element.scrollIntoView({ behavior: "smooth" });
@@ -148,32 +116,32 @@ export default function Footer() {
                 </button>
               </li>
               <li>
-                <Link href={localizeLink("/pricing")} className="text-gray-300 hover:text-white transition-colors">
+                <Link href="/pricing" className="text-gray-300 hover:text-white transition-colors">
                   Bảng Giá
                 </Link>
               </li>
               <li>
-                <Link href={localizeLink("/downloads")} className="text-gray-300 hover:text-white transition-colors">
+                <Link href="/downloads" className="text-gray-300 hover:text-white transition-colors">
                   Downloads
                 </Link>
               </li>
               <li>
-                <Link href={localizeLink("/about")} className="text-gray-300 hover:text-white transition-colors">
+                <Link href="/about" className="text-gray-300 hover:text-white transition-colors">
                   Về EA
                 </Link>
               </li>
               <li>
-                <Link href={localizeLink("/live-results")} className="text-gray-300 hover:text-white transition-colors">
+                <Link href="/live-results" className="text-gray-300 hover:text-white transition-colors">
                   Kết Quả Thực Tế
                 </Link>
               </li>
               <li>
-                <Link href={localizeLink("/blog")} className="text-gray-300 hover:text-white transition-colors">
+                <Link href="/blog" className="text-gray-300 hover:text-white transition-colors">
                   Blog
                 </Link>
               </li>
               <li>
-                <Link href={localizeLink("/partners")} className="text-gray-300 hover:text-white transition-colors">
+                <Link href="/partners" className="text-gray-300 hover:text-white transition-colors">
                   Đối Tác
                 </Link>
               </li>
