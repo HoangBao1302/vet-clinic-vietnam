@@ -28,6 +28,13 @@ const adminOnlyRoutes = [
   '/admin/licenses',
 ];
 
+// Staff can access blog management
+const staffAllowedRoutes = [
+  '/admin/blog',
+  '/admin/blog/create',
+  '/admin/blog/edit',
+];
+
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get('token')?.value;
