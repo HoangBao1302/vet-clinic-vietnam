@@ -18,6 +18,7 @@ import {
   XCircle,
   Clock,
   Star,
+  Sync,
 } from "lucide-react";
 import { IProduct } from "@/types/product";
 
@@ -170,13 +171,22 @@ export default function AdminProductsPage() {
                 Quản lý giá, thông tin và chiến dịch sản phẩm
               </p>
             </div>
-            <Link
-              href="/admin/products/create"
-              className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              <Plus size={20} className="mr-2" />
-              Thêm sản phẩm mới
-            </Link>
+            <div className="flex gap-3">
+              <Link
+                href="/admin/products/create"
+                className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                <Plus size={20} className="mr-2" />
+                Thêm sản phẩm mới
+              </Link>
+              <Link
+                href="/admin/products/sync"
+                className="inline-flex items-center px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+              >
+                <Sync size={20} className="mr-2" />
+                Sync Code
+              </Link>
+            </div>
           </div>
         </div>
       </div>
