@@ -2,39 +2,16 @@
 
 import { ExternalLink, TrendingUp, CheckCircle, Youtube } from "lucide-react";
 import Link from "next/link";
-
-const featuredAccounts = [
-  {
-    name: "ThebenchmarkTrader Live #1",
-    platform: "MQL5",
-    broker: "Tickmill",
-    gain: "+4359%",
-    drawdown: "28.5%",
-    days: "1638",
-    link: "https://www.mql5.com/en/signals/2327790"
-  },
-  {
-    name: "EA ThebenchmarkTrader Pro",
-    platform: "Myfxbook",
-    broker: "Tickmill",
-    gain: "+60.78%",
-    drawdown: "8.55%",
-    days: "160",
-    link: "https://www.myfxbook.com/portfolio/yen-pham-thi-thuan/11670921"
-  },
-  {
-    name: "ThebenchmarkTrader Strategy",
-    platform: "Tickmill Social",
-    broker: "Tickmill",
-    gain: "+60.75%",
-    drawdown: "8.53%",
-    days: "161",
-    link: "https://stats.tmsocial.net/widgets/ratings/4117?widgetKey=social_platform_ratings&lang=en&preview=P3U9OGQ2OThlJmE9ODU1NSZwPTQxMTcmdz0x",
-    copyable: true
-  }
-];
+import { featuredAccounts } from "@/data/featuredAccounts";
+import type { FeaturedAccount } from "@/data/featuredAccounts";
 
 export default function LiveResults() {
+  // Filter only active featured accounts and sort by order
+  const activeFeaturedAccounts = featuredAccounts
+    .filter(a => a.active)
+    .sort((a, b) => a.order - b.order)
+    .slice(0, 3); // Only show top 3
+
   return (
     <section id="live-results" className="py-20 bg-gradient-to-br from-green-50 to-blue-50">
       <div className="container-custom">
@@ -55,7 +32,7 @@ export default function LiveResults() {
 
         {/* Featured Accounts Grid */}
         <div className="grid md:grid-cols-3 gap-8 mb-12">
-          {featuredAccounts.map((account, index) => (
+          {activeFeaturedAccounts.map((account, index) => (
             <div 
               key={index}
               className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow"
