@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promote User to Staff - ThebenchmarkTrader</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+            padding: 40px;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 25px;
+        }
+
+        .warning-box h3 {
+            color: #856404;
+            font-size: 16px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .warning-box p {
+            color: #856404;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .info-box {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 8px;
+        }
+
+        .info-box code {
+            background: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        #message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            display: none;
+        }
+
+        #message.success {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            color: #155724;
+        }
+
+        #message.error {
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+            color: #721c24;
+        }
+
+        .result-details {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .result-details p {
+            margin: 8px 0;
+            font-size: 14px;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 25px;
+        }
+
+        .back-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+
+        .icon {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 Promote to Staff</h1>
+        <p class="subtitle">Nâng cấp tài khoản người dùng thành Staff</p>
+
+        <div class="warning-box">
+            <h3>⚠️ Chú ý</h3>
+            <p>
+                Chỉ sử dụng cho mục đích phân quyền hợp lệ. 
+                Trang này chỉ dành cho quản trị viên.
+            </p>
+        </div>
+
+        <form id="promoteForm">
+            <div class="form-group">
+                <label for="email">📧 Email người dùng:</label>
+                <input 
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    placeholder="user@example.com" 
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="secretKey">🔑 Secret Key:</label>
+                <input 
+                    type="password" 
+                    id="secretKey" 
+                    name="secretKey" 
+                    placeholder="Nhập secret key" 
+                    required
+                >
+                <div class="info-box">
+                    <strong>Default:</strong> <code>PROMOTE_STAFF_2024</code>
+                </div>
+            </div>
+
+            <button type="submit" id="submitBtn">
+                ✨ Promote to Staff
+            </button>
+        </form>
+
+        <div id="message"></div>
+
+        <div class="back-link">
+            <a href="/admin/blog">← Quay lại Admin Dashboard</a>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('promoteForm');
+        const messageDiv = document.getElementById('message');
+        const submitBtn = document.getElementById('submitBtn');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const secretKey = document.getElementById('secretKey').value;
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Đang xử lý...';
+            messageDiv.style.display = 'none';
+
+            try {
+                const response = await fetch('/api/admin/promote-staff', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email, secretKey }),
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    messageDiv.className = 'success';
+                    messageDiv.innerHTML = `
+                        <h3>✅ Thành công!</h3>
+                        <p><strong>${data.message}</strong></p>
+                        <div class="result-details">
+                            <p><strong>Email:</strong> ${data.user.email}</p>
+                            <p><strong>Tên:</strong> ${data.user.name || 'N/A'}</p>
+                            <p><strong>Vai trò:</strong> ${data.user.role}</p>
+                        </div>
+                    `;
+                } else {
+                    messageDiv.className = 'error';
+                    messageDiv.innerHTML = `
+                        <h3>❌ Lỗi</h3>
+                        <p><strong>${data.error}</strong></p>
+                        ${data.message ? `<p>${data.message}</p>` : ''}
+                    `;
+                }
+            } catch (error) {
+                messageDiv.className = 'error';
+                messageDiv.innerHTML = `
+                    <h3>❌ Lỗi kết nối</h3>
+                    <p>Không thể kết nối đến server. Vui lòng thử lại.</p>
+                `;
+            }
+
+            messageDiv.style.display = 'block';
+            submitBtn.disabled = false;
+            submitBtn.textContent = '✨ Promote to Staff';
+        });
+    </script>
+</body>
+</html>
