@@ -10,6 +10,14 @@ import LiveResults from "@/components/LiveResults";
 import ForexContact from "@/components/ForexContact";
 import Footer from "@/components/Footer";
 import StickyCallToAction from "@/components/StickyCallToAction";
+
+const locales = ['vi', 'en'] as const;
+
+// Generate static params for locales
+export function generateStaticParams() {
+  return locales.map((locale) => ({ locale }));
+}
+
 export default function Home() {
   return (
     <div className="min-h-screen">
