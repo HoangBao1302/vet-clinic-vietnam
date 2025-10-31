@@ -43,11 +43,6 @@ const staffAllowedRoutes = [
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Handle root path - redirect to default locale (vi)
-  if (pathname === '/') {
-    return NextResponse.redirect(new URL('/vi', request.url));
-  }
-
   // Exclude admin routes from locale routing - keep them as /admin (always Vietnamese)
   if (pathname.startsWith('/admin')) {
     // Handle basic auth for admin license routes
@@ -83,7 +78,8 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Apply next-intl middleware for all other routes
+  // Let next-intl middleware handle ALL routing including root path redirect
+  // It will automatically redirect / to /vi based on defaultLocale
   return intlMiddleware(request);
 }
 
