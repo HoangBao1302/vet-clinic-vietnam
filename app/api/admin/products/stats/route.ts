@@ -52,10 +52,10 @@ export async function GET(request: NextRequest) {
       Product.countDocuments({}),
       Product.countDocuments({ status: "active" }),
       Product.aggregate([
-        { $group: { _id: null, total: { $sum: "$metadata.totalRevenue" || 0 } } }
+        { $group: { _id: null, total: { $sum: { $ifNull: ["$metadata.totalRevenue", 0] } } } }
       ]),
       Product.aggregate([
-        { $group: { _id: null, total: { $sum: "$metadata.totalSales" || 0 } } }
+        { $group: { _id: null, total: { $sum: { $ifNull: ["$metadata.totalSales", 0] } } } }
       ]),
       Product.countDocuments({ platform: "MT4" }),
       Product.countDocuments({ platform: "MT5" }),
