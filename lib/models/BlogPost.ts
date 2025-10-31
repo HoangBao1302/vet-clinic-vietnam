@@ -132,7 +132,7 @@ BlogPostSchema.index({ views: -1 });
 BlogPostSchema.index({ createdAt: -1 });
 
 // Auto-generate slug from title if not provided
-BlogPostSchema.pre("save", function (next) {
+BlogPostSchema.pre<IBlogPost>("save", function (next) {
   if (!this.slug && this.title) {
     this.slug = this.title
       .toLowerCase()
@@ -148,7 +148,7 @@ BlogPostSchema.pre("save", function (next) {
 });
 
 // Auto-set publishedAt when status changes to published
-BlogPostSchema.pre("save", function (next) {
+BlogPostSchema.pre<IBlogPost>("save", function (next) {
   if (this.isModified("status") && this.status === "published" && !this.publishedAt) {
     this.publishedAt = new Date();
   }
@@ -156,7 +156,7 @@ BlogPostSchema.pre("save", function (next) {
 });
 
 // Auto-calculate read time based on content length
-BlogPostSchema.pre("save", function (next) {
+BlogPostSchema.pre<IBlogPost>("save", function (next) {
   if (this.isModified("content")) {
     const wordsPerMinute = 200;
     const textLength = this.content.replace(/<[^>]*>/g, "").split(/\s+/).length;
