@@ -9,7 +9,10 @@ export const routing = defineRouting({
   defaultLocale: 'vi',
 
   // Always show locale prefix in URL
-  localePrefix: 'always'
+  localePrefix: 'always',
+
+  // Disable auto-detection - always use default locale (vi) for root
+  localeDetection: false
 });
 
 // Lightweight wrappers around Next.js' navigation APIs

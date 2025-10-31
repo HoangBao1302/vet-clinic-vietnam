@@ -4,10 +4,7 @@ import type { NextRequest } from 'next/server';
 import { routing } from './routing';
 
 // Create next-intl middleware with routing config
-const intlMiddleware = createMiddleware({
-  ...routing,
-  localeDetection: false // Disable auto-detection - always use default locale (vi) for root
-});
+const intlMiddleware = createMiddleware(routing);
 
 // Routes that require authentication
 const protectedRoutes = [
