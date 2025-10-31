@@ -7,7 +7,8 @@ import { locales, defaultLocale } from './i18n';
 const intlMiddleware = createMiddleware({
   locales,
   defaultLocale,
-  localePrefix: 'always' // Always show locale in URL: /vi, /en
+  localePrefix: 'always', // Always show locale in URL: /vi, /en
+  localeDetection: false // Disable auto-detection - always use default locale (vi) for root
 });
 
 // Routes that require authentication
