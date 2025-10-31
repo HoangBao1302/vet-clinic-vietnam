@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import dynamic from "next/dynamic";
+import RichTextEditor from "@/components/RichTextEditor";
 import {
   ArrowLeft,
   Save,
@@ -17,10 +17,6 @@ import {
   User,
   FileText,
 } from "lucide-react";
-
-// Import React Quill dynamically to avoid SSR issues
-const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
-import "react-quill/dist/quill.snow.css";
 
 interface FormData {
   title: string;
@@ -130,36 +126,6 @@ export default function CreateBlogPostPage() {
     }, 100);
   };
 
-  const quillModules = {
-    toolbar: [
-      [{ header: [1, 2, 3, 4, 5, 6, false] }],
-      ["bold", "italic", "underline", "strike"],
-      [{ list: "ordered" }, { list: "bullet" }],
-      [{ color: [] }, { background: [] }],
-      [{ align: [] }],
-      ["link", "image", "video"],
-      ["blockquote", "code-block"],
-      ["clean"],
-    ],
-  };
-
-  const quillFormats = [
-    "header",
-    "bold",
-    "italic",
-    "underline",
-    "strike",
-    "list",
-    "bullet",
-    "color",
-    "background",
-    "align",
-    "link",
-    "image",
-    "video",
-    "blockquote",
-    "code-block",
-  ];
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -263,18 +229,11 @@ export default function CreateBlogPostPage() {
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Nội dung bài viết *
               </label>
-              <div className="prose-editor">
-                <ReactQuill
-                  theme="snow"
-                  value={formData.content}
-                  onChange={(content) => setFormData({ ...formData, content })}
-                  modules={quillModules}
-                  formats={quillFormats}
-                  placeholder="Viết nội dung bài viết của bạn..."
-                  className="bg-white"
-                  style={{ minHeight: "400px" }}
-                />
-              </div>
+              <RichTextEditor
+                value={formData.content}
+                onChange={(content) => setFormData({ ...formData, content })}
+                placeholder="Viết nội dung bài viết của bạn..."
+              />
             </div>
           </div>
 
@@ -413,16 +372,6 @@ export default function CreateBlogPostPage() {
         {/* Hidden submit button */}
         <button id="submit-button" type="submit" className="hidden" />
       </form>
-
-      <style jsx global>{`
-        .prose-editor .ql-container {
-          min-height: 400px;
-          font-size: 16px;
-        }
-        .prose-editor .ql-editor {
-          min-height: 400px;
-        }
-      `}</style>
     </div>
   );
 }
