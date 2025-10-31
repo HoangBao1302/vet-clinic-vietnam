@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
+import "react-quill/dist/quill.snow.css";
 
 // Dynamically import ReactQuill to avoid SSR issues
 const ReactQuill = dynamic(
@@ -50,9 +51,6 @@ export default function RichTextEditor({
 
   useEffect(() => {
     setIsMounted(true);
-    
-    // Dynamically import Quill CSS
-    import("react-quill/dist/quill.snow.css");
   }, []);
 
   const modules = {
