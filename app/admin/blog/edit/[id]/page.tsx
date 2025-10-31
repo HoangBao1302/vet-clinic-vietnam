@@ -19,7 +19,10 @@ import {
   Loader,
 } from "lucide-react";
 
-const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+const ReactQuill = dynamic(() => import("react-quill"), { 
+  ssr: false,
+  loading: () => <div className="h-96 bg-gray-100 rounded-lg animate-pulse" />
+});
 import "react-quill/dist/quill.snow.css";
 
 interface FormData {
@@ -42,6 +45,7 @@ export default function EditBlogPostPage() {
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [tagInput, setTagInput] = useState("");
   const [formData, setFormData] = useState<FormData>({
     title: "",
@@ -60,34 +64,43 @@ export default function EditBlogPostPage() {
     if (postId) {
       fetchPost();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [postId]);
 
   const fetchPost = async () => {
     try {
       setLoading(true);
+      setError(null);
       const response = await fetch(`/api/admin/blog/posts/${postId}`);
-      if (response.ok) {
-        const data = await response.json();
-        const post = data.post;
-        setFormData({
-          title: post.title,
-          slug: post.slug,
-          excerpt: post.excerpt,
-          content: post.content,
-          category: post.category,
-          tags: post.tags || [],
-          image: post.image,
-          featured: post.featured || false,
-          isPremium: post.isPremium || false,
-          status: post.status,
-        });
-      } else {
-        alert("Không tìm thấy bài viết");
-        router.push("/admin/blog");
+      
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ message: "Unknown error" }));
+        throw new Error(errorData.message || "Không tìm thấy bài viết");
       }
+      
+      const data = await response.json();
+      const post = data.post;
+      
+      if (!post) {
+        throw new Error("Dữ liệu bài viết không hợp lệ");
+      }
+      
+      setFormData({
+        title: post.title || "",
+        slug: post.slug || "",
+        excerpt: post.excerpt || "",
+        content: post.content || "",
+        category: post.category || "news",
+        tags: Array.isArray(post.tags) ? post.tags : [],
+        image: post.image || "/vet-images/1.png",
+        featured: post.featured || false,
+        isPremium: post.isPremium || false,
+        status: post.status || "draft",
+      });
     } catch (error) {
       console.error("Error fetching post:", error);
-      alert("Có lỗi xảy ra khi tải bài viết");
+      const errorMessage = error instanceof Error ? error.message : "Có lỗi xảy ra khi tải bài viết";
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -193,6 +206,26 @@ export default function EditBlogPostPage() {
         <div className="text-center">
           <Loader className="animate-spin h-12 w-12 text-blue-600 mx-auto mb-4" />
           <p className="text-gray-600">Đang tải bài viết...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center max-w-md">
+          <div className="bg-red-100 text-red-800 p-6 rounded-lg mb-4">
+            <h2 className="text-xl font-bold mb-2">Có lỗi xảy ra</h2>
+            <p>{error}</p>
+          </div>
+          <Link
+            href="/admin/blog"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          >
+            <ArrowLeft size={18} />
+            Quay lại danh sách
+          </Link>
         </div>
       </div>
     );
