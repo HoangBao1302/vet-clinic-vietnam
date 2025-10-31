@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
-import RichTextEditor from "@/components/RichTextEditor";
+import dynamic from "next/dynamic";
 import {
   ArrowLeft,
   Save,
@@ -18,6 +18,15 @@ import {
   FileText,
   Loader,
 } from "lucide-react";
+
+const RichTextEditor = dynamic(() => import("@/components/RichTextEditor"), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-96 bg-gray-100 rounded-lg animate-pulse flex items-center justify-center">
+      <p className="text-gray-500">Đang tải trình soạn thảo...</p>
+    </div>
+  ),
+});
 
 interface FormData {
   title: string;
