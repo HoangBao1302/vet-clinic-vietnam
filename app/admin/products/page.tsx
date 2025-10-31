@@ -18,7 +18,7 @@ import {
   XCircle,
   Clock,
   Star,
-  Sync,
+  RefreshCw,
 } from "lucide-react";
 import { IProduct } from "@/types/product";
 
@@ -183,7 +183,7 @@ export default function AdminProductsPage() {
                 href="/admin/products/sync"
                 className="inline-flex items-center px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
               >
-                <Sync size={20} className="mr-2" />
+                <RefreshCw size={20} className="mr-2" />
                 Sync Code
               </Link>
             </div>
