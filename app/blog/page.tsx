@@ -1,33 +1,105 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import StickyCallToAction from "@/components/StickyCallToAction";
 import Newsletter from "@/components/Newsletter";
 import Link from "next/link";
 import Image from "next/image";
-import { Calendar, Clock, ArrowRight, TrendingUp, BarChart3, Shield, Newspaper, GraduationCap, Bot } from "lucide-react";
-import { blogPosts, categories } from "@/data/blogPosts";
+import { Calendar, Clock, ArrowRight, TrendingUp, Eye, Loader } from "lucide-react";
+
+interface BlogPost {
+  _id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  author: {
+    name: string;
+  };
+  category: string;
+  tags: string[];
+  image: string;
+  featured: boolean;
+  isPremium: boolean;
+  views: number;
+  readTime: string;
+  publishedAt: string;
+  createdAt: string;
+}
+
+const categories = [
+  {
+    id: "all",
+    name: "📚 Tất cả",
+    description: "Tất cả bài viết về trading, phân tích thị trường và EA",
+    icon: "📚",
+  },
+  {
+    id: "news",
+    name: "📰 Tin Tức",
+    description: "Tin tức thị trường, dữ liệu kinh tế và phân tích mới nhất",
+    icon: "📰",
+  },
+  {
+    id: "education",
+    name: "🎓 Đào Tạo",
+    description: "Kiến thức trading, chiến lược và kỹ thuật phân tích",
+    icon: "🎓",
+  },
+  {
+    id: "ea-leopard",
+    name: "🤖 EA ThebenchmarkTrader",
+    description: "Hướng dẫn, cập nhật và tối ưu EA ThebenchmarkTrader",
+    icon: "🤖",
+  },
+];
 
 export default function BlogPage() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [newsletterEmail, setNewsletterEmail] = useState("");
   const [newsletterSubmitting, setNewsletterSubmitting] = useState(false);
   const [newsletterMessage, setNewsletterMessage] = useState("");
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [categoryStats, setCategoryStats] = useState<Record<string, number>>({});
 
-  // Filter posts by category
-  const filteredPosts = selectedCategory === "all" 
-    ? blogPosts 
-    : blogPosts.filter(post => post.category === selectedCategory);
+  useEffect(() => {
+    fetchPosts();
+  }, [selectedCategory]);
 
-  const featuredPost = filteredPosts.find(post => post.featured);
-  const regularPosts = filteredPosts.filter(post => !post.featured);
+  const fetchPosts = async () => {
+    try {
+      setLoading(true);
+      const params = new URLSearchParams();
+      if (selectedCategory !== "all") {
+        params.append("category", selectedCategory);
+      }
+      
+      const response = await fetch(`/api/blog/posts?${params.toString()}`);
+      if (response.ok) {
+        const data = await response.json();
+        setPosts(data.posts || []);
+        
+        // Calculate category stats
+        const stats: Record<string, number> = { all: data.pagination?.total || 0 };
+        data.posts.forEach((post: BlogPost) => {
+          stats[post.category] = (stats[post.category] || 0) + 1;
+        });
+        setCategoryStats(stats);
+      }
+    } catch (error) {
+      console.error("Error fetching posts:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  // Get category stats
+  const featuredPost = posts.find(post => post.featured);
+  const regularPosts = posts.filter(post => !post.featured);
+
   const getCategoryCount = (categoryId: string) => {
-    if (categoryId === "all") return blogPosts.length;
-    return blogPosts.filter(post => post.category === categoryId).length;
+    return categoryStats[categoryId] || 0;
   };
 
   const handleNewsletterSubmit = async (e: React.FormEvent) => {
@@ -138,7 +210,7 @@ export default function BlogPage() {
               </div>
 
               <div className="max-w-4xl mx-auto">
-                <Link href={`/blog/${featuredPost.id}`}>
+                <Link href={`/blog/${featuredPost.slug}`}>
                   <div className="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300 cursor-pointer">
                     <div className="relative h-64 md:h-80">
                       <Image
@@ -165,17 +237,21 @@ export default function BlogPage() {
                       </p>
                       
                       <div className="flex items-center justify-between flex-wrap gap-4">
-                        <div className="flex items-center space-x-4 text-sm text-gray-500">
+                          <div className="flex items-center space-x-4 text-sm text-gray-500">
                           <div className="flex items-center space-x-1">
                             <Calendar size={16} />
-                            <span>{new Date(featuredPost.date).toLocaleDateString('vi-VN')}</span>
+                            <span>{new Date(featuredPost.publishedAt || featuredPost.createdAt).toLocaleDateString('vi-VN')}</span>
                           </div>
                           <div className="flex items-center space-x-1">
                             <Clock size={16} />
                             <span>{featuredPost.readTime}</span>
                           </div>
+                          <div className="flex items-center space-x-1">
+                            <Eye size={16} />
+                            <span>{featuredPost.views.toLocaleString()} lượt xem</span>
+                          </div>
                           <div className="hidden sm:block text-gray-400">•</div>
-                          <div className="hidden sm:block">{featuredPost.author}</div>
+                          <div className="hidden sm:block">{featuredPost.author.name}</div>
                         </div>
                         
                         <div className="flex items-center space-x-2 text-blue-600 font-medium">
@@ -194,7 +270,12 @@ export default function BlogPage() {
         {/* Regular Posts */}
         <section className="py-20 bg-gray-50">
           <div className="container-custom">
-            {regularPosts.length > 0 ? (
+            {loading ? (
+              <div className="text-center py-20">
+                <Loader className="animate-spin h-12 w-12 text-blue-600 mx-auto mb-4" />
+                <p className="text-gray-600">Đang tải bài viết...</p>
+              </div>
+            ) : regularPosts.length > 0 ? (
               <>
                 <div className="text-center mb-12">
                   <h2 className="text-3xl font-bold text-gray-800 mb-4">
@@ -207,7 +288,7 @@ export default function BlogPage() {
 
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
                   {regularPosts.map((post) => (
-                    <Link key={post.id} href={`/blog/${post.id}`}>
+                    <Link key={post._id} href={`/blog/${post.slug}`}>
                       <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer h-full hover:translate-y-[-4px]">
                         <div className="relative h-48">
                           <Image
@@ -234,14 +315,14 @@ export default function BlogPage() {
                           </p>
                           
                           <div className="text-xs text-gray-500 mb-4 line-clamp-1">
-                            {post.author}
+                            {post.author.name}
                           </div>
                           
                           <div className="flex items-center justify-between text-xs text-gray-500">
                             <div className="flex items-center space-x-3">
                               <div className="flex items-center space-x-1">
                                 <Calendar size={12} />
-                                <span>{new Date(post.date).toLocaleDateString('vi-VN')}</span>
+                                <span>{new Date(post.publishedAt || post.createdAt).toLocaleDateString('vi-VN')}</span>
                               </div>
                               <div className="flex items-center space-x-1">
                                 <Clock size={12} />
