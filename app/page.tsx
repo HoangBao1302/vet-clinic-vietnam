@@ -10,7 +10,6 @@ import LiveResults from "@/components/LiveResults";
 import ForexContact from "@/components/ForexContact";
 import Footer from "@/components/Footer";
 import StickyCallToAction from "@/components/StickyCallToAction";
-
 export default function Home() {
   return (
     <div className="min-h-screen">
@@ -28,5 +27,4 @@ export default function Home() {
       <StickyCallToAction />
     </div>
   );
-}
-
+} 
