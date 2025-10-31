@@ -1,10 +1,12 @@
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
-import { routing } from '@/routing';
+
+const locales = ['vi', 'en'] as const;
+type Locale = (typeof locales)[number];
 
 export function generateStaticParams() {
-  return routing.locales.map((locale) => ({ locale }));
+  return locales.map((locale) => ({ locale }));
 }
 
 export default async function LocaleLayout({
@@ -18,7 +20,7 @@ export default async function LocaleLayout({
   const { locale } = await params;
   
   // Validate locale
-  if (!routing.locales.includes(locale as any)) {
+  if (!locale || !locales.includes(locale as Locale)) {
     notFound();
   }
 
