@@ -5,7 +5,7 @@ export interface IUser extends mongoose.Document {
   username: string;
   email: string;
   password: string;
-  role: 'user' | 'admin';
+  role: 'user' | 'staff' | 'admin';
   membershipTier: 'free' | 'paid';
   isPaid: boolean;
   isActive: boolean;
@@ -65,7 +65,7 @@ const UserSchema = new Schema<IUser>(
     },
     role: {
       type: String,
-      enum: ['user', 'admin'],
+      enum: ['user', 'staff', 'admin'],
       default: 'user',
     },
     membershipTier: {
