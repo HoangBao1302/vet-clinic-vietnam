@@ -1,5 +1,14 @@
+import createMiddleware from 'next-intl/middleware';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { locales, defaultLocale } from './i18n';
+
+// Create next-intl middleware
+const intlMiddleware = createMiddleware({
+  locales,
+  defaultLocale,
+  localePrefix: 'always' // Always show locale in URL: /vi, /en
+});
 
 // Routes that require authentication
 const protectedRoutes = [
@@ -18,14 +27,9 @@ const paidOnlyRoutes = [
   '/members/community',
 ];
 
-// Admin only routes
+// Admin only routes - These should NOT have locale prefix
 const adminOnlyRoutes = [
   '/admin',
-  '/admin/affiliates',
-  '/admin/conversions',
-  '/admin/users',
-  '/admin/newsletter',
-  '/admin/licenses',
 ];
 
 // Staff can access blog management
@@ -37,40 +41,44 @@ const staffAllowedRoutes = [
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const token = request.cookies.get('token')?.value;
 
-  // Handle basic auth for admin license routes
-  if (pathname.startsWith('/admin/licenses')) {
-    const auth = request.headers.get("authorization") || "";
-    const [scheme, encoded] = auth.split(" ");
-    if (scheme !== "Basic" || !encoded) {
-      return new NextResponse("Auth required", {
-        status: 401,
-        headers: { "WWW-Authenticate": 'Basic realm="Admin Area"' }
-      });
+  // Exclude admin routes from locale routing - keep them as /admin (always Vietnamese)
+  if (pathname.startsWith('/admin')) {
+    // Handle basic auth for admin license routes
+    if (pathname.startsWith('/admin/licenses')) {
+      const auth = request.headers.get("authorization") || "";
+      const [scheme, encoded] = auth.split(" ");
+      if (scheme !== "Basic" || !encoded) {
+        return new NextResponse("Auth required", {
+          status: 401,
+          headers: { "WWW-Authenticate": 'Basic realm="Admin Area"' }
+        });
+      }
+
+      const [user, pass] = Buffer.from(encoded, "base64").toString().split(":");
+      if (user !== process.env.BASIC_AUTH_USER || pass !== process.env.BASIC_AUTH_PASS) {
+        return new NextResponse("Forbidden", { status: 403 });
+      }
+
+      return NextResponse.next();
     }
 
-    const [user, pass] = Buffer.from(encoded, "base64").toString().split(":");
-    if (user !== process.env.BASIC_AUTH_USER || pass !== process.env.BASIC_AUTH_PASS) {
-      return new NextResponse("Forbidden", { status: 403 });
-    }
-
+    // For other admin routes, let through (client-side will handle auth)
     return NextResponse.next();
   }
 
-  // Check if route requires authentication
-  const isProtectedRoute = protectedRoutes.some(route => pathname.startsWith(route));
-  const isPaidOnlyRoute = paidOnlyRoutes.some(route => pathname.startsWith(route));
-  const isAdminOnlyRoute = adminOnlyRoutes.some(route => pathname.startsWith(route));
-
-  // For protected routes, let client-side handle authentication
-  // This prevents middleware redirect loops when localStorage has token but cookie doesn't
-  if (isProtectedRoute || isPaidOnlyRoute || isAdminOnlyRoute) {
-    console.log('Protected route: Letting through to client-side auth check', { pathname });
+  // Exclude API routes, static files, etc.
+  if (
+    pathname.startsWith('/api') ||
+    pathname.startsWith('/_next') ||
+    pathname.startsWith('/favicon') ||
+    /\.(svg|png|jpg|jpeg|gif|webp|ico)$/.test(pathname)
+  ) {
     return NextResponse.next();
   }
 
-  return NextResponse.next();
+  // Apply next-intl middleware for all other routes
+  return intlMiddleware(request);
 }
 
 // Configure which routes use this middleware

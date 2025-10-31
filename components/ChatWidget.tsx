@@ -115,11 +115,19 @@ export default function ChatWidget() {
         }, 1000);
       } else if (reply.action === "live-results") {
         setTimeout(() => {
-          window.location.href = "/live-results";
+          // Get current locale from pathname or default to 'vi'
+          const currentPath = window.location.pathname;
+          const localeMatch = currentPath.match(/^\/(vi|en)/);
+          const locale = localeMatch ? localeMatch[1] : 'vi';
+          window.location.href = `/${locale}/live-results`;
         }, 2000);
       } else if (reply.action === "pricing") {
         setTimeout(() => {
-          window.location.href = "/pricing";
+          // Get current locale from pathname or default to 'vi'
+          const currentPath = window.location.pathname;
+          const localeMatch = currentPath.match(/^\/(vi|en)/);
+          const locale = localeMatch ? localeMatch[1] : 'vi';
+          window.location.href = `/${locale}/pricing`;
         }, 2000);
       }
     }, 800);

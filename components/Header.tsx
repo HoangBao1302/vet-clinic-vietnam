@@ -6,6 +6,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
 import { useAuth } from "@/lib/authContext";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { useLocale } from 'next-intl';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -15,6 +17,45 @@ export default function Header() {
   const router = useRouter();
   const pathname = usePathname();
   const { user, isAuthenticated, logout } = useAuth();
+  
+  // Get locale safely (may not be available in admin routes)
+  let locale = 'vi'; // default
+  try {
+    locale = useLocale();
+  } catch {
+    // If not in locale context (e.g., admin routes), use default
+    locale = 'vi';
+  }
+  
+  // Helper to create localized links
+  const localizeLink = (path: string): string => {
+    // Protected/admin routes don't need locale
+    if (
+      path.startsWith('/admin') ||
+      path.startsWith('/api') ||
+      path.startsWith('/affiliate') ||
+      path.startsWith('/profile') ||
+      path.startsWith('/login') ||
+      path.startsWith('/register')
+    ) {
+      return path;
+    }
+    
+    // Homepage
+    if (path === '/') {
+      return `/${locale}`;
+    }
+    
+    // Already has locale prefix
+    if (pathname.startsWith(`/${locale}`) || pathname.startsWith('/en') || pathname.startsWith('/vi')) {
+      const cleanPath = path.startsWith('/') ? path.slice(1) : path;
+      return `/${locale}/${cleanPath}`;
+    }
+    
+    // Regular paths
+    const cleanPath = path.startsWith('/') ? path.slice(1) : path;
+    return `/${locale}/${cleanPath}`;
+  };
 
   useEffect(() => {
     setIsClient(true);
@@ -129,7 +170,7 @@ export default function Header() {
       <div className="container-custom">
         <div className="flex justify-between items-center py-4">
           {/* Logo */}
-          <Link href="/" className="flex items-center hover:opacity-80 transition-opacity">
+          <Link href={`/${locale}`} className="flex items-center hover:opacity-80 transition-opacity">
             <Image 
               src="/BenchHeaderLogo.svg" 
               alt="EA Forex ThebenchmarkTrader" 
@@ -157,37 +198,37 @@ export default function Header() {
               Tính Năng
             </button>
             <Link
-              href="/pricing"
+              href={localizeLink("/pricing")}
               className="text-gray-700 hover:text-primary-600 transition-colors font-medium whitespace-nowrap"
             >
               Bảng Giá
             </Link>
             <Link
-              href="/downloads"
+              href={localizeLink("/downloads")}
               className="text-gray-700 hover:text-primary-600 transition-colors font-medium whitespace-nowrap"
             >
               Downloads
             </Link>
             <Link
-              href="/about"
+              href={localizeLink("/about")}
               className="text-gray-700 hover:text-primary-600 transition-colors font-medium whitespace-nowrap"
             >
               Về EA
             </Link>
             <Link
-              href="/live-results"
+              href={localizeLink("/live-results")}
               className="text-gray-700 hover:text-primary-600 transition-colors font-medium whitespace-nowrap"
             >
               Kết Quả Live
             </Link>
             <Link
-              href="/blog"
+              href={localizeLink("/blog")}
               className="text-gray-700 hover:text-primary-600 transition-colors font-medium whitespace-nowrap"
             >
               Blog
             </Link>
             <Link
-              href="/partners"
+              href={localizeLink("/partners")}
               className="text-gray-700 hover:text-primary-600 transition-colors font-medium whitespace-nowrap"
             >
               Đối Tác
@@ -262,6 +303,9 @@ export default function Header() {
               Liên Hệ
             </button>
 
+            {/* Language Switcher */}
+            <LanguageSwitcher />
+
             {/* User Menu / Login */}
             {isAuthenticated && user ? (
               <div className="relative user-menu">
@@ -327,7 +371,7 @@ export default function Header() {
                       onClick={() => {
                         logout();
                         setIsUserMenuOpen(false);
-                        router.push('/');
+                        router.push(`/${locale}`);
                       }}
                       className="flex items-center gap-2 w-full px-4 py-2 text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors"
                     >
@@ -377,42 +421,42 @@ export default function Header() {
                 Tính Năng
               </button>
               <Link
-                href="/pricing"
+                href={localizeLink("/pricing")}
                 className="text-left text-gray-700 hover:text-primary-600 transition-colors font-medium"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Bảng Giá
               </Link>
               <Link
-                href="/downloads"
+                href={localizeLink("/downloads")}
                 className="text-left text-gray-700 hover:text-primary-600 transition-colors font-medium"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Downloads
               </Link>
               <Link
-                href="/about"
+                href={localizeLink("/about")}
                 className="text-left text-gray-700 hover:text-primary-600 transition-colors font-medium"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Về EA
               </Link>
               <Link
-                href="/live-results"
+                href={localizeLink("/live-results")}
                 className="text-left text-gray-700 hover:text-primary-600 transition-colors font-medium"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Kết Quả Thực Tế
               </Link>
               <Link
-                href="/blog"
+                href={localizeLink("/blog")}
                 className="text-left text-gray-700 hover:text-primary-600 transition-colors font-medium"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Blog
               </Link>
               <Link
-                href="/partners"
+                href={localizeLink("/partners")}
                 className="text-left text-gray-700 hover:text-primary-600 transition-colors font-medium"
                 onClick={() => setIsMenuOpen(false)}
               >
@@ -511,7 +555,7 @@ export default function Header() {
                       onClick={() => {
                         logout();
                         setIsMenuOpen(false);
-                        router.push('/');
+                        router.push(`/${locale}`);
                       }}
                       className="flex items-center gap-2 text-red-600 hover:text-red-700 transition-colors font-medium"
                     >

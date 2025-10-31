@@ -53,7 +53,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="vi">
+    <html>
       <body className="antialiased">
         <AuthProvider>
           {children}

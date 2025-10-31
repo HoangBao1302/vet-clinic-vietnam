@@ -48,14 +48,30 @@ export default function ForexHero() {
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 animate-slide-up">
               <button 
-                onClick={() => isClient && (window.location.href = '/pricing#demo')}
+                onClick={() => {
+                  if (isClient) {
+                    // Get current locale from pathname or default to 'vi'
+                    const currentPath = window.location.pathname;
+                    const localeMatch = currentPath.match(/^\/(vi|en)/);
+                    const locale = localeMatch ? localeMatch[1] : 'vi';
+                    window.location.href = `/${locale}/pricing#demo`;
+                  }
+                }}
                 className="px-8 py-4 bg-white text-blue-900 rounded-lg font-semibold hover:bg-blue-50 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                 suppressHydrationWarning
               >
                 Dùng Thử Demo
               </button>
               <button 
-                onClick={() => isClient && (window.location.href = '/pricing#full')}
+                onClick={() => {
+                  if (isClient) {
+                    // Get current locale from pathname or default to 'vi'
+                    const currentPath = window.location.pathname;
+                    const localeMatch = currentPath.match(/^\/(vi|en)/);
+                    const locale = localeMatch ? localeMatch[1] : 'vi';
+                    window.location.href = `/${locale}/pricing#full`;
+                  }
+                }}
                 className="px-8 py-4 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 border border-blue-400"
                 suppressHydrationWarning
               >

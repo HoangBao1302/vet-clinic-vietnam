@@ -3,9 +3,18 @@
 import { useState, useEffect } from "react";
 import { ShoppingCart } from "lucide-react";
 import Link from "next/link";
+import { useLocale } from 'next-intl';
 
 export default function StickyCallToAction() {
   const [isClient, setIsClient] = useState(false);
+  
+  // Get locale safely
+  let locale = 'vi';
+  try {
+    locale = useLocale();
+  } catch {
+    locale = 'vi';
+  }
 
   useEffect(() => {
     setIsClient(true);
@@ -21,7 +30,7 @@ export default function StickyCallToAction() {
             </p>
           </div>
           <Link
-            href="/pricing#full"
+            href={`/${locale}/pricing#full`}
             className="flex items-center space-x-2 bg-white text-primary-600 px-6 py-2 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-200"
           >
             <ShoppingCart size={18} />
