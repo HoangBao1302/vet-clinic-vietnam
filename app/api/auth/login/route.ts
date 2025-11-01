@@ -42,16 +42,25 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check if email is verified
-    if (!user.emailVerified) {
-      return NextResponse.json(
-        { 
-          success: false, 
-          message: 'Vui lòng xác thực email trước khi đăng nhập. Kiểm tra email và click link xác thực.',
-          requiresVerification: true
-        },
-        { status: 403 }
-      );
+    // Check if email is verified (skip for admin/staff)
+    // Also skip for legacy users (created before email verification system - no verification token)
+    if (user.role !== 'admin' && user.role !== 'staff' && !user.emailVerified) {
+      // Check if this is a new user who needs verification (has verification token)
+      // Legacy users (no token) are considered verified for backward compatibility
+      if (user.emailVerificationToken) {
+        return NextResponse.json(
+          { 
+            success: false, 
+            message: 'Vui lòng xác thực email trước khi đăng nhập. Kiểm tra email và click link xác thực.',
+            requiresVerification: true
+          },
+          { status: 403 }
+        );
+      }
+      // Legacy user without verification token - auto-verify for backward compatibility
+      user.emailVerified = true;
+      await user.save();
+      console.log('✅ Auto-verified legacy user:', user.email);
     }
 
     // Verify password
