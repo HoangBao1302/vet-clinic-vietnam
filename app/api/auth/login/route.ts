@@ -42,6 +42,18 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Check if email is verified
+    if (!user.emailVerified) {
+      return NextResponse.json(
+        { 
+          success: false, 
+          message: 'Vui lòng xác thực email trước khi đăng nhập. Kiểm tra email và click link xác thực.',
+          requiresVerification: true
+        },
+        { status: 403 }
+      );
+    }
+
     // Verify password
     const isPasswordMatch = await user.comparePassword(password);
 

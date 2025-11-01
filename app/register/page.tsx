@@ -71,18 +71,30 @@ export default function RegisterPage() {
     
     if (!validateForm()) return;
 
-    // Execute reCAPTCHA before submit
-    if (recaptchaRef.current) {
+    // Execute reCAPTCHA before submit (only if site key is configured)
+    const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
+    if (siteKey && recaptchaRef.current) {
       try {
         await recaptchaRef.current.execute();
         // Wait a bit for token to be set
         await new Promise(resolve => setTimeout(resolve, 500));
+        
+        // Check if token was set
+        if (!recaptchaToken) {
+          setError('Vui lòng chờ xác thực bảo mật hoàn tất...');
+          return;
+        }
       } catch (error) {
         console.error('reCAPTCHA execution error:', error);
         setError('Lỗi xác thực bảo mật. Vui lòng thử lại.');
         return;
       }
+    } else if (!siteKey && process.env.NODE_ENV === 'production') {
+      // In production, require reCAPTCHA
+      setError('reCAPTCHA chưa được cấu hình. Vui lòng liên hệ admin.');
+      return;
     }
+    // In development, allow without reCAPTCHA if not configured
     
     setLoading(true);
     setError("");
@@ -108,12 +120,27 @@ export default function RegisterPage() {
         throw new Error(data.message || "Đăng ký thất bại");
       }
 
-      // Save to context and localStorage
-      login(data.token, data.user);
-
+      // DO NOT login if requires verification - user must verify email first
       if (data.requiresVerification) {
-        setSuccess("✅ Tài khoản đã được tạo! ⚠️ Vui lòng kiểm tra email và click link xác thực để kích hoạt tài khoản. Bạn chỉ có thể download demo và sử dụng dịch vụ sau khi xác thực email.");
+        setSuccess("✅ Tài khoản đã được tạo! ⚠️ Vui lòng kiểm tra email và click link xác thực để kích hoạt tài khoản. Bạn chỉ có thể đăng nhập và sử dụng dịch vụ sau khi xác thực email.");
+        // Clear form after successful registration
+        setFormData({
+          username: "",
+          email: "",
+          password: "",
+          confirmPassword: "",
+        });
+        setHoneypot("");
+        setRecaptchaToken(null);
+        // DO NOT login - redirect to login page after 5 seconds
+        setTimeout(() => {
+          router.push("/login?message=verify-email-required");
+        }, 5000);
       } else {
+        // Only login if verification not required (should not happen in normal flow)
+        if (data.token) {
+          login(data.token, data.user);
+        }
         setSuccess("Đăng ký thành công! Đang chuyển hướng...");
         setTimeout(() => {
           router.push("/");

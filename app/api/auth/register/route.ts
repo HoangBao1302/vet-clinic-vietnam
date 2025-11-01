@@ -136,13 +136,8 @@ export async function POST(request: NextRequest) {
       emailVerificationExpire,
     });
 
-    // Generate JWT token
-    const token = generateToken({
-      userId: user._id.toString(),
-      username: user.username,
-      email: user.email,
-      role: user.role,
-    });
+    // NOTE: DO NOT generate JWT token here - token will only be created AFTER email verification
+    // This ensures users cannot login/access services before verifying their email
 
     // Send email verification email (ONLY verification email - welcome email will be sent AFTER verification)
     const verifyUrl = `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/verify-email?token=${emailVerificationToken}`;
@@ -169,17 +164,17 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         success: true,
-        message: 'Tài khoản đã được tạo! Vui lòng kiểm tra email để xác thực tài khoản trước khi sử dụng dịch vụ.',
-        token,
+        message: 'Tài khoản đã được tạo! Vui lòng kiểm tra email để xác thực tài khoản trước khi đăng nhập và sử dụng dịch vụ.',
+        // NO TOKEN - user must verify email first
         user: {
           id: user._id,
           username: user.username,
           email: user.email,
           role: user.role,
-          emailVerified: user.emailVerified,
+          emailVerified: false,
         },
         requiresVerification: true,
-        accountActive: false, // Tài khoản chưa được kích hoạt
+        accountActive: false, // Tài khoản chưa được kích hoạt - chưa thể đăng nhập
       },
       { status: 201 }
     );
