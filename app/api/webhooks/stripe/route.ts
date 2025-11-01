@@ -127,7 +127,7 @@ export async function POST(request: NextRequest) {
         customerEmail: session.customer_email,
         customerName: session.metadata?.customerName || 'Unknown Customer',
         customerPhone: session.metadata?.customerPhone || '',
-        amount: session.amount_total,
+        amount: Math.round(amountVND * 100), // Convert VND to cents for storage
         paymentMethod: "stripe",
         createdAt: new Date(),
         paidAt: new Date(),
@@ -286,12 +286,12 @@ export async function POST(request: NextRequest) {
             };
 
             const commissionRate = commissionRates[session.metadata?.productId as keyof typeof commissionRates] || 0.30;
-            const commissionAmount = Math.round(session.amount_total * commissionRate);
+            const commissionAmount = Math.round(amountVND * 100 * commissionRate);
 
             console.log('💰 Commission calculation:', {
               productId: session.metadata?.productId,
               commissionRate,
-              amount: session.amount_total,
+              amount: amountVND * 100,
               commissionAmount
             });
 
