@@ -15,7 +15,55 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { username, email, password } = await request.json();
+    const { username, email, password, recaptchaToken, honeypot } = await request.json();
+
+    // Honeypot check - if filled, it's a bot
+    if (honeypot && honeypot.trim() !== '') {
+      console.warn('🚫 Bot detected via honeypot field');
+      return NextResponse.json(
+        { success: false, message: 'Invalid request' },
+        { status: 400 }
+      );
+    }
+
+    // reCAPTCHA verification
+    if (recaptchaToken) {
+      try {
+        const recaptchaResponse = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/api/verify-recaptcha`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token: recaptchaToken }),
+        });
+
+        const recaptchaData = await recaptchaResponse.json();
+
+        if (!recaptchaData.success) {
+          console.warn('🚫 reCAPTCHA verification failed:', recaptchaData.message);
+          return NextResponse.json(
+            { success: false, message: 'reCAPTCHA verification failed. Please try again.' },
+            { status: 403 }
+          );
+        }
+
+        console.log('✅ reCAPTCHA verified - Score:', recaptchaData.score);
+      } catch (recaptchaError) {
+        console.error('reCAPTCHA verification error:', recaptchaError);
+        // In development, allow if reCAPTCHA is not configured
+        if (process.env.NODE_ENV !== 'development') {
+          return NextResponse.json(
+            { success: false, message: 'Security verification failed. Please try again.' },
+            { status: 500 }
+          );
+        }
+      }
+    } else if (process.env.NODE_ENV === 'production') {
+      // Require reCAPTCHA in production
+      console.warn('🚫 Missing reCAPTCHA token in production');
+      return NextResponse.json(
+        { success: false, message: 'Security verification required' },
+        { status: 400 }
+      );
+    }
 
     // Validation
     if (!username || !email || !password) {

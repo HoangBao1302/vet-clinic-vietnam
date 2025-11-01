@@ -1,16 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/lib/authContext";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { UserPlus, Mail, Lock, User, AlertCircle, CheckCircle, Eye, EyeOff } from "lucide-react";
+import ReCaptcha, { ReCaptchaRef } from "@/components/ReCaptcha";
+import HoneypotField from "@/components/HoneypotField";
 
 export default function RegisterPage() {
   const router = useRouter();
   const { login } = useAuth();
+  const recaptchaRef = useRef<ReCaptchaRef>(null);
   
   const [formData, setFormData] = useState({
     username: "",
@@ -19,6 +22,8 @@ export default function RegisterPage() {
     confirmPassword: "",
   });
   
+  const [honeypot, setHoneypot] = useState("");
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -57,10 +62,27 @@ export default function RegisterPage() {
     return true;
   };
 
+  const handleRecaptchaVerify = (token: string) => {
+    setRecaptchaToken(token);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!validateForm()) return;
+
+    // Execute reCAPTCHA before submit
+    if (recaptchaRef.current) {
+      try {
+        await recaptchaRef.current.execute();
+        // Wait a bit for token to be set
+        await new Promise(resolve => setTimeout(resolve, 500));
+      } catch (error) {
+        console.error('reCAPTCHA execution error:', error);
+        setError('Lỗi xác thực bảo mật. Vui lòng thử lại.');
+        return;
+      }
+    }
     
     setLoading(true);
     setError("");
@@ -75,6 +97,8 @@ export default function RegisterPage() {
           username: formData.username,
           email: formData.email,
           password: formData.password,
+          recaptchaToken,
+          honeypot,
         }),
       });
 
@@ -258,6 +282,26 @@ export default function RegisterPage() {
                   </Link>
                 </label>
               </div>
+
+              {/* Honeypot Field - Hidden from users, visible to bots */}
+              <HoneypotField 
+                value={honeypot}
+                onChange={setHoneypot}
+                name="website"
+              />
+
+              {/* Google reCAPTCHA v3 - Invisible */}
+              {process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY && (
+                <ReCaptcha
+                  ref={recaptchaRef}
+                  siteKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+                  onVerify={handleRecaptchaVerify}
+                  onError={(error) => {
+                    console.error('reCAPTCHA error:', error);
+                    setError('Lỗi xác thực bảo mật. Vui lòng làm mới trang và thử lại.');
+                  }}
+                />
+              )}
 
               <button
                 type="submit"
