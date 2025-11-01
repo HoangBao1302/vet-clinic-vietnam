@@ -511,7 +511,7 @@ export async function POST(request: NextRequest) {
                   affiliateCode: finalAffiliateCode,
                   affiliateEmail: affiliate.email,
                   customerEmail: payerEmail,
-                  orderId: captureId || orderId,
+                  orderId: orderId,
                   action: 'Commission blocked - self-referral detected'
                 });
                 
@@ -525,7 +525,7 @@ export async function POST(request: NextRequest) {
                     {
                       $set: {
                         convertedAt: new Date(),
-                        orderId: captureId || orderId,
+                        orderId: orderId,
                         commissionAmount: 0, // No commission for self-referral
                         productId: productId,
                         productName: productNames[productId] || 'Unknown Product',
