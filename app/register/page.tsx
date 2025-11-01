@@ -112,7 +112,7 @@ export default function RegisterPage() {
       login(data.token, data.user);
 
       if (data.requiresVerification) {
-        setSuccess("Đăng ký thành công! Vui lòng kiểm tra email để xác thực tài khoản trước khi download demo.");
+        setSuccess("✅ Tài khoản đã được tạo! ⚠️ Vui lòng kiểm tra email và click link xác thực để kích hoạt tài khoản. Bạn chỉ có thể download demo và sử dụng dịch vụ sau khi xác thực email.");
       } else {
         setSuccess("Đăng ký thành công! Đang chuyển hướng...");
         setTimeout(() => {

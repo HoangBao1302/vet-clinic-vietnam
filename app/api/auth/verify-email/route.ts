@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import User from '@/lib/models/User';
 import { generateToken } from '@/lib/auth';
+import { sendEmail, getWelcomeEmail } from '@/lib/email';
 
 export async function GET(request: NextRequest) {
   try {
@@ -49,6 +50,24 @@ export async function GET(request: NextRequest) {
     await user.save();
 
     console.log('✅ Email verified for user:', user.email);
+
+    // Send welcome email AFTER verification
+    try {
+      const welcomeResult = await sendEmail({
+        to: user.email,
+        subject: '🎉 Chào mừng đến với EA Forex ThebenchmarkTrader!',
+        html: getWelcomeEmail(user.username),
+      });
+
+      if (welcomeResult.success) {
+        console.log('✅ Welcome email sent successfully to:', user.email);
+      } else {
+        console.error('⚠️ Welcome email failed to send to:', user.email);
+      }
+    } catch (emailError) {
+      console.error('❌ Error sending welcome email:', emailError);
+      // Non-critical, continue
+    }
 
     // Generate JWT token for auto-login
     const jwtToken = generateToken({

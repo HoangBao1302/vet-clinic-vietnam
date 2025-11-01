@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import User from '@/lib/models/User';
 import { generateToken } from '@/lib/auth';
-import { sendEmail, getWelcomeEmail, getEmailVerificationEmail } from '@/lib/email';
+import { sendEmail, getEmailVerificationEmail } from '@/lib/email';
 import { registerLimiter, getClientIP } from '@/lib/rateLimit';
 
 export async function POST(request: NextRequest) {
@@ -144,7 +144,7 @@ export async function POST(request: NextRequest) {
       role: user.role,
     });
 
-    // Send email verification email
+    // Send email verification email (ONLY verification email - welcome email will be sent AFTER verification)
     const verifyUrl = `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/verify-email?token=${emailVerificationToken}`;
     
     try {
@@ -164,26 +164,12 @@ export async function POST(request: NextRequest) {
       // Continue even if email fails - user is already registered
     }
 
-    // Also send welcome email after verification
-    try {
-      const welcomeResult = await sendEmail({
-        to: user.email,
-        subject: 'Chào mừng đến với EA Forex ThebenchmarkTrader!',
-        html: getWelcomeEmail(user.username),
-      });
-
-      if (welcomeResult.success) {
-        console.log('✅ Welcome email sent successfully to:', user.email);
-      }
-    } catch (emailError) {
-      console.error('❌ Error sending welcome email:', emailError);
-      // Non-critical, continue
-    }
+    // NOTE: Welcome email will be sent AFTER email verification (in verify-email route)
 
     return NextResponse.json(
       {
         success: true,
-        message: 'Đăng ký thành công! Vui lòng kiểm tra email để xác thực tài khoản.',
+        message: 'Tài khoản đã được tạo! Vui lòng kiểm tra email để xác thực tài khoản trước khi sử dụng dịch vụ.',
         token,
         user: {
           id: user._id,
@@ -193,6 +179,7 @@ export async function POST(request: NextRequest) {
           emailVerified: user.emailVerified,
         },
         requiresVerification: true,
+        accountActive: false, // Tài khoản chưa được kích hoạt
       },
       { status: 201 }
     );
