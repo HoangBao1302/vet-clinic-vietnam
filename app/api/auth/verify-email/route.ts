@@ -33,48 +33,115 @@ export async function GET(request: NextRequest) {
 
     // Check if already verified
     if (user.emailVerified) {
+      console.log('✅ Email already verified for user:', user.email);
+      // Generate token even if already verified (for auto-login)
+      const jwtToken = generateToken({
+        userId: user._id.toString(),
+        username: user.username,
+        email: user.email,
+        role: user.role,
+      });
+      
       return NextResponse.json(
         { 
           success: true, 
           message: 'Email đã được xác thực trước đó',
-          alreadyVerified: true
+          alreadyVerified: true,
+          token: jwtToken, // Provide token for auto-login
+          user: {
+            id: user._id,
+            username: user.username,
+            email: user.email,
+            role: user.role,
+            emailVerified: true,
+          },
         },
         { status: 200 }
       );
     }
 
-    // Verify email
-    user.emailVerified = true;
-    user.emailVerificationToken = undefined;
-    user.emailVerificationExpire = undefined;
-    await user.save();
-
-    console.log('✅ Email verified for user:', user.email);
-
-    // Send welcome email AFTER verification
-    try {
-      const welcomeResult = await sendEmail({
-        to: user.email,
-        subject: '🎉 Chào mừng đến với EA Forex ThebenchmarkTrader!',
-        html: getWelcomeEmail(user.username),
-      });
-
-      if (welcomeResult.success) {
-        console.log('✅ Welcome email sent successfully to:', user.email);
-      } else {
-        console.error('⚠️ Welcome email failed to send to:', user.email);
+    // Verify email - use findOneAndUpdate for atomic operation
+    const updatedUser = await User.findOneAndUpdate(
+      {
+        _id: user._id,
+        emailVerificationToken: token,
+        emailVerificationExpire: { $gt: new Date() },
+        emailVerified: false, // Double check not already verified
+      },
+      {
+        $set: {
+          emailVerified: true,
+        },
+        $unset: {
+          emailVerificationToken: '',
+          emailVerificationExpire: '',
+        },
+      },
+      {
+        new: true, // Return updated document
       }
-    } catch (emailError) {
+    );
+
+    if (!updatedUser) {
+      // Race condition: another request already verified
+      console.log('⚠️ Race condition: Email already verified by another request');
+      const alreadyVerifiedUser = await User.findById(user._id);
+      if (alreadyVerifiedUser?.emailVerified) {
+        const jwtToken = generateToken({
+          userId: alreadyVerifiedUser._id.toString(),
+          username: alreadyVerifiedUser.username,
+          email: alreadyVerifiedUser.email,
+          role: alreadyVerifiedUser.role,
+        });
+        
+        return NextResponse.json(
+          { 
+            success: true, 
+            message: 'Email đã được xác thực thành công',
+            alreadyVerified: true,
+            token: jwtToken,
+            user: {
+              id: alreadyVerifiedUser._id,
+              username: alreadyVerifiedUser.username,
+              email: alreadyVerifiedUser.email,
+              role: alreadyVerifiedUser.role,
+              emailVerified: true,
+            },
+          },
+          { status: 200 }
+        );
+      }
+      
+      return NextResponse.json(
+        { success: false, message: 'Token không hợp lệ hoặc đã hết hạn' },
+        { status: 400 }
+      );
+    }
+
+    console.log('✅ Email verified for user:', updatedUser.email);
+
+    // Send welcome email AFTER verification (async, don't wait)
+    sendEmail({
+      to: updatedUser.email,
+      subject: '🎉 Chào mừng đến với EA Forex ThebenchmarkTrader!',
+      html: getWelcomeEmail(updatedUser.username),
+    }).then((welcomeResult) => {
+      if (welcomeResult.success) {
+        console.log('✅ Welcome email sent successfully to:', updatedUser.email);
+      } else {
+        console.error('⚠️ Welcome email failed to send to:', updatedUser.email);
+      }
+    }).catch((emailError) => {
       console.error('❌ Error sending welcome email:', emailError);
       // Non-critical, continue
-    }
+    });
 
     // Generate JWT token for auto-login
     const jwtToken = generateToken({
-      userId: user._id.toString(),
-      username: user.username,
-      email: user.email,
-      role: user.role,
+      userId: updatedUser._id.toString(),
+      username: updatedUser.username,
+      email: updatedUser.email,
+      role: updatedUser.role,
     });
 
     return NextResponse.json(
@@ -83,11 +150,11 @@ export async function GET(request: NextRequest) {
         message: 'Email đã được xác thực thành công!',
         token: jwtToken,
         user: {
-          id: user._id,
-          username: user.username,
-          email: user.email,
-          role: user.role,
-          emailVerified: user.emailVerified,
+          id: updatedUser._id,
+          username: updatedUser.username,
+          email: updatedUser.email,
+          role: updatedUser.role,
+          emailVerified: true,
         },
       },
       { status: 200 }

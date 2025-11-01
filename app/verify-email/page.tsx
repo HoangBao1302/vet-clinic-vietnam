@@ -16,6 +16,7 @@ function VerifyEmailContent() {
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
   const [message, setMessage] = useState('');
   const [autoRedirect, setAutoRedirect] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
 
   useEffect(() => {
     const token = searchParams.get('token');
@@ -26,9 +27,10 @@ function VerifyEmailContent() {
       return;
     }
 
-    // Verify email
-    fetch(`/api/auth/verify-email?token=${token}`)
-      .then(async (res) => {
+    // Verify email with retry logic
+    const verifyEmail = async (attempt = 0) => {
+      try {
+        const res = await fetch(`/api/auth/verify-email?token=${token}`);
         const data = await res.json();
         
         if (res.ok && data.success) {
@@ -40,21 +42,65 @@ function VerifyEmailContent() {
             login(data.token, data.user);
             setAutoRedirect(true);
             
-            // Redirect after 3 seconds
+            // Redirect after 2 seconds (faster)
             setTimeout(() => {
               router.push('/');
-            }, 3000);
+            }, 2000);
           }
         } else {
+          // Check if already verified (user clicked link multiple times)
+          if (data.alreadyVerified) {
+            setStatus('success');
+            setMessage('Email đã được xác thực trước đó! Đang tự động đăng nhập...');
+            
+            // Auto-login if token provided (even for already verified)
+            if (data.token && data.user) {
+              login(data.token, data.user);
+              setAutoRedirect(true);
+              setTimeout(() => {
+                router.push('/');
+              }, 2000);
+            } else {
+              // Fallback: redirect to login
+              setTimeout(() => {
+                router.push('/login?verified=true');
+              }, 3000);
+            }
+            return;
+          }
+
+          // Retry logic for transient errors (network, DB connection)
+          if (attempt < 2 && (res.status >= 500 || res.status === 0)) {
+            console.log(`Retry attempt ${attempt + 1}...`);
+            setRetryCount(attempt + 1);
+            setTimeout(() => {
+              verifyEmail(attempt + 1);
+            }, 1000 * (attempt + 1)); // Exponential backoff: 1s, 2s
+            return;
+          }
+
           setStatus('error');
           setMessage(data.message || 'Xác thực email thất bại');
         }
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error('Verify email error:', error);
+        
+        // Retry on network errors
+        if (attempt < 2) {
+          console.log(`Retry attempt ${attempt + 1} due to network error...`);
+          setRetryCount(attempt + 1);
+          setTimeout(() => {
+            verifyEmail(attempt + 1);
+          }, 1000 * (attempt + 1));
+          return;
+        }
+
         setStatus('error');
-        setMessage('Đã xảy ra lỗi khi xác thực email');
-      });
+        setMessage('Đã xảy ra lỗi khi xác thực email. Vui lòng thử lại sau.');
+      }
+    };
+
+    verifyEmail();
   }, [searchParams, login, router]);
 
   return (
@@ -71,7 +117,9 @@ function VerifyEmailContent() {
                   Đang xác thực...
                 </h1>
                 <p className="text-gray-600">
-                  Vui lòng chờ trong giây lát
+                  {retryCount > 0 
+                    ? `Đang thử lại lần ${retryCount + 1}...` 
+                    : 'Vui lòng chờ trong giây lát'}
                 </p>
               </div>
             )}
