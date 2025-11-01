@@ -542,7 +542,8 @@ export async function POST(request: NextRequest) {
                 }
                 
                 // DO NOT credit commission - exit early
-                continue; // Skip to next item
+                // Skip commission processing for self-referral
+                return; // Exit the affiliate processing block
               }
 
               console.log('✅ Affiliate found (PayPal):', {
