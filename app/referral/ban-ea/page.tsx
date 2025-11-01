@@ -3,12 +3,14 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import StickyCallToAction from "@/components/StickyCallToAction";
+import AuthProtected from "@/components/AuthProtected";
 import { TrendingUp, DollarSign, CheckCircle, Clock, Users, BarChart3, Gift, ArrowRight, Star } from "lucide-react";
 import Link from "next/link";
 
 export default function BanEAPage() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <AuthProtected>
+      <div className="min-h-screen bg-gray-50">
       <Header />
       
       <main>
@@ -338,7 +340,8 @@ export default function BanEAPage() {
 
       <Footer />
       <StickyCallToAction />
-    </div>
+      </div>
+    </AuthProtected>
   );
 }
 

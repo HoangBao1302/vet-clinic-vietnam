@@ -261,10 +261,55 @@ export async function POST(request: NextRequest) {
           });
 
           if (affiliate) {
+            // CRITICAL: Prevent self-referral - Block commission if customer is the affiliate
+            const customerEmail = session.customer_email?.toLowerCase().trim();
+            const affiliateEmail = affiliate.email?.toLowerCase().trim();
+            
+            if (customerEmail && affiliateEmail && customerEmail === affiliateEmail) {
+              console.warn(`🚫 SELF-REFERRAL BLOCKED: Affiliate tried to buy through their own link`, {
+                affiliateCode,
+                affiliateEmail: affiliate.email,
+                customerEmail: session.customer_email,
+                orderId: session.id,
+                action: 'Commission blocked - self-referral detected'
+              });
+              
+              // Still track the conversion but with $0 commission
+              try {
+                await AffiliateClick.findOneAndUpdate(
+                  { 
+                    affiliateCode,
+                    status: 'clicked'
+                  },
+                  {
+                    $set: {
+                      convertedAt: new Date(),
+                      orderId: session.id,
+                      commissionAmount: 0, // No commission for self-referral
+                      productId: session.metadata?.productId,
+                      productName: session.metadata?.productName || 'Unknown Product',
+                      customerEmail: session.customer_email,
+                      customerName: session.metadata?.customerName,
+                      status: 'converted',
+                      selfReferral: true, // Flag for monitoring
+                    },
+                  },
+                  { sort: { clickedAt: -1 }, new: true }
+                );
+              } catch (trackError) {
+                console.error('❌ Error tracking self-referral:', trackError);
+              }
+              
+              // DO NOT credit commission - exit early
+              return;
+            }
+
             console.log('✅ Affiliate found:', {
               email: affiliate.email,
               affiliateCode: affiliate.affiliateCode,
-              isPaid: affiliate.isPaid
+              isPaid: affiliate.isPaid,
+              customerEmail: session.customer_email,
+              selfReferralCheck: 'PASSED'
             });
 
             // Calculate commission

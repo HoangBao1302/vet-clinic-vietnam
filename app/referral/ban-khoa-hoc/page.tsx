@@ -3,12 +3,14 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import StickyCallToAction from "@/components/StickyCallToAction";
+import AuthProtected from "@/components/AuthProtected";
 import { GraduationCap, DollarSign, CheckCircle, BookOpen, Video, FileText, Gift, ArrowRight, Star, Trophy } from "lucide-react";
 import Link from "next/link";
 
 export default function BanKhoaHocPage() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <AuthProtected>
+      <div className="min-h-screen bg-gray-50">
       <Header />
       
       <main>
@@ -330,7 +332,8 @@ export default function BanKhoaHocPage() {
 
       <Footer />
       <StickyCallToAction />
-    </div>
+      </div>
+    </AuthProtected>
   );
 }
 

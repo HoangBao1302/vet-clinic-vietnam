@@ -502,6 +502,57 @@ export async function POST(request: NextRequest) {
             });
 
             if (affiliate) {
+              // CRITICAL: Prevent self-referral - Block commission if customer is the affiliate
+              const customerEmail = payerEmail?.toLowerCase().trim();
+              const affiliateEmail = affiliate.email?.toLowerCase().trim();
+              
+              if (customerEmail && affiliateEmail && customerEmail === affiliateEmail) {
+                console.warn(`🚫 SELF-REFERRAL BLOCKED (PayPal): Affiliate tried to buy through their own link`, {
+                  affiliateCode: finalAffiliateCode,
+                  affiliateEmail: affiliate.email,
+                  customerEmail: payerEmail,
+                  orderId: captureId || orderId,
+                  action: 'Commission blocked - self-referral detected'
+                });
+                
+                // Still track the conversion but with $0 commission
+                try {
+                  await AffiliateClick.findOneAndUpdate(
+                    { 
+                      affiliateCode: finalAffiliateCode,
+                      status: 'clicked'
+                    },
+                    {
+                      $set: {
+                        convertedAt: new Date(),
+                        orderId: captureId || orderId,
+                        commissionAmount: 0, // No commission for self-referral
+                        productId: productId,
+                        productName: productNames[productId] || 'Unknown Product',
+                        customerEmail: payerEmail,
+                        customerName: payerName || 'Unknown',
+                        status: 'converted',
+                        selfReferral: true, // Flag for monitoring
+                      },
+                    },
+                    { sort: { clickedAt: -1 }, new: true }
+                  );
+                } catch (trackError) {
+                  console.error('❌ Error tracking self-referral (PayPal):', trackError);
+                }
+                
+                // DO NOT credit commission - exit early
+                continue; // Skip to next item
+              }
+
+              console.log('✅ Affiliate found (PayPal):', {
+                email: affiliate.email,
+                affiliateCode: finalAffiliateCode,
+                isPaid: affiliate.isPaid,
+                customerEmail: payerEmail,
+                selfReferralCheck: 'PASSED'
+              });
+
               // Calculate commission with MT4/MT5 support
               const commissionRates: Record<string, number> = {
                 // MT4 Products
