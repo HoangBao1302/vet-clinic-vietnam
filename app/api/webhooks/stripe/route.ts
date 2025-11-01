@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
       let productName = session.metadata?.productName || 'Unknown Product';
       
       // Amount in VND (Stripe stores in smallest currency unit - cents for VND)
-      const amountVND = session.amount_total / 100;
+      let amountVND = session.amount_total / 100;
       
       console.log('🔍 Stripe Webhook ProductID Detection:', {
         productId,
