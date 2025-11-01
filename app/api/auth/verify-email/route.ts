@@ -26,7 +26,11 @@ export async function GET(request: NextRequest) {
 
     if (!user) {
       return NextResponse.json(
-        { success: false, message: 'Token không hợp lệ hoặc đã hết hạn' },
+        { 
+          success: false, 
+          message: 'Link xác thực không hợp lệ hoặc đã hết hạn. Vui lòng đăng ký lại hoặc yêu cầu gửi lại email xác thực.',
+          invalidToken: true
+        },
         { status: 400 }
       );
     }
@@ -113,7 +117,11 @@ export async function GET(request: NextRequest) {
       }
       
       return NextResponse.json(
-        { success: false, message: 'Token không hợp lệ hoặc đã hết hạn' },
+        { 
+          success: false, 
+          message: 'Link xác thực không hợp lệ hoặc đã hết hạn. Email có thể đã được xác thực trước đó hoặc link đã hết hạn (24 giờ). Vui lòng đăng nhập hoặc yêu cầu gửi lại email xác thực.',
+          invalidToken: true
+        },
         { status: 400 }
       );
     }

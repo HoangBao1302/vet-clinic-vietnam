@@ -70,7 +70,9 @@ function VerifyEmailContent() {
           }
 
           // Retry logic for transient errors (network, DB connection)
-          if (attempt < 2 && (res.status >= 500 || res.status === 0)) {
+          // Only retry for server errors (5xx) or network errors (status 0)
+          // Don't retry for client errors (4xx) like invalid token
+          if (attempt < 2 && (res.status >= 500 || res.status === 0) && !data.invalidToken) {
             console.log(`Retry attempt ${attempt + 1}...`);
             setRetryCount(attempt + 1);
             setTimeout(() => {
@@ -79,6 +81,7 @@ function VerifyEmailContent() {
             return;
           }
 
+          // Show error message
           setStatus('error');
           setMessage(data.message || 'Xác thực email thất bại');
         }

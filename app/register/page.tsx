@@ -24,6 +24,7 @@ export default function RegisterPage() {
   
   const [honeypot, setHoneypot] = useState("");
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
+  const recaptchaTokenRef = useRef<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -64,6 +65,7 @@ export default function RegisterPage() {
 
   const handleRecaptchaVerify = (token: string) => {
     setRecaptchaToken(token);
+    recaptchaTokenRef.current = token;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -71,33 +73,45 @@ export default function RegisterPage() {
     
     if (!validateForm()) return;
 
-    // Execute reCAPTCHA before submit (only if site key is configured)
+    setLoading(true);
+    setError("");
+
+    // Execute reCAPTCHA if needed (only if site key is configured)
     const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
-    if (siteKey && recaptchaRef.current) {
-      try {
-        await recaptchaRef.current.execute();
-        // Wait a bit for token to be set
-        await new Promise(resolve => setTimeout(resolve, 500));
-        
-        // Check if token was set
-        if (!recaptchaToken) {
-          setError('Vui lòng chờ xác thực bảo mật hoàn tất...');
+    if (siteKey) {
+      // If token not ready, execute now and wait for callback
+      if (!recaptchaTokenRef.current && recaptchaRef.current) {
+        try {
+          // Execute reCAPTCHA
+          await recaptchaRef.current.execute();
+          
+          // Wait for token to be set via callback (check ref, not state)
+          let attempts = 0;
+          while (!recaptchaTokenRef.current && attempts < 20) {
+            await new Promise(resolve => setTimeout(resolve, 100));
+            attempts++;
+          }
+          
+          // Check if token was received
+          if (!recaptchaTokenRef.current) {
+            setLoading(false);
+            setError('Vui lòng chờ xác thực bảo mật hoàn tất. Nếu vẫn gặp lỗi, vui lòng làm mới trang.');
+            return;
+          }
+        } catch (error) {
+          console.error('reCAPTCHA execution error:', error);
+          setLoading(false);
+          setError('Lỗi xác thực bảo mật. Vui lòng làm mới trang và thử lại.');
           return;
         }
-      } catch (error) {
-        console.error('reCAPTCHA execution error:', error);
-        setError('Lỗi xác thực bảo mật. Vui lòng thử lại.');
-        return;
       }
-    } else if (!siteKey && process.env.NODE_ENV === 'production') {
+    } else if (process.env.NODE_ENV === 'production') {
       // In production, require reCAPTCHA
+      setLoading(false);
       setError('reCAPTCHA chưa được cấu hình. Vui lòng liên hệ admin.');
       return;
     }
     // In development, allow without reCAPTCHA if not configured
-    
-    setLoading(true);
-    setError("");
 
     try {
       const response = await fetch("/api/auth/register", {
@@ -109,7 +123,7 @@ export default function RegisterPage() {
           username: formData.username,
           email: formData.email,
           password: formData.password,
-          recaptchaToken,
+          recaptchaToken: recaptchaTokenRef.current || recaptchaToken,
           honeypot,
         }),
       });
