@@ -111,12 +111,14 @@ export default function RegisterPage() {
       // Save to context and localStorage
       login(data.token, data.user);
 
-      setSuccess("Đăng ký thành công! Đang chuyển hướng...");
-      
-      // Redirect to homepage after 1 second
-      setTimeout(() => {
-        router.push("/");
-      }, 1000);
+      if (data.requiresVerification) {
+        setSuccess("Đăng ký thành công! Vui lòng kiểm tra email để xác thực tài khoản trước khi download demo.");
+      } else {
+        setSuccess("Đăng ký thành công! Đang chuyển hướng...");
+        setTimeout(() => {
+          router.push("/");
+        }, 2000);
+      }
     } catch (err: any) {
       setError(err.message);
     } finally {

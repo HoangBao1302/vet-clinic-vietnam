@@ -9,6 +9,9 @@ export interface IUser extends mongoose.Document {
   membershipTier: 'free' | 'paid';
   isPaid: boolean;
   isActive: boolean;
+  emailVerified: boolean;
+  emailVerificationToken?: string;
+  emailVerificationExpire?: Date;
   resetPasswordToken?: string;
   resetPasswordExpire?: Date;
   premiumPostsReadThisMonth: number;
@@ -81,6 +84,12 @@ const UserSchema = new Schema<IUser>(
       type: Boolean,
       default: true,
     },
+    emailVerified: {
+      type: Boolean,
+      default: false,
+    },
+    emailVerificationToken: String,
+    emailVerificationExpire: Date,
     resetPasswordToken: String,
     resetPasswordExpire: Date,
     premiumPostsReadThisMonth: {

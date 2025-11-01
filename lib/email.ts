@@ -151,6 +151,60 @@ export function getWelcomeEmail(username: string) {
   `;
 }
 
+// Email verification template
+export function getEmailVerificationEmail(verifyUrl: string, username: string) {
+  return `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+        .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; }
+        .warning { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px; margin: 20px 0; }
+        .button { display: inline-block; padding: 12px 30px; background: #10b981; color: white; text-decoration: none; border-radius: 5px; margin: 20px 0; }
+        .footer { text-align: center; margin-top: 30px; font-size: 12px; color: #666; }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="header">
+          <h1>✅ Xác Thực Email Của Bạn</h1>
+        </div>
+        <div class="content">
+          <p>Xin chào <strong>${username}</strong>,</p>
+          <p>Cảm ơn bạn đã đăng ký tài khoản!</p>
+          
+          <div class="warning">
+            <p><strong>⚠️ Vui lòng xác thực email để:</strong></p>
+            <ul style="margin: 10px 0;">
+              <li>Download EA Demo miễn phí</li>
+              <li>Truy cập đầy đủ tính năng</li>
+              <li>Nhận thông báo quan trọng</li>
+            </ul>
+          </div>
+
+          <p>Click vào nút bên dưới để xác thực email của bạn:</p>
+          <center>
+            <a href="${verifyUrl}" class="button">Xác Thực Email Ngay</a>
+          </center>
+          
+          <p><small>Hoặc copy link sau vào trình duyệt:<br>${verifyUrl}</small></p>
+          
+          <p><strong>⏰ Link này sẽ hết hạn sau 24 giờ.</strong></p>
+          
+          <p>Nếu bạn không đăng ký tài khoản này, vui lòng bỏ qua email này.</p>
+        </div>
+        <div class="footer">
+          <p>&copy; 2025 EA Forex ThebenchmarkTrader. All rights reserved.</p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+}
+
 // Affiliate approval email
 export function getAffiliateApprovalEmail(username: string, affiliateCode: string) {
   return `

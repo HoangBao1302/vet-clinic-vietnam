@@ -46,6 +46,17 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Check email verification for demo downloads
+    if (fileType === 'ea-demo' && !user.emailVerified) {
+      return NextResponse.json(
+        { 
+          message: 'Vui lòng xác thực email để download EA Demo. Kiểm tra email và click link xác thực.',
+          requiresVerification: true
+        },
+        { status: 403 }
+      );
+    }
+
     // Check download limits
     if (fileType === 'ea-demo' && user.downloadsThisMonth.eaDemo >= 1 && !user.isPaid) {
       return NextResponse.json(
