@@ -491,6 +491,24 @@ export async function POST(request: NextRequest) {
           fallbackUsed: !affiliateCode || affiliateCode === ''
         });
 
+        // Get product name with MT4/MT5 distinction (shared for affiliate processing)
+        const productNamesForAffiliate: Record<string, string> = {
+          // MT4 Products
+          'indicator-pro-mt4': 'Multi-Indicator Pro Pack (MT4)',
+          'ea-full-mt4': 'EA ThebenchmarkTrader Full Version (MT4)',
+          'ea-pro-source-mt4': 'EA ThebenchmarkTrader Pro + Source Code (MT4)',
+          // MT5 Products
+          'indicator-pro-mt5': 'Multi-Indicator Pro Pack (MT5)',
+          'ea-full-mt5': 'EA ThebenchmarkTrader Full Version (MT5)',
+          'ea-pro-source-mt5': 'EA ThebenchmarkTrader Pro + Source Code (MT5)',
+          // Legacy products
+          'ea-full': 'EA ThebenchmarkTrader Full Version',
+          'ea-pro-source': 'EA Pro + Source Code',
+          'indicator-pro': 'Multi-Indicator Pro Pack',
+          'course': 'Khóa học Forex Trading',
+          'social-copy': 'Copy Social Trading',
+        };
+
         if (finalAffiliateCode && finalAffiliateCode !== '') {
           try {
             await connectDB();
@@ -528,7 +546,7 @@ export async function POST(request: NextRequest) {
                         orderId: orderId,
                         commissionAmount: 0, // No commission for self-referral
                         productId: productId,
-                        productName: productNames[productId] || 'Unknown Product',
+                        productName: productNamesForAffiliate[productId] || 'Unknown Product',
                         customerEmail: payerEmail,
                         customerName: payerName || 'Unknown',
                         status: 'converted',
@@ -575,24 +593,6 @@ export async function POST(request: NextRequest) {
               const commissionRate = commissionRates[productId] || 0.30;
               const commissionAmount = Math.round(amount * commissionRate);
 
-              // Get product name with MT4/MT5 distinction
-              const productNames: Record<string, string> = {
-                // MT4 Products
-                'indicator-pro-mt4': 'Multi-Indicator Pro Pack (MT4)',
-                'ea-full-mt4': 'EA ThebenchmarkTrader Full Version (MT4)',
-                'ea-pro-source-mt4': 'EA ThebenchmarkTrader Pro + Source Code (MT4)',
-                // MT5 Products
-                'indicator-pro-mt5': 'Multi-Indicator Pro Pack (MT5)',
-                'ea-full-mt5': 'EA ThebenchmarkTrader Full Version (MT5)',
-                'ea-pro-source-mt5': 'EA ThebenchmarkTrader Pro + Source Code (MT5)',
-                // Legacy products
-                'ea-full': 'EA ThebenchmarkTrader Full Version',
-                'ea-pro-source': 'EA Pro + Source Code',
-                'indicator-pro': 'Multi-Indicator Pro Pack',
-                'course': 'Khóa học Forex Trading',
-                'social-copy': 'Copy Social Trading',
-              };
-
               // Update affiliate click record (most recent click that hasn't been converted yet)
               const updatedClick = await AffiliateClick.findOneAndUpdate(
                 { 
@@ -605,7 +605,7 @@ export async function POST(request: NextRequest) {
                     orderId: orderId,
                     commissionAmount,
                     productId: productId,
-                    productName: productNames[productId] || productId,
+                    productName: productNamesForAffiliate[productId] || productId,
                     customerEmail: finalCustomerEmail,
                     customerName: finalCustomerName,
                     status: 'converted',
@@ -626,7 +626,7 @@ export async function POST(request: NextRequest) {
                   commission: commissionAmount,
                   totalEarned: affiliate.totalCommissionEarned,
                   productId,
-                  productName: productNames[productId],
+                  productName: productNamesForAffiliate[productId],
                   fallbackUsed: !affiliateCode || affiliateCode === ''
                 });
               } else {
@@ -642,7 +642,7 @@ export async function POST(request: NextRequest) {
                     customerEmail: finalCustomerEmail,
                     customerName: finalCustomerName,
                     productId: productId,
-                    productName: productNames[productId] || productId,
+                    productName: productNamesForAffiliate[productId] || productId,
                     commissionAmount: commissionAmount,
                     status: 'converted',
                     clickedAt: new Date(),
@@ -663,7 +663,7 @@ export async function POST(request: NextRequest) {
                     commission: commissionAmount,
                     totalEarned: affiliate.totalCommissionEarned,
                     productId,
-                    productName: productNames[productId],
+                    productName: productNamesForAffiliate[productId],
                     type: 'virtual-click-direct-purchase'
                   });
                 } catch (virtualClickError) {
