@@ -6,7 +6,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { 
   Users, Shield, Award, TrendingUp, Search, 
-  CheckCircle, XCircle, Clock, Crown, Mail, DollarSign, CreditCard, Building2
+  CheckCircle, XCircle, Clock, Crown, Mail, DollarSign, CreditCard, Building2, Trash2
 } from "lucide-react";
 import { useAuth } from "@/lib/authContext";
 
@@ -177,6 +177,33 @@ export default function AdminDashboard() {
     } catch (error) {
       console.error("Error updating membership:", error);
       alert("Error updating membership");
+    }
+  };
+
+  const handleDeleteUser = async (userId: string, username: string) => {
+    if (!confirm(`⚠️ Bạn có chắc muốn xóa user "${username}"? Hành động này không thể hoàn tác!`)) {
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`/api/admin/users/${userId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        alert("Xóa user thành công!");
+        fetchUsers();
+      } else {
+        const errorData = await response.json();
+        alert(`Không thể xóa user: ${errorData.message || 'Unknown error'}`);
+      }
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      alert("Lỗi khi xóa user");
     }
   };
 
@@ -572,6 +599,13 @@ export default function AdminDashboard() {
                                 }`}
                               >
                                 {u.isPaid ? "Downgrade" : "Upgrade"}
+                              </button>
+                              <button
+                                onClick={() => handleDeleteUser(u._id, u.username)}
+                                className="px-3 py-1 bg-red-600 text-white text-sm rounded hover:bg-red-700 flex items-center gap-1 justify-center"
+                              >
+                                <Trash2 size={14} />
+                                Delete
                               </button>
                             </div>
                           </td>
