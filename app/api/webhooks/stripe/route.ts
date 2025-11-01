@@ -71,35 +71,51 @@ export async function POST(request: NextRequest) {
       };
       
       const expectedPrice = expectedPrices[productId];
-      if (expectedPrice && Math.abs(amountVND - expectedPrice) > 100000) {
-        console.error('⚠️ STRIPE PRICE MISMATCH DETECTED:', {
-          productId,
-          expectedPrice: `${expectedPrice.toLocaleString('vi-VN')}đ`,
-          actualAmount: `${amountVND.toLocaleString('vi-VN')}đ`,
-          difference: `${Math.abs(amountVND - expectedPrice).toLocaleString('vi-VN')}đ`
-        });
-        
-        // Auto-correct productId based on amount
-        for (const [pid, price] of Object.entries(expectedPrices)) {
-          if (Math.abs(amountVND - price) < 100000) {
-            console.log(`✅ Auto-correcting productId from "${productId}" to "${pid}"`);
-            productId = pid;
-            
-            // Update productName
-            const productNames: Record<string, string> = {
-              'indicator-pro-mt4': 'Multi-Indicator Pro Pack (MT4)',
-              'ea-full-mt4': 'EA ThebenchmarkTrader Full Version (MT4)',
-              'ea-pro-source-mt4': 'EA ThebenchmarkTrader Pro + Source Code (MT4)',
-              'indicator-pro-mt5': 'Multi-Indicator Pro Pack (MT5)',
-              'ea-full-mt5': 'EA ThebenchmarkTrader Full Version (MT5)',
-              'ea-pro-source-mt5': 'EA ThebenchmarkTrader Pro + Source Code (MT5)',
-            };
-            productName = productNames[pid] || productName;
-            break;
-          }
+      if (expectedPrice) {
+        // CRITICAL FIX: Always use expected price based on productId
+        // This prevents incorrect amount in emails due to Stripe calculation errors
+        if (Math.abs(amountVND - expectedPrice) > 100000) {
+          console.warn('⚠️ STRIPE AMOUNT MISMATCH - Using expected price based on productId:', {
+            productId,
+            expectedPrice: `${expectedPrice.toLocaleString('vi-VN')}đ`,
+            stripeAmount: `${amountVND.toLocaleString('vi-VN')}đ`,
+            difference: `${Math.abs(amountVND - expectedPrice).toLocaleString('vi-VN')}đ`,
+            action: 'Correcting to expected price'
+          });
         }
-      } else if (expectedPrice) {
-        console.log(`✅ Amount validation passed: ${amountVND.toLocaleString('vi-VN')}đ matches ${productId}`);
+        
+        // ALWAYS use expected price (productId is source of truth)
+        amountVND = expectedPrice;
+        
+        console.log(`✅ Amount set from productId: ${amountVND.toLocaleString('vi-VN')}đ (${productId})`);
+      } else {
+        // Auto-correct productId based on amount if productId is unknown
+        if (productId === 'unknown' || !productId) {
+          console.warn('⚠️ ProductId is unknown, trying amount detection...');
+          for (const [pid, price] of Object.entries(expectedPrices)) {
+            if (Math.abs(amountVND - price) < 100000) {
+              console.log(`✅ Auto-correcting productId from "${productId}" to "${pid}"`);
+              productId = pid;
+              
+              // Update productName
+              const productNames: Record<string, string> = {
+                'indicator-pro-mt4': 'Multi-Indicator Pro Pack (MT4)',
+                'ea-full-mt4': 'EA ThebenchmarkTrader Full Version (MT4)',
+                'ea-pro-source-mt4': 'EA ThebenchmarkTrader Pro + Source Code (MT4)',
+                'indicator-pro-mt5': 'Multi-Indicator Pro Pack (MT5)',
+                'ea-full-mt5': 'EA ThebenchmarkTrader Full Version (MT5)',
+                'ea-pro-source-mt5': 'EA ThebenchmarkTrader Pro + Source Code (MT5)',
+              };
+              productName = productNames[pid] || productName;
+              
+              // Set correct amount
+              amountVND = price;
+              break;
+            }
+          }
+        } else {
+          console.warn(`⚠️ Unknown productId: ${productId} - using Stripe amount: ${amountVND.toLocaleString('vi-VN')}đ`);
+        }
       }
 
       // Save order to MongoDB
@@ -422,7 +438,7 @@ export async function POST(request: NextRequest) {
                     <p><strong>Mã đơn hàng:</strong> ${session.id}</p>
                     <p><strong>Sản phẩm:</strong> ${productName}</p>
                     <p><strong>Phương thức:</strong> Stripe</p>
-                    <p><strong>Số tiền:</strong> ${(session.amount_total / 100).toLocaleString("vi-VN")}₫</p>
+                    <p><strong>Số tiền:</strong> ${amountVND.toLocaleString("vi-VN")}₫</p>
                   </div>
                   
                   <div style="text-align: center; margin: 30px 0;">
