@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/lib/authContext';
 import Header from '@/components/Header';
@@ -8,7 +8,7 @@ import Footer from '@/components/Footer';
 import { CheckCircle, XCircle, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 
-export default function VerifyEmailPage() {
+function VerifyEmailContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { login } = useAuth();
@@ -147,6 +147,34 @@ export default function VerifyEmailPage() {
 
       <Footer />
     </div>
+  );
+}
+
+export default function VerifyEmailPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <main className="py-20">
+          <div className="container-custom max-w-md mx-auto">
+            <div className="bg-white rounded-2xl shadow-xl p-8">
+              <div className="text-center">
+                <Loader2 className="w-16 h-16 text-blue-600 animate-spin mx-auto mb-4" />
+                <h1 className="text-2xl font-bold text-gray-800 mb-2">
+                  Đang tải...
+                </h1>
+                <p className="text-gray-600">
+                  Vui lòng chờ trong giây lát
+                </p>
+              </div>
+            </div>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    }>
+      <VerifyEmailContent />
+    </Suspense>
   );
 }
 
