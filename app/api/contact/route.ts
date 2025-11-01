@@ -1,12 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { sendEmail } from "@/lib/email";
+import { validateEmailForContact, isSuspiciousEmail } from "@/lib/emailValidation";
+import { apiLimiter, getClientIP } from "@/lib/rateLimit";
 
 export const runtime = "nodejs";
 
-// --- Rate limit rất nhẹ trong memory (reset khi server restart)
+// --- Rate limit nghiêm ngặt hơn cho contact form
 const BUCKET = new Map<string, { count: number; ts: number }>();
 const WINDOW_MS = 60_000; // 1 phút
-const LIMIT_PER_WINDOW = 8;
+const LIMIT_PER_WINDOW = 3; // Giảm từ 8 xuống 3 để chống spam
 
 function ratelimit(ip: string) {
   const now = Date.now();
@@ -39,11 +41,29 @@ export async function POST(request: NextRequest) {
     const hp = request.nextUrl.searchParams.get("hp");
     if (hp) return NextResponse.json({ ok: true }, { status: 200 });
 
-    const ip =
-      (request.headers.get("x-forwarded-for") || "").split(",")[0].trim() ||
-      request.headers.get("cf-connecting-ip") ||
-      "unknown";
+    const ip = getClientIP(request);
 
+    // Rate limiting với lib/rateLimit (nghiêm ngặt hơn)
+    const rateLimitResult = apiLimiter(ip);
+    if (!rateLimitResult.allowed) {
+      console.warn(`🚫 Rate limit exceeded for IP: ${ip}`);
+      return NextResponse.json(
+        { 
+          ok: false, 
+          error: rateLimitResult.message || "Bạn gửi quá nhiều yêu cầu. Vui lòng thử lại sau 1 phút." 
+        },
+        { 
+          status: 429,
+          headers: {
+            'X-RateLimit-Limit': '3',
+            'X-RateLimit-Remaining': rateLimitResult.remaining.toString(),
+            'Retry-After': Math.ceil((rateLimitResult.resetTime - Date.now()) / 1000).toString(),
+          },
+        }
+      );
+    }
+
+    // Additional IP-based rate limit (backup)
     if (!ratelimit(ip)) {
       return NextResponse.json(
         { ok: false, error: "Bạn gửi quá nhanh, thử lại sau 1 phút." },
@@ -53,12 +73,22 @@ export async function POST(request: NextRequest) {
 
     // Đọc body an toàn
     const body = await request.json().catch(() => ({} as any));
-    let { name, email, topic, message } = body as {
+    let { name, email, topic, message, honeypot } = body as {
       name?: string;
       email?: string;
       topic?: string;
       message?: string;
+      honeypot?: string;
     };
+
+    // Honeypot check - if filled, it's a bot
+    if (honeypot && honeypot.trim() !== '') {
+      console.warn(`🚫 Bot detected via honeypot field (IP: ${ip})`);
+      return NextResponse.json(
+        { ok: false, error: "Invalid request" },
+        { status: 400 }
+      );
+    }
 
     // Validate cơ bản
     if (!name || !email || !topic) {
@@ -78,11 +108,20 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
-    if (!isEmail(email)) {
+
+    // Comprehensive email validation (format + spam check)
+    const emailValidation = validateEmailForContact(email);
+    if (!emailValidation.valid) {
+      console.warn(`🚫 Invalid email blocked: ${email} (IP: ${ip})`);
       return NextResponse.json(
-        { ok: false, error: "Email không hợp lệ." },
+        { ok: false, error: emailValidation.error || "Email không hợp lệ." },
         { status: 400 }
       );
+    }
+
+    // Log suspicious emails for monitoring
+    if (isSuspiciousEmail(email)) {
+      console.warn(`⚠️ Suspicious email detected: ${email} (IP: ${ip})`);
     }
     if (message.length > 5000) {
       return NextResponse.json(

@@ -1,7 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { Phone, Mail, Clock, MessageCircle, Send } from "lucide-react";
+import { Phone, Mail, Clock, MessageCircle, Send, AlertCircle } from "lucide-react";
+import HoneypotField from "@/components/HoneypotField";
+
+// Client-side email validation (simplified version)
+function isValidEmail(email: string): boolean {
+  if (!email || typeof email !== 'string') return false;
+  const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+  return emailRegex.test(email) && email.length <= 254 && !email.includes('..');
+}
 
 export default function ForexContact() {
   const [formData, setFormData] = useState({
@@ -10,6 +18,8 @@ export default function ForexContact() {
     topic: "demo", // demo, purchase, support, custom
     message: "",
   });
+  const [honeypot, setHoneypot] = useState("");
+  const [emailError, setEmailError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState("");
 
@@ -19,12 +29,36 @@ export default function ForexContact() {
       ...prev,
       [name]: value
     }));
+    
+    // Validate email in real-time
+    if (name === 'email') {
+      if (value && !isValidEmail(value.trim())) {
+        setEmailError('Email không đúng định dạng');
+      } else {
+        setEmailError('');
+      }
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Honeypot check
+    if (honeypot && honeypot.trim() !== '') {
+      console.warn('Bot detected via honeypot');
+      return; // Silent fail
+    }
+    
+    // Email validation
+    const trimmedEmail = formData.email.trim();
+    if (!isValidEmail(trimmedEmail)) {
+      setEmailError('Email không đúng định dạng. Vui lòng nhập email hợp lệ.');
+      return;
+    }
+    
     setIsSubmitting(true);
     setSubmitMessage("");
+    setEmailError("");
 
     try {
       const response = await fetch("/api/contact", {
@@ -32,7 +66,10 @@ export default function ForexContact() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          honeypot: honeypot,
+        }),
       });
 
       const result = await response.json();
@@ -40,8 +77,14 @@ export default function ForexContact() {
       if (result.ok) {
         setSubmitMessage("Cảm ơn bạn! Chúng tôi sẽ liên hệ với bạn trong vòng 24 giờ.");
         setFormData({ name: "", email: "", topic: "demo", message: "" });
+        setHoneypot("");
       } else {
-        setSubmitMessage("Xin lỗi, đã xảy ra lỗi. Vui lòng thử lại hoặc liên hệ trực tiếp qua email.");
+        const errorMsg = result.error || "Xin lỗi, đã xảy ra lỗi. Vui lòng thử lại hoặc liên hệ trực tiếp qua email.";
+        setSubmitMessage(errorMsg);
+        // If email validation error, highlight email field
+        if (errorMsg.toLowerCase().includes('email')) {
+          setEmailError(errorMsg);
+        }
       }
     } catch {
       setSubmitMessage("Xin lỗi, đã xảy ra lỗi. Vui lòng thử lại hoặc liên hệ trực tiếp qua email.");
@@ -97,10 +140,18 @@ export default function ForexContact() {
                     required
                     value={formData.email}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent ${
+                      emailError ? 'border-red-500' : 'border-gray-300'
+                    }`}
                     placeholder="Nhập địa chỉ email của bạn"
                     suppressHydrationWarning={true}
                   />
+                  {emailError && (
+                    <p className="mt-1 text-sm text-red-600 flex items-center gap-1">
+                      <AlertCircle size={14} />
+                      {emailError}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -138,6 +189,13 @@ export default function ForexContact() {
                     suppressHydrationWarning={true}
                   />
                 </div>
+
+                {/* Honeypot Field - Hidden from users, visible to bots */}
+                <HoneypotField 
+                  value={honeypot}
+                  onChange={setHoneypot}
+                  name="website"
+                />
                 
                 <button
                   type="submit"
