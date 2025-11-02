@@ -16,6 +16,9 @@ interface Order {
   paymentMethod: string;
   createdAt: string;
   paidAt: string;
+  broker?: string;
+  accountId?: string;
+  server?: string;
 }
 
 interface OrderStats {
@@ -362,6 +365,14 @@ export default function OrdersDashboard() {
                       <td className="px-4 py-3">
                         <div className="text-sm text-gray-900">{order.customerName}</div>
                         <div className="text-xs text-gray-500">{order.customerEmail}</div>
+                        {(order.broker || order.accountId || order.server) && (
+                          <div className="text-xs text-blue-600 mt-1 font-semibold">
+                            📊 Broker:
+                            {order.broker && <span> {order.broker}</span>}
+                            {order.accountId && <span> | Acc: {order.accountId}</span>}
+                            {order.server && <span> | {order.server}</span>}
+                          </div>
+                        )}
                       </td>
                       <td className="px-4 py-3">
                         <div className="text-sm text-gray-900">{order.productId}</div>

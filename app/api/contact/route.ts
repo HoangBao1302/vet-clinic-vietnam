@@ -73,12 +73,15 @@ export async function POST(request: NextRequest) {
 
     // Đọc body an toàn
     const body = await request.json().catch(() => ({} as any));
-    let { name, email, topic, message, honeypot } = body as {
+    let { name, email, topic, message, honeypot, broker, accountId, server } = body as {
       name?: string;
       email?: string;
       topic?: string;
       message?: string;
       honeypot?: string;
+      broker?: string;
+      accountId?: string;
+      server?: string;
     };
 
     // Honeypot check - if filled, it's a bot
@@ -152,6 +155,16 @@ export async function POST(request: NextRequest) {
           <p><b>Email:</b> ${escapeHtml(email)}</p>
           <p><b>Nhu cầu:</b> ${escapeHtml(topicText)}</p>
         </div>
+        ${
+          broker || accountId || server
+            ? `<div style="background:#e0f2fe;padding:16px;border-radius:8px;margin:16px 0;border-left:4px solid #0284c7">
+                <p style="font-weight:bold;margin-bottom:8px">📊 Thông tin Broker:</p>
+                ${broker ? `<p><b>Broker:</b> ${escapeHtml(broker)}</p>` : ''}
+                ${accountId ? `<p><b>Account ID:</b> ${escapeHtml(accountId)}</p>` : ''}
+                ${server ? `<p><b>Server:</b> ${escapeHtml(server)}</p>` : ''}
+              </div>`
+            : ""
+        }
         ${
           message
             ? `<div style="background:#fff;padding:16px;border-left:4px solid #1e40af;margin:16px 0">

@@ -13,6 +13,9 @@ export interface IOrder extends Document {
   paidAt: Date;
   paymentMethod: string;
   emailSent: boolean;
+  broker?: string;
+  accountId?: string;
+  server?: string;
 }
 
 const OrderSchema: Schema = new Schema({
@@ -70,6 +73,18 @@ const OrderSchema: Schema = new Schema({
     type: Boolean,
     required: false,
     default: false
+  },
+  broker: {
+    type: String,
+    required: false
+  },
+  accountId: {
+    type: String,
+    required: false
+  },
+  server: {
+    type: String,
+    required: false
   }
 });
 

@@ -57,6 +57,10 @@ export async function POST(request: NextRequest) {
         amountVND: `${amountVND.toLocaleString('vi-VN')}đ`
       });
       
+      let broker = '';
+      let accountId = '';
+      let server = '';
+      
       if (customId) {
         const parts = customId.split('|');
         const extractedProductId = parts[0] || '';
@@ -64,6 +68,9 @@ export async function POST(request: NextRequest) {
         realCustomerEmail = parts[2] || '';
         realCustomerName = parts[3] || '';
         realCustomerPhone = parts[4] || '';
+        broker = parts[5] || '';
+        accountId = parts[6] || '';
+        server = parts[7] || '';
         
         // CRITICAL: Validate productId from custom_id
         const validProductIds = [
@@ -82,6 +89,9 @@ export async function POST(request: NextRequest) {
             realCustomerEmail,
             realCustomerName,
             realCustomerPhone,
+            broker,
+            accountId,
+            server,
             source: 'custom_id (TRUSTED)'
           });
         } else {
@@ -311,6 +321,9 @@ export async function POST(request: NextRequest) {
           paymentMethod: "paypal",
           createdAt: new Date(),
           paidAt: new Date(),
+          broker: broker,
+          accountId: accountId,
+          server: server,
         };
 
         // Get product name with MT4/MT5 distinction

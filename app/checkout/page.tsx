@@ -22,6 +22,9 @@ function CheckoutContent() {
     name: "",
     email: "",
     phone: "",
+    broker: "",
+    accountId: "",
+    server: "",
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -263,6 +266,58 @@ function CheckoutContent() {
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="0765452515"
                   />
+                </div>
+
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <h3 className="text-sm font-semibold text-blue-800 mb-3">
+                    📊 Thông tin Broker
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <div>
+                      <label className="block text-xs font-medium text-gray-700 mb-1">
+                        Broker
+                      </label>
+                      <input
+                        type="text"
+                        name="broker"
+                        value={formData.broker}
+                        onChange={handleInputChange}
+                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        placeholder="Ví dụ: Tickmill"
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className="block text-xs font-medium text-gray-700 mb-1">
+                        Account ID
+                      </label>
+                      <input
+                        type="text"
+                        name="accountId"
+                        value={formData.accountId}
+                        onChange={handleInputChange}
+                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        placeholder="Ví dụ: 123456"
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className="block text-xs font-medium text-gray-700 mb-1">
+                        Server
+                      </label>
+                      <input
+                        type="text"
+                        name="server"
+                        value={formData.server}
+                        onChange={handleInputChange}
+                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        placeholder="Ví dụ: Tickmill-Live8"
+                      />
+                    </div>
+                  </div>
+                  <p className="text-xs text-blue-700 mt-2">
+                    💡 Vui lòng điền thông tin broker để chúng tôi hỗ trợ tốt hơn
+                  </p>
                 </div>
 
                 {error && (

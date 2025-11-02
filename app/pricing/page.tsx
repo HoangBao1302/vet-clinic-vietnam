@@ -119,6 +119,9 @@ export default function PricingPage() {
     email: "",
     topic: "demo",
     message: "",
+    broker: "",
+    accountId: "",
+    server: "",
   });
   const [honeypot, setHoneypot] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -218,7 +221,7 @@ export default function PricingPage() {
 
       if (result.ok) {
         setSubmitMessage("Cảm ơn bạn! Chúng tôi sẽ liên hệ với bạn trong vòng 24 giờ.");
-        setFormData({ name: "", email: "", topic: "demo", message: "" });
+        setFormData({ name: "", email: "", topic: "demo", message: "", broker: "", accountId: "", server: "" });
         setHoneypot("");
       } else {
         const errorMsg = result.error || "Xin lỗi, đã xảy ra lỗi. Vui lòng thử lại hoặc liên hệ trực tiếp qua email.";
@@ -557,6 +560,53 @@ export default function PricingPage() {
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                     placeholder="Mô tả chi tiết nhu cầu của bạn..."
                   />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div>
+                    <label htmlFor="broker" className="block text-sm font-medium text-gray-700 mb-2">
+                      Broker
+                    </label>
+                    <input
+                      type="text"
+                      id="broker"
+                      name="broker"
+                      value={formData.broker}
+                      onChange={handleInputChange}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      placeholder="Ví dụ: Tickmill"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label htmlFor="accountId" className="block text-sm font-medium text-gray-700 mb-2">
+                      Account ID
+                    </label>
+                    <input
+                      type="text"
+                      id="accountId"
+                      name="accountId"
+                      value={formData.accountId}
+                      onChange={handleInputChange}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      placeholder="Ví dụ: 123456"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label htmlFor="server" className="block text-sm font-medium text-gray-700 mb-2">
+                      Server
+                    </label>
+                    <input
+                      type="text"
+                      id="server"
+                      name="server"
+                      value={formData.server}
+                      onChange={handleInputChange}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      placeholder="Ví dụ: Tickmill-Live8"
+                    />
+                  </div>
                 </div>
 
                 {/* Honeypot Field - Hidden from users, visible to bots */}

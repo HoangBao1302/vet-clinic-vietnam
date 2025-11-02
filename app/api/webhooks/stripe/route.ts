@@ -131,6 +131,9 @@ export async function POST(request: NextRequest) {
         paymentMethod: "stripe",
         createdAt: new Date(),
         paidAt: new Date(),
+        broker: session.metadata?.broker || '',
+        accountId: session.metadata?.accountId || '',
+        server: session.metadata?.server || '',
       };
 
       // Save order to database

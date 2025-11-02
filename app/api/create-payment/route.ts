@@ -54,6 +54,10 @@ export async function POST(request: NextRequest) {
             customerName: customerInfo.name,
             customerPhone: customerInfo.phone,
             affiliateCode: affiliateCode || '',
+            // Broker information
+            broker: customerInfo.broker || '',
+            accountId: customerInfo.accountId || '',
+            server: customerInfo.server || '',
             // Enhanced tracking metadata
             sessionId: customerInfo.sessionId || '',
             ipAddress: customerInfo.ipAddress || '',

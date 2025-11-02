@@ -36,13 +36,16 @@ export async function POST(request: NextRequest) {
 
     // Create PayPal order
     // Store customer info in custom_id for webhook retrieval
-    // Format: productId|affiliateCode|customerEmail|customerName|customerPhone
+    // Format: productId|affiliateCode|customerEmail|customerName|customerPhone|broker|accountId|server
     const customIdData = [
       productId,
       affiliateCode || '',
       customerInfo.email,
       customerInfo.name,
-      customerInfo.phone || ''
+      customerInfo.phone || '',
+      customerInfo.broker || '',
+      customerInfo.accountId || '',
+      customerInfo.server || ''
     ].join('|');
     
     const orderData: any = {
