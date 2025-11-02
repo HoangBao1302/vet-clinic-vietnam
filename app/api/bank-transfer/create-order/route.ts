@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
       customerEmail: customerInfo.email,
       customerName: customerInfo.name,
       customerPhone: customerInfo.phone || '',
-      amount: amount,
+      amount: Math.round(amount * 100), // Convert VND to cents for consistency with Stripe/PayPal
       paymentMethod: 'bank_transfer',
       createdAt: new Date(),
       paidAt: new Date(), // Will be updated when approved
@@ -100,7 +100,7 @@ export async function POST(request: NextRequest) {
           <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #3b82f6;">
             <p style="margin: 0; color: #1f2937;"><strong>Mã đơn hàng:</strong> ${orderId}</p>
             <p style="margin: 0; color: #1f2937;"><strong>Sản phẩm:</strong> ${productName}</p>
-            <p style="margin: 0; color: #1f2937;"><strong>Số tiền:</strong> ${(amount / 100).toLocaleString('vi-VN')}đ</p>
+            <p style="margin: 0; color: #1f2937;"><strong>Số tiền:</strong> ${(amount).toLocaleString('vi-VN')}đ</p>
             <p style="margin: 0; color: #1f2937;"><strong>Phương thức:</strong> Chuyển khoản ngân hàng</p>
           </div>
           

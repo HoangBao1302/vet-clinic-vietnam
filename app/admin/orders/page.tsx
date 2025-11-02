@@ -382,7 +382,7 @@ export default function OrdersDashboard() {
                   <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Amount</th>
                   <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Payment</th>
                   <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Date</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Actions</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase whitespace-nowrap">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
@@ -439,41 +439,44 @@ export default function OrdersDashboard() {
                           {new Date(order.createdAt).toLocaleTimeString('vi-VN')}
                         </div>
                       </td>
-                      <td className="px-4 py-3">
+                      <td className="px-2 py-3 whitespace-nowrap">
                         {order.paymentMethod === 'bank_transfer' && order.status === 'pending' && (
-                          <div className="flex gap-2">
+                          <div className="flex gap-1 flex-wrap">
                             {order.transferProof && (
                               <button
                                 onClick={() => setViewingImage(order.transferProof || '')}
-                                className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition"
+                                className="bg-purple-600 text-white px-2 py-1 rounded text-xs hover:bg-purple-700 transition"
+                                title="Xem ảnh chứng từ"
                               >
-                                👁️ Xem ảnh
+                                👁️
                               </button>
                             )}
                             <button
                               onClick={() => handleBankTransferAction(order.orderId, 'approve')}
-                              className="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700 transition"
+                              className="bg-green-600 text-white px-2 py-1 rounded text-xs hover:bg-green-700 transition"
+                              title="Duyệt đơn hàng"
                             >
-                              ✅ Duyệt
+                              ✅
                             </button>
                             <button
                               onClick={() => handleBankTransferAction(order.orderId, 'reject')}
-                              className="bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700 transition"
+                              className="bg-red-600 text-white px-2 py-1 rounded text-xs hover:bg-red-700 transition"
+                              title="Từ chối đơn hàng"
                             >
-                              ❌ Từ chối
+                              ❌
                             </button>
                           </div>
                         )}
                         {order.paymentMethod === 'bank_transfer' && order.status === 'paid' && (
-                          <span className="text-green-600 text-sm font-semibold">✅ Đã duyệt</span>
+                          <span className="text-green-600 text-xs font-semibold">✅ Đã duyệt</span>
                         )}
                         {order.paymentMethod === 'bank_transfer' && order.status === 'rejected' && (
-                          <span className="text-red-600 text-sm font-semibold">❌ Đã từ chối</span>
+                          <span className="text-red-600 text-xs font-semibold">❌ Đã từ chối</span>
                         )}
                         {!valid && order.paymentMethod !== 'bank_transfer' && (
                           <button
                             onClick={() => fixOrder(order.orderId)}
-                            className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition"
+                            className="bg-blue-600 text-white px-2 py-1 rounded text-xs hover:bg-blue-700 transition"
                           >
                             🔧 Fix
                           </button>
