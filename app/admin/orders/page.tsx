@@ -145,6 +145,72 @@ export default function OrdersDashboard() {
     }
   };
 
+  const exportToCSV = () => {
+    if (!stats || !stats.recentOrders.length) {
+      alert('Không có dữ liệu để export');
+      return;
+    }
+
+    // Headers
+    const headers = [
+      'Order ID',
+      'Customer Name',
+      'Email',
+      'Phone',
+      'Product ID',
+      'Product Name',
+      'Amount (VND)',
+      'Payment Method',
+      'Status',
+      'Broker',
+      'Account ID',
+      'Server',
+      'Created At',
+      'Paid At'
+    ];
+
+    // Convert orders to CSV rows
+    const rows = stats.recentOrders.map(order => {
+      const actualPrice = order.amount / 100;
+      return [
+        order.orderId,
+        order.customerName || '',
+        order.customerEmail || '',
+        order.customerPhone || '',
+        order.productId || '',
+        order.productName || '',
+        actualPrice.toLocaleString('vi-VN'),
+        order.paymentMethod || '',
+        order.status || '',
+        order.broker || '',
+        order.accountId || '',
+        order.server || '',
+        new Date(order.createdAt).toLocaleString('vi-VN'),
+        order.paidAt ? new Date(order.paidAt).toLocaleString('vi-VN') : ''
+      ];
+    });
+
+    // Combine headers and rows
+    const csvContent = [
+      headers.join(','),
+      ...rows.map(row => row.map(cell => `"${cell}"`).join(','))
+    ].join('\n');
+
+    // Create BOM for UTF-8 to handle Vietnamese characters properly
+    const BOM = '\uFEFF';
+    const blob = new Blob([BOM + csvContent], { type: 'text/csv;charset=utf-8;' });
+    
+    // Create download link
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `orders_export_${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   if (!authenticated) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 flex items-center justify-center p-4">
@@ -233,6 +299,12 @@ export default function OrdersDashboard() {
           <div className="flex justify-between items-center">
             <h1 className="text-3xl font-bold text-gray-900">📊 Orders Dashboard</h1>
             <div className="flex gap-2">
+              <button
+                onClick={exportToCSV}
+                className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition flex items-center gap-2"
+              >
+                📊 Export CSV
+              </button>
               <button
                 onClick={fixAllLegacy}
                 className="bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 transition"
