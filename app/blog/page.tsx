@@ -147,21 +147,21 @@ export default function BlogPage() {
       
       <main className="pt-20">
         {/* Hero Section */}
-        <section className="py-20 bg-gradient-to-br from-blue-50 to-purple-50">
+        <section className="py-8 md:py-20 bg-gradient-to-br from-blue-50 to-purple-50">
           <div className="container-custom text-center">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6">
+            <h1 className="text-2xl md:text-5xl font-bold text-gray-800 mb-3 md:mb-6">
               Blog EA ThebenchmarkTrader
             </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+            <p className="text-sm md:text-xl text-gray-600 max-w-3xl mx-auto mb-4 md:mb-8">
               Tin tức thị trường, kiến thức giao dịch và hướng dẫn chuyên sâu về EA
             </p>
           </div>
         </section>
 
         {/* Category Tabs */}
-        <section className="py-12 bg-white border-b border-gray-200 sticky top-0 z-40">
+        <section className="py-3 md:py-12 bg-white border-b border-gray-200 sticky top-0 z-40">
           <div className="container-custom">
-            <div className="flex flex-col lg:flex-row gap-4 items-center justify-center">
+            <div className="flex flex-col lg:flex-row gap-2 md:gap-4 items-center justify-center">
               {categories.map((category) => {
                 const isActive = selectedCategory === category.id;
                 const count = getCategoryCount(category.id);
@@ -170,17 +170,17 @@ export default function BlogPage() {
                   <button
                     key={category.id}
                     onClick={() => setSelectedCategory(category.id)}
-                    className={`flex-1 lg:flex-initial px-6 py-4 rounded-xl transition-all duration-300 ${
+                    className={`flex-1 lg:flex-initial px-3 md:px-6 py-2 md:py-4 rounded-xl transition-all duration-300 ${
                       isActive 
                         ? 'bg-blue-600 text-white shadow-lg scale-105' 
                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }`}
                   >
-                    <div className="flex items-center justify-center gap-3">
-                      <span className="text-2xl">{category.icon}</span>
+                    <div className="flex items-center justify-center gap-2 md:gap-3">
+                      <span className="text-lg md:text-2xl">{category.icon}</span>
                       <div className="text-left">
-                        <div className="font-bold text-lg">{category.name}</div>
-                        <div className={`text-sm ${isActive ? 'text-blue-100' : 'text-gray-500'}`}>
+                        <div className="font-bold text-sm md:text-lg">{category.name}</div>
+                        <div className={`text-xs md:text-sm ${isActive ? 'text-blue-100' : 'text-gray-500'}`}>
                           {count} bài viết
                         </div>
                       </div>
@@ -190,8 +190,8 @@ export default function BlogPage() {
               })}
             </div>
             
-            {/* Category Description */}
-            <div className="mt-6 text-center">
+            {/* Category Description - Hidden on mobile */}
+            <div className="mt-3 md:mt-6 text-center hidden md:block">
               <p className="text-gray-600 max-w-2xl mx-auto">
                 {categories.find(c => c.id === selectedCategory)?.description}
               </p>
@@ -201,10 +201,10 @@ export default function BlogPage() {
 
         {/* Featured Post */}
         {featuredPost && (
-          <section className="py-20 bg-white">
+          <section className="py-8 md:py-20 bg-white">
             <div className="container-custom">
-              <div className="text-center mb-12">
-                <h2 className="text-3xl font-bold text-gray-800 mb-4">
+              <div className="text-center mb-6 md:mb-12">
+                <h2 className="text-xl md:text-3xl font-bold text-gray-800 mb-2 md:mb-4">
                   Bài viết nổi bật
                 </h2>
               </div>
@@ -268,7 +268,7 @@ export default function BlogPage() {
         )}
 
         {/* Regular Posts */}
-        <section className="py-20 bg-gray-50">
+        <section className="py-8 md:py-20 bg-gray-50">
           <div className="container-custom">
             {loading ? (
               <div className="text-center py-20">
@@ -277,16 +277,16 @@ export default function BlogPage() {
               </div>
             ) : regularPosts.length > 0 ? (
               <>
-                <div className="text-center mb-12">
-                  <h2 className="text-3xl font-bold text-gray-800 mb-4">
+                <div className="text-center mb-6 md:mb-12">
+                  <h2 className="text-xl md:text-3xl font-bold text-gray-800 mb-2 md:mb-4">
                     {selectedCategory === "all" ? "Tất cả bài viết" : "Bài viết khác"}
                   </h2>
-                  <p className="text-lg text-gray-600">
+                  <p className="text-sm md:text-lg text-gray-600">
                     {regularPosts.length} bài viết trong mục này
                   </p>
                 </div>
 
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 max-w-7xl mx-auto">
                   {regularPosts.map((post) => (
                     <Link key={post._id} href={`/blog/${post.slug}`}>
                       <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer h-full hover:translate-y-[-4px]">
