@@ -444,7 +444,7 @@ export default function OrdersDashboard() {
                           <div className="flex gap-2">
                             {order.transferProof && (
                               <button
-                                onClick={() => setViewingImage(order.transferProof)}
+                                onClick={() => setViewingImage(order.transferProof || '')}
                                 className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition"
                               >
                                 👁️ Xem ảnh
