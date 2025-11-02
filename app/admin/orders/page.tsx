@@ -226,8 +226,8 @@ export default function OrdersDashboard() {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 p-4 md:p-8">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 p-2 md:p-4">
+      <div className="mx-auto w-full">
         {/* Header */}
         <div className="bg-white rounded-lg shadow-xl p-6 mb-6">
           <div className="flex justify-between items-center">
@@ -439,44 +439,41 @@ export default function OrdersDashboard() {
                           {new Date(order.createdAt).toLocaleTimeString('vi-VN')}
                         </div>
                       </td>
-                      <td className="px-2 py-3 whitespace-nowrap">
+                      <td className="px-2 py-3">
                         {order.paymentMethod === 'bank_transfer' && order.status === 'pending' && (
                           <div className="flex gap-1 flex-wrap">
                             {order.transferProof && (
                               <button
                                 onClick={() => setViewingImage(order.transferProof || '')}
-                                className="bg-purple-600 text-white px-2 py-1 rounded text-xs hover:bg-purple-700 transition"
-                                title="Xem ảnh chứng từ"
+                                className="bg-purple-600 text-white px-2 py-1 rounded text-xs hover:bg-purple-700 transition whitespace-nowrap"
                               >
-                                👁️
+                                👁️ Ảnh
                               </button>
                             )}
                             <button
                               onClick={() => handleBankTransferAction(order.orderId, 'approve')}
-                              className="bg-green-600 text-white px-2 py-1 rounded text-xs hover:bg-green-700 transition"
-                              title="Duyệt đơn hàng"
+                              className="bg-green-600 text-white px-2 py-1 rounded text-xs hover:bg-green-700 transition whitespace-nowrap"
                             >
-                              ✅
+                              ✅ Duyệt
                             </button>
                             <button
                               onClick={() => handleBankTransferAction(order.orderId, 'reject')}
-                              className="bg-red-600 text-white px-2 py-1 rounded text-xs hover:bg-red-700 transition"
-                              title="Từ chối đơn hàng"
+                              className="bg-red-600 text-white px-2 py-1 rounded text-xs hover:bg-red-700 transition whitespace-nowrap"
                             >
-                              ❌
+                              ❌ Từ chối
                             </button>
                           </div>
                         )}
                         {order.paymentMethod === 'bank_transfer' && order.status === 'paid' && (
-                          <span className="text-green-600 text-xs font-semibold">✅ Đã duyệt</span>
+                          <span className="text-green-600 text-xs font-semibold whitespace-nowrap">✅ Đã duyệt</span>
                         )}
                         {order.paymentMethod === 'bank_transfer' && order.status === 'rejected' && (
-                          <span className="text-red-600 text-xs font-semibold">❌ Đã từ chối</span>
+                          <span className="text-red-600 text-xs font-semibold whitespace-nowrap">❌ Đã từ chối</span>
                         )}
                         {!valid && order.paymentMethod !== 'bank_transfer' && (
                           <button
                             onClick={() => fixOrder(order.orderId)}
-                            className="bg-blue-600 text-white px-2 py-1 rounded text-xs hover:bg-blue-700 transition"
+                            className="bg-blue-600 text-white px-2 py-1 rounded text-xs hover:bg-blue-700 transition whitespace-nowrap"
                           >
                             🔧 Fix
                           </button>
