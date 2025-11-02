@@ -17,6 +17,7 @@ import {
   User,
   FileText,
 } from "lucide-react";
+import ImagePicker from "@/components/ImagePicker";
 
 const RichTextEditor = dynamic(() => import("@/components/RichTextEditor"), {
   ssr: false,
@@ -267,26 +268,11 @@ export default function CreateBlogPostPage() {
 
             {/* Featured Image */}
             <div className="bg-white rounded-lg shadow p-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                <Upload size={16} className="inline mr-2" />
-                Hình ảnh đại diện
-              </label>
-              <input
-                type="text"
+              <ImagePicker
                 value={formData.image}
-                onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                placeholder="/vet-images/1.png"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                onChange={(image) => setFormData({ ...formData, image })}
+                label="Hình ảnh đại diện"
               />
-              {formData.image && (
-                <div className="mt-4 relative h-40 rounded-lg overflow-hidden">
-                  <img
-                    src={formData.image}
-                    alt="Preview"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              )}
             </div>
 
             {/* Tags */}
