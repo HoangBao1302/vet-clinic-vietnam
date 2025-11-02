@@ -43,6 +43,7 @@ export default function OrdersDashboard() {
   const [authenticated, setAuthenticated] = useState(false);
   const [filter, setFilter] = useState<'all' | 'valid' | 'invalid'>('all');
   const [searchTerm, setSearchTerm] = useState('');
+  const [viewingImage, setViewingImage] = useState<string>('');
 
   const handleAuth = (e: React.FormEvent) => {
     e.preventDefault();
@@ -442,14 +443,12 @@ export default function OrdersDashboard() {
                         {order.paymentMethod === 'bank_transfer' && order.status === 'pending' && (
                           <div className="flex gap-2">
                             {order.transferProof && (
-                              <a
-                                href={order.transferProof}
-                                target="_blank"
-                                rel="noopener noreferrer"
+                              <button
+                                onClick={() => setViewingImage(order.transferProof)}
                                 className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition"
                               >
                                 👁️ Xem ảnh
-                              </a>
+                              </button>
                             )}
                             <button
                               onClick={() => handleBankTransferAction(order.orderId, 'approve')}
@@ -494,6 +493,29 @@ export default function OrdersDashboard() {
           )}
         </div>
       </div>
+
+      {/* Image Modal */}
+      {viewingImage && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4"
+          onClick={() => setViewingImage('')}
+        >
+          <div className="relative max-w-4xl max-h-full">
+            <button
+              onClick={() => setViewingImage('')}
+              className="absolute top-4 right-4 bg-red-600 text-white p-2 rounded-full hover:bg-red-700 z-10"
+            >
+              ✕
+            </button>
+            <img
+              src={viewingImage}
+              alt="Transfer proof"
+              className="max-w-full max-h-screen object-contain rounded-lg"
+              onClick={(e) => e.stopPropagation()}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -33,21 +33,30 @@ export async function POST(request: NextRequest) {
     const orderId = `BANK-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
 
     // Save transfer proof image
-    const base64Data = transferProof.replace(/^data:image\/\w+;base64,/, '');
-    const buffer = Buffer.from(base64Data, 'base64');
-    
-    // Determine file extension from base64 header
-    const fileExtension = transferProof.split(';')[0].split('/')[1];
-    const fileName = `${orderId}.${fileExtension}`;
-    
-    // Create directory if it doesn't exist
-    const uploadsDir = path.join(process.cwd(), 'public', 'uploads', 'transfers');
-    if (!existsSync(uploadsDir)) {
-      await mkdir(uploadsDir, { recursive: true });
+    // Option 1: Try to save to file system (for local development)
+    let transferProofPath = '';
+    try {
+      const base64Data = transferProof.replace(/^data:image\/\w+;base64,/, '');
+      const buffer = Buffer.from(base64Data, 'base64');
+      
+      // Determine file extension from base64 header
+      const fileExtension = transferProof.split(';')[0].split('/')[1];
+      const fileName = `${orderId}.${fileExtension}`;
+      
+      // Create directory if it doesn't exist
+      const uploadsDir = path.join(process.cwd(), 'public', 'uploads', 'transfers');
+      if (!existsSync(uploadsDir)) {
+        await mkdir(uploadsDir, { recursive: true });
+      }
+      
+      const filePath = path.join(uploadsDir, fileName);
+      await writeFile(filePath, buffer);
+      transferProofPath = `/uploads/transfers/${fileName}`;
+    } catch (fileError: any) {
+      // If file system write fails (e.g., on Vercel serverless), store base64 in DB instead
+      console.warn('Could not write file to filesystem, storing in DB:', fileError.message);
+      transferProofPath = transferProof; // Store base64 directly
     }
-    
-    const filePath = path.join(uploadsDir, fileName);
-    await writeFile(filePath, buffer);
 
     // Create order record
     const orderData = {
@@ -65,7 +74,7 @@ export async function POST(request: NextRequest) {
       broker: customerInfo.broker || '',
       accountId: customerInfo.accountId || '',
       server: customerInfo.server || '',
-      transferProof: `/uploads/transfers/${fileName}`,
+      transferProof: transferProofPath,
       transferProofApproved: false,
       emailSent: false
     };
