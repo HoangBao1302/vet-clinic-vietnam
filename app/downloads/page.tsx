@@ -253,7 +253,7 @@ export default function DownloadsPage() {
     }
   };
 
-  const handlePurchase = (item: DownloadItem, method: "stripe" | "paypal") => {
+  const handlePurchase = (item: DownloadItem, method: "stripe" | "paypal" | "bank") => {
     // Redirect to payment page with item info
     const params = new URLSearchParams({
       item: item.id,
@@ -261,7 +261,12 @@ export default function DownloadsPage() {
       price: item.price?.toString() || "0",
       method: method
     });
-    window.location.href = `/checkout?${params.toString()}`;
+    
+    if (method === "bank") {
+      window.location.href = `/checkout-bank-transfer?${params.toString()}`;
+    } else {
+      window.location.href = `/checkout?${params.toString()}`;
+    }
   };
 
   const handleVerifyOrder = async (itemId: string) => {
@@ -547,6 +552,13 @@ export default function DownloadsPage() {
                         <CreditCard size={18} />
                         <span>Mua với PayPal</span>
                       </button>
+                      <button
+                        onClick={() => handlePurchase(item, "bank")}
+                        className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors"
+                      >
+                        <CreditCard size={18} />
+                        <span>💳 Chuyển khoản NH</span>
+                      </button>
                     </div>
 
                     {/* Or Verify Order */}
@@ -647,6 +659,13 @@ export default function DownloadsPage() {
                       >
                         <CreditCard size={18} />
                         <span>Mua với PayPal</span>
+                      </button>
+                      <button
+                        onClick={() => handlePurchase(item, "bank")}
+                        className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors"
+                      >
+                        <CreditCard size={18} />
+                        <span>💳 Chuyển khoản NH</span>
                       </button>
                     </div>
 

@@ -16,6 +16,11 @@ export interface IOrder extends Document {
   broker?: string;
   accountId?: string;
   server?: string;
+  transferProof?: string;
+  transferProofApproved?: boolean;
+  approvedBy?: string;
+  approvedAt?: Date;
+  rejectionReason?: string;
 }
 
 const OrderSchema: Schema = new Schema({
@@ -83,6 +88,27 @@ const OrderSchema: Schema = new Schema({
     required: false
   },
   server: {
+    type: String,
+    required: false
+  },
+  transferProof: {
+    type: String,
+    required: false
+  },
+  transferProofApproved: {
+    type: Boolean,
+    required: false,
+    default: false
+  },
+  approvedBy: {
+    type: String,
+    required: false
+  },
+  approvedAt: {
+    type: Date,
+    required: false
+  },
+  rejectionReason: {
     type: String,
     required: false
   }

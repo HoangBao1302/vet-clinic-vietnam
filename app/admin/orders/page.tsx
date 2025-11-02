@@ -19,6 +19,8 @@ interface Order {
   broker?: string;
   accountId?: string;
   server?: string;
+  transferProof?: string;
+  transferProofApproved?: boolean;
 }
 
 interface OrderStats {
@@ -98,6 +100,44 @@ export default function OrdersDashboard() {
       
       const result = await response.json();
       alert(`✅ Đã fix ${result.fixed} orders thành công!`);
+      fetchStats(); // Refresh data
+    } catch (err: any) {
+      alert(`❌ Lỗi: ${err.message}`);
+    }
+  };
+
+  const handleBankTransferAction = async (orderId: string, action: 'approve' | 'reject') => {
+    const confirmMessage = action === 'approve' 
+      ? `Bạn có chắc muốn duyệt đơn hàng ${orderId}?`
+      : `Bạn có chắc muốn từ chối đơn hàng ${orderId}?`;
+    
+    if (!confirm(confirmMessage)) return;
+
+    const adminName = prompt('Nhập tên của bạn (để ghi nhận người duyệt):') || 'Admin';
+    let rejectionReason = '';
+
+    if (action === 'reject') {
+      rejectionReason = prompt('Lý do từ chối (tùy chọn):') || '';
+    }
+
+    try {
+      const response = await fetch('/api/bank-transfer/approve', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          orderId,
+          action,
+          adminName,
+          rejectionReason
+        }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to process request');
+      }
+
+      alert(`✅ Đơn hàng đã được ${action === 'approve' ? 'duyệt' : 'từ chối'} thành công!`);
       fetchStats(); // Refresh data
     } catch (err: any) {
       alert(`❌ Lỗi: ${err.message}`);
@@ -399,7 +439,39 @@ export default function OrdersDashboard() {
                         </div>
                       </td>
                       <td className="px-4 py-3">
-                        {!valid && (
+                        {order.paymentMethod === 'bank_transfer' && order.status === 'pending' && (
+                          <div className="flex gap-2">
+                            {order.transferProof && (
+                              <a
+                                href={order.transferProof}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition"
+                              >
+                                👁️ Xem ảnh
+                              </a>
+                            )}
+                            <button
+                              onClick={() => handleBankTransferAction(order.orderId, 'approve')}
+                              className="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700 transition"
+                            >
+                              ✅ Duyệt
+                            </button>
+                            <button
+                              onClick={() => handleBankTransferAction(order.orderId, 'reject')}
+                              className="bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700 transition"
+                            >
+                              ❌ Từ chối
+                            </button>
+                          </div>
+                        )}
+                        {order.paymentMethod === 'bank_transfer' && order.status === 'paid' && (
+                          <span className="text-green-600 text-sm font-semibold">✅ Đã duyệt</span>
+                        )}
+                        {order.paymentMethod === 'bank_transfer' && order.status === 'rejected' && (
+                          <span className="text-red-600 text-sm font-semibold">❌ Đã từ chối</span>
+                        )}
+                        {!valid && order.paymentMethod !== 'bank_transfer' && (
                           <button
                             onClick={() => fixOrder(order.orderId)}
                             className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition"
