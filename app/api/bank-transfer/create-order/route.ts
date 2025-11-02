@@ -2,8 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import Order from "@/lib/models/Order";
 import { sendEmail } from "@/lib/email";
-import { writeFile } from "fs/promises";
+import { writeFile, mkdir } from "fs/promises";
 import path from "path";
+import { existsSync } from "fs";
 
 export async function POST(request: NextRequest) {
   try {
@@ -38,8 +39,14 @@ export async function POST(request: NextRequest) {
     // Determine file extension from base64 header
     const fileExtension = transferProof.split(';')[0].split('/')[1];
     const fileName = `${orderId}.${fileExtension}`;
-    const filePath = path.join(process.cwd(), 'public', 'uploads', 'transfers', fileName);
     
+    // Create directory if it doesn't exist
+    const uploadsDir = path.join(process.cwd(), 'public', 'uploads', 'transfers');
+    if (!existsSync(uploadsDir)) {
+      await mkdir(uploadsDir, { recursive: true });
+    }
+    
+    const filePath = path.join(uploadsDir, fileName);
     await writeFile(filePath, buffer);
 
     // Create order record
