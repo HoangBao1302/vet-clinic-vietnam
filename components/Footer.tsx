@@ -160,7 +160,7 @@ export default function Footer() {
 
           {/* Resources */}
           <div>
-            <h3 className="text-lg font-semibold text-white mb-4">Tài Nguyên</h3>
+            <h3 className="text-lg font-semibold text-white mb-4">{t('footer.resources')}</h3>
             <ul className="space-y-2 text-gray-300">
               <li>
                 <a 
@@ -170,7 +170,7 @@ export default function Footer() {
                   className="hover:text-white transition-colors inline-flex items-center gap-2"
                 >
                   <Youtube size={16} />
-                  <span>Kênh YouTube</span>
+                  <span>{t('footer.links.youtubeChannel')}</span>
                 </a>
               </li>
               <li>
@@ -180,7 +180,7 @@ export default function Footer() {
                   rel="noopener noreferrer"
                   className="hover:text-white transition-colors"
                 >
-                  Video Backtest
+                  {t('footer.links.videoBacktest')}
                 </a>
               </li>
               <li>
@@ -190,27 +190,27 @@ export default function Footer() {
                   rel="noopener noreferrer"
                   className="hover:text-white transition-colors"
                 >
-                  Hướng dẫn cài đặt
+                  {t('footer.links.installGuide')}
                 </a>
               </li>
-              <li>Demo miễn phí</li>
-              <li>Tài liệu hướng dẫn</li>
-              <li>FAQ & Support</li>
+              <li>{t('footer.links.demo')}</li>
+              <li>{t('footer.links.docs')}</li>
+              <li>{t('footer.links.faq')}</li>
             </ul>
           </div>
 
           {/* Contact Info */}
           <div>
-            <h3 className="text-lg font-semibold text-white mb-4">Thông Tin Liên Hệ</h3>
+            <h3 className="text-lg font-semibold text-white mb-4">{t('footer.contactInfo')}</h3>
             <div className="space-y-3">
               <div className="flex items-center space-x-3">
                 <Phone className="w-5 h-5 text-gray-300" />
-                <span className="text-gray-300">+84 765 452 515</span>
+                <span className="text-gray-300">{t('common.phone')}</span>
               </div>
               
               <div className="flex items-center space-x-3">
                 <Mail className="w-5 h-5 text-gray-300" />
-                <span className="text-gray-300">support@thebenchmarktrader.com</span>
+                <span className="text-gray-300">{t('common.email')}</span>
               </div>
               
               <div className="flex items-center space-x-3">
@@ -220,10 +220,10 @@ export default function Footer() {
 
               <div className="mt-4 pt-4 border-t border-gray-700">
                 <p className="text-gray-400 text-sm">
-                  Giờ hỗ trợ: T2-T6 (9:00-18:00)
+                  {t('footer.supportTime')}
                 </p>
                 <p className="text-gray-400 text-sm">
-                  Telegram 24/7 cho khẩn cấp
+                  {t('footer.telegramSupport')}
                 </p>
               </div>
             </div>
@@ -237,17 +237,17 @@ export default function Footer() {
         <div className="border-t border-gray-700 mt-8 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-300 text-sm">
-              © {new Date().getFullYear()} EA Forex ThebenchmarkTrader. Bảo lưu mọi quyền.
+              {t('footer.copyright', { year: new Date().getFullYear() })}
             </p>
             <div className="flex space-x-6 mt-4 md:mt-0">
+              <Link href="/privacy" className="text-gray-300 hover:text-white text-sm transition-colors">
+                {t('footer.links.privacy')}
+              </Link>
+              <Link href="/terms" className="text-gray-300 hover:text-white text-sm transition-colors">
+                {t('footer.links.terms')}
+              </Link>
               <a href="#" className="text-gray-300 hover:text-white text-sm transition-colors">
-                Chính Sách Bảo Mật
-              </a>
-              <a href="#" className="text-gray-300 hover:text-white text-sm transition-colors">
-                Điều Khoản Dịch Vụ
-              </a>
-              <a href="#" className="text-gray-300 hover:text-white text-sm transition-colors">
-                Cảnh Báo Rủi Ro
+                Risk Warning
               </a>
             </div>
           </div>

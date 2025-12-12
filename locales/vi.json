@@ -281,16 +281,19 @@
   "footer": {
     "description": "Expert Advisor đa chiến lược với quản trị rủi ro khoa học. Tự động hóa giao dịch Forex hiệu quả và minh bạch.",
     "quickLinks": "Liên Kết Nhanh",
+    "resources": "Tài Nguyên",
+    "contactInfo": "Thông Tin Liên Hệ",
     "products": "Sản Phẩm",
     "support": "Hỗ trợ",
     "legal": "Pháp Lý",
     "followUs": "Theo Dõi Chúng Tôi",
-    "contactInfo": "Thông Tin Liên Hệ",
     "businessHours": "Giờ Làm Việc",
     "businessHoursValue": "Thứ 2 - Thứ 6: 9:00 - 18:00 (GMT+7)",
+    "supportTime": "Giờ hỗ trợ: T2-T6 (9:00-18:00)",
+    "telegramSupport": "Telegram 24/7 cho khẩn cấp",
     "address": "Địa Chỉ",
     "addressValue": "Hà Nội, Việt Nam",
-    "copyright": "© 2024 EA ThebenchmarkTrader. All rights reserved.",
+    "copyright": "© {year} EA Forex ThebenchmarkTrader. Bảo lưu mọi quyền.",
     "links": {
       "home": "Trang Chủ",
       "about": "Giới Thiệu",
@@ -304,7 +307,10 @@
       "faq": "FAQ",
       "terms": "Điều Khoản",
       "privacy": "Bảo Mật",
-      "affiliate": "Chương Trình Affiliate"
+      "affiliate": "Chương Trình Affiliate",
+      "youtubeChannel": "Kênh YouTube",
+      "videoBacktest": "Video Backtest",
+      "installGuide": "Hướng dẫn cài đặt"
     }
   }
 }

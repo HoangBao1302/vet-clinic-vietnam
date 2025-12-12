@@ -281,16 +281,19 @@
   "footer": {
     "description": "Multi-strategy Expert Advisor with scientific risk management. Efficient and transparent Forex trading automation.",
     "quickLinks": "Quick Links",
+    "resources": "Resources",
+    "contactInfo": "Contact Information",
     "products": "Products",
     "support": "Support",
     "legal": "Legal",
     "followUs": "Follow Us",
-    "contactInfo": "Contact Info",
     "businessHours": "Business Hours",
     "businessHoursValue": "Mon - Fri: 9:00 - 18:00 (GMT+7)",
+    "supportTime": "Support hours: Mon-Fri (9:00-18:00)",
+    "telegramSupport": "Telegram 24/7 for emergencies",
     "address": "Address",
     "addressValue": "Hanoi, Vietnam",
-    "copyright": "© 2024 EA ThebenchmarkTrader. All rights reserved.",
+    "copyright": "© {year} EA Forex ThebenchmarkTrader. All rights reserved.",
     "links": {
       "home": "Home",
       "about": "About",
@@ -304,7 +307,10 @@
       "faq": "FAQ",
       "terms": "Terms",
       "privacy": "Privacy",
-      "affiliate": "Affiliate Program"
+      "affiliate": "Affiliate Program",
+      "youtubeChannel": "YouTube Channel",
+      "videoBacktest": "Backtest Videos",
+      "installGuide": "Installation Guide"
     }
   }
 }
