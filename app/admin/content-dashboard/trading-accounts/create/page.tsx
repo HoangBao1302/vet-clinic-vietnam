@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import BilingualInput from "@/components/admin/BilingualInput";
 import { ArrowLeft, Save, Plus, X, TrendingUp } from "lucide-react";
 import { useAuth } from "@/lib/authContext";
 import type { TradingAccount } from "@/data/tradingAccounts";
@@ -12,7 +13,7 @@ export default function CreateTradingAccountPage() {
   const router = useRouter();
   const { user, isAuthenticated } = useAuth();
   const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState<Omit<TradingAccount, 'id'>>({
+  const [formData, setFormData] = useState<Omit<TradingAccount, 'id'> & { description_en?: string }>({
     platform: "MQL5",
     accountName: "",
     accountNumber: "",
@@ -33,6 +34,7 @@ export default function CreateTradingAccountPage() {
       youtube: ""
     },
     description: "",
+    description_en: "",
     highlights: [],
     badge: ""
   });
@@ -377,15 +379,17 @@ export default function CreateTradingAccountPage() {
 
             {/* Description */}
             <div className="border-t border-gray-200 pt-6">
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Mô Tả
-              </label>
-              <textarea
-                value={formData.description}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              <BilingualInput
+                label="Mô Tả"
+                valueVi={formData.description}
+                valueEn={formData.description_en || ""}
+                onChangeVi={(value) => setFormData({ ...formData, description: value })}
+                onChangeEn={(value) => setFormData({ ...formData, description_en: value })}
+                type="textarea"
                 rows={4}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                placeholder="Mô tả về tài khoản trading..."
+                placeholderVi="Mô tả về tài khoản trading..."
+                placeholderEn="Description about the trading account..."
+                showAutoTranslate
               />
             </div>
 

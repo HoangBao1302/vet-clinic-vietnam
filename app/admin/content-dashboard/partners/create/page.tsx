@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import BilingualInput from "@/components/admin/BilingualInput";
 import { ArrowLeft, Save, Plus, X, Building2 } from "lucide-react";
 import { useAuth } from "@/lib/authContext";
 import type { PartnerInfo } from "@/data/partners";
@@ -12,8 +13,9 @@ export default function CreatePartnerPage() {
   const router = useRouter();
   const { user, isAuthenticated } = useAuth();
   const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState<Omit<PartnerInfo, 'id'>>({
+  const [formData, setFormData] = useState<Omit<PartnerInfo, 'id'> & { name_en?: string }>({
     name: "",
+    name_en: "",
     logo: "",
     website: "",
     rating: 4.0,
@@ -106,87 +108,89 @@ export default function CreatePartnerPage() {
           {/* Form */}
           <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-md p-6 space-y-6">
             {/* Basic Info */}
-            <div className="grid md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Tên Partner * <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="Ví dụ: Tickmill"
-                  required
-                />
-              </div>
+            <div className="space-y-6">
+              {/* Bilingual Name Input */}
+              <BilingualInput
+                label="Tên Partner"
+                valueVi={formData.name}
+                valueEn={formData.name_en || ""}
+                onChangeVi={(value) => setFormData({ ...formData, name: value })}
+                onChangeEn={(value) => setFormData({ ...formData, name_en: value })}
+                type="text"
+                placeholderVi="Ví dụ: Tickmill"
+                placeholderEn="Example: Tickmill"
+                required
+                showAutoTranslate
+              />
 
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Website * <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="url"
-                  value={formData.website}
-                  onChange={(e) => setFormData({ ...formData, website: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="https://example.com"
-                  required
-                />
-              </div>
+              <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Website <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="url"
+                    value={formData.website}
+                    onChange={(e) => setFormData({ ...formData, website: e.target.value })}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="https://example.com"
+                    required
+                  />
+                </div>
 
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Logo URL
-                </label>
-                <input
-                  type="url"
-                  value={formData.logo || ""}
-                  onChange={(e) => setFormData({ ...formData, logo: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="https://example.com/logo.png"
-                />
-              </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Logo URL
+                  </label>
+                  <input
+                    type="url"
+                    value={formData.logo || ""}
+                    onChange={(e) => setFormData({ ...formData, logo: e.target.value })}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="https://example.com/logo.png"
+                  />
+                </div>
 
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Rating (0-5)
-                </label>
-                <input
-                  type="number"
-                  min="0"
-                  max="5"
-                  step="0.1"
-                  value={formData.rating}
-                  onChange={(e) => setFormData({ ...formData, rating: parseFloat(e.target.value) })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-              </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Rating (0-5)
+                  </label>
+                  <input
+                    type="number"
+                    min="0"
+                    max="5"
+                    step="0.1"
+                    value={formData.rating}
+                    onChange={(e) => setFormData({ ...formData, rating: parseFloat(e.target.value) })}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
 
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Order (Thứ tự hiển thị)
-                </label>
-                <input
-                  type="number"
-                  min="1"
-                  value={formData.order}
-                  onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-              </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Order (Thứ tự hiển thị)
+                  </label>
+                  <input
+                    type="number"
+                    min="1"
+                    value={formData.order}
+                    onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) })}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
 
-              <div className="flex items-center">
-                <input
-                  type="checkbox"
-                  id="active"
-                  checked={formData.active}
-                  onChange={(e) => setFormData({ ...formData, active: e.target.checked })}
-                  className="w-5 h-5 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
-                />
-                <label htmlFor="active" className="ml-2 text-sm font-semibold text-gray-700">
-                  Active (Hiển thị trên website)
-                </label>
+                <div className="flex items-center">
+                  <input
+                    type="checkbox"
+                    id="active"
+                    checked={formData.active}
+                    onChange={(e) => setFormData({ ...formData, active: e.target.checked })}
+                    className="w-5 h-5 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
+                  />
+                  <label htmlFor="active" className="ml-2 text-sm font-semibold text-gray-700">
+                    Active (Hiển thị trên website)
+                  </label>
+                </div>
               </div>
             </div>
 
@@ -285,4 +289,3 @@ export default function CreatePartnerPage() {
     </div>
   );
 }
-
