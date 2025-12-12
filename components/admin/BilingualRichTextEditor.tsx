@@ -59,8 +59,11 @@ export default function BilingualRichTextEditor({
         return;
       }
 
-      // Split content into chunks if too long (max 5000 chars per chunk)
-      const maxChunkSize = 5000;
+      console.log('Starting translation...');
+      console.log('Original text length:', plainText.length);
+
+      // Split content into chunks if too long (max 3000 chars per chunk for better reliability)
+      const maxChunkSize = 3000;
       const chunks: string[] = [];
       
       if (plainText.length <= maxChunkSize) {
@@ -83,11 +86,17 @@ export default function BilingualRichTextEditor({
         }
       }
 
+      console.log(`Split into ${chunks.length} chunk(s)`);
+
       // Translate each chunk
       const translatedChunks: string[] = [];
+      let successCount = 0;
+      let failCount = 0;
       
       for (let i = 0; i < chunks.length; i++) {
         try {
+          console.log(`Translating chunk ${i + 1}/${chunks.length} (${chunks[i].length} chars)...`);
+          
           const response = await fetch('/api/translate', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -99,21 +108,25 @@ export default function BilingualRichTextEditor({
             }),
           });
 
+          console.log(`Chunk ${i + 1} response status:`, response.status);
+
           if (!response.ok) {
             const errorData = await response.json().catch(() => ({ error: `HTTP ${response.status}` }));
-            throw new Error(`Translation failed for chunk ${i + 1}: ${errorData.error || response.statusText}`);
+            console.error(`Chunk ${i + 1} error:`, errorData);
+            throw new Error(`Translation failed: ${errorData.error || response.statusText}`);
           }
 
           const result = await response.json();
+          console.log(`Chunk ${i + 1} result:`, result);
           
           // Check for error in response first
           if (result.error) {
-            throw new Error(`Translation API error: ${result.error}`);
+            throw new Error(`API error: ${result.error}`);
           }
           
           // Check if result has translatedText
           if (!result) {
-            throw new Error(`Empty response from translation API for chunk ${i + 1}`);
+            throw new Error('Empty response from API');
           }
           
           // Handle different response formats
@@ -122,62 +135,86 @@ export default function BilingualRichTextEditor({
           if (result.translatedText) {
             translatedText = result.translatedText;
           } else if (typeof result === 'string') {
-            // Direct string response
             translatedText = result;
           } else if (result.text) {
-            // Alternative format
             translatedText = result.text;
           } else {
-            throw new Error(`Invalid response format from translation API for chunk ${i + 1}. Response: ${JSON.stringify(result).substring(0, 200)}`);
+            const preview = JSON.stringify(result).substring(0, 200);
+            throw new Error(`Invalid response format. Response: ${preview}`);
           }
           
           if (!translatedText || translatedText.trim() === '') {
-            throw new Error(`Translation result is empty for chunk ${i + 1}`);
+            throw new Error('Translation result is empty');
           }
           
           translatedChunks.push(translatedText);
+          successCount++;
+          console.log(`✅ Chunk ${i + 1} translated successfully`);
           
-          // Update progress if multiple chunks
-          if (chunks.length > 1) {
-            console.log(`Đã dịch ${i + 1}/${chunks.length} đoạn...`);
+          // Small delay between chunks to avoid rate limiting
+          if (i < chunks.length - 1) {
+            await new Promise(resolve => setTimeout(resolve, 500));
           }
         } catch (chunkError) {
-          console.error(`Error translating chunk ${i + 1}:`, chunkError);
-          // If one chunk fails, try to continue with others
-          if (chunks.length === 1) {
-            throw chunkError; // Re-throw if it's the only chunk
+          failCount++;
+          console.error(`❌ Error translating chunk ${i + 1}:`, chunkError);
+          
+          // If it's the only chunk or first chunk, throw error
+          if (chunks.length === 1 || i === 0) {
+            throw chunkError;
           }
-          // For multiple chunks, add error message
-          translatedChunks.push(`[Translation error for chunk ${i + 1}: ${chunkError instanceof Error ? chunkError.message : 'Unknown error'}]`);
+          
+          // For other chunks, add placeholder
+          const errorMsg = chunkError instanceof Error ? chunkError.message : 'Unknown error';
+          translatedChunks.push(`[❌ Chunk ${i + 1} translation failed: ${errorMsg}. Please translate this section manually.]`);
         }
       }
 
       // Join translated chunks
       const translatedText = translatedChunks.join('\n\n');
       
-      if (!translatedText || translatedText.trim() === '' || translatedText.includes('[Translation error')) {
-        throw new Error('Translation failed for all chunks. Please try again or translate manually.');
+      console.log('Translation complete:', { successCount, failCount, totalLength: translatedText.length });
+      
+      if (!translatedText || translatedText.trim() === '') {
+        throw new Error('All translations failed. Please try again or translate manually.');
       }
       
       // Update English content
       onChangeEn(translatedText);
       setActiveTab('en'); // Switch to English tab to show result
       
-      alert(`✅ Dịch thành công ${chunks.length > 1 ? `${chunks.length} đoạn` : ''}! 
+      if (failCount > 0) {
+        alert(`⚠️ Dịch hoàn tất với một số lỗi:
+        
+✅ Thành công: ${successCount}/${chunks.length} đoạn
+❌ Thất bại: ${failCount}/${chunks.length} đoạn
+
+Vui lòng:
+1. Check các đoạn có dấu [❌] trong tab English
+2. Dịch thủ công các đoạn đó
+3. Format lại (bold, lists, headings)`);
+      } else {
+        alert(`✅ Dịch thành công ${chunks.length > 1 ? `${chunks.length} đoạn` : ''}! 
 
 ⚠️ LƯU Ý: 
 - Bản dịch là plain text (không có format)
 - Vui lòng format lại (bold, lists, headings) trong tab English
 - Review và chỉnh sửa nếu cần`);
+      }
     } catch (error) {
       console.error('Translation error:', error);
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       alert(`❌ Dịch tự động thất bại: ${errorMessage}
 
 💡 GỢI Ý:
-- Thử chia nhỏ content thành nhiều phần
-- Hoặc copy text sang Google Translate thủ công
-- Sau đó paste vào tab English và format lại`);
+1. Thử với content ngắn hơn (< 3000 ký tự)
+2. Hoặc copy text sang Google Translate thủ công: https://translate.google.com
+3. Sau đó paste vào tab English và format lại
+
+📋 DEBUG INFO (gửi cho admin nếu cần):
+- Error: ${errorMessage}
+- Content length: ${valueVi.length} chars
+- Check Browser Console (F12) để xem chi tiết`);
     } finally {
       setTranslating(false);
     }
@@ -264,4 +301,3 @@ export default function BilingualRichTextEditor({
     </div>
   );
 }
-
