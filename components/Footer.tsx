@@ -5,11 +5,13 @@ import { Facebook, Instagram, Twitter, Phone, Mail, MessageCircle, Youtube } fro
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import Newsletter from "./Newsletter";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 
 export default function Footer() {
   const [isClient, setIsClient] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
+  const { t } = useLocale();
 
   useEffect(() => {
     setIsClient(true);
@@ -38,11 +40,10 @@ export default function Footer() {
           {/* Logo and Description */}
           <div className="lg:col-span-1">
             <div className="text-2xl font-bold text-white mb-4">
-              EA Forex ThebenchmarkTrader
+              {t('hero.title')}
             </div>
             <p className="text-gray-300 mb-6">
-              Expert Advisor đa chiến lược với quản trị rủi ro khoa học. 
-              Tự động hóa giao dịch Forex hiệu quả và minh bạch.
+              {t('footer.description')}
             </p>
             <div className="flex space-x-4">
               <a 
@@ -95,7 +96,7 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-lg font-semibold text-white mb-4">Liên Kết Nhanh</h3>
+            <h3 className="text-lg font-semibold text-white mb-4">{t('footer.quickLinks')}</h3>
             <ul className="space-y-2">
               <li>
                 <button
