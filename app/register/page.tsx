@@ -4,6 +4,7 @@ import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/lib/authContext";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { UserPlus, Mail, Lock, User, AlertCircle, CheckCircle, Eye, EyeOff } from "lucide-react";
@@ -13,6 +14,7 @@ import HoneypotField from "@/components/HoneypotField";
 export default function RegisterPage() {
   const router = useRouter();
   const { login } = useAuth();
+  const { t } = useLocale();
   const recaptchaRef = useRef<ReCaptchaRef>(null);
   
   const [formData, setFormData] = useState({
@@ -41,22 +43,22 @@ export default function RegisterPage() {
 
   const validateForm = () => {
     if (!formData.username || formData.username.length < 3) {
-      setError("Username phải có ít nhất 3 ký tự");
+      setError(t('auth.register.validation.usernameMin'));
       return false;
     }
     
     if (!formData.email || !/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(formData.email)) {
-      setError("Email không hợp lệ");
+      setError(t('auth.register.validation.emailInvalid'));
       return false;
     }
     
     if (!formData.password || formData.password.length < 6) {
-      setError("Mật khẩu phải có ít nhất 6 ký tự");
+      setError(t('auth.register.validation.passwordMin'));
       return false;
     }
     
     if (formData.password !== formData.confirmPassword) {
-      setError("Mật khẩu xác nhận không khớp");
+      setError(t('auth.register.validation.passwordMismatch'));
       return false;
     }
     
@@ -131,12 +133,12 @@ export default function RegisterPage() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || "Đăng ký thất bại");
+        throw new Error(data.message || t('auth.register.registerFailed'));
       }
 
       // DO NOT login if requires verification - user must verify email first
       if (data.requiresVerification) {
-        setSuccess("✅ Tài khoản đã được tạo! ⚠️ Vui lòng kiểm tra email và click link xác thực để kích hoạt tài khoản. Bạn chỉ có thể đăng nhập và sử dụng dịch vụ sau khi xác thực email.");
+        setSuccess(t('auth.register.registerSuccess'));
         // Clear form after successful registration
         setFormData({
           username: "",
@@ -155,7 +157,7 @@ export default function RegisterPage() {
         if (data.token) {
           login(data.token, data.user);
         }
-        setSuccess("Đăng ký thành công! Đang chuyển hướng...");
+        setSuccess(t('auth.register.registerSuccess'));
         setTimeout(() => {
           router.push("/");
         }, 2000);
@@ -180,10 +182,10 @@ export default function RegisterPage() {
                 <UserPlus className="w-8 h-8 text-white" />
               </div>
               <h1 className="text-3xl font-bold text-gray-800 mb-2">
-                Đăng Ký Tài Khoản
+                {t('auth.register.title')}
               </h1>
               <p className="text-gray-600">
-                Tạo tài khoản để trải nghiệm đầy đủ tính năng
+                {t('auth.register.subtitle')}
               </p>
             </div>
 
@@ -219,7 +221,7 @@ export default function RegisterPage() {
             <form onSubmit={handleSubmit} className="space-y-5">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Username
+                  {t('auth.register.username')}
                 </label>
                 <div className="relative">
                   <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -231,15 +233,15 @@ export default function RegisterPage() {
                     required
                     minLength={3}
                     className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="VD: trader123"
+                    placeholder={t('auth.register.usernamePlaceholder')}
                   />
                 </div>
-                <p className="text-xs text-gray-500 mt-1">Ít nhất 3 ký tự</p>
+                <p className="text-xs text-gray-500 mt-1">{t('auth.register.validation.usernameMin')}</p>
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Email
+                  {t('auth.register.email')}
                 </label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -250,14 +252,14 @@ export default function RegisterPage() {
                     onChange={handleChange}
                     required
                     className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="your@email.com"
+                    placeholder={t('auth.register.emailPlaceholder')}
                   />
                 </div>
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Mật khẩu
+                  {t('auth.register.password')}
                 </label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -269,7 +271,7 @@ export default function RegisterPage() {
                     required
                     minLength={6}
                     className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="••••••••"
+                    placeholder={t('auth.register.passwordPlaceholder')}
                   />
                   <button
                     type="button"
@@ -279,12 +281,12 @@ export default function RegisterPage() {
                     {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                   </button>
                 </div>
-                <p className="text-xs text-gray-500 mt-1">Ít nhất 6 ký tự</p>
+                <p className="text-xs text-gray-500 mt-1">{t('auth.register.validation.passwordMin')}</p>
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Xác nhận mật khẩu
+                  {t('auth.register.confirmPassword')}
                 </label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -295,7 +297,7 @@ export default function RegisterPage() {
                     onChange={handleChange}
                     required
                     className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="••••••••"
+                    placeholder={t('auth.register.confirmPasswordPlaceholder')}
                   />
                   <button
                     type="button"
@@ -315,13 +317,13 @@ export default function RegisterPage() {
                   className="mt-1 rounded border-gray-300 text-blue-600 focus:ring-blue-500" 
                 />
                 <label htmlFor="terms" className="text-sm text-gray-600">
-                  Tôi đồng ý với{" "}
+                  {t('auth.register.termsPrefix')}{" "}
                   <Link href="/terms" className="text-blue-600 hover:underline">
-                    Điều khoản sử dụng
+                    {t('auth.register.terms')}
                   </Link>
-                  {" và "}
+                  {" "}{t('auth.register.and')}{" "}
                   <Link href="/privacy" className="text-blue-600 hover:underline">
-                    Chính sách bảo mật
+                    {t('auth.register.privacy')}
                   </Link>
                 </label>
               </div>
@@ -351,19 +353,19 @@ export default function RegisterPage() {
                 disabled={loading}
                 className="w-full py-3 bg-gradient-to-r from-green-600 to-blue-600 text-white rounded-lg font-semibold hover:from-green-700 hover:to-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {loading ? "Đang đăng ký..." : "Đăng Ký Miễn Phí"}
+                {loading ? t('auth.register.registering') : t('auth.register.registerButton')}
               </button>
             </form>
 
             {/* Login Link */}
             <div className="mt-6 text-center">
               <p className="text-gray-600">
-                Đã có tài khoản?{" "}
+                {t('auth.register.haveAccount')}{" "}
                 <Link
                   href="/login"
                   className="text-blue-600 hover:text-blue-700 font-semibold"
                 >
-                  Đăng nhập ngay
+                  {t('auth.register.loginNow')}
                 </Link>
               </p>
             </div>
