@@ -4,8 +4,11 @@ import { ExternalLink, TrendingUp, CheckCircle, Youtube } from "lucide-react";
 import Link from "next/link";
 import { featuredAccounts } from "@/data/featuredAccounts";
 import type { FeaturedAccount } from "@/data/featuredAccounts";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 
 export default function LiveResults() {
+  const { t } = useLocale();
+  
   // Filter only active featured accounts and sort by order
   const activeFeaturedAccounts = featuredAccounts
     .filter(a => a.active)
@@ -19,14 +22,13 @@ export default function LiveResults() {
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-100 text-green-800 rounded-full text-sm font-medium mb-4">
             <CheckCircle size={16} />
-            <span>100% Verified Real Accounts</span>
+            <span>{t("liveResults.badge")}</span>
           </div>
           <h2 className="text-4xl font-bold text-gray-800 mb-4">
-            Kết Quả Giao Dịch Thực Tế
+            {t("liveResults.title")}
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-            Không phải backtest. Không phải demo. Đây là tài khoản real money, 
-            verified và tracking 24/7 trên các platform uy tín.
+            {t("liveResults.subtitle")}
           </p>
         </div>
 
@@ -48,13 +50,13 @@ export default function LiveResults() {
                   </div>
                   {account.copyable && (
                     <span className="px-2 py-1 bg-white/20 rounded text-xs font-medium">
-                      Copy ✓
+                      {t("liveResults.copyable")} ✓
                     </span>
                   )}
                 </div>
                 <div className="flex items-center gap-2 text-sm">
                   <CheckCircle size={14} />
-                  <span>Verified Account</span>
+                  <span>{t("liveResults.verified")}</span>
                 </div>
               </div>
 
@@ -64,15 +66,15 @@ export default function LiveResults() {
                 <div className="grid grid-cols-3 gap-3 mb-6">
                   <div className="text-center">
                     <div className="text-2xl font-bold text-green-600">{account.gain}</div>
-                    <div className="text-xs text-gray-600">Gain</div>
+                    <div className="text-xs text-gray-600">{t("liveResults.gain")}</div>
                   </div>
                   <div className="text-center">
                     <div className="text-2xl font-bold text-red-600">{account.drawdown}</div>
-                    <div className="text-xs text-gray-600">DD</div>
+                    <div className="text-xs text-gray-600">{t("liveResults.drawdown")}</div>
                   </div>
                   <div className="text-center">
                     <div className="text-2xl font-bold text-gray-700">{account.days}</div>
-                    <div className="text-xs text-gray-600">Days</div>
+                    <div className="text-xs text-gray-600">{t("liveResults.days")}</div>
                   </div>
                 </div>
 
@@ -84,7 +86,7 @@ export default function LiveResults() {
                   className="flex items-center justify-center gap-2 w-full py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
                 >
                   <ExternalLink size={18} />
-                  <span>Xem Live Stats</span>
+                  <span>{t("liveResults.viewAccount")}</span>
                 </a>
               </div>
             </div>
@@ -93,52 +95,19 @@ export default function LiveResults() {
 
         {/* Bottom Info & CTA */}
         <div className="bg-white rounded-2xl shadow-lg p-8 max-w-4xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-8 items-center">
-            <div>
-              <h3 className="text-2xl font-bold text-gray-800 mb-4">
-                5+ Tài Khoản Verified
-              </h3>
-              <p className="text-gray-600 mb-4 leading-relaxed">
-                Xem tất cả tài khoản live với stats chi tiết, equity curve, 
-                và lịch sử giao dịch đầy đủ. Cả mua EA hoặc copy trading đều có sẵn.
-              </p>
-              <ul className="space-y-2 text-sm text-gray-700 mb-6">
-                <li className="flex items-center gap-2">
-                  <TrendingUp size={16} className="text-green-600" />
-                  <span>Track record từ 120-240 ngày</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle size={16} className="text-blue-600" />
-                  <span>Verified bởi MQL5, Myfxbook, brokers</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <Youtube size={16} className="text-red-600" />
-                  <span>Video hướng dẫn copy trading</span>
-                </li>
-              </ul>
-            </div>
-            
-            <div className="space-y-4">
-              <Link
-                href="/live-results"
-                className="block text-center px-6 py-4 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors"
-              >
-                Xem Tất Cả Kết Quả Thực Tế →
-              </Link>
-              <Link
-                href="/pricing"
-                className="block text-center px-6 py-4 border-2 border-blue-600 text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-colors"
-              >
-                Hoặc Mua EA Ngay
-              </Link>
-              <p className="text-xs text-center text-gray-500">
-                ⚠️ Kết quả quá khứ không đảm bảo kết quả tương lai
-              </p>
-            </div>
+          <div className="text-center mb-6">
+            <Link
+              href="/live-results"
+              className="inline-block text-center px-8 py-4 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors text-lg"
+            >
+              {t("liveResults.seeAllAccounts")} →
+            </Link>
+            <p className="text-sm text-center text-gray-500 mt-4">
+              ⚠️ {t("liveResults.disclaimer")}
+            </p>
           </div>
         </div>
       </div>
     </section>
   );
 }
-
