@@ -106,21 +106,36 @@ export default function BilingualRichTextEditor({
 
           const result = await response.json();
           
+          // Check for error in response first
+          if (result.error) {
+            throw new Error(`Translation API error: ${result.error}`);
+          }
+          
           // Check if result has translatedText
           if (!result) {
             throw new Error(`Empty response from translation API for chunk ${i + 1}`);
           }
           
-          if (!result.translatedText) {
-            // Check if result is a string (direct translation)
-            if (typeof result === 'string') {
-              translatedChunks.push(result);
-            } else {
-              throw new Error(`Invalid response format from translation API for chunk ${i + 1}. Expected 'translatedText' field.`);
-            }
+          // Handle different response formats
+          let translatedText: string | null = null;
+          
+          if (result.translatedText) {
+            translatedText = result.translatedText;
+          } else if (typeof result === 'string') {
+            // Direct string response
+            translatedText = result;
+          } else if (result.text) {
+            // Alternative format
+            translatedText = result.text;
           } else {
-            translatedChunks.push(result.translatedText);
+            throw new Error(`Invalid response format from translation API for chunk ${i + 1}. Response: ${JSON.stringify(result).substring(0, 200)}`);
           }
+          
+          if (!translatedText || translatedText.trim() === '') {
+            throw new Error(`Translation result is empty for chunk ${i + 1}`);
+          }
+          
+          translatedChunks.push(translatedText);
           
           // Update progress if multiple chunks
           if (chunks.length > 1) {
