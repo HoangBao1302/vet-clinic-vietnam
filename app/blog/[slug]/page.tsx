@@ -48,6 +48,7 @@ export default function BlogPostPage() {
   const [post, setPost] = useState<BlogPost | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [refreshKey, setRefreshKey] = useState(0); // Force re-render when locale changes
   
   useEffect(() => {
     if (params.slug) {
@@ -55,10 +56,9 @@ export default function BlogPostPage() {
     }
   }, [params.slug]);
 
-  // Re-render when locale changes (no need to re-fetch, just use localized content)
+  // Re-render when locale changes
   useEffect(() => {
-    // Force re-render when locale changes
-    // The getLocalizedContent() will automatically use the new locale
+    setRefreshKey(prev => prev + 1); // Force component re-render
   }, [locale]);
 
   const fetchPost = async (slug: string) => {
