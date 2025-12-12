@@ -84,6 +84,12 @@ export default function BlogPage() {
     fetchPosts();
   }, [selectedCategory]);
 
+  // Force re-render when locale changes (no need to re-fetch)
+  useEffect(() => {
+    // Component will re-render automatically when locale changes
+    // because getLocalizedPost() uses locale in render
+  }, [locale]);
+
   const fetchPosts = async () => {
     try {
       setLoading(true);

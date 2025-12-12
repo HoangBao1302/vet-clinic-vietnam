@@ -2,9 +2,12 @@ import mongoose, { Schema, Document, Model } from "mongoose";
 
 export interface IBlogPost extends Document {
   title: string;
+  title_en?: string;
   slug: string;
   excerpt: string;
+  excerpt_en?: string;
   content: string;
+  content_en?: string;
   author: {
     id: string;
     name: string;
@@ -31,6 +34,11 @@ const BlogPostSchema: Schema = new Schema(
       trim: true,
       maxlength: [200, "Tiêu đề không được vượt quá 200 ký tự"],
     },
+    title_en: {
+      type: String,
+      trim: true,
+      maxlength: [200, "Tiêu đề tiếng Anh không được vượt quá 200 ký tự"],
+    },
     slug: {
       type: String,
       required: [true, "Slug là bắt buộc"],
@@ -45,9 +53,17 @@ const BlogPostSchema: Schema = new Schema(
       trim: true,
       maxlength: [500, "Mô tả ngắn không được vượt quá 500 ký tự"],
     },
+    excerpt_en: {
+      type: String,
+      trim: true,
+      maxlength: [500, "Mô tả ngắn tiếng Anh không được vượt quá 500 ký tự"],
+    },
     content: {
       type: String,
       required: [true, "Nội dung bài viết là bắt buộc"],
+    },
+    content_en: {
+      type: String,
     },
     author: {
       id: {

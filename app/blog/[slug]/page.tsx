@@ -55,6 +55,12 @@ export default function BlogPostPage() {
     }
   }, [params.slug]);
 
+  // Re-render when locale changes (no need to re-fetch, just use localized content)
+  useEffect(() => {
+    // Force re-render when locale changes
+    // The getLocalizedContent() will automatically use the new locale
+  }, [locale]);
+
   const fetchPost = async (slug: string) => {
     try {
       setLoading(true);

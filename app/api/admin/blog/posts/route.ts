@@ -101,9 +101,12 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const {
       title,
+      title_en,
       slug,
       excerpt,
+      excerpt_en,
       content,
+      content_en,
       category,
       tags,
       image,
@@ -134,9 +137,12 @@ export async function POST(request: NextRequest) {
     // Create new blog post
     const newPost = new BlogPost({
       title,
+      title_en: title_en || undefined,
       slug: slug || undefined, // Let pre-save hook generate if not provided
       excerpt,
+      excerpt_en: excerpt_en || undefined,
       content,
+      content_en: content_en || undefined,
       author: {
         id: user._id.toString(),
         name: user.name || user.email,
