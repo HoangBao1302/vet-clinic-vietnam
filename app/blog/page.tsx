@@ -8,12 +8,15 @@ import Newsletter from "@/components/Newsletter";
 import Link from "next/link";
 import Image from "next/image";
 import { Calendar, Clock, ArrowRight, TrendingUp, Eye, Loader } from "lucide-react";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 
 interface BlogPost {
   _id: string;
   title: string;
+  title_en?: string;
   slug: string;
   excerpt: string;
+  excerpt_en?: string;
   author: {
     name: string;
   };
@@ -56,6 +59,7 @@ const categories = [
 ];
 
 export default function BlogPage() {
+  const { locale } = useLocale();
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [newsletterEmail, setNewsletterEmail] = useState("");
   const [newsletterSubmitting, setNewsletterSubmitting] = useState(false);
@@ -63,6 +67,18 @@ export default function BlogPage() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [categoryStats, setCategoryStats] = useState<Record<string, number>>({});
+
+  // Helper function to get localized content for a post
+  const getLocalizedPost = (post: BlogPost) => {
+    if (locale === 'en') {
+      return {
+        ...post,
+        title: post.title_en || post.title,
+        excerpt: post.excerpt_en || post.excerpt,
+      };
+    }
+    return post;
+  };
 
   useEffect(() => {
     fetchPosts();
@@ -215,7 +231,7 @@ export default function BlogPage() {
                     <div className="relative h-64 md:h-80">
                       <Image
                         src={featuredPost.image}
-                        alt={featuredPost.title}
+                        alt={getLocalizedPost(featuredPost).title}
                         fill
                         style={{ objectFit: "cover" }}
                         className="hover:scale-105 transition-transform duration-300"
@@ -229,11 +245,11 @@ export default function BlogPage() {
                     
                     <div className="p-8">
                       <h3 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4 hover:text-blue-600 transition-colors">
-                        {featuredPost.title}
+                        {getLocalizedPost(featuredPost).title}
                       </h3>
                       
                       <p className="text-gray-600 text-lg mb-6 leading-relaxed">
-                        {featuredPost.excerpt}
+                        {getLocalizedPost(featuredPost).excerpt}
                       </p>
                       
                       <div className="flex items-center justify-between flex-wrap gap-4">
@@ -287,32 +303,34 @@ export default function BlogPage() {
                 </div>
 
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 max-w-7xl mx-auto">
-                  {regularPosts.map((post) => (
-                    <Link key={post._id} href={`/blog/${post.slug}`}>
-                      <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer h-full hover:translate-y-[-4px]">
-                        <div className="relative h-48">
-                          <Image
-                            src={post.image}
-                            alt={post.title}
-                            fill
-                            style={{ objectFit: "cover" }}
-                            className="hover:scale-105 transition-transform duration-300"
-                          />
-                          <div className="absolute top-3 left-3">
-                            <span className="bg-white text-gray-800 px-2 py-1 rounded-full text-xs font-medium">
-                              {categories.find(c => c.id === post.category)?.name}
-                            </span>
+                  {regularPosts.map((post) => {
+                    const localizedPost = getLocalizedPost(post);
+                    return (
+                      <Link key={post._id} href={`/blog/${post.slug}`}>
+                        <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer h-full hover:translate-y-[-4px]">
+                          <div className="relative h-48">
+                            <Image
+                              src={post.image}
+                              alt={localizedPost.title}
+                              fill
+                              style={{ objectFit: "cover" }}
+                              className="hover:scale-105 transition-transform duration-300"
+                            />
+                            <div className="absolute top-3 left-3">
+                              <span className="bg-white text-gray-800 px-2 py-1 rounded-full text-xs font-medium">
+                                {categories.find(c => c.id === post.category)?.name}
+                              </span>
+                            </div>
                           </div>
-                        </div>
-                        
-                        <div className="p-6">
-                          <h3 className="text-xl font-bold text-gray-800 mb-3 hover:text-blue-600 transition-colors line-clamp-2">
-                            {post.title}
-                          </h3>
                           
-                          <p className="text-gray-600 mb-4 text-sm leading-relaxed line-clamp-3">
-                            {post.excerpt}
-                          </p>
+                          <div className="p-6">
+                            <h3 className="text-xl font-bold text-gray-800 mb-3 hover:text-blue-600 transition-colors line-clamp-2">
+                              {localizedPost.title}
+                            </h3>
+                            
+                            <p className="text-gray-600 mb-4 text-sm leading-relaxed line-clamp-3">
+                              {localizedPost.excerpt}
+                            </p>
                           
                           <div className="text-xs text-gray-500 mb-4 line-clamp-1">
                             {post.author.name}
@@ -335,7 +353,8 @@ export default function BlogPage() {
                         </div>
                       </div>
                     </Link>
-                  ))}
+                    );
+                  })}
                 </div>
               </>
             ) : (

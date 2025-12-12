@@ -9,13 +9,17 @@ import Link from "next/link";
 import Image from "next/image";
 import { Calendar, Clock, ArrowLeft, Share2, Crown, Loader } from "lucide-react";
 import PremiumBlogGate from "@/components/PremiumBlogGate";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 
 interface BlogPost {
   _id: string;
   title: string;
+  title_en?: string;
   slug: string;
   excerpt: string;
+  excerpt_en?: string;
   content: string;
+  content_en?: string;
   category: string;
   image: string;
   author: {
@@ -40,6 +44,7 @@ const categoryNames: Record<string, string> = {
 
 export default function BlogPostPage() {
   const params = useParams();
+  const { locale } = useLocale();
   const [post, setPost] = useState<BlogPost | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -69,6 +74,27 @@ export default function BlogPostPage() {
       setLoading(false);
     }
   };
+
+  // Helper function to get localized content
+  const getLocalizedContent = () => {
+    if (!post) return { title: '', excerpt: '', content: '' };
+    
+    if (locale === 'en') {
+      return {
+        title: post.title_en || post.title,
+        excerpt: post.excerpt_en || post.excerpt,
+        content: post.content_en || post.content,
+      };
+    }
+    
+    return {
+      title: post.title,
+      excerpt: post.excerpt,
+      content: post.content,
+    };
+  };
+
+  const localizedContent = getLocalizedContent();
 
   if (loading) {
     return (
@@ -140,11 +166,11 @@ export default function BlogPostPage() {
               </div>
 
               <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6 leading-tight">
-                {post.title}
+                {localizedContent.title}
               </h1>
 
               <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-                {post.excerpt}
+                {localizedContent.excerpt}
               </p>
 
               <div className="flex items-center justify-between border-t border-gray-200 pt-6">
@@ -176,7 +202,7 @@ export default function BlogPostPage() {
               <div className="relative h-64 md:h-96 rounded-xl overflow-hidden">
                 <Image
                   src={post.image}
-                  alt={post.title}
+                  alt={localizedContent.title}
                   fill
                   style={{ objectFit: "cover" }}
                   className="rounded-xl"
@@ -195,11 +221,11 @@ export default function BlogPostPage() {
                 <div className="lg:col-span-3">
                   <PremiumBlogGate 
                     isPremium={post.isPremium || false}
-                    previewContent={post.excerpt}
+                    previewContent={localizedContent.excerpt}
                   >
                     <div 
                       className="prose prose-lg max-w-none"
-                      dangerouslySetInnerHTML={{ __html: post.content || `<p>${post.excerpt}</p><p>Nội dung đang được cập nhật...</p>` }}
+                      dangerouslySetInnerHTML={{ __html: localizedContent.content || `<p>${localizedContent.excerpt}</p><p>Nội dung đang được cập nhật...</p>` }}
                       style={{
                         lineHeight: '1.8',
                       }}
