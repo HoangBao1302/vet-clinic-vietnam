@@ -2,73 +2,76 @@
 
 import Image from "next/image";
 import { Star, TrendingUp, Shield, Target, Youtube, PlayCircle } from "lucide-react";
-
-const stats = [
-  {
-    icon: TrendingUp,
-    label: "Profit Factor",
-    value: "2.4",
-    description: "Tỷ lệ lợi nhuận/lỗ",
-    color: "text-green-600"
-  },
-  {
-    icon: Shield,
-    label: "Max Drawdown",
-    value: "8.5%",
-    description: "Mức sụt giảm tối đa",
-    color: "text-blue-600"
-  },
-  {
-    icon: Target,
-    label: "Win Rate",
-    value: "68%",
-    description: "Tỷ lệ lệnh thắng",
-    color: "text-purple-600"
-  },
-  {
-    icon: TrendingUp,
-    label: "Risk:Reward",
-    value: "1:2.1",
-    description: "Tỷ lệ rủi ro/lợi nhuận",
-    color: "text-orange-600"
-  }
-];
-
-const testimonials = [
-  {
-    name: "Anh Minh",
-    role: "Trader 3 năm kinh nghiệm",
-    image: "/reviews/jonas-leupe-8pCtwj37VB4-unsplash.jpg",
-    rating: 5,
-    comment: "EA ThebenchmarkTrader đã giúp tôi ổn định lợi nhuận hàng tháng. Quản trị rủi ro rất tốt, tôi yên tâm để EA chạy cả đêm."
-  },
-  {
-    name: "Chị Lan",
-    role: "Nhà đầu tư cá nhân",
-    image: "/reviews/brooke-cagle--uHVRvDr7pg-unsplash.jpg",
-    rating: 5,
-    comment: "Tôi là người mới, EA này rất dễ sử dụng. Báo cáo hàng ngày giúp tôi hiểu rõ hiệu suất giao dịch."
-  },
-  {
-    name: "Anh Đức",
-    role: "Quản lý quỹ",
-    image: "/reviews/jason-goodman-fznQW-kn5VU-unsplash.jpg",
-    rating: 5,
-    comment: "Code minh bạch, logic rõ ràng. Tôi đã customize cho phù hợp với chiến lược quỹ và kết quả rất khả quan."
-  }
-];
+import { useLocale } from "@/lib/i18n/LocaleContext";
 
 export default function Proof() {
+  const { t } = useLocale();
+  
+  const stats = [
+    {
+      icon: TrendingUp,
+      labelKey: "proof.profitFactor",
+      value: "2.4",
+      descKey: "proof.profitFactorDesc",
+      color: "text-green-600"
+    },
+    {
+      icon: Shield,
+      labelKey: "proof.maxDrawdown",
+      value: "8.5%",
+      descKey: "proof.maxDrawdownDesc",
+      color: "text-blue-600"
+    },
+    {
+      icon: Target,
+      labelKey: "proof.winRate",
+      value: "68%",
+      descKey: "proof.winRateDesc",
+      color: "text-purple-600"
+    },
+    {
+      icon: TrendingUp,
+      labelKey: "proof.riskReward",
+      value: "1:2.1",
+      descKey: "proof.riskRewardDesc",
+      color: "text-orange-600"
+    }
+  ];
+
+  const testimonials = [
+    {
+      nameKey: "proof.testimonial1.name",
+      roleKey: "proof.testimonial1.role",
+      commentKey: "proof.testimonial1.comment",
+      image: "/reviews/jonas-leupe-8pCtwj37VB4-unsplash.jpg",
+      rating: 5
+    },
+    {
+      nameKey: "proof.testimonial2.name",
+      roleKey: "proof.testimonial2.role",
+      commentKey: "proof.testimonial2.comment",
+      image: "/reviews/brooke-cagle--uHVRvDr7pg-unsplash.jpg",
+      rating: 5
+    },
+    {
+      nameKey: "proof.testimonial3.name",
+      roleKey: "proof.testimonial3.role",
+      commentKey: "proof.testimonial3.comment",
+      image: "/reviews/jason-goodman-fznQW-kn5VU-unsplash.jpg",
+      rating: 5
+    }
+  ];
+
   return (
     <section id="proof" className="py-20 bg-gray-50">
       <div className="container-custom">
         {/* Stats Section */}
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-gray-800 mb-4">
-            Hiệu suất được chứng minh
+            {t("proof.title")}
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-12">
-            Kết quả backtest trên dữ liệu thực tế EURUSD H1 từ 2020-2024
+            {t("proof.subtitle")}
           </p>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -83,10 +86,10 @@ export default function Proof() {
                     {stat.value}
                   </div>
                   <div className="font-semibold text-gray-800 mb-1">
-                    {stat.label}
+                    {t(stat.labelKey)}
                   </div>
                   <div className="text-sm text-gray-600">
-                    {stat.description}
+                    {t(stat.descKey)}
                   </div>
                 </div>
               );
@@ -97,10 +100,10 @@ export default function Proof() {
         {/* Testimonials Section */}
         <div className="text-center mb-12">
           <h3 className="text-3xl font-bold text-gray-800 mb-4">
-            Phản hồi từ khách hàng
+            {t("proof.testimonialsTitle")}
           </h3>
           <p className="text-lg text-gray-600">
-            Hơn 500+ trader đang sử dụng EA ThebenchmarkTrader
+            {t("proof.testimonialsSubtitle")}
           </p>
         </div>
 
@@ -110,14 +113,14 @@ export default function Proof() {
               <div className="flex items-center mb-4">
                 <Image
                   src={testimonial.image}
-                  alt={testimonial.name}
+                  alt={t(testimonial.nameKey)}
                   width={60}
                   height={60}
                   className="rounded-full object-cover"
                 />
                 <div className="ml-4">
-                  <h4 className="font-semibold text-gray-800">{testimonial.name}</h4>
-                  <p className="text-sm text-gray-600">{testimonial.role}</p>
+                  <h4 className="font-semibold text-gray-800">{t(testimonial.nameKey)}</h4>
+                  <p className="text-sm text-gray-600">{t(testimonial.roleKey)}</p>
                 </div>
               </div>
 
@@ -128,19 +131,13 @@ export default function Proof() {
               </div>
 
               <p className="text-gray-600 italic">
-                "{testimonial.comment}"
+                "{t(testimonial.commentKey)}"
               </p>
             </div>
           ))}
         </div>
 
         <div className="text-center mt-12">
-          <div className="inline-flex items-center space-x-2 bg-blue-100 text-blue-800 px-6 py-3 rounded-lg mb-6">
-            <span className="font-medium">
-              📊 Tất cả số liệu đều có thể xác thực qua file backtest chi tiết
-            </span>
-          </div>
-          
           {/* YouTube Video Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <a
@@ -150,7 +147,7 @@ export default function Proof() {
               className="inline-flex items-center space-x-2 px-6 py-3 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors shadow-lg hover:shadow-xl"
             >
               <Youtube size={20} />
-              <span>Xem Video Backtest</span>
+              <span>{t("proof.watchBacktest")}</span>
             </a>
             <a
               href="https://www.youtube.com/@ThebenchmarkTraderEA/playlists"
@@ -159,7 +156,7 @@ export default function Proof() {
               className="inline-flex items-center space-x-2 px-6 py-3 bg-white border-2 border-blue-600 text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-colors"
             >
               <PlayCircle size={20} />
-              <span>Video Hướng Dẫn Khác</span>
+              <span>{t("proof.moreVideos")}</span>
             </a>
           </div>
         </div>

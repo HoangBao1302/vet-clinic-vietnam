@@ -53,6 +53,51 @@
     "subtitle": "EA ThebenchmarkTrader được thiết kế với công nghệ tiên tiến"
   },
   "slogan": "Tin tưởng bởi hơn 500+ Traders trên toàn Việt Nam",
+  "strategy": {
+    "title": "Triết lý giao dịch minh bạch",
+    "description": "EA ThebenchmarkTrader được xây dựng trên nguyên tắc minh bạch tuyệt đối. Mọi điều kiện vào lệnh, ra lệnh và quản trị rủi ro đều được công khai, không có \"hộp đen\" bí ẩn.",
+    "entryTitle": "Điều kiện vào lệnh rõ ràng",
+    "entryDesc": "Sử dụng các chỉ báo kỹ thuật phổ biến như MA, RSI, Bollinger Bands với tham số được tối ưu qua backtest.",
+    "moneyTitle": "Quản trị vốn khoa học",
+    "moneyDesc": "Risk per trade cố định 1-2%, position sizing theo volatility, stop loss luôn được đặt trước khi vào lệnh.",
+    "emergencyTitle": "Stop khẩn cấp tự động",
+    "emergencyDesc": "Hệ thống tự động dừng giao dịch khi drawdown vượt ngưỡng cho phép hoặc phát hiện bất thường.",
+    "warningTitle": "Lưu ý quan trọng",
+    "warningDesc": "Giao dịch Forex có rủi ro cao. Kết quả trong quá khứ không đảm bảo kết quả tương lai. Hãy chỉ đầu tư số tiền bạn có thể chấp nhận mất."
+  },
+  "proof": {
+    "title": "Hiệu suất được chứng minh",
+    "subtitle": "Kết quả backtest trên dữ liệu thực tế EURUSD H1 từ 2020-2024",
+    "profitFactor": "Profit Factor",
+    "profitFactorDesc": "Tỷ lệ lợi nhuận/lỗ",
+    "maxDrawdown": "Max Drawdown",
+    "maxDrawdownDesc": "Mức sụt giảm tối đa",
+    "winRate": "Win Rate",
+    "winRateDesc": "Tỷ lệ lệnh thắng",
+    "riskReward": "Risk:Reward",
+    "riskRewardDesc": "Tỷ lệ rủi ro/lợi nhuận",
+    "testimonialsTitle": "Phản hồi từ khách hàng",
+    "testimonialsSubtitle": "Hơn 500+ trader đang sử dụng EA ThebenchmarkTrader",
+    "videoTitle": "Xem Kết Quả Thực Tế",
+    "videoDesc": "Xem video backtest chi tiết và phân tích hiệu suất EA trên các cặp tiền tệ khác nhau",
+    "watchBacktest": "Xem Video Backtest",
+    "moreVideos": "Video Hướng Dẫn Khác",
+    "testimonial1": {
+      "name": "Anh Minh",
+      "role": "Trader 3 năm kinh nghiệm",
+      "comment": "EA ThebenchmarkTrader đã giúp tôi ổn định lợi nhuận hàng tháng. Quản trị rủi ro rất tốt, tôi yên tâm để EA chạy cả đêm."
+    },
+    "testimonial2": {
+      "name": "Chị Lan",
+      "role": "Nhà đầu tư cá nhân",
+      "comment": "Tôi là người mới, EA này rất dễ sử dụng. Báo cáo hàng ngày giúp tôi hiểu rõ hiệu suất giao dịch."
+    },
+    "testimonial3": {
+      "name": "Anh Đức",
+      "role": "Quản lý quỹ",
+      "comment": "Tôi quản lý nhiều tài khoản và EA này giúp tôi tiết kiệm rất nhiều thời gian. Kết quả ổn định, đáng tin cậy."
+    }
+  },
   "footer": {
     "description": "Expert Advisor đa chiến lược với quản trị rủi ro khoa học. Tự động hóa giao dịch Forex hiệu quả và minh bạch.",
     "quickLinks": "Liên Kết Nhanh",

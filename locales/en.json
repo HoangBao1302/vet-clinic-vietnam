@@ -53,6 +53,51 @@
     "subtitle": "EA ThebenchmarkTrader is designed with advanced technology"
   },
   "slogan": "Trusted by 500+ Traders across Vietnam",
+  "strategy": {
+    "title": "Transparent Trading Philosophy",
+    "description": "EA ThebenchmarkTrader is built on the principle of absolute transparency. All entry conditions, exit rules, and risk management are openly disclosed, with no mysterious \"black box\".",
+    "entryTitle": "Clear Entry Conditions",
+    "entryDesc": "Uses popular technical indicators like MA, RSI, Bollinger Bands with parameters optimized through backtesting.",
+    "moneyTitle": "Scientific Capital Management",
+    "moneyDesc": "Fixed 1-2% risk per trade, position sizing based on volatility, stop loss always set before entering trades.",
+    "emergencyTitle": "Automatic Emergency Stop",
+    "emergencyDesc": "System automatically halts trading when drawdown exceeds threshold or detects abnormalities.",
+    "warningTitle": "Important Notice",
+    "warningDesc": "Forex trading carries high risk. Past performance does not guarantee future results. Only invest money you can afford to lose."
+  },
+  "proof": {
+    "title": "Proven Performance",
+    "subtitle": "Backtest results on real EURUSD H1 data from 2020-2024",
+    "profitFactor": "Profit Factor",
+    "profitFactorDesc": "Profit/Loss ratio",
+    "maxDrawdown": "Max Drawdown",
+    "maxDrawdownDesc": "Maximum decline level",
+    "winRate": "Win Rate",
+    "winRateDesc": "Winning trade percentage",
+    "riskReward": "Risk:Reward",
+    "riskRewardDesc": "Risk/Reward ratio",
+    "testimonialsTitle": "Customer Feedback",
+    "testimonialsSubtitle": "Over 500+ traders are using EA ThebenchmarkTrader",
+    "videoTitle": "See Real Results",
+    "videoDesc": "Watch detailed backtest videos and performance analysis of the EA on different currency pairs",
+    "watchBacktest": "Watch Backtest Video",
+    "moreVideos": "More Tutorial Videos",
+    "testimonial1": {
+      "name": "Mr. Minh",
+      "role": "Trader with 3 years experience",
+      "comment": "EA ThebenchmarkTrader has helped me stabilize monthly profits. Excellent risk management, I feel confident letting the EA run overnight."
+    },
+    "testimonial2": {
+      "name": "Ms. Lan",
+      "role": "Individual Investor",
+      "comment": "I'm a beginner, and this EA is very easy to use. Daily reports help me understand trading performance clearly."
+    },
+    "testimonial3": {
+      "name": "Mr. Duc",
+      "role": "Fund Manager",
+      "comment": "I manage multiple accounts and this EA saves me a lot of time. Stable, reliable results."
+    }
+  },
   "footer": {
     "description": "Multi-strategy Expert Advisor with scientific risk management. Efficient and transparent Forex trading automation.",
     "quickLinks": "Quick Links",
