@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import BilingualInput from "@/components/admin/BilingualInput";
 import { ArrowLeft, Save, Star } from "lucide-react";
 import { useAuth } from "@/lib/authContext";
 import type { FeaturedAccount } from "@/data/featuredAccounts";
@@ -12,8 +13,9 @@ export default function CreateFeaturedAccountPage() {
   const router = useRouter();
   const { user, isAuthenticated } = useAuth();
   const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState<Omit<FeaturedAccount, 'id'>>({
+  const [formData, setFormData] = useState<Omit<FeaturedAccount, 'id'> & { name_en?: string }>({
     name: "",
+    name_en: "",
     platform: "MQL5",
     broker: "",
     gain: "",
@@ -84,24 +86,24 @@ export default function CreateFeaturedAccountPage() {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-md p-6 space-y-6">
+            {/* Bilingual Name Input */}
+            <BilingualInput
+              label="Tên Tài Khoản"
+              valueVi={formData.name}
+              valueEn={formData.name_en || ""}
+              onChangeVi={(value) => setFormData({ ...formData, name: value })}
+              onChangeEn={(value) => setFormData({ ...formData, name_en: value })}
+              type="text"
+              placeholderVi="Ví dụ: ThebenchmarkTrader Live #1"
+              placeholderEn="Example: ThebenchmarkTrader Live #1"
+              required
+              showAutoTranslate
+            />
+
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Tên Tài Khoản * <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-                  placeholder="Ví dụ: ThebenchmarkTrader Live #1"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Platform * <span className="text-red-500">*</span>
+                  Platform <span className="text-red-500">*</span>
                 </label>
                 <select
                   value={formData.platform}
@@ -119,7 +121,7 @@ export default function CreateFeaturedAccountPage() {
 
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Broker * <span className="text-red-500">*</span>
+                  Broker <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
@@ -133,7 +135,7 @@ export default function CreateFeaturedAccountPage() {
 
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Link * <span className="text-red-500">*</span>
+                  Link <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="url"
@@ -250,4 +252,3 @@ export default function CreateFeaturedAccountPage() {
     </div>
   );
 }
-
