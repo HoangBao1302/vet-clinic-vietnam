@@ -86,11 +86,20 @@ export default function BlogPostPage() {
     if (!post) return { title: '', excerpt: '', content: '' };
     
     if (locale === 'en') {
-      return {
+      const localized = {
         title: post.title_en || post.title,
         excerpt: post.excerpt_en || post.excerpt,
         content: post.content_en || post.content,
       };
+      
+      // Debug logging
+      console.log('Blog Detail - Locale:', locale);
+      console.log('Blog Detail - Post has title_en:', !!post.title_en);
+      console.log('Blog Detail - Post has excerpt_en:', !!post.excerpt_en);
+      console.log('Blog Detail - Post has content_en:', !!post.content_en);
+      console.log('Blog Detail - Using content:', localized.content.substring(0, 100) + '...');
+      
+      return localized;
     }
     
     return {

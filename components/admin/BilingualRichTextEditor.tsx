@@ -87,33 +87,64 @@ export default function BilingualRichTextEditor({
       const translatedChunks: string[] = [];
       
       for (let i = 0; i < chunks.length; i++) {
-        const response = await fetch('/api/translate', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            type: 'text',
-            data: { text: chunks[i] },
-            sourceLang: 'vi',
-            targetLang: 'en',
-          }),
-        });
+        try {
+          const response = await fetch('/api/translate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              type: 'text',
+              data: { text: chunks[i] },
+              sourceLang: 'vi',
+              targetLang: 'en',
+            }),
+          });
 
-        if (!response.ok) {
-          throw new Error(`Translation failed for chunk ${i + 1}`);
-        }
+          if (!response.ok) {
+            const errorData = await response.json().catch(() => ({ error: `HTTP ${response.status}` }));
+            throw new Error(`Translation failed for chunk ${i + 1}: ${errorData.error || response.statusText}`);
+          }
 
-        const result = await response.json();
-        translatedChunks.push(result.translatedText);
-        
-        // Update progress if multiple chunks
-        if (chunks.length > 1) {
-          console.log(`Đã dịch ${i + 1}/${chunks.length} đoạn...`);
+          const result = await response.json();
+          
+          // Check if result has translatedText
+          if (!result) {
+            throw new Error(`Empty response from translation API for chunk ${i + 1}`);
+          }
+          
+          if (!result.translatedText) {
+            // Check if result is a string (direct translation)
+            if (typeof result === 'string') {
+              translatedChunks.push(result);
+            } else {
+              throw new Error(`Invalid response format from translation API for chunk ${i + 1}. Expected 'translatedText' field.`);
+            }
+          } else {
+            translatedChunks.push(result.translatedText);
+          }
+          
+          // Update progress if multiple chunks
+          if (chunks.length > 1) {
+            console.log(`Đã dịch ${i + 1}/${chunks.length} đoạn...`);
+          }
+        } catch (chunkError) {
+          console.error(`Error translating chunk ${i + 1}:`, chunkError);
+          // If one chunk fails, try to continue with others
+          if (chunks.length === 1) {
+            throw chunkError; // Re-throw if it's the only chunk
+          }
+          // For multiple chunks, add error message
+          translatedChunks.push(`[Translation error for chunk ${i + 1}: ${chunkError instanceof Error ? chunkError.message : 'Unknown error'}]`);
         }
       }
 
       // Join translated chunks
       const translatedText = translatedChunks.join('\n\n');
       
+      if (!translatedText || translatedText.trim() === '' || translatedText.includes('[Translation error')) {
+        throw new Error('Translation failed for all chunks. Please try again or translate manually.');
+      }
+      
+      // Update English content
       onChangeEn(translatedText);
       setActiveTab('en'); // Switch to English tab to show result
       
@@ -125,7 +156,8 @@ export default function BilingualRichTextEditor({
 - Review và chỉnh sửa nếu cần`);
     } catch (error) {
       console.error('Translation error:', error);
-      alert(`❌ Dịch tự động thất bại: ${error instanceof Error ? error.message : 'Unknown error'}
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      alert(`❌ Dịch tự động thất bại: ${errorMessage}
 
 💡 GỢI Ý:
 - Thử chia nhỏ content thành nhiều phần
