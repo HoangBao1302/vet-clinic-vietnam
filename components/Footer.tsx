@@ -104,7 +104,7 @@ export default function Footer() {
                   className="text-gray-300 hover:text-white transition-colors"
                   suppressHydrationWarning
                 >
-                  Trang Chủ
+                  {t('nav.home')}
                 </button>
               </li>
               <li>
@@ -113,37 +113,37 @@ export default function Footer() {
                   className="text-gray-300 hover:text-white transition-colors"
                   suppressHydrationWarning
                 >
-                  Tính Năng
+                  {t('nav.features')}
                 </button>
               </li>
               <li>
                 <Link href="/pricing" className="text-gray-300 hover:text-white transition-colors">
-                  Bảng Giá
+                  {t('nav.pricing')}
                 </Link>
               </li>
               <li>
                 <Link href="/downloads" className="text-gray-300 hover:text-white transition-colors">
-                  Downloads
+                  {t('nav.downloads')}
                 </Link>
               </li>
               <li>
                 <Link href="/about" className="text-gray-300 hover:text-white transition-colors">
-                  Về EA
+                  {t('nav.aboutEA')}
                 </Link>
               </li>
               <li>
                 <Link href="/live-results" className="text-gray-300 hover:text-white transition-colors">
-                  Kết Quả Thực Tế
+                  {t('nav.liveResults')}
                 </Link>
               </li>
               <li>
                 <Link href="/blog" className="text-gray-300 hover:text-white transition-colors">
-                  Blog
+                  {t('nav.blog')}
                 </Link>
               </li>
               <li>
                 <Link href="/partners" className="text-gray-300 hover:text-white transition-colors">
-                  Đối Tác
+                  {t('nav.partners')}
                 </Link>
               </li>
               <li>
@@ -152,7 +152,7 @@ export default function Footer() {
                   className="text-gray-300 hover:text-white transition-colors"
                   suppressHydrationWarning
                 >
-                  Liên Hệ
+                  {t('nav.contact')}
                 </button>
               </li>
             </ul>
@@ -247,7 +247,7 @@ export default function Footer() {
                 {t('footer.links.terms')}
               </Link>
               <a href="#" className="text-gray-300 hover:text-white text-sm transition-colors">
-                Risk Warning
+                {t('footer.riskWarning')}
               </a>
             </div>
           </div>

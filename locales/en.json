@@ -45,6 +45,30 @@
     "courses": "🎓 Courses",
     "coursesDesc": "High value"
   },
+  "newsletter": {
+    "premium": "Premium Newsletter",
+    "heroTitle": "Premium Newsletter",
+    "heroDescription": "Get exclusive market analysis, trading signals and latest EA updates every week",
+    "sidebarDescription": "Get market analysis and trading signals weekly",
+    "footerDescription": "Get exclusive market analysis every week",
+    "emailPlaceholder": "Enter your email",
+    "emailPlaceholderShort": "Your email",
+    "subscribe": "Subscribe",
+    "successTitle": "Successfully subscribed!",
+    "successMessage": "You will receive premium newsletter at {email}",
+    "successShort": "Successfully subscribed!",
+    "successToast": "Newsletter subscription successful! 🎉",
+    "errorMessage": "An error occurred, please try again.",
+    "disclaimer": "Premium members only • Unsubscribe anytime",
+    "benefits": {
+      "marketAnalysis": "Market Analysis",
+      "marketAnalysisDesc": "Weekly market trend analysis from experts",
+      "tradingSignals": "Trading Signals",
+      "tradingSignalsDesc": "High-quality entry/exit signals for major currency pairs",
+      "communityAccess": "Community Access",
+      "communityAccessDesc": "Join VIP group and get 24/7 support from our team"
+    }
+  },
   "hero": {
     "title": "EA Forex ThebenchmarkTrader",
     "subtitle": "Automate Trading, Control Risk, Optimize Profit",
@@ -312,6 +336,9 @@
     "address": "Address",
     "addressValue": "Hanoi, Vietnam",
     "copyright": "© {year} EA Forex ThebenchmarkTrader. All rights reserved.",
+    "riskWarning": "Risk Warning",
+    "readyToStart": "Ready to start automated trading?",
+    "buyEANow": "Buy EA Now",
     "links": {
       "home": "Home",
       "about": "About",

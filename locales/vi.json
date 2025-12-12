@@ -45,6 +45,30 @@
     "courses": "🎓 Khóa Học",
     "coursesDesc": "Giá trị cao"
   },
+  "newsletter": {
+    "premium": "Newsletter Premium",
+    "heroTitle": "Newsletter Premium",
+    "heroDescription": "Nhận phân tích thị trường độc quyền, tín hiệu trading và cập nhật EA mới nhất mỗi tuần",
+    "sidebarDescription": "Nhận phân tích thị trường và tín hiệu trading hàng tuần",
+    "footerDescription": "Nhận phân tích thị trường độc quyền mỗi tuần",
+    "emailPlaceholder": "Nhập email của bạn",
+    "emailPlaceholderShort": "Email của bạn",
+    "subscribe": "Đăng ký",
+    "successTitle": "Đăng ký thành công!",
+    "successMessage": "Bạn sẽ nhận được newsletter premium vào email {email}",
+    "successShort": "Đã đăng ký thành công!",
+    "successToast": "Đăng ký newsletter thành công! 🎉",
+    "errorMessage": "Có lỗi xảy ra, vui lòng thử lại.",
+    "disclaimer": "Chỉ dành cho thành viên premium • Hủy đăng ký bất kỳ lúc nào",
+    "benefits": {
+      "marketAnalysis": "Market Analysis",
+      "marketAnalysisDesc": "Phân tích xu hướng thị trường hàng tuần từ các chuyên gia",
+      "tradingSignals": "Trading Signals",
+      "tradingSignalsDesc": "Tín hiệu entry/exit chất lượng cao cho các cặp tiền chính",
+      "communityAccess": "Community Access",
+      "communityAccessDesc": "Tham gia group VIP và nhận hỗ trợ 24/7 từ team"
+    }
+  },
   "hero": {
     "title": "EA Forex ThebenchmarkTrader",
     "subtitle": "Tự động hóa giao dịch, kiểm soát rủi ro, tối ưu lợi nhuận",
@@ -312,6 +336,9 @@
     "address": "Địa Chỉ",
     "addressValue": "Hà Nội, Việt Nam",
     "copyright": "© {year} EA Forex ThebenchmarkTrader. Bảo lưu mọi quyền.",
+    "riskWarning": "Cảnh Báo Rủi Ro",
+    "readyToStart": "Sẵn sàng bắt đầu giao dịch tự động?",
+    "buyEANow": "Mua EA Ngay",
     "links": {
       "home": "Trang Chủ",
       "about": "Giới Thiệu",
