@@ -170,6 +170,114 @@
     "cta": "Sẵn sàng bắt đầu giao dịch tự động?",
     "button": "Mua EA ngay"
   },
+  "pricing": {
+    "title": "Bảng Giá EA Forex",
+    "subtitle": "Chọn gói phù hợp với nhu cầu giao dịch của bạn",
+    "popular": "Phổ biến nhất",
+    "period": "Một lần",
+    "free": "Miễn phí",
+    "features": "Tính năng",
+    "limitations": "Giới hạn",
+    "plans": {
+      "demo": {
+        "name": "Demo",
+        "price": "0đ",
+        "period": "Miễn phí",
+        "description": "Dùng thử EA với tài khoản demo",
+        "cta": "Tải Demo",
+        "features": [
+          "Chạy trên tài khoản demo",
+          "Đầy đủ tính năng EA",
+          "Hỗ trợ MT4/MT5",
+          "Báo cáo hiệu suất",
+          "Hướng dẫn cài đặt",
+          "Hỗ trợ email"
+        ],
+        "limitations": [
+          "Chỉ chạy trên demo",
+          "Không có source code",
+          "Hỗ trợ cơ bản"
+        ]
+      },
+      "full": {
+        "name": "Full Version",
+        "price": "7.900.000đ",
+        "period": "Một lần",
+        "description": "Phiên bản đầy đủ cho tài khoản thực",
+        "cta": "Mua ngay",
+        "features": [
+          "Chạy trên tài khoản thực",
+          "Đầy đủ tính năng EA",
+          "Hỗ trợ MT4/MT5",
+          "Báo cáo chi tiết",
+          "Hướng dẫn cài đặt",
+          "Hỗ trợ 1-1 qua Telegram",
+          "Cập nhật miễn phí 1 năm",
+          "Tùy chỉnh tham số"
+        ],
+        "limitations": [
+          "Không có source code",
+          "Giới hạn 3 tài khoản"
+        ]
+      },
+      "pro": {
+        "name": "Pro + Source",
+        "price": "14.900.000đ",
+        "period": "Một lần",
+        "description": "Phiên bản Pro với source code",
+        "cta": "Liên hệ",
+        "features": [
+          "Tất cả tính năng Full",
+          "Source code đầy đủ",
+          "Không giới hạn tài khoản",
+          "Hỗ trợ tùy chỉnh cao cấp",
+          "Hỗ trợ VIP 24/7",
+          "Cập nhật miễn phí trọn đời",
+          "Đào tạo 1-1",
+          "Tư vấn chiến lược"
+        ],
+        "limitations": []
+      }
+    },
+    "faq": {
+      "title": "Câu Hỏi Thường Gặp",
+      "questions": [
+        {
+          "q": "Chính sách license như thế nào?",
+          "a": "Gói Demo: Chỉ chạy demo, không giới hạn thời gian. Gói Full: Chạy tối đa 3 tài khoản thực, license trọn đời. Gói Pro: Không giới hạn tài khoản, có source code."
+        },
+        {
+          "q": "EA có được cập nhật không?",
+          "a": "Gói Full: Cập nhật miễn phí trong 1 năm. Gói Pro: Cập nhật miễn phí trọn đời. Tất cả các cập nhật đều bao gồm tối ưu hóa và tính năng mới."
+        },
+        {
+          "q": "Có chính sách hoàn tiền không?",
+          "a": "Chúng tôi có chính sách hoàn tiền 100% trong 30 ngày nếu EA không hoạt động đúng như mô tả. Tuy nhiên, chúng tôi khuyến khích dùng thử Demo trước khi mua."
+        },
+        {
+          "q": "Hỗ trợ kỹ thuật như thế nào?",
+          "a": "Gói Demo: Hỗ trợ email. Gói Full: Hỗ trợ 1-1 qua Telegram + email. Gói Pro: Hỗ trợ VIP 24/7 qua Telegram, phone và TeamViewer."
+        },
+        {
+          "q": "EA hoạt động trên broker nào?",
+          "a": "EA hoạt động trên hầu hết các broker hỗ trợ MT4/MT5. Chúng tôi khuyến nghị các broker có spread thấp và execution nhanh như IC Markets, Pepperstone, FXCM."
+        }
+      ]
+    },
+    "guide": {
+      "title": "Hướng Dẫn Cài Đặt EA",
+      "subtitle": "Xem video hướng dẫn chi tiết trước khi mua",
+      "step1": "Cài Đặt",
+      "step1Desc": "Download và cài đặt EA lên MT4/MT5",
+      "step2": "Cấu Hình",
+      "step2Desc": "Thiết lập tham số phù hợp với chiến lược",
+      "step3": "Bắt Đầu",
+      "step3Desc": "Kích hoạt EA và bắt đầu giao dịch tự động",
+      "watchVideo": "Xem Video Hướng Dẫn Cài Đặt",
+      "allVideos": "Xem Tất Cả Video Tutorial",
+      "tip": "💡 Mẹo: Xem video hướng dẫn trước khi mua để hiểu rõ cách sử dụng EA"
+    }
+  },
   "footer": {
     "description": "Expert Advisor đa chiến lược với quản trị rủi ro khoa học. Tự động hóa giao dịch Forex hiệu quả và minh bạch.",
     "quickLinks": "Liên Kết Nhanh",
