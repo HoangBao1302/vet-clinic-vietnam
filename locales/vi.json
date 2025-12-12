@@ -11,7 +11,8 @@
     "learnMore": "Tìm hiểu thêm",
     "contactUs": "Liên hệ",
     "getDemo": "Tải Demo",
-    "download": "Tải xuống"
+    "download": "Tải xuống",
+    "tryDemo": "Dùng Thử Demo"
   },
   "nav": {
     "home": "Trang chủ",
@@ -20,17 +21,32 @@
     "blog": "Blog",
     "liveResults": "Kết quả Live",
     "partners": "Đối tác",
-    "referral": "Giới thiệu"
+    "referral": "Giới thiệu",
+    "downloads": "Tải xuống",
+    "features": "Tính năng",
+    "aboutEA": "Về EA",
+    "contact": "Liên hệ"
   },
   "hero": {
     "title": "EA Forex ThebenchmarkTrader",
-    "subtitle": "Robot giao dịch Forex tự động thông minh",
+    "subtitle": "Tự động hóa giao dịch, kiểm soát rủi ro, tối ưu lợi nhuận",
     "description": "EA Forex chuyên nghiệp với thuật toán giao dịch tự động, quản lý rủi ro thông minh và tỷ lệ thắng vượt trội",
+    "badges": {
+      "mt4mt5": "MT4/MT5",
+      "riskControl": "Risk Control",
+      "backtestFriendly": "Backtest-Friendly"
+    },
+    "performanceTitle": "Hiệu Suất Chính",
     "stats": {
       "profitFactor": "Profit Factor",
-      "winRate": "Tỷ lệ thắng",
-      "drawdown": "Max Drawdown"
-    }
+      "winRate": "Win Rate",
+      "drawdown": "Max Drawdown",
+      "riskReward": "Risk:Reward"
+    },
+    "disclaimer": "Lưu ý:",
+    "disclaimerText": "Kết quả dựa trên backtest. Hiệu suất thực tế có thể khác biệt tùy broker và điều kiện thị trường.",
+    "realAccountCTA": "Xem kết quả tài khoản thật",
+    "viewRealAccount": "Xem Tài Khoản Thực"
   },
   "features": {
     "title": "Tính năng nổi bật",
@@ -38,8 +54,32 @@
   },
   "slogan": "Tin tưởng bởi hơn 500+ Traders trên toàn Việt Nam",
   "footer": {
-    "description": "EA Forex chuyên nghiệp với hiệu suất vượt trội",
-    "copyright": "© 2024 EA ThebenchmarkTrader. All rights reserved."
+    "description": "Expert Advisor đa chiến lược với quản trị rủi ro khoa học. Tự động hóa giao dịch Forex hiệu quả và minh bạch.",
+    "quickLinks": "Liên Kết Nhanh",
+    "products": "Sản Phẩm",
+    "support": "Hỗ trợ",
+    "legal": "Pháp Lý",
+    "followUs": "Theo Dõi Chúng Tôi",
+    "contactInfo": "Thông Tin Liên Hệ",
+    "businessHours": "Giờ Làm Việc",
+    "businessHoursValue": "Thứ 2 - Thứ 6: 9:00 - 18:00 (GMT+7)",
+    "address": "Địa Chỉ",
+    "addressValue": "Hà Nội, Việt Nam",
+    "copyright": "© 2024 EA ThebenchmarkTrader. All rights reserved.",
+    "links": {
+      "home": "Trang Chủ",
+      "about": "Giới Thiệu",
+      "pricing": "Bảng Giá",
+      "blog": "Blog",
+      "contact": "Liên Hệ",
+      "demo": "Demo Miễn Phí",
+      "full": "Bản Full",
+      "pro": "Bản Pro",
+      "docs": "Tài Liệu",
+      "faq": "FAQ",
+      "terms": "Điều Khoản",
+      "privacy": "Bảo Mật",
+      "affiliate": "Chương Trình Affiliate"
+    }
   }
 }
-

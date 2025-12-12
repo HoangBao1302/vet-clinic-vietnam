@@ -1,9 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 
 export default function ForexHero() {
   const [isClient, setIsClient] = useState(false);
+  const { t } = useLocale();
 
   useEffect(() => {
     setIsClient(true);
@@ -25,23 +27,23 @@ export default function ForexHero() {
           <div className="text-white space-y-8">
             <div className="animate-fade-in">
               <h1 className="text-3xl sm:text-4xl md:text-4xl lg:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-200 to-white bg-clip-text text-transparent leading-tight">
-                EA Forex ThebenchmarkTrader
+                {t('hero.title')}
               </h1>
               <p className="text-xl md:text-2xl text-blue-100 leading-relaxed">
-                Tự động hóa giao dịch, kiểm soát rủi ro, tối ưu lợi nhuận
+                {t('hero.subtitle')}
               </p>
             </div>
 
             {/* Badges */}
             <div className="flex flex-wrap gap-3 animate-slide-up">
               <span className="px-4 py-2 bg-blue-700/50 backdrop-blur-sm rounded-full text-sm font-medium border border-blue-400/30">
-                ✅ MT4/MT5
+                ✅ {t('hero.badges.mt4mt5')}
               </span>
               <span className="px-4 py-2 bg-blue-700/50 backdrop-blur-sm rounded-full text-sm font-medium border border-blue-400/30">
-                🛡️ Risk Control
+                🛡️ {t('hero.badges.riskControl')}
               </span>
               <span className="px-4 py-2 bg-blue-700/50 backdrop-blur-sm rounded-full text-sm font-medium border border-blue-400/30">
-                📊 Backtest-Friendly
+                📊 {t('hero.badges.backtestFriendly')}
               </span>
             </div>
 
@@ -52,48 +54,47 @@ export default function ForexHero() {
                 className="px-8 py-4 bg-white text-blue-900 rounded-lg font-semibold hover:bg-blue-50 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                 suppressHydrationWarning
               >
-                Dùng Thử Demo
+                {t('common.tryDemo')}
               </button>
               <button 
                 onClick={() => isClient && (window.location.href = '/pricing#full')}
                 className="px-8 py-4 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 border border-blue-400"
                 suppressHydrationWarning
               >
-                Mua Ngay
+                {t('common.buyNow')}
               </button>
             </div>
           </div>
 
           {/* Right Column - Performance Stats Card */}
           <div className="bg-white/10 backdrop-blur-md p-8 rounded-2xl shadow-2xl border border-white/20 animate-slide-up">
-            <h2 className="text-2xl font-bold text-white mb-6">Hiệu Suất Chính</h2>
+            <h2 className="text-2xl font-bold text-white mb-6">{t('hero.performanceTitle')}</h2>
             
             <div className="grid grid-cols-2 gap-6">
               <div className="space-y-2">
-                <div className="text-blue-200 text-sm font-medium">Profit Factor</div>
+                <div className="text-blue-200 text-sm font-medium">{t('hero.stats.profitFactor')}</div>
                 <div className="text-3xl font-bold text-white">2.4</div>
               </div>
               
               <div className="space-y-2">
-                <div className="text-blue-200 text-sm font-medium">Max Drawdown</div>
+                <div className="text-blue-200 text-sm font-medium">{t('hero.stats.drawdown')}</div>
                 <div className="text-3xl font-bold text-white">8.5%</div>
               </div>
               
               <div className="space-y-2">
-                <div className="text-blue-200 text-sm font-medium">Win Rate</div>
+                <div className="text-blue-200 text-sm font-medium">{t('hero.stats.winRate')}</div>
                 <div className="text-3xl font-bold text-white">68%</div>
               </div>
               
               <div className="space-y-2">
-                <div className="text-blue-200 text-sm font-medium">Risk:Reward</div>
+                <div className="text-blue-200 text-sm font-medium">{t('hero.stats.riskReward')}</div>
                 <div className="text-3xl font-bold text-white">1:2.1</div>
               </div>
             </div>
 
             <div className="mt-8 pt-6 border-t border-white/20">
               <p className="text-blue-100 text-sm leading-relaxed">
-                <span className="font-semibold">⚠️ Lưu ý:</span> Kết quả dựa trên backtest. 
-                Hiệu suất thực tế có thể khác biệt tùy broker và điều kiện thị trường.
+                <span className="font-semibold">⚠️ {t('hero.disclaimer')}</span> {t('hero.disclaimerText')}
               </p>
             </div>
 

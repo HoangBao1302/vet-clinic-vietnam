@@ -11,7 +11,8 @@
     "learnMore": "Learn More",
     "contactUs": "Contact Us",
     "getDemo": "Get Demo",
-    "download": "Download"
+    "download": "Download",
+    "tryDemo": "Try Demo"
   },
   "nav": {
     "home": "Home",
@@ -20,17 +21,32 @@
     "blog": "Blog",
     "liveResults": "Live Results",
     "partners": "Partners",
-    "referral": "Referral"
+    "referral": "Referral",
+    "downloads": "Downloads",
+    "features": "Features",
+    "aboutEA": "About EA",
+    "contact": "Contact"
   },
   "hero": {
     "title": "EA Forex ThebenchmarkTrader",
-    "subtitle": "Intelligent Automated Forex Trading Robot",
+    "subtitle": "Automate Trading, Control Risk, Optimize Profit",
     "description": "Professional Forex EA with automated trading algorithm, smart risk management and outstanding win rate",
+    "badges": {
+      "mt4mt5": "MT4/MT5",
+      "riskControl": "Risk Control",
+      "backtestFriendly": "Backtest-Friendly"
+    },
+    "performanceTitle": "Key Performance",
     "stats": {
       "profitFactor": "Profit Factor",
       "winRate": "Win Rate",
-      "drawdown": "Max Drawdown"
-    }
+      "drawdown": "Max Drawdown",
+      "riskReward": "Risk:Reward"
+    },
+    "disclaimer": "Note:",
+    "disclaimerText": "Results based on backtest. Actual performance may vary depending on broker and market conditions.",
+    "realAccountCTA": "View real account results",
+    "viewRealAccount": "View Live Account"
   },
   "features": {
     "title": "Key Features",
@@ -38,8 +54,32 @@
   },
   "slogan": "Trusted by 500+ Traders across Vietnam",
   "footer": {
-    "description": "Professional Forex EA with outstanding performance",
-    "copyright": "© 2024 EA ThebenchmarkTrader. All rights reserved."
+    "description": "Multi-strategy Expert Advisor with scientific risk management. Efficient and transparent Forex trading automation.",
+    "quickLinks": "Quick Links",
+    "products": "Products",
+    "support": "Support",
+    "legal": "Legal",
+    "followUs": "Follow Us",
+    "contactInfo": "Contact Info",
+    "businessHours": "Business Hours",
+    "businessHoursValue": "Mon - Fri: 9:00 - 18:00 (GMT+7)",
+    "address": "Address",
+    "addressValue": "Hanoi, Vietnam",
+    "copyright": "© 2024 EA ThebenchmarkTrader. All rights reserved.",
+    "links": {
+      "home": "Home",
+      "about": "About",
+      "pricing": "Pricing",
+      "blog": "Blog",
+      "contact": "Contact",
+      "demo": "Free Demo",
+      "full": "Full Version",
+      "pro": "Pro Version",
+      "docs": "Documentation",
+      "faq": "FAQ",
+      "terms": "Terms",
+      "privacy": "Privacy",
+      "affiliate": "Affiliate Program"
+    }
   }
 }
-
