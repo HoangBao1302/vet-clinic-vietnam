@@ -357,5 +357,55 @@
       "videoBacktest": "Backtest Videos",
       "installGuide": "Installation Guide"
     }
+  },
+  "auth": {
+    "login": {
+      "title": "Login",
+      "subtitle": "Welcome back! Login to continue",
+      "email": "Email",
+      "emailPlaceholder": "your@email.com",
+      "password": "Password",
+      "passwordPlaceholder": "••••••••",
+      "rememberMe": "Remember me",
+      "forgotPassword": "Forgot password?",
+      "loginButton": "Login",
+      "loggingIn": "Logging in...",
+      "noAccount": "Don't have an account?",
+      "registerNow": "Register now",
+      "termsPrefix": "By logging in, you agree to our",
+      "terms": "Terms of Service",
+      "and": "and",
+      "privacy": "Privacy Policy",
+      "loginFailed": "Login failed",
+      "loginSuccess": "Login successful!"
+    },
+    "register": {
+      "title": "Register",
+      "subtitle": "Create an account to access all features",
+      "username": "Username",
+      "usernamePlaceholder": "Enter your username",
+      "email": "Email",
+      "emailPlaceholder": "your@email.com",
+      "password": "Password",
+      "passwordPlaceholder": "••••••••",
+      "confirmPassword": "Confirm Password",
+      "confirmPasswordPlaceholder": "••••••••",
+      "registerButton": "Register",
+      "registering": "Registering...",
+      "haveAccount": "Already have an account?",
+      "loginNow": "Login",
+      "termsPrefix": "By registering, you agree to our",
+      "terms": "Terms of Service",
+      "and": "and",
+      "privacy": "Privacy Policy",
+      "registerSuccess": "Registration successful!",
+      "registerFailed": "Registration failed",
+      "validation": {
+        "usernameMin": "Username must be at least 3 characters",
+        "emailInvalid": "Invalid email address",
+        "passwordMin": "Password must be at least 6 characters",
+        "passwordMismatch": "Passwords do not match"
+      }
+    }
   }
 }

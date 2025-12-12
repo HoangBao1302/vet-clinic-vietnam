@@ -357,5 +357,55 @@
       "videoBacktest": "Video Backtest",
       "installGuide": "Hướng dẫn cài đặt"
     }
+  },
+  "auth": {
+    "login": {
+      "title": "Đăng Nhập",
+      "subtitle": "Chào mừng trở lại! Đăng nhập để tiếp tục",
+      "email": "Email",
+      "emailPlaceholder": "your@email.com",
+      "password": "Mật khẩu",
+      "passwordPlaceholder": "••••••••",
+      "rememberMe": "Ghi nhớ đăng nhập",
+      "forgotPassword": "Quên mật khẩu?",
+      "loginButton": "Đăng Nhập",
+      "loggingIn": "Đang đăng nhập...",
+      "noAccount": "Chưa có tài khoản?",
+      "registerNow": "Đăng ký ngay",
+      "termsPrefix": "Bằng cách đăng nhập, bạn đồng ý với",
+      "terms": "Điều khoản sử dụng",
+      "and": "và",
+      "privacy": "Chính sách bảo mật",
+      "loginFailed": "Đăng nhập thất bại",
+      "loginSuccess": "Đăng nhập thành công!"
+    },
+    "register": {
+      "title": "Đăng Ký",
+      "subtitle": "Tạo tài khoản để truy cập đầy đủ tính năng",
+      "username": "Username",
+      "usernamePlaceholder": "Nhập username của bạn",
+      "email": "Email",
+      "emailPlaceholder": "your@email.com",
+      "password": "Mật khẩu",
+      "passwordPlaceholder": "••••••••",
+      "confirmPassword": "Xác nhận mật khẩu",
+      "confirmPasswordPlaceholder": "••••••••",
+      "registerButton": "Đăng Ký",
+      "registering": "Đang đăng ký...",
+      "haveAccount": "Đã có tài khoản?",
+      "loginNow": "Đăng nhập",
+      "termsPrefix": "Bằng cách đăng ký, bạn đồng ý với",
+      "terms": "Điều khoản sử dụng",
+      "and": "và",
+      "privacy": "Chính sách bảo mật",
+      "registerSuccess": "Đăng ký thành công!",
+      "registerFailed": "Đăng ký thất bại",
+      "validation": {
+        "usernameMin": "Username phải có ít nhất 3 ký tự",
+        "emailInvalid": "Email không hợp lệ",
+        "passwordMin": "Mật khẩu phải có ít nhất 6 ký tự",
+        "passwordMismatch": "Mật khẩu không khớp"
+      }
+    }
   }
 }

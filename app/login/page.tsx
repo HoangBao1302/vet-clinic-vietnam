@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/lib/authContext";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { LogIn, Mail, Lock, AlertCircle, CheckCircle } from "lucide-react";
@@ -11,6 +12,7 @@ import { LogIn, Mail, Lock, AlertCircle, CheckCircle } from "lucide-react";
 export default function LoginPage() {
   const router = useRouter();
   const { login } = useAuth();
+  const { t } = useLocale();
   
   const [formData, setFormData] = useState({
     email: "",
@@ -46,13 +48,13 @@ export default function LoginPage() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || "Đăng nhập thất bại");
+        throw new Error(data.message || t('auth.login.loginFailed'));
       }
 
       // Save to context and localStorage
       login(data.token, data.user);
 
-      setSuccess("Đăng nhập thành công!");
+      setSuccess(t('auth.login.loginSuccess'));
       
       // Redirect based on role
       setTimeout(() => {
@@ -82,10 +84,10 @@ export default function LoginPage() {
                 <LogIn className="w-8 h-8 text-white" />
               </div>
               <h1 className="text-3xl font-bold text-gray-800 mb-2">
-                Đăng Nhập
+                {t('auth.login.title')}
               </h1>
               <p className="text-gray-600">
-                Chào mừng trở lại! Đăng nhập để tiếp tục
+                {t('auth.login.subtitle')}
               </p>
             </div>
 
@@ -109,7 +111,7 @@ export default function LoginPage() {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Email
+                  {t('auth.login.email')}
                 </label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -120,14 +122,14 @@ export default function LoginPage() {
                     onChange={handleChange}
                     required
                     className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="your@email.com"
+                    placeholder={t('auth.login.emailPlaceholder')}
                   />
                 </div>
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Mật khẩu
+                  {t('auth.login.password')}
                 </label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -138,7 +140,7 @@ export default function LoginPage() {
                     onChange={handleChange}
                     required
                     className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="••••••••"
+                    placeholder={t('auth.login.passwordPlaceholder')}
                   />
                 </div>
               </div>
@@ -146,13 +148,13 @@ export default function LoginPage() {
               <div className="flex items-center justify-between text-sm">
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input type="checkbox" className="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
-                  <span className="text-gray-600">Ghi nhớ đăng nhập</span>
+                  <span className="text-gray-600">{t('auth.login.rememberMe')}</span>
                 </label>
                 <Link
                   href="/forgot-password"
                   className="text-blue-600 hover:text-blue-700 font-medium"
                 >
-                  Quên mật khẩu?
+                  {t('auth.login.forgotPassword')}
                 </Link>
               </div>
 
@@ -161,19 +163,19 @@ export default function LoginPage() {
                 disabled={loading}
                 className="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {loading ? "Đang đăng nhập..." : "Đăng Nhập"}
+                {loading ? t('auth.login.loggingIn') : t('auth.login.loginButton')}
               </button>
             </form>
 
             {/* Register Link */}
             <div className="mt-6 text-center">
               <p className="text-gray-600">
-                Chưa có tài khoản?{" "}
+                {t('auth.login.noAccount')}{" "}
                 <Link
                   href="/register"
                   className="text-blue-600 hover:text-blue-700 font-semibold"
                 >
-                  Đăng ký ngay
+                  {t('auth.login.registerNow')}
                 </Link>
               </p>
             </div>
@@ -181,14 +183,14 @@ export default function LoginPage() {
 
           {/* Additional Info */}
           <div className="mt-6 text-center text-sm text-gray-500">
-            <p>Bằng cách đăng nhập, bạn đồng ý với</p>
+            <p>{t('auth.login.termsPrefix')}</p>
             <p>
               <Link href="/terms" className="text-blue-600 hover:underline">
-                Điều khoản sử dụng
+                {t('auth.login.terms')}
               </Link>
-              {" và "}
+              {" "}{t('auth.login.and')}{" "}
               <Link href="/privacy" className="text-blue-600 hover:underline">
-                Chính sách bảo mật
+                {t('auth.login.privacy')}
               </Link>
             </p>
           </div>
