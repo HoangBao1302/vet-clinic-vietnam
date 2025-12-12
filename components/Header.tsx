@@ -7,6 +7,7 @@ import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
 import { useAuth } from "@/lib/authContext";
 import LanguageSwitcher from "./LanguageSwitcher";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -16,6 +17,7 @@ export default function Header() {
   const router = useRouter();
   const pathname = usePathname();
   const { user, isAuthenticated, logout } = useAuth();
+  const { t } = useLocale();
 
   useEffect(() => {
     setIsClient(true);
