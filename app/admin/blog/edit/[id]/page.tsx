@@ -329,7 +329,7 @@ export default function EditBlogPostPage() {
                 valueVi={formData.content}
                 valueEn={formData.content_en}
                 onChangeVi={(content) => setFormData({ ...formData, content })}
-                onChangeEn={(content) => setFormData({ ...formData, content_en })}
+                onChangeEn={(content) => setFormData({ ...formData, content_en: content })}
                 placeholderVi="Viết nội dung bài viết của bạn..."
                 placeholderEn="Write your article content..."
                 required
