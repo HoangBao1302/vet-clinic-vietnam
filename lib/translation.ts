@@ -129,21 +129,38 @@ async function translateWithGoogle(
     url.searchParams.set('dt', 't');
     url.searchParams.set('q', text);
 
-    const response = await fetch(url.toString());
+    const response = await fetch(url.toString(), {
+      method: 'GET',
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+      },
+    });
     
     if (!response.ok) {
-      console.error('Google Translate error:', response.status);
+      console.error('Google Translate HTTP error:', response.status, response.statusText);
       return null;
     }
 
     const data = await response.json();
     
     // Parse Google Translate response format
-    if (data && data[0]) {
-      const translatedParts = data[0].map((part: any[]) => part[0]).filter(Boolean);
-      return translatedParts.join('');
+    // Response format: [[["translated text", "original text", null, null, 0]], null, "en"]
+    if (data && Array.isArray(data) && data[0] && Array.isArray(data[0])) {
+      const translatedParts = data[0]
+        .map((part: any[]) => {
+          if (Array.isArray(part) && part.length > 0 && typeof part[0] === 'string') {
+            return part[0];
+          }
+          return null;
+        })
+        .filter((text: string | null): text is string => text !== null && text.trim() !== '');
+      
+      if (translatedParts.length > 0) {
+        return translatedParts.join('');
+      }
     }
 
+    console.error('Google Translate: Invalid response format', data);
     return null;
   } catch (error) {
     console.error('Google Translate request failed:', error);
