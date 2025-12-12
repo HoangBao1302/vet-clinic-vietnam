@@ -48,29 +48,89 @@ export default function BilingualRichTextEditor({
     setTranslating(true);
 
     try {
-      const response = await fetch('/api/translate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          type: 'text',
-          data: { text: valueVi },
-          sourceLang: 'vi',
-          targetLang: 'en',
-        }),
-      });
+      // Strip HTML tags for better translation
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = valueVi;
+      const plainText = tempDiv.textContent || tempDiv.innerText || '';
 
-      if (!response.ok) {
-        throw new Error('Translation failed');
+      if (!plainText.trim()) {
+        alert('Không có nội dung text để dịch');
+        setTranslating(false);
+        return;
       }
 
-      const result = await response.json();
-      onChangeEn(result.translatedText);
+      // Split content into chunks if too long (max 5000 chars per chunk)
+      const maxChunkSize = 5000;
+      const chunks: string[] = [];
+      
+      if (plainText.length <= maxChunkSize) {
+        chunks.push(plainText);
+      } else {
+        // Split by paragraphs
+        const paragraphs = plainText.split('\n\n');
+        let currentChunk = '';
+        
+        for (const para of paragraphs) {
+          if ((currentChunk + para).length > maxChunkSize && currentChunk) {
+            chunks.push(currentChunk.trim());
+            currentChunk = para;
+          } else {
+            currentChunk += (currentChunk ? '\n\n' : '') + para;
+          }
+        }
+        if (currentChunk) {
+          chunks.push(currentChunk.trim());
+        }
+      }
+
+      // Translate each chunk
+      const translatedChunks: string[] = [];
+      
+      for (let i = 0; i < chunks.length; i++) {
+        const response = await fetch('/api/translate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            type: 'text',
+            data: { text: chunks[i] },
+            sourceLang: 'vi',
+            targetLang: 'en',
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error(`Translation failed for chunk ${i + 1}`);
+        }
+
+        const result = await response.json();
+        translatedChunks.push(result.translatedText);
+        
+        // Update progress if multiple chunks
+        if (chunks.length > 1) {
+          console.log(`Đã dịch ${i + 1}/${chunks.length} đoạn...`);
+        }
+      }
+
+      // Join translated chunks
+      const translatedText = translatedChunks.join('\n\n');
+      
+      onChangeEn(translatedText);
       setActiveTab('en'); // Switch to English tab to show result
       
-      alert('✅ Dịch nội dung thành công! Vui lòng review và chỉnh sửa nếu cần.');
+      alert(`✅ Dịch thành công ${chunks.length > 1 ? `${chunks.length} đoạn` : ''}! 
+
+⚠️ LƯU Ý: 
+- Bản dịch là plain text (không có format)
+- Vui lòng format lại (bold, lists, headings) trong tab English
+- Review và chỉnh sửa nếu cần`);
     } catch (error) {
       console.error('Translation error:', error);
-      alert('❌ Dịch tự động thất bại. Vui lòng thử lại hoặc nhập thủ công.');
+      alert(`❌ Dịch tự động thất bại: ${error instanceof Error ? error.message : 'Unknown error'}
+
+💡 GỢI Ý:
+- Thử chia nhỏ content thành nhiều phần
+- Hoặc copy text sang Google Translate thủ công
+- Sau đó paste vào tab English và format lại`);
     } finally {
       setTranslating(false);
     }
