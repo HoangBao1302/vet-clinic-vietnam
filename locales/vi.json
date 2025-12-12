@@ -50,7 +50,20 @@
   },
   "features": {
     "title": "Tính năng nổi bật",
-    "subtitle": "EA ThebenchmarkTrader được thiết kế với công nghệ tiên tiến"
+    "subtitle": "EA ThebenchmarkTrader được thiết kế với công nghệ tiên tiến",
+    "multiStrategyTitle": "Đa chiến lược",
+    "multiStrategyDesc": "Kết hợp chiến lược trend-following và range-trading thông minh, tự động chuyển đổi theo điều kiện thị trường.",
+    "moneyManagementTitle": "Quản trị vốn",
+    "moneyManagementDesc": "Hệ thống quản lý rủi ro tiên tiến với stop loss động, position sizing và money management tự động.",
+    "smartMarketTitle": "Điều kiện thị trường thông minh",
+    "smartMarketDesc": "Phân tích volatility, spread, và news events để tránh giao dịch trong điều kiện bất lợi.",
+    "flexibleTPTitle": "Đóng rổ/TP linh hoạt",
+    "flexibleTPDesc": "Tự động đóng toàn bộ rổ lệnh khi đạt profit target hoặc trailing stop theo xu hướng.",
+    "spreadLimitTitle": "Giới hạn spread & time",
+    "spreadLimitDesc": "Chỉ giao dịch khi spread thấp và trong khung giờ thanh khoản cao, tránh slippage không mong muốn.",
+    "reportLogTitle": "Báo cáo nhật ký",
+    "reportLogDesc": "Ghi lại chi tiết mọi giao dịch, phân tích hiệu suất và cung cấp báo cáo minh bạch hàng ngày.",
+    "customizableNote": "💡 Tất cả tính năng đều có thể tùy chỉnh theo nhu cầu giao dịch của bạn"
   },
   "slogan": "Tin tưởng bởi hơn 500+ Traders trên toàn Việt Nam",
   "strategy": {

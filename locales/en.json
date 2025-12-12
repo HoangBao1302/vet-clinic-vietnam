@@ -50,7 +50,20 @@
   },
   "features": {
     "title": "Key Features",
-    "subtitle": "EA ThebenchmarkTrader is designed with advanced technology"
+    "subtitle": "EA ThebenchmarkTrader is designed with advanced technology",
+    "multiStrategyTitle": "Multi-Strategy",
+    "multiStrategyDesc": "Combines intelligent trend-following and range-trading strategies, automatically switching based on market conditions.",
+    "moneyManagementTitle": "Capital Management",
+    "moneyManagementDesc": "Advanced risk management system with dynamic stop loss, position sizing, and automated money management.",
+    "smartMarketTitle": "Smart Market Conditions",
+    "smartMarketDesc": "Analyzes volatility, spread, and news events to avoid trading in unfavorable conditions.",
+    "flexibleTPTitle": "Flexible Basket Close/TP",
+    "flexibleTPDesc": "Automatically closes the entire order basket when profit target is reached or trailing stop follows the trend.",
+    "spreadLimitTitle": "Spread & Time Limit",
+    "spreadLimitDesc": "Only trades when spread is low and during high liquidity hours, avoiding unwanted slippage.",
+    "reportLogTitle": "Report Log",
+    "reportLogDesc": "Records every trade in detail, analyzes performance, and provides transparent daily reports.",
+    "customizableNote": "💡 All features are customizable to your trading needs"
   },
   "slogan": "Trusted by 500+ Traders across Vietnam",
   "strategy": {
