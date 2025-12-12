@@ -1,0 +1,160 @@
+"use client";
+
+import { useState } from 'react';
+import dynamic from 'next/dynamic';
+import AutoTranslateButton from './AutoTranslateButton';
+
+const RichTextEditor = dynamic(() => import('@/components/RichTextEditor'), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-96 bg-gray-100 rounded-lg animate-pulse flex items-center justify-center">
+      <p className="text-gray-500">Đang tải trình soạn thảo...</p>
+    </div>
+  ),
+});
+
+interface BilingualRichTextEditorProps {
+  label: string;
+  valueVi: string;
+  valueEn: string;
+  onChangeVi: (value: string) => void;
+  onChangeEn: (value: string) => void;
+  placeholderVi?: string;
+  placeholderEn?: string;
+  required?: boolean;
+  showAutoTranslate?: boolean;
+}
+
+export default function BilingualRichTextEditor({
+  label,
+  valueVi,
+  valueEn,
+  onChangeVi,
+  onChangeEn,
+  placeholderVi = 'Nhập nội dung...',
+  placeholderEn = 'Enter content...',
+  required = false,
+  showAutoTranslate = true,
+}: BilingualRichTextEditorProps) {
+  const [activeTab, setActiveTab] = useState<'vi' | 'en'>('vi');
+  const [translating, setTranslating] = useState(false);
+
+  const handleAutoTranslate = async () => {
+    if (!valueVi) {
+      alert('Vui lòng nhập nội dung tiếng Việt trước');
+      return;
+    }
+
+    setTranslating(true);
+
+    try {
+      const response = await fetch('/api/translate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'text',
+          data: { text: valueVi },
+          sourceLang: 'vi',
+          targetLang: 'en',
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Translation failed');
+      }
+
+      const result = await response.json();
+      onChangeEn(result.translatedText);
+      setActiveTab('en'); // Switch to English tab to show result
+      
+      alert('✅ Dịch nội dung thành công! Vui lòng review và chỉnh sửa nếu cần.');
+    } catch (error) {
+      console.error('Translation error:', error);
+      alert('❌ Dịch tự động thất bại. Vui lòng thử lại hoặc nhập thủ công.');
+    } finally {
+      setTranslating(false);
+    }
+  };
+
+  return (
+    <div className="space-y-3">
+      {/* Label */}
+      <label className="block text-sm font-medium text-gray-700">
+        {label}
+        {required && <span className="text-red-500 ml-1">*</span>}
+      </label>
+
+      {/* Language Tabs */}
+      <div className="flex items-center justify-between">
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={() => setActiveTab('vi')}
+            className={`px-4 py-2 text-sm font-medium rounded-t-lg transition-colors ${
+              activeTab === 'vi'
+                ? 'bg-white text-blue-600 border-t-2 border-x-2 border-blue-600 border-b-0'
+                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+            }`}
+          >
+            🇻🇳 Tiếng Việt
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab('en')}
+            className={`px-4 py-2 text-sm font-medium rounded-t-lg transition-colors ${
+              activeTab === 'en'
+                ? 'bg-white text-blue-600 border-t-2 border-x-2 border-blue-600 border-b-0'
+                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+            }`}
+          >
+            🇬🇧 English
+          </button>
+        </div>
+
+        {/* Auto-translate button (only show in Vietnamese tab) */}
+        {showAutoTranslate && activeTab === 'vi' && valueVi && (
+          <button
+            type="button"
+            onClick={handleAutoTranslate}
+            disabled={translating}
+            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors disabled:opacity-50 flex items-center gap-2"
+          >
+            {translating ? (
+              <>
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                <span>Đang dịch...</span>
+              </>
+            ) : (
+              <>
+                🌍 <span>Dịch sang Tiếng Anh</span>
+              </>
+            )}
+          </button>
+        )}
+      </div>
+
+      {/* Editor Area */}
+      <div className="border-2 border-gray-200 rounded-b-lg rounded-tr-lg bg-white">
+        {activeTab === 'vi' ? (
+          <RichTextEditor
+            value={valueVi}
+            onChange={onChangeVi}
+            placeholder={placeholderVi}
+          />
+        ) : (
+          <div className="space-y-2">
+            <RichTextEditor
+              value={valueEn}
+              onChange={onChangeEn}
+              placeholder={placeholderEn}
+            />
+            <p className="px-4 pb-4 text-xs text-gray-500">
+              ✏️ Có thể chỉnh sửa bản dịch tự động để cải thiện chất lượng
+            </p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
