@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
-import dynamic from "next/dynamic";
+import BilingualInput from "@/components/admin/BilingualInput";
+import BilingualRichTextEditor from "@/components/admin/BilingualRichTextEditor";
 import {
   ArrowLeft,
   Save,
@@ -20,20 +21,14 @@ import {
 } from "lucide-react";
 import ImagePicker from "@/components/ImagePicker";
 
-const RichTextEditor = dynamic(() => import("@/components/RichTextEditor"), {
-  ssr: false,
-  loading: () => (
-    <div className="w-full h-96 bg-gray-100 rounded-lg animate-pulse flex items-center justify-center">
-      <p className="text-gray-500">Đang tải trình soạn thảo...</p>
-    </div>
-  ),
-});
-
 interface FormData {
   title: string;
+  title_en: string;
   slug: string;
   excerpt: string;
+  excerpt_en: string;
   content: string;
+  content_en: string;
   category: string;
   tags: string[];
   image: string;
@@ -53,9 +48,12 @@ export default function EditBlogPostPage() {
   const [tagInput, setTagInput] = useState("");
   const [formData, setFormData] = useState<FormData>({
     title: "",
+    title_en: "",
     slug: "",
     excerpt: "",
+    excerpt_en: "",
     content: "",
+    content_en: "",
     category: "news",
     tags: [],
     image: "/vet-images/1.png",
@@ -91,9 +89,12 @@ export default function EditBlogPostPage() {
       
       setFormData({
         title: post.title || "",
+        title_en: post.title_en || "",
         slug: post.slug || "",
         excerpt: post.excerpt || "",
+        excerpt_en: post.excerpt_en || "",
         content: post.content || "",
+        content_en: post.content_en || "",
         category: post.category || "news",
         tags: Array.isArray(post.tags) ? post.tags : [],
         image: post.image || "/vet-images/1.png",
@@ -122,6 +123,10 @@ export default function EditBlogPostPage() {
       .trim();
 
     setFormData({ ...formData, title, slug });
+  };
+
+  const handleTitleEnChange = (title_en: string) => {
+    setFormData({ ...formData, title_en });
   };
 
   const handleAddTag = () => {
@@ -260,62 +265,75 @@ export default function EditBlogPostPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Title */}
+            {/* Title - Bilingual */}
             <div className="bg-white rounded-lg shadow p-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                <FileText size={16} className="inline mr-2" />
-                Tiêu đề bài viết *
-              </label>
-              <input
+              <BilingualInput
+                label={
+                  <span className="flex items-center gap-2">
+                    <FileText size={16} />
+                    Tiêu đề bài viết
+                  </span>
+                }
+                valueVi={formData.title}
+                valueEn={formData.title_en}
+                onChangeVi={handleTitleChange}
+                onChangeEn={handleTitleEnChange}
                 type="text"
-                value={formData.title}
-                onChange={(e) => handleTitleChange(e.target.value)}
-                placeholder="Nhập tiêu đề bài viết..."
-                className="w-full px-4 py-3 text-lg border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholderVi="Nhập tiêu đề bài viết..."
+                placeholderEn="Enter article title..."
                 required
+                showAutoTranslate
               />
+              
+              <div className="mt-4">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Slug (URL)
+                </label>
+                <input
+                  type="text"
+                  value={formData.slug}
+                  onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
+                  placeholder="slug-url-friendly"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+                <p className="mt-1 text-xs text-gray-500">
+                  URL: /blog/{formData.slug || "slug-url-friendly"}
+                </p>
+              </div>
+            </div>
 
-              <label className="block text-sm font-medium text-gray-700 mb-2 mt-4">
-                Slug (URL)
-              </label>
-              <input
-                type="text"
-                value={formData.slug}
-                onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
-                placeholder="slug-url-friendly"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            {/* Excerpt - Bilingual */}
+            <div className="bg-white rounded-lg shadow p-6">
+              <BilingualInput
+                label="Mô tả ngắn (Excerpt)"
+                valueVi={formData.excerpt}
+                valueEn={formData.excerpt_en}
+                onChangeVi={(value) => setFormData({ ...formData, excerpt: value })}
+                onChangeEn={(value) => setFormData({ ...formData, excerpt_en: value })}
+                type="textarea"
+                rows={3}
+                placeholderVi="Mô tả ngắn gọn về bài viết (150-200 ký tự)..."
+                placeholderEn="Short description about the article (150-200 characters)..."
+                required
+                showAutoTranslate
               />
-              <p className="mt-1 text-xs text-gray-500">
-                URL: /blog/{formData.slug || "slug-url-friendly"}
+              <p className="mt-2 text-xs text-gray-500">
+                Vietnamese: {formData.excerpt.length}/500 ký tự | English: {formData.excerpt_en.length}/500 characters
               </p>
             </div>
 
-            {/* Excerpt */}
+            {/* Content Editor - Bilingual */}
             <div className="bg-white rounded-lg shadow p-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Mô tả ngắn (Excerpt) *
-              </label>
-              <textarea
-                value={formData.excerpt}
-                onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
-                placeholder="Mô tả ngắn gọn về bài viết (150-200 ký tự)..."
-                rows={3}
-                maxLength={500}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              <BilingualRichTextEditor
+                label="Nội dung bài viết"
+                valueVi={formData.content}
+                valueEn={formData.content_en}
+                onChangeVi={(content) => setFormData({ ...formData, content })}
+                onChangeEn={(content) => setFormData({ ...formData, content_en })}
+                placeholderVi="Viết nội dung bài viết của bạn..."
+                placeholderEn="Write your article content..."
                 required
-              />
-              <p className="mt-1 text-xs text-gray-500">{formData.excerpt.length}/500 ký tự</p>
-            </div>
-
-            {/* Content Editor */}
-            <div className="bg-white rounded-lg shadow p-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Nội dung bài viết *
-              </label>
-              <RichTextEditor
-                value={formData.content}
-                onChange={(content) => setFormData({ ...formData, content })}
-                placeholder="Viết nội dung bài viết của bạn..."
+                showAutoTranslate
               />
             </div>
           </div>
