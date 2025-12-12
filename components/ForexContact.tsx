@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Phone, Mail, Clock, MessageCircle, Send, AlertCircle } from "lucide-react";
 import HoneypotField from "@/components/HoneypotField";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 
 // Client-side email validation (simplified version)
 function isValidEmail(email: string): boolean {
@@ -12,6 +13,8 @@ function isValidEmail(email: string): boolean {
 }
 
 export default function ForexContact() {
+  const { t } = useLocale();
+  
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -36,7 +39,7 @@ export default function ForexContact() {
     // Validate email in real-time
     if (name === 'email') {
       if (value && !isValidEmail(value.trim())) {
-        setEmailError('Email không đúng định dạng');
+        setEmailError(t('contact.invalidEmail'));
       } else {
         setEmailError('');
       }
@@ -55,7 +58,7 @@ export default function ForexContact() {
     // Email validation
     const trimmedEmail = formData.email.trim();
     if (!isValidEmail(trimmedEmail)) {
-      setEmailError('Email không đúng định dạng. Vui lòng nhập email hợp lệ.');
+      setEmailError(t('contact.invalidEmailDetail'));
       return;
     }
     
@@ -78,11 +81,11 @@ export default function ForexContact() {
       const result = await response.json();
 
       if (result.ok) {
-        setSubmitMessage("Cảm ơn bạn! Chúng tôi sẽ liên hệ với bạn trong vòng 24 giờ.");
+        setSubmitMessage(t('contact.successMessage'));
         setFormData({ name: "", email: "", topic: "demo", message: "", broker: "", accountId: "", server: "" });
         setHoneypot("");
       } else {
-        const errorMsg = result.error || "Xin lỗi, đã xảy ra lỗi. Vui lòng thử lại hoặc liên hệ trực tiếp qua email.";
+        const errorMsg = result.error || t('contact.errorMessage');
         setSubmitMessage(errorMsg);
         // If email validation error, highlight email field
         if (errorMsg.toLowerCase().includes('email')) {
@@ -90,7 +93,7 @@ export default function ForexContact() {
         }
       }
     } catch {
-      setSubmitMessage("Xin lỗi, đã xảy ra lỗi. Vui lòng thử lại hoặc liên hệ trực tiếp qua email.");
+      setSubmitMessage(t('contact.errorMessage'));
     } finally {
       setIsSubmitting(false);
     }
@@ -101,10 +104,10 @@ export default function ForexContact() {
       <div className="container-custom">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
-            Liên hệ & Hỗ trợ
+            {t('contact.title')}
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Cần hỗ trợ về EA ThebenchmarkTrader? Chúng tôi luôn sẵn sàng giúp đỡ bạn
+            {t('contact.subtitle')}
           </p>
         </div>
 
@@ -112,12 +115,12 @@ export default function ForexContact() {
           {/* Left Column - Contact Form */}
           <div className="order-2 lg:order-1">
             <div className="bg-gray-50 p-8 rounded-xl">
-              <h3 className="text-2xl font-bold text-gray-800 mb-6">Gửi tin nhắn cho chúng tôi</h3>
+              <h3 className="text-2xl font-bold text-gray-800 mb-6">{t('contact.formTitle')}</h3>
               
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                    Họ và Tên *
+                    {t('contact.name')} *
                   </label>
                   <input
                     type="text"
@@ -127,14 +130,14 @@ export default function ForexContact() {
                     value={formData.name}
                     onChange={handleInputChange}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                    placeholder="Nhập họ và tên của bạn"
+                    placeholder={t('contact.namePlaceholder')}
                     suppressHydrationWarning={true}
                   />
                 </div>
                 
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                    Email *
+                    {t('contact.email')} *
                   </label>
                   <input
                     type="email"
@@ -146,7 +149,7 @@ export default function ForexContact() {
                     className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent ${
                       emailError ? 'border-red-500' : 'border-gray-300'
                     }`}
-                    placeholder="Nhập địa chỉ email của bạn"
+                    placeholder={t('contact.emailPlaceholder')}
                     suppressHydrationWarning={true}
                   />
                   {emailError && (
@@ -159,7 +162,7 @@ export default function ForexContact() {
 
                 <div>
                   <label htmlFor="topic" className="block text-sm font-medium text-gray-700 mb-2">
-                    Nhu cầu *
+                    {t('contact.topic')} *
                   </label>
                   <select
                     id="topic"
@@ -170,184 +173,187 @@ export default function ForexContact() {
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                     suppressHydrationWarning={true}
                   >
-                    <option value="demo">Tải Demo miễn phí</option>
-                    <option value="purchase">Mua EA đầy đủ</option>
-                    <option value="support">Hỗ trợ kỹ thuật</option>
-                    <option value="custom">Tùy chỉnh EA</option>
+                    <option value="demo">{t('contact.topicDemo')}</option>
+                    <option value="purchase">{t('contact.topicPurchase')}</option>
+                    <option value="support">{t('contact.topicSupport')}</option>
+                    <option value="custom">{t('contact.topicCustom')}</option>
                   </select>
                 </div>
                 
                 <div>
                   <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
-                    Tin nhắn
+                    {t('contact.message')} *
                   </label>
                   <textarea
                     id="message"
                     name="message"
-                    rows={4}
+                    required
                     value={formData.message}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                    placeholder="Mô tả chi tiết nhu cầu của bạn..."
+                    rows={5}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none"
+                    placeholder={t('contact.messagePlaceholder')}
                     suppressHydrationWarning={true}
                   />
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div>
-                    <label htmlFor="broker" className="block text-sm font-medium text-gray-700 mb-2">
-                      Broker
-                    </label>
-                    <input
-                      type="text"
-                      id="broker"
-                      name="broker"
-                      value={formData.broker}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                      placeholder="Ví dụ: Tickmill"
-                      suppressHydrationWarning={true}
-                    />
-                  </div>
+                {/* Trading Account Info (Optional) */}
+                <div className="border-t border-gray-200 pt-6">
+                  <p className="text-sm text-gray-600 mb-4">
+                    {t('contact.optional')}
+                  </p>
                   
-                  <div>
-                    <label htmlFor="accountId" className="block text-sm font-medium text-gray-700 mb-2">
-                      Account ID
-                    </label>
-                    <input
-                      type="text"
-                      id="accountId"
-                      name="accountId"
-                      value={formData.accountId}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                      placeholder="Ví dụ: 123456"
-                      suppressHydrationWarning={true}
-                    />
-                  </div>
-                  
-                  <div>
-                    <label htmlFor="server" className="block text-sm font-medium text-gray-700 mb-2">
-                      Server
-                    </label>
-                    <input
-                      type="text"
-                      id="server"
-                      name="server"
-                      value={formData.server}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                      placeholder="Ví dụ: Tickmill-Live8"
-                      suppressHydrationWarning={true}
-                    />
+                  <div className="space-y-4">
+                    <div>
+                      <label htmlFor="broker" className="block text-sm font-medium text-gray-700 mb-2">
+                        {t('contact.broker')}
+                      </label>
+                      <input
+                        type="text"
+                        id="broker"
+                        name="broker"
+                        value={formData.broker}
+                        onChange={handleInputChange}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                        placeholder={t('contact.brokerPlaceholder')}
+                        suppressHydrationWarning={true}
+                      />
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div>
+                        <label htmlFor="accountId" className="block text-sm font-medium text-gray-700 mb-2">
+                          {t('contact.accountId')}
+                        </label>
+                        <input
+                          type="text"
+                          id="accountId"
+                          name="accountId"
+                          value={formData.accountId}
+                          onChange={handleInputChange}
+                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                          placeholder={t('contact.accountIdPlaceholder')}
+                          suppressHydrationWarning={true}
+                        />
+                      </div>
+
+                      <div>
+                        <label htmlFor="server" className="block text-sm font-medium text-gray-700 mb-2">
+                          {t('contact.server')}
+                        </label>
+                        <input
+                          type="text"
+                          id="server"
+                          name="server"
+                          value={formData.server}
+                          onChange={handleInputChange}
+                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                          placeholder={t('contact.serverPlaceholder')}
+                          suppressHydrationWarning={true}
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
 
-                {/* Honeypot Field - Hidden from users, visible to bots */}
-                <HoneypotField 
-                  value={honeypot}
-                  onChange={setHoneypot}
-                  name="website"
-                />
-                
+                {/* Honeypot Field */}
+                <HoneypotField value={honeypot} onChange={(e) => setHoneypot(e.target.value)} />
+
+                {/* Submit Button */}
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full btn-primary disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+                  className={`w-full flex items-center justify-center gap-2 py-4 rounded-lg font-semibold text-white transition-colors ${
+                    isSubmitting
+                      ? 'bg-gray-400 cursor-not-allowed'
+                      : 'bg-blue-600 hover:bg-blue-700'
+                  }`}
                   suppressHydrationWarning={true}
                 >
                   <Send size={18} />
-                  <span>{isSubmitting ? "Đang gửi..." : "Gửi tin nhắn"}</span>
+                  <span>{isSubmitting ? t('contact.sending') : t('contact.submit')}</span>
                 </button>
+
+                {/* Submit Message */}
+                {submitMessage && (
+                  <div className={`p-4 rounded-lg ${
+                    submitMessage.includes(t('contact.successMessage').substring(0, 10))
+                      ? 'bg-green-50 text-green-800 border border-green-200'
+                      : 'bg-red-50 text-red-800 border border-red-200'
+                  }`}>
+                    {submitMessage}
+                  </div>
+                )}
               </form>
-              
-              {submitMessage && (
-                <div className={`mt-4 p-4 rounded-lg text-sm ${
-                  submitMessage.includes("Cảm ơn") 
-                    ? "bg-green-100 text-green-700" 
-                    : "bg-red-100 text-red-700"
-                }`}>
-                  {submitMessage}
-                </div>
-              )}
             </div>
           </div>
 
           {/* Right Column - Contact Info */}
-          <div className="order-1 lg:order-2 space-y-8">
-            <div>
-              <h3 className="text-2xl font-bold text-gray-800 mb-6">Thông tin liên hệ</h3>
-              
-              <div className="space-y-6">
-                <div className="flex items-start space-x-4">
-                  <div className="bg-primary-100 p-3 rounded-lg">
-                    <Phone className="w-6 h-6 text-primary-600" />
+          <div className="order-1 lg:order-2">
+            <div className="space-y-8">
+              <div>
+                <h3 className="text-2xl font-bold text-gray-800 mb-6">{t('contact.contactInfoTitle')}</h3>
+                
+                <div className="space-y-4">
+                  <div className="flex items-start space-x-4">
+                    <div className="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                      <Phone className="text-blue-600" size={24} />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-800 mb-1">{t('contact.phone')}</h4>
+                      <p className="text-gray-600">{t('common.phone')}</p>
+                    </div>
                   </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-800 mb-1">Hotline hỗ trợ</h4>
-                    <p className="text-gray-600">+84 765 452 515</p>
-                    <p className="text-sm text-gray-500">Thứ 2 - Thứ 6: 9:00 - 18:00</p>
-                  </div>
-                </div>
 
-                <div className="flex items-start space-x-4">
-                  <div className="bg-primary-100 p-3 rounded-lg">
-                    <Mail className="w-6 h-6 text-primary-600" />
+                  <div className="flex items-start space-x-4">
+                    <div className="flex-shrink-0 w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                      <Mail className="text-green-600" size={24} />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-800 mb-1">{t('contact.emailAddress')}</h4>
+                      <p className="text-gray-600">{t('common.email')}</p>
+                    </div>
                   </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-800 mb-1">Email hỗ trợ</h4>
-                    <p className="text-gray-600">support@thebenchmarktrader.com</p>
-                    <p className="text-sm text-gray-500">Phản hồi trong vòng 24 giờ</p>
-                  </div>
-                </div>
 
-                <div className="flex items-start space-x-4">
-                  <div className="bg-primary-100 p-3 rounded-lg">
-                    <MessageCircle className="w-6 h-6 text-primary-600" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-800 mb-1">Telegram</h4>
-                    <p className="text-gray-600">Telegram Group Support</p>
-                    <a href="https://t.me/+0ETUdIuYUzdhZWQ1" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline text-sm">Join Group</a>
-                    <p className="text-sm text-gray-500">Chat trực tiếp với team hỗ trợ</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-4">
-                  <div className="bg-primary-100 p-3 rounded-lg">
-                    <Clock className="w-6 h-6 text-primary-600" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-800 mb-1">Giờ hỗ trợ</h4>
-                    <div className="text-gray-600 space-y-1">
-                      <p>Thứ Hai - Thứ Sáu: 9:00 - 18:00</p>
-                      <p>Thứ Bảy: 9:00 - 12:00</p>
-                      <p className="text-sm text-primary-600 font-medium">
-                        Hỗ trợ khẩn cấp qua Telegram 24/7
-                      </p>
+                  <div className="flex items-start space-x-4">
+                    <div className="flex-shrink-0 w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                      <Clock className="text-purple-600" size={24} />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-800 mb-1">{t('contact.workingHours')}</h4>
+                      <p className="text-gray-600">{t('contact.workingHoursValue')}</p>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <div className="border-t pt-8">
-              <h4 className="font-semibold text-gray-800 mb-4">Cam kết hỗ trợ</h4>
-              <div className="space-y-4">
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                  <p className="text-blue-700">
-                    <strong>📞 Hỗ trợ cài đặt:</strong> Miễn phí hướng dẫn cài đặt EA qua TeamViewer
-                  </p>
-                </div>
-                <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                  <p className="text-green-700">
-                    <strong>🔧 Tùy chỉnh tham số:</strong> Hỗ trợ tối ưu tham số theo tài khoản
-                  </p>
-                </div>
-                <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
-                  <p className="text-purple-700">
-                    <strong>📈 Báo cáo hiệu suất:</strong> Gửi báo cáo backtest chi tiết theo yêu cầu
-                  </p>
+              {/* Why Contact Us */}
+              <div className="bg-gradient-to-br from-blue-50 to-purple-50 p-6 rounded-xl">
+                <h4 className="font-bold text-gray-800 mb-4">{t('contact.whyContactTitle')}</h4>
+                <div className="space-y-3">
+                  <div className="flex items-start space-x-3">
+                    <MessageCircle className="text-blue-600 flex-shrink-0 mt-1" size={18} />
+                    <div>
+                      <p className="font-semibold text-gray-800">{t('contact.response24h')}</p>
+                      <p className="text-sm text-gray-600">{t('contact.response24hDesc')}</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start space-x-3">
+                    <MessageCircle className="text-green-600 flex-shrink-0 mt-1" size={18} />
+                    <div>
+                      <p className="font-semibold text-gray-800">{t('contact.techSupport')}</p>
+                      <p className="text-sm text-gray-600">{t('contact.techSupportDesc')}</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start space-x-3">
+                    <MessageCircle className="text-purple-600 flex-shrink-0 mt-1" size={18} />
+                    <div>
+                      <p className="font-semibold text-gray-800">{t('contact.freeConsult')}</p>
+                      <p className="text-sm text-gray-600">{t('contact.freeConsultDesc')}</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -357,5 +363,3 @@ export default function ForexContact() {
     </section>
   );
 }
-
-
