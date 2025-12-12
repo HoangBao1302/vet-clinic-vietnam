@@ -1,6 +1,7 @@
 "use client";
 
 import { TrendingUp, Shield, Brain, Target, Clock, FileText } from "lucide-react";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 
 const features = [
   {
@@ -48,16 +49,17 @@ const features = [
 ];
 
 export default function Features() {
+  const { t } = useLocale();
+  
   return (
     <section id="features" className="py-20 bg-gray-50">
       <div className="container-custom">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-gray-800 mb-4">
-            Tính năng vượt trội
+            {t('features.title')}
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            EA ThebenchmarkTrader được thiết kế với các tính năng tiên tiến để tối ưu hóa hiệu suất giao dịch 
-            và bảo vệ tài khoản của bạn
+            {t('features.subtitle')}
           </p>
         </div>
 
