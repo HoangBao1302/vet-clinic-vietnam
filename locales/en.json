@@ -166,6 +166,10 @@
     "freeConsult": "Free Consultation",
     "freeConsultDesc": "Free consultation on trading strategy, EA setup and risk management"
   },
+  "sticky": {
+    "cta": "Ready to start automated trading?",
+    "button": "Buy EA Now"
+  },
   "footer": {
     "description": "Multi-strategy Expert Advisor with scientific risk management. Efficient and transparent Forex trading automation.",
     "quickLinks": "Quick Links",

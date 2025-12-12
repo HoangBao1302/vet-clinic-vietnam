@@ -166,6 +166,10 @@
     "freeConsult": "Tư vấn miễn phí",
     "freeConsultDesc": "Tư vấn chiến lược giao dịch, setup EA và quản lý rủi ro hoàn toàn miễn phí"
   },
+  "sticky": {
+    "cta": "Sẵn sàng bắt đầu giao dịch tự động?",
+    "button": "Mua EA ngay"
+  },
   "footer": {
     "description": "Expert Advisor đa chiến lược với quản trị rủi ro khoa học. Tự động hóa giao dịch Forex hiệu quả và minh bạch.",
     "quickLinks": "Liên Kết Nhanh",
