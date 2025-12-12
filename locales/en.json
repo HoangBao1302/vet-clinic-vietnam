@@ -170,6 +170,114 @@
     "cta": "Ready to start automated trading?",
     "button": "Buy EA Now"
   },
+  "pricing": {
+    "title": "EA Forex Pricing",
+    "subtitle": "Choose the plan that fits your trading needs",
+    "popular": "Most Popular",
+    "period": "One-time",
+    "free": "Free",
+    "features": "Features",
+    "limitations": "Limitations",
+    "plans": {
+      "demo": {
+        "name": "Demo",
+        "price": "$0",
+        "period": "Free",
+        "description": "Try EA with demo account",
+        "cta": "Download Demo",
+        "features": [
+          "Works on demo accounts",
+          "Full EA features",
+          "MT4/MT5 support",
+          "Performance reports",
+          "Installation guide",
+          "Email support"
+        ],
+        "limitations": [
+          "Demo only",
+          "No source code",
+          "Basic support"
+        ]
+      },
+      "full": {
+        "name": "Full Version",
+        "price": "$320",
+        "period": "One-time",
+        "description": "Full version for live accounts",
+        "cta": "Buy Now",
+        "features": [
+          "Works on live accounts",
+          "Full EA features",
+          "MT4/MT5 support",
+          "Detailed reports",
+          "Installation guide",
+          "1-on-1 Telegram support",
+          "Free updates for 1 year",
+          "Custom parameters"
+        ],
+        "limitations": [
+          "No source code",
+          "Limited to 3 accounts"
+        ]
+      },
+      "pro": {
+        "name": "Pro + Source",
+        "price": "$600",
+        "period": "One-time",
+        "description": "Pro version with source code",
+        "cta": "Contact Us",
+        "features": [
+          "All Full features",
+          "Full source code",
+          "Unlimited accounts",
+          "Advanced customization support",
+          "VIP 24/7 support",
+          "Lifetime free updates",
+          "1-on-1 training",
+          "Strategy consulting"
+        ],
+        "limitations": []
+      }
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "questions": [
+        {
+          "q": "What is the license policy?",
+          "a": "Demo: Demo only, unlimited time. Full: Up to 3 live accounts, lifetime license. Pro: Unlimited accounts, includes source code."
+        },
+        {
+          "q": "Will the EA be updated?",
+          "a": "Full: Free updates for 1 year. Pro: Lifetime free updates. All updates include optimizations and new features."
+        },
+        {
+          "q": "Is there a refund policy?",
+          "a": "We offer 100% refund within 30 days if the EA doesn't work as described. However, we encourage trying the Demo first before purchasing."
+        },
+        {
+          "q": "What kind of technical support is provided?",
+          "a": "Demo: Email support. Full: 1-on-1 Telegram + email support. Pro: VIP 24/7 support via Telegram, phone and TeamViewer."
+        },
+        {
+          "q": "Which brokers does the EA work with?",
+          "a": "The EA works with most brokers supporting MT4/MT5. We recommend brokers with low spreads and fast execution like IC Markets, Pepperstone, FXCM."
+        }
+      ]
+    },
+    "guide": {
+      "title": "EA Installation Guide",
+      "subtitle": "Watch detailed video guide before purchasing",
+      "step1": "Install",
+      "step1Desc": "Download and install EA on MT4/MT5",
+      "step2": "Configure",
+      "step2Desc": "Set parameters suitable for your strategy",
+      "step3": "Start",
+      "step3Desc": "Activate EA and start automated trading",
+      "watchVideo": "Watch Installation Video Guide",
+      "allVideos": "Watch All Video Tutorials",
+      "tip": "💡 Tip: Watch the guide video before purchasing to understand how to use the EA"
+    }
+  },
   "footer": {
     "description": "Multi-strategy Expert Advisor with scientific risk management. Efficient and transparent Forex trading automation.",
     "quickLinks": "Quick Links",
