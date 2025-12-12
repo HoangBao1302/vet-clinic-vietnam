@@ -150,50 +150,50 @@ export default function Header() {
               className="text-gray-700 hover:text-primary-600 transition-colors font-medium whitespace-nowrap"
               suppressHydrationWarning
             >
-              Trang Chủ
+              {t('nav.home')}
             </button>
             <button
               onClick={() => isClient && scrollToSection("features")}
               className="text-gray-700 hover:text-primary-600 transition-colors font-medium whitespace-nowrap"
               suppressHydrationWarning
             >
-              Tính Năng
+              {t('nav.features')}
             </button>
             <Link
               href="/pricing"
               className="text-gray-700 hover:text-primary-600 transition-colors font-medium whitespace-nowrap"
             >
-              Bảng Giá
+              {t('nav.pricing')}
             </Link>
             <Link
               href="/downloads"
               className="text-gray-700 hover:text-primary-600 transition-colors font-medium whitespace-nowrap"
             >
-              Downloads
+              {t('nav.downloads')}
             </Link>
             <Link
               href="/about"
               className="text-gray-700 hover:text-primary-600 transition-colors font-medium whitespace-nowrap"
             >
-              Về EA
+              {t('nav.aboutEA')}
             </Link>
             <Link
               href="/live-results"
               className="text-gray-700 hover:text-primary-600 transition-colors font-medium whitespace-nowrap"
             >
-              Kết Quả Live
+              {t('nav.liveResults')}
             </Link>
             <Link
               href="/blog"
               className="text-gray-700 hover:text-primary-600 transition-colors font-medium whitespace-nowrap"
             >
-              Blog
+              {t('nav.blog')}
             </Link>
             <Link
               href="/partners"
               className="text-gray-700 hover:text-primary-600 transition-colors font-medium whitespace-nowrap"
             >
-              Đối Tác
+              {t('nav.partners')}
             </Link>
             
             {/* Referral Dropdown */}
@@ -206,7 +206,7 @@ export default function Header() {
                 className="flex items-center gap-1 text-gray-700 hover:text-primary-600 transition-colors font-medium whitespace-nowrap"
                 suppressHydrationWarning
               >
-                Affiliate
+                {t('nav.affiliate')}
                 <ChevronDown size={14} className={`transition-transform duration-200 ${isReferralOpen ? 'rotate-180' : ''}`} />
               </button>
               
@@ -224,8 +224,8 @@ export default function Header() {
                       onClick={() => setIsReferralOpen(false)}
                       className="block px-4 py-2.5 text-gray-700 hover:bg-blue-50 hover:text-primary-600 transition-colors"
                     >
-                      <div className="font-semibold text-sm">📊 Tổng Quan</div>
-                      <div className="text-xs text-gray-500 mt-0.5">Về chương trình affiliate</div>
+                      <div className="font-semibold text-sm">{t('nav.affiliateOverview')}</div>
+                      <div className="text-xs text-gray-500 mt-0.5">{t('nav.affiliateOverviewDesc')}</div>
                     </Link>
                     <div className="border-t border-gray-200 my-1"></div>
                     <Link
@@ -233,24 +233,24 @@ export default function Header() {
                       onClick={() => setIsReferralOpen(false)}
                       className="block px-4 py-2.5 text-gray-700 hover:bg-blue-50 hover:text-primary-600 transition-colors"
                     >
-                      <div className="font-semibold text-sm">💰 Bán EA <span className="text-blue-600 font-bold">30%</span></div>
-                      <div className="text-xs text-gray-500 mt-0.5">Hoa hồng cao nhất</div>
+                      <div className="font-semibold text-sm">{t('nav.sellEA')} <span className="text-blue-600 font-bold">30%</span></div>
+                      <div className="text-xs text-gray-500 mt-0.5">{t('nav.sellEADesc')}</div>
                     </Link>
                     <Link
                       href="/referral/copy-social"
                       onClick={() => setIsReferralOpen(false)}
                       className="block px-4 py-2.5 text-gray-700 hover:bg-green-50 hover:text-primary-600 transition-colors"
                     >
-                      <div className="font-semibold text-sm">👥 Copy Social <span className="text-green-600 font-bold">10%</span></div>
-                      <div className="text-xs text-gray-500 mt-0.5">Thu nhập thụ động</div>
+                      <div className="font-semibold text-sm">{t('nav.copySocial')} <span className="text-green-600 font-bold">10%</span></div>
+                      <div className="text-xs text-gray-500 mt-0.5">{t('nav.copySocialDesc')}</div>
                     </Link>
                     <Link
                       href="/referral/ban-khoa-hoc"
                       onClick={() => setIsReferralOpen(false)}
                       className="block px-4 py-2.5 text-gray-700 hover:bg-orange-50 hover:text-primary-600 transition-colors"
                     >
-                      <div className="font-semibold text-sm">🎓 Khóa Học <span className="text-orange-600 font-bold">25%</span></div>
-                      <div className="text-xs text-gray-500 mt-0.5">Giá trị cao</div>
+                      <div className="font-semibold text-sm">{t('nav.courses')} <span className="text-orange-600 font-bold">25%</span></div>
+                      <div className="text-xs text-gray-500 mt-0.5">{t('nav.coursesDesc')}</div>
                     </Link>
                   </div>
                 </>
@@ -262,7 +262,7 @@ export default function Header() {
               className="text-gray-700 hover:text-primary-600 transition-colors font-medium whitespace-nowrap"
               suppressHydrationWarning
             >
-              Liên Hệ
+              {t('nav.contact')}
             </button>
 
             {/* User Menu / Login */}
@@ -302,7 +302,7 @@ export default function Header() {
                         className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-purple-50 hover:text-purple-600 transition-colors"
                       >
                         <User size={16} />
-                        <span className="text-sm">Admin Dashboard</span>
+                        <span className="text-sm">{t('nav.adminDashboard')}</span>
                       </Link>
                     )}
                     
@@ -313,7 +313,7 @@ export default function Header() {
                         className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-green-50 hover:text-green-600 transition-colors"
                       >
                         <TrendingUp size={16} />
-                        <span className="text-sm">Xem Dashboard</span>
+                        <span className="text-sm">{t('common.viewDashboard')}</span>
                       </Link>
                     )}
                     
@@ -323,7 +323,7 @@ export default function Header() {
                       className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"
                     >
                       <User size={16} />
-                      <span className="text-sm">Tài Khoản</span>
+                      <span className="text-sm">{t('common.myAccount')}</span>
                     </Link>
                     
                     <button
@@ -335,7 +335,7 @@ export default function Header() {
                       className="flex items-center gap-2 w-full px-4 py-2 text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors"
                     >
                       <LogOut size={16} />
-                      <span className="text-sm">Đăng Xuất</span>
+                      <span className="text-sm">{t('common.logout')}</span>
                     </button>
                   </div>
                 )}
@@ -346,7 +346,7 @@ export default function Header() {
                 className="flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 transition-colors whitespace-nowrap"
               >
                 <LogIn size={16} />
-                <span>Đăng Nhập</span>
+                <span>{t('common.login')}</span>
               </Link>
             )}
             
@@ -373,89 +373,89 @@ export default function Header() {
                 className="text-left text-gray-700 hover:text-primary-600 transition-colors font-medium"
                 suppressHydrationWarning
               >
-                Trang Chủ
+                {t('nav.home')}
               </button>
               <button
                 onClick={() => scrollToSection("features")}
                 className="text-left text-gray-700 hover:text-primary-600 transition-colors font-medium"
                 suppressHydrationWarning
               >
-                Tính Năng
+                {t('nav.features')}
               </button>
               <Link
                 href="/pricing"
                 className="text-left text-gray-700 hover:text-primary-600 transition-colors font-medium"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Bảng Giá
+                {t('nav.pricing')}
               </Link>
               <Link
                 href="/downloads"
                 className="text-left text-gray-700 hover:text-primary-600 transition-colors font-medium"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Downloads
+                {t('nav.downloads')}
               </Link>
               <Link
                 href="/about"
                 className="text-left text-gray-700 hover:text-primary-600 transition-colors font-medium"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Về EA
+                {t('nav.aboutEA')}
               </Link>
               <Link
                 href="/live-results"
                 className="text-left text-gray-700 hover:text-primary-600 transition-colors font-medium"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Kết Quả Thực Tế
+                {t('nav.liveResults')}
               </Link>
               <Link
                 href="/blog"
                 className="text-left text-gray-700 hover:text-primary-600 transition-colors font-medium"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Blog
+                {t('nav.blog')}
               </Link>
               <Link
                 href="/partners"
                 className="text-left text-gray-700 hover:text-primary-600 transition-colors font-medium"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Đối Tác
+                {t('nav.partners')}
               </Link>
               
               {/* Mobile Referral Section */}
               <div className="border-t border-gray-200 pt-4">
-                <div className="font-semibold text-gray-800 mb-2">Tiếp Thị Liên Kết</div>
+                <div className="font-semibold text-gray-800 mb-2">{t('nav.affiliateMarketing')}</div>
                 <div className="pl-4 space-y-3">
                   <Link
                     href="/referral"
                     className="block text-gray-700 hover:text-primary-600 transition-colors"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    Tổng Quan
+                    {t('nav.overview')}
                   </Link>
                   <Link
                     href="/referral/ban-ea"
                     className="block text-gray-700 hover:text-primary-600 transition-colors"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    Bán EA <span className="text-blue-600 font-semibold">30%</span>
+                    {t('nav.sellEALabel')} <span className="text-blue-600 font-semibold">30%</span>
                   </Link>
                   <Link
                     href="/referral/copy-social"
                     className="block text-gray-700 hover:text-primary-600 transition-colors"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    Copy Social <span className="text-green-600 font-semibold">10%</span>
+                    {t('nav.copySocialLabel')} <span className="text-green-600 font-semibold">10%</span>
                   </Link>
                   <Link
                     href="/referral/ban-khoa-hoc"
                     className="block text-gray-700 hover:text-primary-600 transition-colors"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    Bán Khóa Học <span className="text-orange-600 font-semibold">25%</span>
+                    {t('nav.coursesLabel')} <span className="text-orange-600 font-semibold">25%</span>
                   </Link>
                 </div>
               </div>
@@ -465,7 +465,7 @@ export default function Header() {
                 className="text-left text-gray-700 hover:text-primary-600 transition-colors font-medium"
                 suppressHydrationWarning
               >
-                Liên Hệ
+                {t('nav.contact')}
               </button>
 
               {/* Mobile Login/User Menu */}
@@ -489,7 +489,7 @@ export default function Header() {
                         className="flex items-center gap-2 text-gray-700 hover:text-purple-600 transition-colors font-medium"
                       >
                         <User size={18} />
-                        <span>Admin Dashboard</span>
+                        <span>{t('nav.adminDashboard')}</span>
                       </Link>
                     )}
                     
@@ -500,7 +500,7 @@ export default function Header() {
                         className="flex items-center gap-2 text-gray-700 hover:text-green-600 transition-colors font-medium"
                       >
                         <TrendingUp size={18} />
-                        <span>Xem Dashboard</span>
+                        <span>{t('common.viewDashboard')}</span>
                       </Link>
                     )}
                     
@@ -510,7 +510,7 @@ export default function Header() {
                       className="flex items-center gap-2 text-gray-700 hover:text-primary-600 transition-colors font-medium"
                     >
                       <User size={18} />
-                      <span>Tài Khoản</span>
+                      <span>{t('common.myAccount')}</span>
                     </Link>
                     
                     <button
@@ -522,7 +522,7 @@ export default function Header() {
                       className="flex items-center gap-2 text-red-600 hover:text-red-700 transition-colors font-medium"
                     >
                       <LogOut size={18} />
-                      <span>Đăng Xuất</span>
+                      <span>{t('common.logout')}</span>
                     </button>
                   </div>
                 ) : (
@@ -532,7 +532,7 @@ export default function Header() {
                     className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-primary-600 text-white rounded-lg font-semibold hover:bg-primary-700 transition-colors"
                   >
                     <LogIn size={18} />
-                    <span>Đăng Nhập</span>
+                    <span>{t('common.login')}</span>
                   </Link>
                 )}
               </div>
