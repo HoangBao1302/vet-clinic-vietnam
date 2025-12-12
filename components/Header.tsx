@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
 import { useAuth } from "@/lib/authContext";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -346,6 +347,9 @@ export default function Header() {
                 <span>Đăng Nhập</span>
               </Link>
             )}
+            
+            {/* Language Switcher */}
+            <LanguageSwitcher />
           </nav>
 
           {/* Mobile Menu Button */}

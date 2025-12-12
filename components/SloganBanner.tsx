@@ -4,9 +4,11 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Download } from "lucide-react";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 
 export default function SloganBanner() {
   const [isClient, setIsClient] = useState(false);
+  const { t } = useLocale();
 
   useEffect(() => {
     setIsClient(true);
@@ -33,7 +35,7 @@ export default function SloganBanner() {
           {/* Call to Action */}
           <div className="space-y-6">
             <p className="text-white text-lg md:text-xl max-w-2xl mx-auto opacity-90">
-              Bắt đầu hành trình giao dịch tự động với EA Forex chuyên nghiệp
+              {t('slogan')}
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -42,7 +44,7 @@ export default function SloganBanner() {
                 className="group inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300"
               >
                 <Download className="w-5 h-5 mr-2 group-hover:animate-bounce" />
-                Get Started Now
+                {t('common.getDemo')}
                 <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
               </Link>
               
@@ -51,7 +53,7 @@ export default function SloganBanner() {
                 className="inline-flex items-center px-8 py-4 border-2 border-white text-white font-semibold rounded-lg hover:bg-white hover:text-blue-900 transition-all duration-300"
                 suppressHydrationWarning
               >
-                Tìm Hiểu Thêm
+                {t('common.learnMore')}
               </button>
             </div>
 

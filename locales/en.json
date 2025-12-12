@@ -1,0 +1,45 @@
+{
+  "common": {
+    "phone": "+84 765 452 515",
+    "email": "support@thebenchmarktrader.com",
+    "support": "Support",
+    "login": "Login",
+    "logout": "Logout",
+    "register": "Register",
+    "profile": "Profile",
+    "buyNow": "Buy Now",
+    "learnMore": "Learn More",
+    "contactUs": "Contact Us",
+    "getDemo": "Get Demo",
+    "download": "Download"
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "pricing": "Pricing",
+    "blog": "Blog",
+    "liveResults": "Live Results",
+    "partners": "Partners",
+    "referral": "Referral"
+  },
+  "hero": {
+    "title": "EA Forex ThebenchmarkTrader",
+    "subtitle": "Intelligent Automated Forex Trading Robot",
+    "description": "Professional Forex EA with automated trading algorithm, smart risk management and outstanding win rate",
+    "stats": {
+      "profitFactor": "Profit Factor",
+      "winRate": "Win Rate",
+      "drawdown": "Max Drawdown"
+    }
+  },
+  "features": {
+    "title": "Key Features",
+    "subtitle": "EA ThebenchmarkTrader is designed with advanced technology"
+  },
+  "slogan": "Trusted by 500+ Traders across Vietnam",
+  "footer": {
+    "description": "Professional Forex EA with outstanding performance",
+    "copyright": "© 2024 EA ThebenchmarkTrader. All rights reserved."
+  }
+}
+

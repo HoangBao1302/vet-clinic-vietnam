@@ -3,6 +3,7 @@ import "./globals.css";
 import ChatWidget from "@/components/ChatWidget";
 import AffiliateTracker from "@/components/AffiliateTracker";
 import { AuthProvider } from "@/lib/authContext";
+import { LocaleProvider } from "@/lib/i18n/LocaleContext";
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://ThebenchmarkTrader.com'),
@@ -55,11 +56,13 @@ export default function RootLayout({
   return (
     <html lang="vi">
       <body className="antialiased">
-        <AuthProvider>
-          {children}
-          <ChatWidget />
-          <AffiliateTracker />
-        </AuthProvider>
+        <LocaleProvider>
+          <AuthProvider>
+            {children}
+            <ChatWidget />
+            <AffiliateTracker />
+          </AuthProvider>
+        </LocaleProvider>
       </body>
     </html>
   );

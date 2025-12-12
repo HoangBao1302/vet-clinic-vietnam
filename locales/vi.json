@@ -1,0 +1,45 @@
+{
+  "common": {
+    "phone": "+84 765 452 515",
+    "email": "support@thebenchmarktrader.com",
+    "support": "Hỗ trợ",
+    "login": "Đăng nhập",
+    "logout": "Đăng xuất",
+    "register": "Đăng ký",
+    "profile": "Tài khoản",
+    "buyNow": "Mua ngay",
+    "learnMore": "Tìm hiểu thêm",
+    "contactUs": "Liên hệ",
+    "getDemo": "Tải Demo",
+    "download": "Tải xuống"
+  },
+  "nav": {
+    "home": "Trang chủ",
+    "about": "Giới thiệu",
+    "pricing": "Bảng giá",
+    "blog": "Blog",
+    "liveResults": "Kết quả Live",
+    "partners": "Đối tác",
+    "referral": "Giới thiệu"
+  },
+  "hero": {
+    "title": "EA Forex ThebenchmarkTrader",
+    "subtitle": "Robot giao dịch Forex tự động thông minh",
+    "description": "EA Forex chuyên nghiệp với thuật toán giao dịch tự động, quản lý rủi ro thông minh và tỷ lệ thắng vượt trội",
+    "stats": {
+      "profitFactor": "Profit Factor",
+      "winRate": "Tỷ lệ thắng",
+      "drawdown": "Max Drawdown"
+    }
+  },
+  "features": {
+    "title": "Tính năng nổi bật",
+    "subtitle": "EA ThebenchmarkTrader được thiết kế với công nghệ tiên tiến"
+  },
+  "slogan": "Tin tưởng bởi hơn 500+ Traders trên toàn Việt Nam",
+  "footer": {
+    "description": "EA Forex chuyên nghiệp với hiệu suất vượt trội",
+    "copyright": "© 2024 EA ThebenchmarkTrader. All rights reserved."
+  }
+}
+
