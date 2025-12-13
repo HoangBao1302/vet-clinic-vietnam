@@ -12,7 +12,7 @@ export default function PricingPage() {
   const { t } = useLocale();
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   
-  // Generate pricing plans from translations
+  // Generate pricing plans from translations with safety checks
   const pricingPlans = [
     {
       id: "demo",
@@ -20,8 +20,8 @@ export default function PricingPage() {
       price: t('pricing.plans.demo.price'),
       period: t('pricing.plans.demo.period'),
       description: t('pricing.plans.demo.description'),
-      features: t('pricing.plans.demo.features') as unknown as string[],
-      limitations: t('pricing.plans.demo.limitations') as unknown as string[],
+      features: Array.isArray(t('pricing.plans.demo.features')) ? t('pricing.plans.demo.features') : [],
+      limitations: Array.isArray(t('pricing.plans.demo.limitations')) ? t('pricing.plans.demo.limitations') : [],
       cta: t('pricing.plans.demo.cta'),
       popular: false,
       color: "border-gray-200"
@@ -32,8 +32,8 @@ export default function PricingPage() {
       price: t('pricing.plans.full.price'),
       period: t('pricing.plans.full.period'),
       description: t('pricing.plans.full.description'),
-      features: t('pricing.plans.full.features') as unknown as string[],
-      limitations: t('pricing.plans.full.limitations') as unknown as string[],
+      features: Array.isArray(t('pricing.plans.full.features')) ? t('pricing.plans.full.features') : [],
+      limitations: Array.isArray(t('pricing.plans.full.limitations')) ? t('pricing.plans.full.limitations') : [],
       cta: t('pricing.plans.full.cta'),
       popular: true,
       color: "border-blue-500"
@@ -44,19 +44,20 @@ export default function PricingPage() {
       price: t('pricing.plans.pro.price'),
       period: t('pricing.plans.pro.period'),
       description: t('pricing.plans.pro.description'),
-      features: t('pricing.plans.pro.features') as unknown as string[],
-      limitations: t('pricing.plans.pro.limitations') as unknown as string[],
+      features: Array.isArray(t('pricing.plans.pro.features')) ? t('pricing.plans.pro.features') : [],
+      limitations: Array.isArray(t('pricing.plans.pro.limitations')) ? t('pricing.plans.pro.limitations') : [],
       cta: t('pricing.plans.pro.cta'),
       popular: false,
       color: "border-purple-500"
     }
   ];
 
-  // Generate FAQs from translations
-  const faqQuestions = t('pricing.faq.questions') as unknown as Array<{ q: string; a: string; }>;
-  const faqs = faqQuestions.map((item) => ({
-    question: item.q,
-    answer: item.a
+  // Generate FAQs from translations with safety check
+  const faqQuestionsRaw = t('pricing.faq.questions');
+  const faqQuestions = Array.isArray(faqQuestionsRaw) ? faqQuestionsRaw : [];
+  const faqs = faqQuestions.map((item: any) => ({
+    question: item.q || '',
+    answer: item.a || ''
   }));
   
   // Form state

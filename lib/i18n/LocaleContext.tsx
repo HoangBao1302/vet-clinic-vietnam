@@ -57,6 +57,7 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
           if (value && typeof value === 'object' && fallbackK in value) {
             value = value[fallbackK];
           } else {
+            console.warn(`Translation key not found: ${key}`);
             return key; // Return key if not found
           }
         }
@@ -65,7 +66,13 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
     }
     
     // Return value as-is (can be string, array, or object)
-    return value !== undefined && value !== null ? value : key;
+    // If value is undefined or null, return the key as fallback
+    if (value === undefined || value === null) {
+      console.warn(`Translation value is undefined for key: ${key}`);
+      return key;
+    }
+    
+    return value;
   };
 
   return (
