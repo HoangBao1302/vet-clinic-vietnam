@@ -213,6 +213,10 @@
     "button": "Mua EA ngay"
   },
   "pricing": {
+    "hero": {
+      "title": "Chọn gói phù hợp với bạn",
+      "subtitle": "Từ bản demo miễn phí đến phiên bản Pro với source code, chúng tôi có giải pháp cho mọi nhu cầu giao dịch"
+    },
     "title": "Bảng Giá EA Forex",
     "subtitle": "Chọn gói phù hợp với nhu cầu giao dịch của bạn",
     "popular": "Phổ biến nhất",
@@ -282,7 +286,8 @@
       }
     },
     "faq": {
-      "title": "Câu Hỏi Thường Gặp",
+      "title": "Câu hỏi thường gặp",
+      "subtitle": "Giải đáp những thắc mắc phổ biến về EA ThebenchmarkTrader",
       "questions": [
         {
           "q": "Chính sách license như thế nào?",
@@ -303,21 +308,58 @@
         {
           "q": "EA hoạt động trên broker nào?",
           "a": "EA hoạt động trên hầu hết các broker hỗ trợ MT4/MT5. Chúng tôi khuyến nghị các broker có spread thấp và execution nhanh như IC Markets, Pepperstone, FXCM."
+        },
+        {
+          "q": "Tôi có thể tùy chỉnh EA không?",
+          "a": "Gói Full: Hỗ trợ tùy chỉnh tham số cơ bản. Gói Pro: Có source code, bạn có thể tùy chỉnh hoàn toàn hoặc nhờ chúng tôi hỗ trợ tùy chỉnh cao cấp."
         }
       ]
     },
     "guide": {
       "title": "Hướng Dẫn Cài Đặt EA",
-      "subtitle": "Xem video hướng dẫn chi tiết trước khi mua",
-      "step1": "Cài Đặt",
-      "step1Desc": "Download và cài đặt EA lên MT4/MT5",
+      "subtitle": "Xem video hướng dẫn chi tiết từng bước cài đặt EA ThebenchmarkTrader trên MT4/MT5, cấu hình tham số và bắt đầu giao dịch",
+      "step1": "Cài Đặt EA",
+      "step1Number": "01",
+      "step1Desc": "Hướng dẫn import và kích hoạt EA trên nền tảng MT4/MT5",
       "step2": "Cấu Hình",
-      "step2Desc": "Thiết lập tham số phù hợp với chiến lược",
+      "step2Number": "02",
+      "step2Desc": "Thiết lập tham số phù hợp với mức vốn và chiến lược của bạn",
       "step3": "Bắt Đầu",
-      "step3Desc": "Kích hoạt EA và bắt đầu giao dịch tự động",
+      "step3Number": "03",
+      "step3Desc": "Kích hoạt EA và theo dõi hiệu suất giao dịch",
       "watchVideo": "Xem Video Hướng Dẫn Cài Đặt",
       "allVideos": "Xem Tất Cả Video Tutorial",
-      "tip": "💡 Mẹo: Xem video hướng dẫn trước khi mua để hiểu rõ cách sử dụng EA"
+      "tip": "💡 Tip: Xem hết video trước khi cài đặt để hiểu rõ quy trình. Nếu cần hỗ trợ, liên hệ qua Telegram Group: t.me/+0ETUdIuYUzdhZWQ1"
+    },
+    "contactForm": {
+      "title": "Đăng ký hoặc đặt mua",
+      "subtitle": "Điền form dưới đây để nhận demo hoặc đặt mua EA ThebenchmarkTrader",
+      "name": "Họ và Tên",
+      "namePlaceholder": "Nhập họ và tên của bạn",
+      "email": "Email",
+      "emailPlaceholder": "Nhập địa chỉ email của bạn",
+      "package": "Gói quan tâm",
+      "packageDemo": "Demo - Miễn phí",
+      "packageFull": "Full Version - 7.9tr",
+      "packagePro": "Pro + Source - 14.9tr",
+      "message": "Tin nhắn",
+      "messagePlaceholder": "Mô tả chi tiết nhu cầu của bạn...",
+      "broker": "Broker",
+      "brokerPlaceholder": "Ví dụ: Tickmill",
+      "accountId": "Account ID",
+      "accountIdPlaceholder": "Ví dụ: 123456",
+      "server": "Server",
+      "serverPlaceholder": "Ví dụ: Tickmill-Live8",
+      "submit": "Gửi yêu cầu",
+      "submitting": "Đang gửi...",
+      "required": "*",
+      "emailInvalid": "Email không đúng định dạng",
+      "emailInvalidDetail": "Email không đúng định dạng. Vui lòng nhập email hợp lệ.",
+      "successMessage": "Cảm ơn bạn! Chúng tôi sẽ liên hệ với bạn trong vòng 24 giờ.",
+      "errorMessage": "Xin lỗi, đã xảy ra lỗi. Vui lòng thử lại hoặc liên hệ trực tiếp qua email.",
+      "demoMessage": "Tôi muốn tải demo EA ThebenchmarkTrader để dùng thử trên tài khoản demo.",
+      "fullMessage": "Tôi quan tâm đến gói Full Version EA ThebenchmarkTrader.",
+      "proMessage": "Tôi quan tâm đến gói Pro + Source Code EA ThebenchmarkTrader."
     }
   },
   "footer": {

@@ -213,6 +213,10 @@
     "button": "Buy EA Now"
   },
   "pricing": {
+    "hero": {
+      "title": "Choose the right plan for you",
+      "subtitle": "From free demo to Pro version with source code, we have solutions for every trading need"
+    },
     "title": "EA Forex Pricing",
     "subtitle": "Choose the plan that fits your trading needs",
     "popular": "Most Popular",
@@ -283,6 +287,7 @@
     },
     "faq": {
       "title": "Frequently Asked Questions",
+      "subtitle": "Answers to common questions about EA ThebenchmarkTrader",
       "questions": [
         {
           "q": "What is the license policy?",
@@ -303,21 +308,58 @@
         {
           "q": "Which brokers does the EA work with?",
           "a": "The EA works with most brokers supporting MT4/MT5. We recommend brokers with low spreads and fast execution like IC Markets, Pepperstone, FXCM."
+        },
+        {
+          "q": "Can I customize the EA?",
+          "a": "Full: Supports basic parameter customization. Pro: Includes source code, you can fully customize or request our advanced customization support."
         }
       ]
     },
     "guide": {
       "title": "EA Installation Guide",
-      "subtitle": "Watch detailed video guide before purchasing",
-      "step1": "Install",
-      "step1Desc": "Download and install EA on MT4/MT5",
+      "subtitle": "Watch detailed step-by-step video guide to install EA ThebenchmarkTrader on MT4/MT5, configure parameters and start trading",
+      "step1": "Install EA",
+      "step1Number": "01",
+      "step1Desc": "Guide to import and activate EA on MT4/MT5 platform",
       "step2": "Configure",
-      "step2Desc": "Set parameters suitable for your strategy",
+      "step2Number": "02",
+      "step2Desc": "Set parameters suitable for your capital and strategy",
       "step3": "Start",
-      "step3Desc": "Activate EA and start automated trading",
+      "step3Number": "03",
+      "step3Desc": "Activate EA and monitor trading performance",
       "watchVideo": "Watch Installation Video Guide",
       "allVideos": "Watch All Video Tutorials",
-      "tip": "💡 Tip: Watch the guide video before purchasing to understand how to use the EA"
+      "tip": "💡 Tip: Watch the full video before installation to understand the process. For support, contact via Telegram Group: t.me/+0ETUdIuYUzdhZWQ1"
+    },
+    "contactForm": {
+      "title": "Register or Place Order",
+      "subtitle": "Fill out the form below to get demo or purchase EA ThebenchmarkTrader",
+      "name": "Full Name",
+      "namePlaceholder": "Enter your full name",
+      "email": "Email",
+      "emailPlaceholder": "Enter your email address",
+      "package": "Package of Interest",
+      "packageDemo": "Demo - Free",
+      "packageFull": "Full Version - $320",
+      "packagePro": "Pro + Source - $600",
+      "message": "Message",
+      "messagePlaceholder": "Describe your needs in detail...",
+      "broker": "Broker",
+      "brokerPlaceholder": "Example: Tickmill",
+      "accountId": "Account ID",
+      "accountIdPlaceholder": "Example: 123456",
+      "server": "Server",
+      "serverPlaceholder": "Example: Tickmill-Live8",
+      "submit": "Send Request",
+      "submitting": "Sending...",
+      "required": "*",
+      "emailInvalid": "Invalid email format",
+      "emailInvalidDetail": "Invalid email format. Please enter a valid email.",
+      "successMessage": "Thank you! We will contact you within 24 hours.",
+      "errorMessage": "Sorry, an error occurred. Please try again or contact us directly via email.",
+      "demoMessage": "I would like to download the demo EA ThebenchmarkTrader to try on a demo account.",
+      "fullMessage": "I am interested in the Full Version package of EA ThebenchmarkTrader.",
+      "proMessage": "I am interested in the Pro + Source Code package of EA ThebenchmarkTrader."
     }
   },
   "footer": {
