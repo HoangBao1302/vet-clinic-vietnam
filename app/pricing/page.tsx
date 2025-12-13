@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 import StickyCallToAction from "@/components/StickyCallToAction";
 import { Check, Download, ShoppingCart, Star, ChevronDown, ChevronUp, Send, Youtube, PlayCircle, Video, AlertCircle } from "lucide-react";
 import HoneypotField from "@/components/HoneypotField";
-import { useLocale } from "@/contexts/LocaleContext";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 
 export default function PricingPage() {
   const { t } = useLocale();

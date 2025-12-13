@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 import StickyCallToAction from "@/components/StickyCallToAction";
 import Image from "next/image";
 import { TrendingUp, Shield, Brain, AlertTriangle, Clock, Target, BarChart3, Settings, Youtube, PlayCircle } from "lucide-react";
-import { useLocale } from "@/contexts/LocaleContext";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 
 export default function AboutPage() {
   const { t } = useLocale();
