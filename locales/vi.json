@@ -362,6 +362,103 @@
       "proMessage": "Tôi quan tâm đến gói Pro + Source Code EA ThebenchmarkTrader."
     }
   },
+  "about": {
+    "hero": {
+      "title": "Về EA Forex ThebenchmarkTrader",
+      "subtitle": "Expert Advisor được thiết kế với triết lý minh bạch, quản trị rủi ro khoa học và hiệu suất được chứng minh qua backtest dài hạn.",
+      "badge1": "Đa chiến lược",
+      "badge2": "Quản trị rủi ro",
+      "badge3": "Minh bạch"
+    },
+    "strategy": {
+      "title": "Chiến lược giao dịch chi tiết",
+      "subtitle": "EA ThebenchmarkTrader sử dụng kết hợp nhiều chiến lược được tối ưu hóa để thích ứng với mọi điều kiện thị trường",
+      "trendFollowing": {
+        "title": "Trend Following",
+        "desc": "Sử dụng Moving Average (20, 50, 200), MACD và ADX để xác định xu hướng mạnh. Vào lệnh theo hướng trend với stop loss dưới/trên support/resistance gần nhất."
+      },
+      "rangeTrading": {
+        "title": "Range Trading",
+        "desc": "Khi thị trường sideway, EA sử dụng Bollinger Bands và RSI để giao dịch trong khoảng. Mua ở support, bán ở resistance với RR tối thiểu 1:1.5."
+      },
+      "marketCondition": {
+        "title": "Market Condition Filter",
+        "desc": "Phân tích volatility (ATR), spread hiện tại và thời gian giao dịch. Tự động tạm dừng khi điều kiện bất lợi (spread cao, volatility thấp)."
+      },
+      "riskManagement": {
+        "title": "Risk Management",
+        "desc": "Risk cố định 1-2% mỗi lệnh, position sizing theo volatility. Stop loss luôn được đặt trước, trailing stop khi lợi nhuận > 1.5R."
+      },
+      "timeNews": {
+        "title": "Time & News Filter",
+        "desc": "Chỉ giao dịch trong khung giờ thanh khoản cao (London + NY session). Tự động đóng lệnh trước news quan trọng (NFP, FOMC, CPI)."
+      },
+      "adaptive": {
+        "title": "Adaptive Parameters",
+        "desc": "Tham số EA tự điều chỉnh theo volatility thị trường. Stop loss và take profit được tính toán động dựa trên ATR."
+      }
+    },
+    "backtest": {
+      "title": "Lưu ý về Backtest",
+      "dataTitle": "Dữ liệu sử dụng",
+      "dataDesc": "Backtest trên dữ liệu tick thực tế từ Dukascopy, EURUSD H1 từ 01/2020 đến 12/2024 (5 năm).",
+      "spreadTitle": "Spread & Commission",
+      "spreadDesc": "Tính toán với spread trung bình 1.2 pips và commission $7/lot, phản ánh điều kiện giao dịch thực tế.",
+      "slippageTitle": "Slippage",
+      "slippageDesc": "Mô phỏng slippage trung bình 0.5 pips, đặc biệt trong khung giờ thanh khoản thấp và khi có news.",
+      "videoTitle": "Xem Video Backtest Chi Tiết",
+      "videoDesc": "Xem toàn bộ quá trình backtest và phân tích kết quả chi tiết trên YouTube",
+      "watchVideo": "Xem Video Backtest",
+      "moreVideos": "Xem Thêm Video"
+    },
+    "recommendations": {
+      "title": "Khuyến nghị sử dụng",
+      "currencyTitle": "Cặp tiền tệ",
+      "currencyOptimal": "Tối ưu:",
+      "currencyOptimalList": "EURUSD, GBPUSD, USDJPY",
+      "currencySuitable": "Phù hợp:",
+      "currencySuitableList": "AUDUSD, USDCAD, NZDUSD",
+      "timeframeTitle": "Timeframe",
+      "timeframeDesc": "H1 (khuyến nghị chính), M30 và H4 cũng cho kết quả tốt. Không khuyến nghị dưới M15.",
+      "capitalTitle": "Vốn tối thiểu",
+      "capitalDesc": "$1000 cho micro lot (0.01), $10,000 cho mini lot (0.1). Risk 1-2% mỗi lệnh."
+    },
+    "riskWarning": {
+      "title": "Cảnh báo rủi ro quan trọng",
+      "subtitle": "Giao dịch Forex và CFD có rủi ro cao và có thể không phù hợp với tất cả nhà đầu tư.",
+      "financialTitle": "Rủi ro tài chính",
+      "financial1": "Bạn có thể mất toàn bộ số vốn đầu tư",
+      "financial2": "Kết quả trong quá khứ không đảm bảo kết quả tương lai",
+      "financial3": "Đòn bẩy có thể làm tăng cả lợi nhuận và tổn thất",
+      "financial4": "Thị trường có thể biến động bất thường",
+      "safetyTitle": "Khuyến nghị an toàn",
+      "safety1": "Chỉ đầu tư số tiền bạn có thể chấp nhận mất",
+      "safety2": "Luôn test trên demo trước khi chạy live",
+      "safety3": "Theo dõi EA thường xuyên, đặc biệt tuần đầu",
+      "safety4": "Tham khảo ý kiến chuyên gia tài chính",
+      "disclaimer": "EA ThebenchmarkTrader là công cụ hỗ trợ giao dịch, không phải lời khuyên đầu tư. Chúng tôi không chịu trách nhiệm về tổn thất phát sinh từ việc sử dụng EA. Hãy luôn thận trọng và quản lý rủi ro hợp lý.",
+      "disclaimerTitle": "Tuyên bố miễn trừ trách nhiệm:"
+    },
+    "technical": {
+      "title": "Thông số kỹ thuật",
+      "subtitle": "Chi tiết kỹ thuật và yêu cầu hệ thống",
+      "platformTitle": "Nền tảng hỗ trợ",
+      "platform1": "MetaTrader 4 (build 1355+)",
+      "platform2": "MetaTrader 5 (build 3200+)",
+      "platform3": "Windows VPS khuyến nghị",
+      "platform4": "Kết nối internet ổn định",
+      "brokerTitle": "Yêu cầu broker",
+      "broker1": "Spread thấp (< 2 pips EURUSD)",
+      "broker2": "Execution nhanh (< 100ms)",
+      "broker3": "Cho phép EA/Expert Advisor",
+      "broker4": "Không cấm scalping",
+      "parametersTitle": "Tham số chính",
+      "parameters1": "Risk per trade: 1-2%",
+      "parameters2": "Max open positions: 3",
+      "parameters3": "Min R:R ratio: 1:1.5",
+      "parameters4": "Max spread: 3 pips"
+    }
+  },
   "footer": {
     "description": "Expert Advisor đa chiến lược với quản trị rủi ro khoa học. Tự động hóa giao dịch Forex hiệu quả và minh bạch.",
     "quickLinks": "Liên Kết Nhanh",

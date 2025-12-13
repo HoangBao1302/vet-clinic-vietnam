@@ -362,6 +362,103 @@
       "proMessage": "I am interested in the Pro + Source Code package of EA ThebenchmarkTrader."
     }
   },
+  "about": {
+    "hero": {
+      "title": "About EA Forex ThebenchmarkTrader",
+      "subtitle": "Expert Advisor designed with transparent philosophy, scientific risk management and proven performance through long-term backtesting.",
+      "badge1": "Multi-Strategy",
+      "badge2": "Risk Management",
+      "badge3": "Transparent"
+    },
+    "strategy": {
+      "title": "Detailed Trading Strategy",
+      "subtitle": "EA ThebenchmarkTrader uses a combination of optimized strategies to adapt to all market conditions",
+      "trendFollowing": {
+        "title": "Trend Following",
+        "desc": "Uses Moving Average (20, 50, 200), MACD and ADX to identify strong trends. Enters positions in trend direction with stop loss below/above nearest support/resistance."
+      },
+      "rangeTrading": {
+        "title": "Range Trading",
+        "desc": "When market is sideways, EA uses Bollinger Bands and RSI to trade within range. Buys at support, sells at resistance with minimum RR of 1:1.5."
+      },
+      "marketCondition": {
+        "title": "Market Condition Filter",
+        "desc": "Analyzes volatility (ATR), current spread and trading time. Automatically pauses during unfavorable conditions (high spread, low volatility)."
+      },
+      "riskManagement": {
+        "title": "Risk Management",
+        "desc": "Fixed 1-2% risk per trade, position sizing based on volatility. Stop loss always set beforehand, trailing stop when profit > 1.5R."
+      },
+      "timeNews": {
+        "title": "Time & News Filter",
+        "desc": "Only trades during high liquidity hours (London + NY session). Automatically closes positions before major news (NFP, FOMC, CPI)."
+      },
+      "adaptive": {
+        "title": "Adaptive Parameters",
+        "desc": "EA parameters auto-adjust to market volatility. Stop loss and take profit calculated dynamically based on ATR."
+      }
+    },
+    "backtest": {
+      "title": "Backtest Notes",
+      "dataTitle": "Data Used",
+      "dataDesc": "Backtest on real tick data from Dukascopy, EURUSD H1 from 01/2020 to 12/2024 (5 years).",
+      "spreadTitle": "Spread & Commission",
+      "spreadDesc": "Calculated with average spread of 1.2 pips and commission $7/lot, reflecting real trading conditions.",
+      "slippageTitle": "Slippage",
+      "slippageDesc": "Simulates average slippage of 0.5 pips, especially during low liquidity hours and during news.",
+      "videoTitle": "Watch Detailed Backtest Video",
+      "videoDesc": "Watch the complete backtesting process and detailed result analysis on YouTube",
+      "watchVideo": "Watch Backtest Video",
+      "moreVideos": "Watch More Videos"
+    },
+    "recommendations": {
+      "title": "Usage Recommendations",
+      "currencyTitle": "Currency Pairs",
+      "currencyOptimal": "Optimal:",
+      "currencyOptimalList": "EURUSD, GBPUSD, USDJPY",
+      "currencySuitable": "Suitable:",
+      "currencySuitableList": "AUDUSD, USDCAD, NZDUSD",
+      "timeframeTitle": "Timeframe",
+      "timeframeDesc": "H1 (main recommendation), M30 and H4 also produce good results. Not recommended below M15.",
+      "capitalTitle": "Minimum Capital",
+      "capitalDesc": "$1000 for micro lot (0.01), $10,000 for mini lot (0.1). Risk 1-2% per trade."
+    },
+    "riskWarning": {
+      "title": "Important Risk Warning",
+      "subtitle": "Forex and CFD trading carries high risk and may not be suitable for all investors.",
+      "financialTitle": "Financial Risks",
+      "financial1": "You may lose your entire investment capital",
+      "financial2": "Past performance does not guarantee future results",
+      "financial3": "Leverage can increase both profits and losses",
+      "financial4": "Market can be abnormally volatile",
+      "safetyTitle": "Safety Recommendations",
+      "safety1": "Only invest money you can afford to lose",
+      "safety2": "Always test on demo before running live",
+      "safety3": "Monitor EA regularly, especially the first week",
+      "safety4": "Seek advice from financial experts",
+      "disclaimer": "EA ThebenchmarkTrader is a trading support tool, not investment advice. We are not responsible for losses arising from using the EA. Always be cautious and manage risk responsibly.",
+      "disclaimerTitle": "Disclaimer:"
+    },
+    "technical": {
+      "title": "Technical Specifications",
+      "subtitle": "Technical details and system requirements",
+      "platformTitle": "Supported Platforms",
+      "platform1": "MetaTrader 4 (build 1355+)",
+      "platform2": "MetaTrader 5 (build 3200+)",
+      "platform3": "Windows VPS recommended",
+      "platform4": "Stable internet connection",
+      "brokerTitle": "Broker Requirements",
+      "broker1": "Low spread (< 2 pips EURUSD)",
+      "broker2": "Fast execution (< 100ms)",
+      "broker3": "Allows EA/Expert Advisor",
+      "broker4": "No scalping restrictions",
+      "parametersTitle": "Main Parameters",
+      "parameters1": "Risk per trade: 1-2%",
+      "parameters2": "Max open positions: 3",
+      "parameters3": "Min R:R ratio: 1:1.5",
+      "parameters4": "Max spread: 3 pips"
+    }
+  },
   "footer": {
     "description": "Multi-strategy Expert Advisor with scientific risk management. Efficient and transparent Forex trading automation.",
     "quickLinks": "Quick Links",

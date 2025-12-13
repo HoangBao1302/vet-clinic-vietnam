@@ -5,8 +5,10 @@ import Footer from "@/components/Footer";
 import StickyCallToAction from "@/components/StickyCallToAction";
 import Image from "next/image";
 import { TrendingUp, Shield, Brain, AlertTriangle, Clock, Target, BarChart3, Settings, Youtube, PlayCircle } from "lucide-react";
+import { useLocale } from "@/contexts/LocaleContext";
 
 export default function AboutPage() {
+  const { t } = useLocale();
   return (
     <div className="min-h-screen">
       <Header />
@@ -18,24 +20,23 @@ export default function AboutPage() {
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div>
                 <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6">
-                  Về EA Forex ThebenchmarkTrader
+                  {t('about.hero.title')}
                 </h1>
                 <p className="text-xl text-gray-600 mb-8">
-                  Expert Advisor được thiết kế với triết lý minh bạch, quản trị rủi ro khoa học 
-                  và hiệu suất được chứng minh qua backtest dài hạn.
+                  {t('about.hero.subtitle')}
                 </p>
                 <div className="flex flex-wrap gap-4">
                   <div className="flex items-center space-x-2 bg-white px-4 py-2 rounded-lg shadow-sm">
                     <TrendingUp size={20} className="text-blue-600" />
-                    <span className="font-medium">Đa chiến lược</span>
+                    <span className="font-medium">{t('about.hero.badge1')}</span>
                   </div>
                   <div className="flex items-center space-x-2 bg-white px-4 py-2 rounded-lg shadow-sm">
                     <Shield size={20} className="text-green-600" />
-                    <span className="font-medium">Quản trị rủi ro</span>
+                    <span className="font-medium">{t('about.hero.badge2')}</span>
                   </div>
                   <div className="flex items-center space-x-2 bg-white px-4 py-2 rounded-lg shadow-sm">
                     <BarChart3 size={20} className="text-purple-600" />
-                    <span className="font-medium">Minh bạch</span>
+                    <span className="font-medium">{t('about.hero.badge3')}</span>
                   </div>
                 </div>
               </div>
@@ -58,11 +59,10 @@ export default function AboutPage() {
           <div className="container-custom">
             <div className="text-center mb-16">
               <h2 className="text-3xl font-bold text-gray-800 mb-4">
-                Chiến lược giao dịch chi tiết
+                {t('about.strategy.title')}
               </h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                EA ThebenchmarkTrader sử dụng kết hợp nhiều chiến lược được tối ưu hóa 
-                để thích ứng với mọi điều kiện thị trường
+                {t('about.strategy.subtitle')}
               </p>
             </div>
 
@@ -73,10 +73,9 @@ export default function AboutPage() {
                     <TrendingUp className="w-6 h-6 text-blue-600" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-gray-800 mb-2">Trend Following</h3>
+                    <h3 className="text-xl font-bold text-gray-800 mb-2">{t('about.strategy.trendFollowing.title')}</h3>
                     <p className="text-gray-600">
-                      Sử dụng Moving Average (20, 50, 200), MACD và ADX để xác định xu hướng mạnh. 
-                      Vào lệnh theo hướng trend với stop loss dưới/trên support/resistance gần nhất.
+                      {t('about.strategy.trendFollowing.desc')}
                     </p>
                   </div>
                 </div>
@@ -86,10 +85,9 @@ export default function AboutPage() {
                     <Target className="w-6 h-6 text-green-600" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-gray-800 mb-2">Range Trading</h3>
+                    <h3 className="text-xl font-bold text-gray-800 mb-2">{t('about.strategy.rangeTrading.title')}</h3>
                     <p className="text-gray-600">
-                      Khi thị trường sideway, EA sử dụng Bollinger Bands và RSI để giao dịch 
-                      trong khoảng. Mua ở support, bán ở resistance với RR tối thiểu 1:1.5.
+                      {t('about.strategy.rangeTrading.desc')}
                     </p>
                   </div>
                 </div>
@@ -99,10 +97,9 @@ export default function AboutPage() {
                     <Brain className="w-6 h-6 text-purple-600" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-gray-800 mb-2">Market Condition Filter</h3>
+                    <h3 className="text-xl font-bold text-gray-800 mb-2">{t('about.strategy.marketCondition.title')}</h3>
                     <p className="text-gray-600">
-                      Phân tích volatility (ATR), spread hiện tại và thời gian giao dịch. 
-                      Tự động tạm dừng khi điều kiện bất lợi (spread cao, volatility thấp).
+                      {t('about.strategy.marketCondition.desc')}
                     </p>
                   </div>
                 </div>
@@ -114,10 +111,9 @@ export default function AboutPage() {
                     <Shield className="w-6 h-6 text-orange-600" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-gray-800 mb-2">Risk Management</h3>
+                    <h3 className="text-xl font-bold text-gray-800 mb-2">{t('about.strategy.riskManagement.title')}</h3>
                     <p className="text-gray-600">
-                      Risk cố định 1-2% mỗi lệnh, position sizing theo volatility. 
-                      Stop loss luôn được đặt trước, trailing stop khi lợi nhuận &gt; 1.5R.
+                      {t('about.strategy.riskManagement.desc')}
                     </p>
                   </div>
                 </div>
@@ -127,10 +123,9 @@ export default function AboutPage() {
                     <Clock className="w-6 h-6 text-red-600" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-gray-800 mb-2">Time & News Filter</h3>
+                    <h3 className="text-xl font-bold text-gray-800 mb-2">{t('about.strategy.timeNews.title')}</h3>
                     <p className="text-gray-600">
-                      Chỉ giao dịch trong khung giờ thanh khoản cao (London + NY session). 
-                      Tự động đóng lệnh trước news quan trọng (NFP, FOMC, CPI).
+                      {t('about.strategy.timeNews.desc')}
                     </p>
                   </div>
                 </div>
@@ -140,10 +135,9 @@ export default function AboutPage() {
                     <Settings className="w-6 h-6 text-indigo-600" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-gray-800 mb-2">Adaptive Parameters</h3>
+                    <h3 className="text-xl font-bold text-gray-800 mb-2">{t('about.strategy.adaptive.title')}</h3>
                     <p className="text-gray-600">
-                      Tham số EA tự điều chỉnh theo volatility thị trường. 
-                      Stop loss và take profit được tính toán động dựa trên ATR.
+                      {t('about.strategy.adaptive.desc')}
                     </p>
                   </div>
                 </div>
@@ -158,30 +152,27 @@ export default function AboutPage() {
             <div className="grid lg:grid-cols-2 gap-12">
               <div>
                 <h2 className="text-3xl font-bold text-gray-800 mb-6">
-                  Lưu ý về Backtest
+                  {t('about.backtest.title')}
                 </h2>
                 <div className="space-y-6">
                   <div className="bg-white p-6 rounded-lg shadow-sm">
-                    <h3 className="font-semibold text-gray-800 mb-3">Dữ liệu sử dụng</h3>
+                    <h3 className="font-semibold text-gray-800 mb-3">{t('about.backtest.dataTitle')}</h3>
                     <p className="text-gray-600">
-                      Backtest trên dữ liệu tick thực tế từ Dukascopy, 
-                      EURUSD H1 từ 01/2020 đến 12/2024 (5 năm).
+                      {t('about.backtest.dataDesc')}
                     </p>
                   </div>
                   
                   <div className="bg-white p-6 rounded-lg shadow-sm">
-                    <h3 className="font-semibold text-gray-800 mb-3">Spread & Commission</h3>
+                    <h3 className="font-semibold text-gray-800 mb-3">{t('about.backtest.spreadTitle')}</h3>
                     <p className="text-gray-600">
-                      Tính toán với spread trung bình 1.2 pips và commission $7/lot, 
-                      phản ánh điều kiện giao dịch thực tế.
+                      {t('about.backtest.spreadDesc')}
                     </p>
                   </div>
                   
                   <div className="bg-white p-6 rounded-lg shadow-sm">
-                    <h3 className="font-semibold text-gray-800 mb-3">Slippage</h3>
+                    <h3 className="font-semibold text-gray-800 mb-3">{t('about.backtest.slippageTitle')}</h3>
                     <p className="text-gray-600">
-                      Mô phỏng slippage trung bình 0.5 pips, đặc biệt trong 
-                      khung giờ thanh khoản thấp và khi có news.
+                      {t('about.backtest.slippageDesc')}
                     </p>
                   </div>
                 </div>
@@ -191,10 +182,10 @@ export default function AboutPage() {
                   <div className="text-center mb-6">
                     <Youtube className="inline-block text-red-600 mb-4" size={48} />
                     <h3 className="text-2xl font-bold text-gray-800 mb-2">
-                      Xem Video Backtest Chi Tiết
+                      {t('about.backtest.videoTitle')}
                     </h3>
                     <p className="text-gray-600">
-                      Xem toàn bộ quá trình backtest và phân tích kết quả chi tiết trên YouTube
+                      {t('about.backtest.videoDesc')}
                     </p>
                   </div>
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -205,7 +196,7 @@ export default function AboutPage() {
                       className="inline-flex items-center justify-center space-x-2 px-6 py-3 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors"
                     >
                       <Youtube size={20} />
-                      <span>Xem Video Backtest</span>
+                      <span>{t('about.backtest.watchVideo')}</span>
                     </a>
                     <a
                       href="https://www.youtube.com/@ThebenchmarkTraderEA/playlists"
@@ -214,7 +205,7 @@ export default function AboutPage() {
                       className="inline-flex items-center justify-center space-x-2 px-6 py-3 bg-white border-2 border-blue-600 text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-colors"
                     >
                       <PlayCircle size={20} />
-                      <span>Xem Thêm Video</span>
+                      <span>{t('about.backtest.moreVideos')}</span>
                     </a>
                   </div>
                 </div>
@@ -222,32 +213,30 @@ export default function AboutPage() {
 
               <div>
                 <h2 className="text-3xl font-bold text-gray-800 mb-6">
-                  Khuyến nghị sử dụng
+                  {t('about.recommendations.title')}
                 </h2>
                 <div className="space-y-6">
                   <div className="bg-white p-6 rounded-lg shadow-sm">
-                    <h3 className="font-semibold text-gray-800 mb-3">Cặp tiền tệ</h3>
+                    <h3 className="font-semibold text-gray-800 mb-3">{t('about.recommendations.currencyTitle')}</h3>
                     <p className="text-gray-600 mb-2">
-                      <strong>Tối ưu:</strong> EURUSD, GBPUSD, USDJPY
+                      <strong>{t('about.recommendations.currencyOptimal')}</strong> {t('about.recommendations.currencyOptimalList')}
                     </p>
                     <p className="text-gray-600">
-                      <strong>Phù hợp:</strong> AUDUSD, USDCAD, NZDUSD
-                    </p>
-                  </div>
-                  
-                  <div className="bg-white p-6 rounded-lg shadow-sm">
-                    <h3 className="font-semibold text-gray-800 mb-3">Timeframe</h3>
-                    <p className="text-gray-600">
-                      H1 (khuyến nghị chính), M30 và H4 cũng cho kết quả tốt. 
-                      Không khuyến nghị dưới M15.
+                      <strong>{t('about.recommendations.currencySuitable')}</strong> {t('about.recommendations.currencySuitableList')}
                     </p>
                   </div>
                   
                   <div className="bg-white p-6 rounded-lg shadow-sm">
-                    <h3 className="font-semibold text-gray-800 mb-3">Vốn tối thiểu</h3>
+                    <h3 className="font-semibold text-gray-800 mb-3">{t('about.recommendations.timeframeTitle')}</h3>
                     <p className="text-gray-600">
-                      $1000 cho micro lot (0.01), $10,000 cho mini lot (0.1). 
-                      Risk 1-2% mỗi lệnh.
+                      {t('about.recommendations.timeframeDesc')}
+                    </p>
+                  </div>
+                  
+                  <div className="bg-white p-6 rounded-lg shadow-sm">
+                    <h3 className="font-semibold text-gray-800 mb-3">{t('about.recommendations.capitalTitle')}</h3>
+                    <p className="text-gray-600">
+                      {t('about.recommendations.capitalDesc')}
                     </p>
                   </div>
                 </div>
@@ -264,42 +253,40 @@ export default function AboutPage() {
                 <AlertTriangle className="text-red-600 mt-1 flex-shrink-0" size={32} />
                 <div>
                   <h2 className="text-3xl font-bold text-red-800 mb-4">
-                    Cảnh báo rủi ro quan trọng
+                    {t('about.riskWarning.title')}
                   </h2>
                   <p className="text-lg text-red-700 mb-6">
-                    Giao dịch Forex và CFD có rủi ro cao và có thể không phù hợp với tất cả nhà đầu tư.
+                    {t('about.riskWarning.subtitle')}
                   </p>
                 </div>
               </div>
 
               <div className="grid md:grid-cols-2 gap-8">
                 <div className="bg-white p-6 rounded-lg border border-red-200">
-                  <h3 className="font-semibold text-red-800 mb-3">Rủi ro tài chính</h3>
+                  <h3 className="font-semibold text-red-800 mb-3">{t('about.riskWarning.financialTitle')}</h3>
                   <ul className="text-red-700 space-y-2 text-sm">
-                    <li>• Bạn có thể mất toàn bộ số vốn đầu tư</li>
-                    <li>• Kết quả trong quá khứ không đảm bảo kết quả tương lai</li>
-                    <li>• Đòn bẩy có thể làm tăng cả lợi nhuận và tổn thất</li>
-                    <li>• Thị trường có thể biến động bất thường</li>
+                    <li>• {t('about.riskWarning.financial1')}</li>
+                    <li>• {t('about.riskWarning.financial2')}</li>
+                    <li>• {t('about.riskWarning.financial3')}</li>
+                    <li>• {t('about.riskWarning.financial4')}</li>
                   </ul>
                 </div>
 
                 <div className="bg-white p-6 rounded-lg border border-red-200">
-                  <h3 className="font-semibold text-red-800 mb-3">Khuyến nghị an toàn</h3>
+                  <h3 className="font-semibold text-red-800 mb-3">{t('about.riskWarning.safetyTitle')}</h3>
                   <ul className="text-red-700 space-y-2 text-sm">
-                    <li>• Chỉ đầu tư số tiền bạn có thể chấp nhận mất</li>
-                    <li>• Luôn test trên demo trước khi chạy live</li>
-                    <li>• Theo dõi EA thường xuyên, đặc biệt tuần đầu</li>
-                    <li>• Tham khảo ý kiến chuyên gia tài chính</li>
+                    <li>• {t('about.riskWarning.safety1')}</li>
+                    <li>• {t('about.riskWarning.safety2')}</li>
+                    <li>• {t('about.riskWarning.safety3')}</li>
+                    <li>• {t('about.riskWarning.safety4')}</li>
                   </ul>
                 </div>
               </div>
 
               <div className="mt-8 p-6 bg-white rounded-lg border border-red-200">
                 <p className="text-red-700 text-sm">
-                  <strong>Tuyên bố miễn trừ trách nhiệm:</strong> 
-                  EA ThebenchmarkTrader là công cụ hỗ trợ giao dịch, không phải lời khuyên đầu tư. 
-                  Chúng tôi không chịu trách nhiệm về tổn thất phát sinh từ việc sử dụng EA. 
-                  Hãy luôn thận trọng và quản lý rủi ro hợp lý.
+                  <strong>{t('about.riskWarning.disclaimerTitle')}</strong> 
+                  {' '}{t('about.riskWarning.disclaimer')}
                 </p>
               </div>
             </div>
@@ -311,41 +298,41 @@ export default function AboutPage() {
           <div className="container-custom">
             <div className="text-center mb-16">
               <h2 className="text-3xl font-bold text-gray-800 mb-4">
-                Thông số kỹ thuật
+                {t('about.technical.title')}
               </h2>
               <p className="text-lg text-gray-600">
-                Chi tiết kỹ thuật và yêu cầu hệ thống
+                {t('about.technical.subtitle')}
               </p>
             </div>
 
             <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
               <div className="bg-gray-50 p-6 rounded-lg">
-                <h3 className="font-semibold text-gray-800 mb-4">Nền tảng hỗ trợ</h3>
+                <h3 className="font-semibold text-gray-800 mb-4">{t('about.technical.platformTitle')}</h3>
                 <ul className="text-gray-600 space-y-2">
-                  <li>• MetaTrader 4 (build 1355+)</li>
-                  <li>• MetaTrader 5 (build 3200+)</li>
-                  <li>• Windows VPS khuyến nghị</li>
-                  <li>• Kết nối internet ổn định</li>
+                  <li>• {t('about.technical.platform1')}</li>
+                  <li>• {t('about.technical.platform2')}</li>
+                  <li>• {t('about.technical.platform3')}</li>
+                  <li>• {t('about.technical.platform4')}</li>
                 </ul>
               </div>
 
               <div className="bg-gray-50 p-6 rounded-lg">
-                <h3 className="font-semibold text-gray-800 mb-4">Yêu cầu broker</h3>
+                <h3 className="font-semibold text-gray-800 mb-4">{t('about.technical.brokerTitle')}</h3>
                 <ul className="text-gray-600 space-y-2">
-                  <li>• Spread thấp (&lt; 2 pips EURUSD)</li>
-                  <li>• Execution nhanh (&lt; 100ms)</li>
-                  <li>• Cho phép EA/Expert Advisor</li>
-                  <li>• Không cấm scalping</li>
+                  <li>• {t('about.technical.broker1')}</li>
+                  <li>• {t('about.technical.broker2')}</li>
+                  <li>• {t('about.technical.broker3')}</li>
+                  <li>• {t('about.technical.broker4')}</li>
                 </ul>
               </div>
 
               <div className="bg-gray-50 p-6 rounded-lg">
-                <h3 className="font-semibold text-gray-800 mb-4">Tham số chính</h3>
+                <h3 className="font-semibold text-gray-800 mb-4">{t('about.technical.parametersTitle')}</h3>
                 <ul className="text-gray-600 space-y-2">
-                  <li>• Risk per trade: 1-2%</li>
-                  <li>• Max open positions: 3</li>
-                  <li>• Min R:R ratio: 1:1.5</li>
-                  <li>• Max spread: 3 pips</li>
+                  <li>• {t('about.technical.parameters1')}</li>
+                  <li>• {t('about.technical.parameters2')}</li>
+                  <li>• {t('about.technical.parameters3')}</li>
+                  <li>• {t('about.technical.parameters4')}</li>
                 </ul>
               </div>
             </div>
