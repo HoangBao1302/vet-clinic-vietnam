@@ -9,7 +9,7 @@ type Locale = 'vi' | 'en';
 interface LocaleContextType {
   locale: Locale;
   setLocale: (locale: Locale) => void;
-  t: (key: string) => string;
+  t: (key: string) => any;
   translations: Record<string, any>;
 }
 
@@ -42,7 +42,8 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
   };
 
   // Translation function with nested key support (e.g., "nav.home")
-  const t = (key: string): string => {
+  // Returns string, array, or object depending on the translation value
+  const t = (key: string): any => {
     const keys = key.split('.');
     let value: any = translations[locale];
     
@@ -63,7 +64,8 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
       }
     }
     
-    return typeof value === 'string' ? value : key;
+    // Return value as-is (can be string, array, or object)
+    return value !== undefined && value !== null ? value : key;
   };
 
   return (
