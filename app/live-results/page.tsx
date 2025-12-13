@@ -6,8 +6,10 @@ import StickyCallToAction from "@/components/StickyCallToAction";
 import { ExternalLink, TrendingUp, Shield, Users, BarChart3, Youtube, Copy, CheckCircle, AlertCircle } from "lucide-react";
 import { tradingAccounts } from "@/data/tradingAccounts";
 import type { TradingAccount } from "@/data/tradingAccounts";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 
 export default function LiveResultsPage() {
+  const { t } = useLocale();
   // Filter only active trading accounts
   const activeAccounts = tradingAccounts.filter(a => a.active).sort((a, b) => a.order - b.order);
 
@@ -22,27 +24,26 @@ export default function LiveResultsPage() {
             <div className="max-w-4xl mx-auto text-center">
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-700/50 rounded-full text-sm font-medium mb-6">
                 <CheckCircle size={16} />
-                <span>100% Verified Real Money Accounts</span>
+                <span>{t('liveResults.hero.badge')}</span>
               </div>
               <h1 className="text-4xl md:text-6xl font-bold mb-6">
-                Kết Quả Giao Dịch Thực Tế
+                {t('liveResults.hero.title')}
               </h1>
               <p className="text-xl text-green-100 leading-relaxed mb-8">
-                Tất cả tài khoản đều là <strong>real money</strong>, được verify bởi các nền tảng uy tín 
-                như MQL5, Myfxbook, và tracking công khai 24/7. Không photoshop, không demo, không fake.
+                {t('liveResults.hero.subtitle')}
               </p>
               <div className="flex flex-wrap gap-4 justify-center">
                 <div className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full">
-                  <div className="text-sm text-green-200">Tổng lợi nhuận</div>
-                  <div className="text-2xl font-bold">+1,000%+</div>
+                  <div className="text-sm text-green-200">{t('liveResults.hero.totalProfit')}</div>
+                  <div className="text-2xl font-bold">{t('liveResults.hero.totalProfitValue')}</div>
                 </div>
                 <div className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full">
-                  <div className="text-sm text-green-200">Verified accounts</div>
+                  <div className="text-sm text-green-200">{t('liveResults.hero.verifiedAccounts')}</div>
                   <div className="text-2xl font-bold">{activeAccounts.length}+</div>
                 </div>
                 <div className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full">
-                  <div className="text-sm text-green-200">Followers/Copiers</div>
-                  <div className="text-2xl font-bold">80+</div>
+                  <div className="text-sm text-green-200">{t('liveResults.hero.followersLabel')}</div>
+                  <div className="text-2xl font-bold">{t('liveResults.hero.followersValue')}</div>
                 </div>
               </div>
             </div>
@@ -55,23 +56,23 @@ export default function LiveResultsPage() {
             <div className="grid md:grid-cols-4 gap-6 max-w-5xl mx-auto">
               <div className="text-center">
                 <Shield className="w-12 h-12 text-green-600 mx-auto mb-3" />
-                <h3 className="font-semibold text-gray-800 mb-1">100% Verified</h3>
-                <p className="text-sm text-gray-600">Tất cả tài khoản đều verified bởi platform</p>
+                <h3 className="font-semibold text-gray-800 mb-1">{t('liveResults.whyTrust.verified')}</h3>
+                <p className="text-sm text-gray-600">{t('liveResults.whyTrust.verifiedDesc')}</p>
               </div>
               <div className="text-center">
                 <BarChart3 className="w-12 h-12 text-blue-600 mx-auto mb-3" />
-                <h3 className="font-semibold text-gray-800 mb-1">Real-Time</h3>
-                <p className="text-sm text-gray-600">Tracking 24/7, cập nhật mỗi giao dịch</p>
+                <h3 className="font-semibold text-gray-800 mb-1">{t('liveResults.whyTrust.realtime')}</h3>
+                <p className="text-sm text-gray-600">{t('liveResults.whyTrust.realtimeDesc')}</p>
               </div>
               <div className="text-center">
                 <TrendingUp className="w-12 h-12 text-purple-600 mx-auto mb-3" />
-                <h3 className="font-semibold text-gray-800 mb-1">Live Data</h3>
-                <p className="text-sm text-gray-600">Click vào link để xem live stats</p>
+                <h3 className="font-semibold text-gray-800 mb-1">{t('liveResults.whyTrust.liveData')}</h3>
+                <p className="text-sm text-gray-600">{t('liveResults.whyTrust.liveDataDesc')}</p>
               </div>
               <div className="text-center">
                 <Users className="w-12 h-12 text-orange-600 mx-auto mb-3" />
-                <h3 className="font-semibold text-gray-800 mb-1">Copy Trading</h3>
-                <p className="text-sm text-gray-600">Copy trực tiếp, không cần mua EA</p>
+                <h3 className="font-semibold text-gray-800 mb-1">{t('liveResults.whyTrust.copyTrading')}</h3>
+                <p className="text-sm text-gray-600">{t('liveResults.whyTrust.copyTradingDesc')}</p>
               </div>
             </div>
           </div>
@@ -82,11 +83,10 @@ export default function LiveResultsPage() {
           <div className="container-custom">
             <div className="text-center mb-16">
               <h2 className="text-3xl font-bold text-gray-800 mb-4">
-                Tài Khoản Giao Dịch Thực Tế
+                {t('liveResults.accounts.title')}
               </h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                Tất cả tài khoản dưới đây đều là real money, verified và có thể tracking công khai. 
-                Click vào link để xem chi tiết và lịch sử giao dịch đầy đủ.
+                {t('liveResults.accounts.subtitle')}
               </p>
             </div>
 
@@ -105,21 +105,21 @@ export default function LiveResultsPage() {
                           {account.verified && (
                             <span className="flex items-center gap-1 px-3 py-1 bg-white/20 rounded-full text-xs">
                               <CheckCircle size={14} />
-                              Verified
+                              {t('liveResults.accounts.verified')}
                             </span>
                           )}
                         </div>
                         <div className="flex flex-wrap gap-3 text-sm">
                           <span className="flex items-center gap-1">
-                            <strong>Platform:</strong> {account.platform}
+                            <strong>{t('liveResults.accounts.platform')}</strong> {account.platform}
                           </span>
                           <span>•</span>
                           <span className="flex items-center gap-1">
-                            <strong>Broker:</strong> {account.broker}
+                            <strong>{t('liveResults.accounts.broker')}</strong> {account.broker}
                           </span>
                           <span>•</span>
                           <span className="flex items-center gap-1">
-                            <strong>Account:</strong> {account.accountNumber}
+                            <strong>{t('liveResults.accounts.account')}</strong> {account.accountNumber}
                           </span>
                         </div>
                       </div>
@@ -135,23 +135,23 @@ export default function LiveResultsPage() {
                     {/* Stats Grid */}
                     <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
                       <div className="text-center p-4 bg-green-50 rounded-lg">
-                        <div className="text-sm text-gray-600 mb-1">Gain</div>
+                        <div className="text-sm text-gray-600 mb-1">{t('liveResults.accounts.gain')}</div>
                         <div className="text-2xl font-bold text-green-600">{account.stats.gain}</div>
                       </div>
                       <div className="text-center p-4 bg-red-50 rounded-lg">
-                        <div className="text-sm text-gray-600 mb-1">Drawdown</div>
+                        <div className="text-sm text-gray-600 mb-1">{t('liveResults.accounts.drawdown')}</div>
                         <div className="text-2xl font-bold text-red-600">{account.stats.drawdown}</div>
                       </div>
                       <div className="text-center p-4 bg-blue-50 rounded-lg">
-                        <div className="text-sm text-gray-600 mb-1">Win Rate</div>
+                        <div className="text-sm text-gray-600 mb-1">{t('liveResults.accounts.winRate')}</div>
                         <div className="text-2xl font-bold text-blue-600">{account.stats.winRate}</div>
                       </div>
                       <div className="text-center p-4 bg-purple-50 rounded-lg">
-                        <div className="text-sm text-gray-600 mb-1">Profit Factor</div>
+                        <div className="text-sm text-gray-600 mb-1">{t('liveResults.accounts.profitFactor')}</div>
                         <div className="text-2xl font-bold text-purple-600">{account.stats.profitFactor}</div>
                       </div>
                       <div className="text-center p-4 bg-gray-50 rounded-lg">
-                        <div className="text-sm text-gray-600 mb-1">Days</div>
+                        <div className="text-sm text-gray-600 mb-1">{t('liveResults.accounts.days')}</div>
                         <div className="text-xl font-bold text-gray-700">{account.stats.tradingDays}</div>
                       </div>
                     </div>
@@ -163,7 +163,7 @@ export default function LiveResultsPage() {
 
                     {/* Highlights */}
                     <div className="bg-gray-50 rounded-lg p-4 mb-6">
-                      <h4 className="font-semibold text-gray-800 mb-3">Điểm nổi bật:</h4>
+                      <h4 className="font-semibold text-gray-800 mb-3">{t('liveResults.accounts.highlights')}</h4>
                       <div className="grid md:grid-cols-2 gap-2">
                         {account.highlights.map((highlight, i) => (
                           <div key={i} className="text-sm text-gray-700">
@@ -183,7 +183,7 @@ export default function LiveResultsPage() {
                           className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
                         >
                           <ExternalLink size={18} />
-                          <span>Xem Profile & Stats Live</span>
+                          <span>{t('liveResults.accounts.viewProfile')}</span>
                         </a>
                       )}
                       {account.links.copyTrade && (
@@ -194,7 +194,7 @@ export default function LiveResultsPage() {
                           className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors"
                         >
                           <Copy size={18} />
-                          <span>Copy Trading Ngay</span>
+                          <span>{t('liveResults.accounts.copyNow')}</span>
                         </a>
                       )}
                       {account.links.youtube && (
@@ -205,7 +205,7 @@ export default function LiveResultsPage() {
                           className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors"
                         >
                           <Youtube size={18} />
-                          <span>Video Hướng Dẫn</span>
+                          <span>{t('liveResults.accounts.videoGuide')}</span>
                         </a>
                       )}
                     </div>
@@ -223,20 +223,20 @@ export default function LiveResultsPage() {
               <div className="text-center mb-12">
                 <Youtube className="w-16 h-16 text-red-600 mx-auto mb-4" />
                 <h2 className="text-3xl font-bold text-gray-800 mb-4">
-                  Hướng Dẫn Copy Trading
+                  {t('liveResults.copyGuide.title')}
                 </h2>
                 <p className="text-lg text-gray-600">
-                  Xem video hướng dẫn chi tiết cách copy trading trên từng platform
+                  {t('liveResults.copyGuide.subtitle')}
                 </p>
               </div>
 
               <div className="grid md:grid-cols-2 gap-6 mb-8">
                 <div className="border-2 border-gray-200 rounded-lg p-6 hover:border-blue-500 transition-colors">
                   <h3 className="text-xl font-bold text-gray-800 mb-3">
-                    📊 MQL5 Signals
+                    {t('liveResults.copyGuide.mql5Title')}
                   </h3>
                   <p className="text-gray-600 mb-4 text-sm">
-                    Copy tín hiệu tự động trên MT4/MT5. Phù hợp nếu bạn muốn control risk tự mình.
+                    {t('liveResults.copyGuide.mql5Desc')}
                   </p>
                   <a
                     href="https://www.youtube.com/watch?v=MQL5_COPY_GUIDE"
@@ -245,16 +245,16 @@ export default function LiveResultsPage() {
                     className="inline-flex items-center gap-2 text-blue-600 font-semibold hover:text-blue-700"
                   >
                     <Youtube size={18} />
-                    <span>Xem hướng dẫn MQL5</span>
+                    <span>{t('liveResults.copyGuide.mql5Link')}</span>
                   </a>
                 </div>
 
                 <div className="border-2 border-gray-200 rounded-lg p-6 hover:border-green-500 transition-colors">
                   <h3 className="text-xl font-bold text-gray-800 mb-3">
-                    📈 Myfxbook AutoTrade
+                    {t('liveResults.copyGuide.myfxbookTitle')}
                   </h3>
                   <p className="text-gray-600 mb-4 text-sm">
-                    AutoTrade qua Myfxbook với nhiều broker. Setup 1 lần, auto sync forever.
+                    {t('liveResults.copyGuide.myfxbookDesc')}
                   </p>
                   <a
                     href="https://www.youtube.com/watch?v=MYFXBOOK_COPY_GUIDE"
@@ -263,16 +263,16 @@ export default function LiveResultsPage() {
                     className="inline-flex items-center gap-2 text-blue-600 font-semibold hover:text-blue-700"
                   >
                     <Youtube size={18} />
-                    <span>Xem hướng dẫn Myfxbook</span>
+                    <span>{t('liveResults.copyGuide.myfxbookLink')}</span>
                   </a>
                 </div>
 
                 <div className="border-2 border-gray-200 rounded-lg p-6 hover:border-orange-500 transition-colors">
                   <h3 className="text-xl font-bold text-gray-800 mb-3">
-                    🎯 Tickmill Social
+                    {t('liveResults.copyGuide.tickmillTitle')}
                   </h3>
                   <p className="text-gray-600 mb-4 text-sm">
-                    Copy trading native trên Tickmill. Đơn giản nhất, 1 click copy, không cần EA.
+                    {t('liveResults.copyGuide.tickmillDesc')}
                   </p>
                   <a
                     href="https://www.youtube.com/watch?v=TICKMILL_COPY_TUTORIAL"
@@ -281,16 +281,16 @@ export default function LiveResultsPage() {
                     className="inline-flex items-center gap-2 text-blue-600 font-semibold hover:text-blue-700"
                   >
                     <Youtube size={18} />
-                    <span>Xem hướng dẫn Tickmill</span>
+                    <span>{t('liveResults.copyGuide.tickmillLink')}</span>
                   </a>
                 </div>
 
                 <div className="border-2 border-gray-200 rounded-lg p-6 hover:border-purple-500 transition-colors">
                   <h3 className="text-xl font-bold text-gray-800 mb-3">
-                    💰 PuPrime Social
+                    {t('liveResults.copyGuide.puprimeTitle')}
                   </h3>
                   <p className="text-gray-600 mb-4 text-sm">
-                    Copy trên PuPrime với vốn thấp ($200+). Phù hợp trader mới bắt đầu.
+                    {t('liveResults.copyGuide.puprimeDesc')}
                   </p>
                   <a
                     href="https://www.youtube.com/watch?v=PUPRIME_COPY_TUTORIAL"
@@ -299,14 +299,14 @@ export default function LiveResultsPage() {
                     className="inline-flex items-center gap-2 text-blue-600 font-semibold hover:text-blue-700"
                   >
                     <Youtube size={18} />
-                    <span>Xem hướng dẫn PuPrime</span>
+                    <span>{t('liveResults.copyGuide.puprimeLink')}</span>
                   </a>
                 </div>
               </div>
 
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 text-center">
                 <p className="text-gray-700 mb-4">
-                  <strong>💡 Chưa chắc nên copy hay mua EA?</strong> Xem video so sánh để chọn phương án phù hợp nhất.
+                  <strong>{t('liveResults.copyGuide.compareTitle')}</strong> {t('liveResults.copyGuide.compareDesc')}
                 </p>
                 <a
                   href="https://www.youtube.com/watch?v=COPY_VS_EA_VIDEO"
@@ -315,7 +315,7 @@ export default function LiveResultsPage() {
                   className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
                 >
                   <Youtube size={20} />
-                  <span>Copy Trading vs Mua EA - Video So Sánh</span>
+                  <span>{t('liveResults.copyGuide.compareLink')}</span>
                 </a>
               </div>
             </div>
@@ -328,23 +328,19 @@ export default function LiveResultsPage() {
             <div className="flex items-start gap-4">
               <AlertCircle className="w-6 h-6 text-yellow-600 flex-shrink-0 mt-1" />
               <div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">Cảnh Báo Rủi Ro</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">{t('liveResults.disclaimer.title')}</h3>
                 <div className="text-gray-700 space-y-2 text-sm">
                   <p>
-                    <strong>Kết quả trong quá khứ không đảm bảo kết quả tương lai.</strong> Tất cả các tài khoản trên 
-                    đều là real money và verified, nhưng hiệu suất có thể thay đổi theo điều kiện thị trường.
+                    <strong>{t('liveResults.disclaimer.past')}</strong> {t('liveResults.disclaimer.pastDesc')}
                   </p>
                   <p>
-                    <strong>Copy trading có rủi ro:</strong> Khi copy, bạn cũng chịu drawdown tương tự master account. 
-                    Chỉ copy với số tiền bạn có thể chấp nhận mất.
+                    <strong>{t('liveResults.disclaimer.copyRisk')}</strong> {t('liveResults.disclaimer.copyRiskDesc')}
                   </p>
                   <p>
-                    <strong>Phí copy:</strong> Tickmill (20% profit share), PuPrime (25% profit share), 
-                    MQL5/Myfxbook (fee khác nhau tùy platform). Đọc kỹ terms trước khi copy.
+                    <strong>{t('liveResults.disclaimer.fees')}</strong> {t('liveResults.disclaimer.feesDesc')}
                   </p>
                   <p>
-                    <strong>Khuyến nghị:</strong> Test trên demo/vốn nhỏ trước. Theo dõi ít nhất 1 tháng trước khi scale up. 
-                    Không bao giờ all-in vào 1 strategy.
+                    <strong>{t('liveResults.disclaimer.recommendation')}</strong> {t('liveResults.disclaimer.recommendationDesc')}
                   </p>
                 </div>
               </div>
@@ -356,23 +352,23 @@ export default function LiveResultsPage() {
         <section className="py-20 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
           <div className="container-custom text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Sẵn sàng bắt đầu?
+              {t('liveResults.cta.title')}
             </h2>
             <p className="text-xl mb-8 max-w-2xl mx-auto">
-              Chọn giữa copy trading (dễ hơn) hoặc mua EA (control hơn). Cả 2 đều có kết quả thực tế đã verified.
+              {t('liveResults.cta.subtitle')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
                 href="/pricing"
                 className="inline-flex items-center justify-center px-8 py-4 bg-white text-blue-600 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors"
               >
-                Xem Bảng Giá EA
+                {t('liveResults.cta.viewPricing')}
               </a>
               <a
                 href="#contact"
                 className="inline-flex items-center justify-center px-8 py-4 border-2 border-white text-white rounded-lg font-bold text-lg hover:bg-white/10 transition-colors"
               >
-                Tư Vấn Copy Trading
+                {t('liveResults.cta.contactCopy')}
               </a>
             </div>
           </div>

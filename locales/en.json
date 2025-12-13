@@ -459,6 +459,81 @@
       "parameters4": "Max spread: 3 pips"
     }
   },
+  "liveResults": {
+    "hero": {
+      "badge": "100% Verified Real Money Accounts",
+      "title": "Real Trading Results",
+      "subtitle": "All accounts are real money, verified by reputable platforms like MQL5, Myfxbook, and publicly tracked 24/7. No photoshop, no demo, no fake.",
+      "totalProfit": "Total Profit",
+      "totalProfitValue": "+1,000%+",
+      "verifiedAccounts": "Verified accounts",
+      "followersLabel": "Followers/Copiers",
+      "followersValue": "80+"
+    },
+    "whyTrust": {
+      "verified": "100% Verified",
+      "verifiedDesc": "All accounts verified by platform",
+      "realtime": "Real-Time",
+      "realtimeDesc": "24/7 tracking, updated every trade",
+      "liveData": "Live Data",
+      "liveDataDesc": "Click link to view live stats",
+      "copyTrading": "Copy Trading",
+      "copyTradingDesc": "Copy directly, no need to buy EA"
+    },
+    "accounts": {
+      "title": "Real Trading Accounts",
+      "subtitle": "All accounts below are real money, verified and publicly trackable. Click the link to view details and full trading history.",
+      "verified": "Verified",
+      "platform": "Platform:",
+      "broker": "Broker:",
+      "account": "Account:",
+      "gain": "Gain",
+      "drawdown": "Drawdown",
+      "winRate": "Win Rate",
+      "profitFactor": "Profit Factor",
+      "days": "Days",
+      "highlights": "Highlights:",
+      "viewProfile": "View Profile & Live Stats",
+      "copyNow": "Copy Trading Now",
+      "videoGuide": "Video Guide"
+    },
+    "copyGuide": {
+      "title": "Copy Trading Guide",
+      "subtitle": "Watch detailed video guide on how to copy trade on each platform",
+      "mql5Title": "📊 MQL5 Signals",
+      "mql5Desc": "Automatically copy signals on MT4/MT5. Suitable if you want to control risk yourself.",
+      "mql5Link": "Watch MQL5 Guide",
+      "myfxbookTitle": "📈 Myfxbook AutoTrade",
+      "myfxbookDesc": "AutoTrade via Myfxbook with multiple brokers. Set up once, auto sync forever.",
+      "myfxbookLink": "Watch Myfxbook Guide",
+      "tickmillTitle": "🎯 Tickmill Social",
+      "tickmillDesc": "Native copy trading on Tickmill. Simplest, 1-click copy, no EA needed.",
+      "tickmillLink": "Watch Tickmill Guide",
+      "puprimeTitle": "💰 PuPrime Social",
+      "puprimeDesc": "Copy on PuPrime with low capital ($200+). Suitable for beginner traders.",
+      "puprimeLink": "Watch PuPrime Guide",
+      "compareTitle": "💡 Not sure to copy or buy EA?",
+      "compareDesc": "Watch comparison video to choose the most suitable option.",
+      "compareLink": "Copy Trading vs Buy EA - Comparison Video"
+    },
+    "disclaimer": {
+      "title": "Risk Warning",
+      "past": "Past performance does not guarantee future results.",
+      "pastDesc": "All accounts above are real money and verified, but performance may change depending on market conditions.",
+      "copyRisk": "Copy trading carries risk:",
+      "copyRiskDesc": "When copying, you also bear similar drawdown as master account. Only copy with money you can afford to lose.",
+      "fees": "Copy fees:",
+      "feesDesc": "Tickmill (20% profit share), PuPrime (25% profit share), MQL5/Myfxbook (varies by platform). Read terms carefully before copying.",
+      "recommendation": "Recommendation:",
+      "recommendationDesc": "Test on demo/small capital first. Monitor for at least 1 month before scaling up. Never go all-in on 1 strategy."
+    },
+    "cta": {
+      "title": "Ready to Start?",
+      "subtitle": "Choose between copy trading (easier) or buy EA (more control). Both have real verified results.",
+      "viewPricing": "View EA Pricing",
+      "contactCopy": "Copy Trading Consultation"
+    }
+  },
   "footer": {
     "description": "Multi-strategy Expert Advisor with scientific risk management. Efficient and transparent Forex trading automation.",
     "quickLinks": "Quick Links",

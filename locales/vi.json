@@ -459,6 +459,81 @@
       "parameters4": "Max spread: 3 pips"
     }
   },
+  "liveResults": {
+    "hero": {
+      "badge": "100% Verified Real Money Accounts",
+      "title": "Kết Quả Giao Dịch Thực Tế",
+      "subtitle": "Tất cả tài khoản đều là real money, được verify bởi các nền tảng uy tín như MQL5, Myfxbook, và tracking công khai 24/7. Không photoshop, không demo, không fake.",
+      "totalProfit": "Tổng lợi nhuận",
+      "totalProfitValue": "+1,000%+",
+      "verifiedAccounts": "Verified accounts",
+      "followersLabel": "Followers/Copiers",
+      "followersValue": "80+"
+    },
+    "whyTrust": {
+      "verified": "100% Verified",
+      "verifiedDesc": "Tất cả tài khoản đều verified bởi platform",
+      "realtime": "Real-Time",
+      "realtimeDesc": "Tracking 24/7, cập nhật mỗi giao dịch",
+      "liveData": "Live Data",
+      "liveDataDesc": "Click vào link để xem live stats",
+      "copyTrading": "Copy Trading",
+      "copyTradingDesc": "Copy trực tiếp, không cần mua EA"
+    },
+    "accounts": {
+      "title": "Tài Khoản Giao Dịch Thực Tế",
+      "subtitle": "Tất cả tài khoản dưới đây đều là real money, verified và có thể tracking công khai. Click vào link để xem chi tiết và lịch sử giao dịch đầy đủ.",
+      "verified": "Verified",
+      "platform": "Platform:",
+      "broker": "Broker:",
+      "account": "Account:",
+      "gain": "Gain",
+      "drawdown": "Drawdown",
+      "winRate": "Win Rate",
+      "profitFactor": "Profit Factor",
+      "days": "Days",
+      "highlights": "Điểm nổi bật:",
+      "viewProfile": "Xem Profile & Stats Live",
+      "copyNow": "Copy Trading Ngay",
+      "videoGuide": "Video Hướng Dẫn"
+    },
+    "copyGuide": {
+      "title": "Hướng Dẫn Copy Trading",
+      "subtitle": "Xem video hướng dẫn chi tiết cách copy trading trên từng platform",
+      "mql5Title": "📊 MQL5 Signals",
+      "mql5Desc": "Copy tín hiệu tự động trên MT4/MT5. Phù hợp nếu bạn muốn control risk tự mình.",
+      "mql5Link": "Xem hướng dẫn MQL5",
+      "myfxbookTitle": "📈 Myfxbook AutoTrade",
+      "myfxbookDesc": "AutoTrade qua Myfxbook với nhiều broker. Setup 1 lần, auto sync forever.",
+      "myfxbookLink": "Xem hướng dẫn Myfxbook",
+      "tickmillTitle": "🎯 Tickmill Social",
+      "tickmillDesc": "Copy trading native trên Tickmill. Đơn giản nhất, 1 click copy, không cần EA.",
+      "tickmillLink": "Xem hướng dẫn Tickmill",
+      "puprimeTitle": "💰 PuPrime Social",
+      "puprimeDesc": "Copy trên PuPrime với vốn thấp ($200+). Phù hợp trader mới bắt đầu.",
+      "puprimeLink": "Xem hướng dẫn PuPrime",
+      "compareTitle": "💡 Chưa chắc nên copy hay mua EA?",
+      "compareDesc": "Xem video so sánh để chọn phương án phù hợp nhất.",
+      "compareLink": "Copy Trading vs Mua EA - Video So Sánh"
+    },
+    "disclaimer": {
+      "title": "Cảnh Báo Rủi Ro",
+      "past": "Kết quả trong quá khứ không đảm bảo kết quả tương lai.",
+      "pastDesc": "Tất cả các tài khoản trên đều là real money và verified, nhưng hiệu suất có thể thay đổi theo điều kiện thị trường.",
+      "copyRisk": "Copy trading có rủi ro:",
+      "copyRiskDesc": "Khi copy, bạn cũng chịu drawdown tương tự master account. Chỉ copy với số tiền bạn có thể chấp nhận mất.",
+      "fees": "Phí copy:",
+      "feesDesc": "Tickmill (20% profit share), PuPrime (25% profit share), MQL5/Myfxbook (fee khác nhau tùy platform). Đọc kỹ terms trước khi copy.",
+      "recommendation": "Khuyến nghị:",
+      "recommendationDesc": "Test trên demo/vốn nhỏ trước. Theo dõi ít nhất 1 tháng trước khi scale up. Không bao giờ all-in vào 1 strategy."
+    },
+    "cta": {
+      "title": "Sẵn sàng bắt đầu?",
+      "subtitle": "Chọn giữa copy trading (dễ hơn) hoặc mua EA (control hơn). Cả 2 đều có kết quả thực tế đã verified.",
+      "viewPricing": "Xem Bảng Giá EA",
+      "contactCopy": "Tư Vấn Copy Trading"
+    }
+  },
   "footer": {
     "description": "Expert Advisor đa chiến lược với quản trị rủi ro khoa học. Tự động hóa giao dịch Forex hiệu quả và minh bạch.",
     "quickLinks": "Liên Kết Nhanh",
