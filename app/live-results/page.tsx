@@ -9,7 +9,7 @@ import type { TradingAccount } from "@/data/tradingAccounts";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 
 export default function LiveResultsPage() {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   // Filter only active trading accounts
   const activeAccounts = tradingAccounts.filter(a => a.active).sort((a, b) => a.order - b.order);
 
@@ -125,7 +125,7 @@ export default function LiveResultsPage() {
                       </div>
                       {account.badge && (
                         <div className="px-4 py-2 bg-white/20 backdrop-blur-sm rounded-lg text-sm font-medium">
-                          {account.badge}
+                          {locale === 'en' ? account.badge_en : account.badge}
                         </div>
                       )}
                     </div>
@@ -158,14 +158,14 @@ export default function LiveResultsPage() {
 
                     {/* Description */}
                     <p className="text-gray-700 mb-4 leading-relaxed">
-                      {account.description}
+                      {locale === 'en' ? account.description_en : account.description}
                     </p>
 
                     {/* Highlights */}
                     <div className="bg-gray-50 rounded-lg p-4 mb-6">
                       <h4 className="font-semibold text-gray-800 mb-3">{t('liveResultsPage.accounts.highlights')}</h4>
                       <div className="grid md:grid-cols-2 gap-2">
-                        {account.highlights.map((highlight, i) => (
+                        {(locale === 'en' ? account.highlights_en : account.highlights).map((highlight, i) => (
                           <div key={i} className="text-sm text-gray-700">
                             {highlight}
                           </div>
