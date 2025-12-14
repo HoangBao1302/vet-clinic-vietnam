@@ -24,10 +24,10 @@ export default function LiveResultsPage() {
             <div className="max-w-4xl mx-auto text-center">
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-700/50 rounded-full text-sm font-medium mb-6">
                 <CheckCircle size={16} />
-                <span>{t('liveResultsPagePage.hero.badge')}</span>
+                <span>{t('liveResultsPage.hero.badge')}</span>
               </div>
               <h1 className="text-4xl md:text-6xl font-bold mb-6">
-                {t('liveResultsPagePage.hero.title')}
+                {t('liveResultsPage.hero.title')}
               </h1>
               <p className="text-xl text-green-100 leading-relaxed mb-8">
                 {t('liveResultsPage.hero.subtitle')}
