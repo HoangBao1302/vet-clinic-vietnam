@@ -6,8 +6,11 @@ import StickyCallToAction from "@/components/StickyCallToAction";
 import AuthProtected from "@/components/AuthProtected";
 import { Users, DollarSign, CheckCircle, Infinity, TrendingUp, Clock, Gift, ArrowRight, Star } from "lucide-react";
 import Link from "next/link";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 
 export default function CopySocialPage() {
+  const { t } = useLocale();
+  
   return (
     <AuthProtected>
       <div className="min-h-screen bg-gray-50">
@@ -20,26 +23,25 @@ export default function CopySocialPage() {
             <div className="max-w-4xl mx-auto text-center">
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-sm font-medium mb-6">
                 <Infinity size={16} />
-                <span>Thu nhập thụ động lâu dài</span>
+                <span>{t('affiliatePages.copySocial.hero.badge')}</span>
               </div>
               <h1 className="text-4xl md:text-6xl font-bold mb-6">
-                Copy Social Trading - <span className="text-green-400">10%</span> Hoa Hồng
+                {t('affiliatePages.copySocial.hero.title').split('10%')[0]}<span className="text-green-400">10%</span>{t('affiliatePages.copySocial.hero.title').split('10%')[1] || ' Hoa Hồng'}
               </h1>
               <p className="text-xl text-green-100 leading-relaxed mb-8">
-                Giới thiệu khách hàng copy trading. Thu nhập thụ động recurring hàng tháng. 
-                Cookie lifetime - khách hàng mãi mãi là của bạn!
+                {t('affiliatePages.copySocial.hero.subtitle')}
               </p>
               <div className="flex flex-wrap gap-4 justify-center">
                 <div className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full">
-                  <div className="text-sm text-green-200">Hoa hồng</div>
+                  <div className="text-sm text-green-200">{t('affiliatePages.copySocial.hero.stats.commission')}</div>
                   <div className="text-3xl font-bold">10%</div>
                 </div>
                 <div className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full">
-                  <div className="text-sm text-green-200">Cookie</div>
+                  <div className="text-sm text-green-200">{t('affiliatePages.copySocial.hero.stats.cookie')}</div>
                   <div className="text-2xl font-bold">Lifetime</div>
                 </div>
                 <div className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full">
-                  <div className="text-sm text-green-200">Payout</div>
+                  <div className="text-sm text-green-200">{t('affiliatePages.copySocial.hero.stats.payout')}</div>
                   <div className="text-2xl font-bold">Monthly</div>
                 </div>
               </div>
@@ -313,24 +315,24 @@ export default function CopySocialPage() {
         <section className="py-20 bg-gradient-to-r from-green-600 to-blue-600 text-white">
           <div className="container-custom text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Bắt Đầu Thu Nhập Thụ Động
+              {t('affiliatePages.copySocial.cta.title')}
             </h2>
             <p className="text-xl mb-8 max-w-2xl mx-auto">
-              Đăng ký ngay để nhận lifetime tracking link và bắt đầu tạo thu nhập hàng tháng
+              {t('affiliatePages.copySocial.cta.subtitle')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
                 href="/referral/apply"
                 className="inline-flex items-center justify-center px-8 py-4 bg-white text-green-600 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors"
               >
-                Đăng Ký Affiliate Ngay
+                {t('affiliatePages.copySocial.cta.registerButton')}
                 <ArrowRight size={20} className="ml-2" />
               </a>
               <Link
                 href="/referral"
                 className="inline-flex items-center justify-center px-8 py-4 border-2 border-white text-white rounded-lg font-bold text-lg hover:bg-white/10 transition-colors"
               >
-                Xem Các Chương Trình Khác
+                {t('affiliatePages.copySocial.cta.viewOthersButton')}
               </Link>
             </div>
           </div>
