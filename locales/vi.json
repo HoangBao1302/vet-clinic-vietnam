@@ -732,5 +732,67 @@
       "contactButton": "Liên Hệ Support",
       "telegramButton": "Join Telegram Group"
     }
+  },
+  "partners": {
+    "hero": {
+      "badge": "Broker Đối Tác",
+      "title": "Broker Được Khuyến Nghị",
+      "description": "Danh sách broker uy tín, spread thấp, và tương thích tốt với EA ThebenchmarkTrader. Đã được kiểm chứng qua thực tế giao dịch."
+    },
+    "sections": {
+      "spread": "Spread & Phí",
+      "spreadFull": "Spread & Phí Giao Dịch",
+      "license": "Giấy Phép",
+      "deposit": "Nạp/Rút",
+      "depositFull": "Nạp/Rút Tiền",
+      "support": "Hỗ Trợ",
+      "supportFull": "Hỗ Trợ Khách Hàng",
+      "notes": "Ghi Chú",
+      "notesFull": "Ghi Chú & Đặc Điểm"
+    },
+    "cta": {
+      "openAccount": "Mở Tài Khoản {{name}}",
+      "consultBroker": "Tư Vấn Chọn Broker"
+    },
+    "disclaimer": {
+      "title": "Lưu Ý Quan Trọng",
+      "point1": {
+        "title": "Đánh giá độc lập:",
+        "content": "Thông tin trên đây là đánh giá độc lập dựa trên nghiên cứu và kinh nghiệm thực tế. Chúng tôi không nhận hoa hồng từ các broker này (hoặc có thể nhận - vui lòng kiểm tra điều khoản cụ thể)."
+      },
+      "point2": {
+        "title": "Tự nghiên cứu:",
+        "content": "Bạn nên tự mình nghiên cứu và kiểm chứng thông tin broker trước khi quyết định mở tài khoản. Thông tin có thể thay đổi theo thời gian."
+      },
+      "point3": {
+        "title": "Rủi ro giao dịch:",
+        "content": "Forex và CFD trading có rủi ro cao. Chỉ giao dịch với số tiền bạn có thể chấp nhận mất. EA không đảm bảo lợi nhuận."
+      },
+      "point4": {
+        "title": "Phù hợp broker:",
+        "content": "EA ThebenchmarkTrader hoạt động tốt trên broker có spread thấp, execution nhanh, và không hạn chế scalping/EA. Kiểm tra demo trước khi chạy live."
+      }
+    },
+    "faq": {
+      "title": "Câu Hỏi Thường Gặp",
+      "items": [
+        {
+          "question": "EA hoạt động trên broker nào?",
+          "answer": "EA ThebenchmarkTrader hoạt động trên hầu hết các broker hỗ trợ MT4/MT5. Tuy nhiên, hiệu suất tốt nhất trên các broker có spread thấp, execution nhanh (ECN/STP), và không hạn chế chiến lược EA."
+        },
+        {
+          "question": "Tôi có nhận được hoa hồng nếu đăng ký qua link?",
+          "answer": "Chúng tôi có thể có chương trình IB/affiliate với một số broker. Tuy nhiên, điều này không ảnh hưởng đến spread hay điều kiện giao dịch của bạn. Bạn luôn có thể đăng ký trực tiếp nếu muốn."
+        },
+        {
+          "question": "Broker nào phù hợp nhất với EA này?",
+          "answer": "Nếu ưu tiên regulation mạnh: Tickmill (FCA) hoặc ThinkMarkets (FCA/ASIC). Nếu vốn nhỏ hoặc mới bắt đầu: PuPrime ($50 minimum). Nếu scalping nhiều: Tickmill (spread 0.0, execution tốt)."
+        },
+        {
+          "question": "Có cần VPS không?",
+          "answer": "Nên có VPS để EA chạy 24/7 ổn định. ThinkMarkets và một số broker khác cung cấp VPS miễn phí với điều kiện deposit/volume nhất định. Bạn cũng có thể thuê VPS riêng."
+        }
+      ]
+    }
   }
 }

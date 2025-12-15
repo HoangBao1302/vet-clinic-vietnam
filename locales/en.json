@@ -732,5 +732,67 @@
       "contactButton": "Contact Support",
       "telegramButton": "Join Telegram Group"
     }
+  },
+  "partners": {
+    "hero": {
+      "badge": "Partner Brokers",
+      "title": "Recommended Brokers",
+      "description": "List of reputable brokers with low spreads and excellent compatibility with EA ThebenchmarkTrader. Verified through real trading experience."
+    },
+    "sections": {
+      "spread": "Spread & Fees",
+      "spreadFull": "Spread & Trading Fees",
+      "license": "License",
+      "deposit": "Deposit/Withdrawal",
+      "depositFull": "Deposit/Withdrawal",
+      "support": "Support",
+      "supportFull": "Customer Support",
+      "notes": "Notes",
+      "notesFull": "Notes & Features"
+    },
+    "cta": {
+      "openAccount": "Open {{name}} Account",
+      "consultBroker": "Broker Consultation"
+    },
+    "disclaimer": {
+      "title": "Important Notice",
+      "point1": {
+        "title": "Independent review:",
+        "content": "The information above is an independent review based on research and real trading experience. We do not receive commissions from these brokers (or may receive - please check specific terms)."
+      },
+      "point2": {
+        "title": "Do your own research:",
+        "content": "You should research and verify broker information yourself before deciding to open an account. Information may change over time."
+      },
+      "point3": {
+        "title": "Trading risks:",
+        "content": "Forex and CFD trading carry high risks. Only trade with money you can afford to lose. EA does not guarantee profits."
+      },
+      "point4": {
+        "title": "Broker compatibility:",
+        "content": "EA ThebenchmarkTrader works best on brokers with low spreads, fast execution, and no restrictions on scalping/EA. Test on demo before running live."
+      }
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "items": [
+        {
+          "question": "Which brokers does the EA work on?",
+          "answer": "EA ThebenchmarkTrader works on most brokers supporting MT4/MT5. However, best performance is on brokers with low spreads, fast execution (ECN/STP), and no EA strategy restrictions."
+        },
+        {
+          "question": "Will I receive commissions if I sign up through the link?",
+          "answer": "We may have IB/affiliate programs with some brokers. However, this does not affect your spread or trading conditions. You can always register directly if you prefer."
+        },
+        {
+          "question": "Which broker is best suited for this EA?",
+          "answer": "If prioritizing strong regulation: Tickmill (FCA) or ThinkMarkets (FCA/ASIC). If small capital or beginner: PuPrime ($50 minimum). If heavy scalping: Tickmill (0.0 spread, good execution)."
+        },
+        {
+          "question": "Do I need a VPS?",
+          "answer": "VPS is recommended for EA to run 24/7 stably. ThinkMarkets and some other brokers provide free VPS with certain deposit/volume conditions. You can also rent your own VPS."
+        }
+      ]
+    }
   }
 }

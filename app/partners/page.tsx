@@ -266,24 +266,19 @@ export default function PartnersPage() {
               <div className="flex items-start gap-4">
                 <AlertCircle className="w-6 h-6 text-yellow-600 flex-shrink-0 mt-1" />
                 <div className="space-y-3">
-                  <h3 className="text-xl font-bold text-gray-900">Lưu Ý Quan Trọng</h3>
+                  <h3 className="text-xl font-bold text-gray-900">{t('partners.disclaimer.title')}</h3>
                   <div className="text-gray-700 space-y-2 text-sm">
                     <p>
-                      <strong>1. Đánh giá độc lập:</strong> Thông tin trên đây là đánh giá độc lập dựa trên nghiên cứu 
-                      và kinh nghiệm thực tế. Chúng tôi không nhận hoa hồng từ các broker này (hoặc có thể nhận - 
-                      vui lòng kiểm tra điều khoản cụ thể).
+                      <strong>1. {t('partners.disclaimer.point1.title')}</strong> {t('partners.disclaimer.point1.content')}
                     </p>
                     <p>
-                      <strong>2. Tự nghiên cứu:</strong> Bạn nên tự mình nghiên cứu và kiểm chứng thông tin broker 
-                      trước khi quyết định mở tài khoản. Thông tin có thể thay đổi theo thời gian.
+                      <strong>2. {t('partners.disclaimer.point2.title')}</strong> {t('partners.disclaimer.point2.content')}
                     </p>
                     <p>
-                      <strong>3. Rủi ro giao dịch:</strong> Forex và CFD trading có rủi ro cao. Chỉ giao dịch với 
-                      số tiền bạn có thể chấp nhận mất. EA không đảm bảo lợi nhuận.
+                      <strong>3. {t('partners.disclaimer.point3.title')}</strong> {t('partners.disclaimer.point3.content')}
                     </p>
                     <p>
-                      <strong>4. Phù hợp broker:</strong> EA ThebenchmarkTrader hoạt động tốt trên broker có spread thấp, 
-                      execution nhanh, và không hạn chế scalping/EA. Kiểm tra demo trước khi chạy live.
+                      <strong>4. {t('partners.disclaimer.point4.title')}</strong> {t('partners.disclaimer.point4.content')}
                     </p>
                   </div>
                 </div>
@@ -296,41 +291,15 @@ export default function PartnersPage() {
         <section className="py-20 bg-white">
           <div className="container-custom">
             <div className="max-w-3xl mx-auto">
-              <h2 className="text-3xl font-bold text-center mb-12">Câu Hỏi Thường Gặp</h2>
+              <h2 className="text-3xl font-bold text-center mb-12">{t('partners.faq.title')}</h2>
               
               <div className="space-y-6">
-                <div className="border border-gray-200 rounded-lg p-6">
-                  <h3 className="font-bold text-lg mb-2">EA hoạt động trên broker nào?</h3>
-                  <p className="text-gray-700">
-                    EA ThebenchmarkTrader hoạt động trên hầu hết các broker hỗ trợ MT4/MT5. Tuy nhiên, hiệu suất tốt nhất 
-                    trên các broker có spread thấp, execution nhanh (ECN/STP), và không hạn chế chiến lược EA.
-                  </p>
-                </div>
-
-                <div className="border border-gray-200 rounded-lg p-6">
-                  <h3 className="font-bold text-lg mb-2">Tôi có nhận được hoa hồng nếu đăng ký qua link?</h3>
-                  <p className="text-gray-700">
-                    Chúng tôi có thể có chương trình IB/affiliate với một số broker. Tuy nhiên, điều này không ảnh hưởng 
-                    đến spread hay điều kiện giao dịch của bạn. Bạn luôn có thể đăng ký trực tiếp nếu muốn.
-                  </p>
-                </div>
-
-                <div className="border border-gray-200 rounded-lg p-6">
-                  <h3 className="font-bold text-lg mb-2">Broker nào phù hợp nhất với EA này?</h3>
-                  <p className="text-gray-700">
-                    Nếu ưu tiên regulation mạnh: Tickmill (FCA) hoặc ThinkMarkets (FCA/ASIC). 
-                    Nếu vốn nhỏ hoặc mới bắt đầu: PuPrime ($50 minimum). 
-                    Nếu scalping nhiều: Tickmill (spread 0.0, execution tốt).
-                  </p>
-                </div>
-
-                <div className="border border-gray-200 rounded-lg p-6">
-                  <h3 className="font-bold text-lg mb-2">Có cần VPS không?</h3>
-                  <p className="text-gray-700">
-                    Nên có VPS để EA chạy 24/7 ổn định. ThinkMarkets và một số broker khác cung cấp VPS miễn phí 
-                    với điều kiện deposit/volume nhất định. Bạn cũng có thể thuê VPS riêng.
-                  </p>
-                </div>
+                {Array.isArray(t('partners.faq.items')) && t('partners.faq.items').map((faq: any, index: number) => (
+                  <div key={index} className="border border-gray-200 rounded-lg p-6">
+                    <h3 className="font-bold text-lg mb-2">{faq.question}</h3>
+                    <p className="text-gray-700">{faq.answer}</p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
