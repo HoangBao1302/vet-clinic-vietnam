@@ -354,14 +354,17 @@ export default function Header() {
             <LanguageSwitcher />
           </nav>
 
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => isClient && setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2 text-gray-700 hover:text-primary-600"
-            suppressHydrationWarning
-          >
-            {isClient && isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          {/* Mobile Menu Button + Language Switcher */}
+          <div className="lg:hidden flex items-center gap-3">
+            <LanguageSwitcher />
+            <button
+              onClick={() => isClient && setIsMenuOpen(!isMenuOpen)}
+              className="p-2 text-gray-700 hover:text-primary-600"
+              suppressHydrationWarning
+            >
+              {isClient && isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Navigation */}
@@ -535,11 +538,6 @@ export default function Header() {
                     <span>{t('common.login')}</span>
                   </Link>
                 )}
-              </div>
-
-              {/* Mobile Language Switcher */}
-              <div className="border-t border-gray-200 pt-4 mt-4 flex justify-center">
-                <LanguageSwitcher />
               </div>
             </nav>
           </div>
