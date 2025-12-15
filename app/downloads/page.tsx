@@ -8,6 +8,7 @@ import StickyCallToAction from "@/components/StickyCallToAction";
 import { FileText, Download, Lock, CheckCircle, Gift, ShieldCheck, CreditCard } from "lucide-react";
 import Link from "next/link";
 import { useAuth } from "@/lib/authContext";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 
 interface DownloadItem {
   id: string;
@@ -174,6 +175,7 @@ const downloads: DownloadItem[] = [
 
 export default function DownloadsPage() {
   const { user, isAuthenticated } = useAuth();
+  const { t, locale } = useLocale();
   const router = useRouter();
   const [verifyingOrder, setVerifyingOrder] = useState<string | null>(null);
   const [orderCode, setOrderCode] = useState("");
@@ -221,8 +223,8 @@ export default function DownloadsPage() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Đang kiểm tra quyền truy cập...</p>
-          <p className="text-xs text-gray-500 mt-2">Nếu chờ quá lâu, hãy refresh trang</p>
+          <p className="text-gray-600">{t('downloads.auth.checking')}</p>
+          <p className="text-xs text-gray-500 mt-2">{t('downloads.auth.refreshHint')}</p>
         </div>
       </div>
     );
@@ -234,7 +236,7 @@ export default function DownloadsPage() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Đang chuyển hướng đến trang đăng nhập...</p>
+          <p className="text-gray-600">{t('downloads.auth.redirecting')}</p>
         </div>
       </div>
     );
@@ -271,7 +273,7 @@ export default function DownloadsPage() {
 
   const handleVerifyOrder = async (itemId: string) => {
     if (!orderCode.trim()) {
-      setVerifyMessage("Vui lòng nhập mã đơn hàng");
+      setVerifyMessage(t('downloads.verification.enterCode'));
       return;
     }
 
@@ -294,7 +296,7 @@ export default function DownloadsPage() {
       const result = await response.json();
 
       if (result.verified) {
-        setVerifyMessage("✅ Xác thực thành công! Đang tải file...");
+        setVerifyMessage(t('downloads.verification.success'));
         
         // Download file after verification - use downloadUrl from API (source of truth)
         setTimeout(() => {
@@ -307,20 +309,21 @@ export default function DownloadsPage() {
         }, 1500);
       } else {
         // Show detailed error message
-        let errorMsg = result.error || "Mã đơn hàng không hợp lệ hoặc chưa thanh toán";
+        let errorMsg = result.error || t('downloads.verification.invalidCode');
         
         // If product mismatch, show which product the order is for
         if (result.actualProductId && result.requestedProductId) {
           const actualProduct = downloads.find(d => d.id === result.actualProductId);
           if (actualProduct) {
-            errorMsg += ` Mã này dành cho: ${actualProduct.name}`;
+            const productName = locale === 'en' ? actualProduct.name.replace(' (MT4)', '').replace(' (MT5)', '') : actualProduct.name;
+            errorMsg += ` ${t('downloads.verification.wrongProduct')}: ${productName}`;
           }
         }
         
         setVerifyMessage("❌ " + errorMsg);
       }
     } catch (error) {
-      setVerifyMessage("❌ Lỗi kết nối. Vui lòng thử lại.");
+      setVerifyMessage("❌ " + t('downloads.verification.error'));
     } finally {
       setTimeout(() => {
         if (verifyMessage.includes("❌")) {
@@ -334,6 +337,116 @@ export default function DownloadsPage() {
   const freeItems = downloads.filter(d => d.type !== "pdf" && d.free);
   const paidItems = downloads.filter(d => !d.free && d.requiresPayment);
 
+  // Helper function to render paid product card
+  const renderPaidProductCard = (item: DownloadItem) => {
+    const translatedName = locale === 'en' && t(`downloads.paidSection.items.${item.id}.name`) !== `downloads.paidSection.items.${item.id}.name`
+      ? t(`downloads.paidSection.items.${item.id}.name`)
+      : item.name.replace(" (MT4)", "").replace(" (MT5)", "");
+    const translatedDesc = locale === 'en' && t(`downloads.paidSection.items.${item.id}.description`) !== `downloads.paidSection.items.${item.id}.description`
+      ? t(`downloads.paidSection.items.${item.id}.description`)
+      : item.description;
+
+    return (
+      <div key={item.id} className="bg-white border-2 border-purple-200 rounded-xl p-6 hover:border-purple-500 hover:shadow-2xl transition-all">
+        <div className="flex items-start justify-between mb-4">
+          <div className="p-3 bg-purple-100 rounded-lg">
+            <Lock className="text-purple-600" size={24} />
+          </div>
+          <div className="flex flex-col gap-1">
+            <span className="px-3 py-1 bg-purple-100 text-purple-700 text-xs font-semibold rounded-full">
+              {t('downloads.badges.pro')}
+            </span>
+            <span className={`px-2 py-1 ${item.platform === 'MT4' ? 'bg-blue-100 text-blue-700' : 'bg-green-100 text-green-700'} text-xs font-semibold rounded-full text-center`}>
+              {item.platform}
+            </span>
+          </div>
+        </div>
+
+        <h3 className="text-xl font-bold text-gray-800 mb-2">
+          {translatedName}
+        </h3>
+        
+        <p className="text-gray-600 text-sm mb-4 leading-relaxed">
+          {translatedDesc}
+        </p>
+
+        <div className="flex items-center justify-between text-xs text-gray-500 mb-4">
+          <span>{item.version}</span>
+          <span>{item.size}</span>
+        </div>
+
+        <div className="mb-4 p-4 bg-purple-50 rounded-lg">
+          <div className="text-3xl font-bold text-purple-600 mb-1">
+            {item.price?.toLocaleString("vi-VN")}đ
+          </div>
+          <div className="text-xs text-gray-600">
+            {t('downloads.paidSection.oneTimePurchase')}
+          </div>
+          <div className="text-xs text-blue-600 mt-1">
+            PayPal: ${((item.price || 0) / 24000).toFixed(2)} USD
+            <span className="text-orange-600 ml-1">(Sandbox)</span>
+          </div>
+        </div>
+
+        {/* Purchase Buttons */}
+        <div className="space-y-2 mb-4">
+          <button
+            onClick={() => handlePurchase(item, "stripe")}
+            className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+          >
+            <CreditCard size={18} />
+            <span>{t('downloads.buttons.buyStripe')}</span>
+          </button>
+          <button
+            onClick={() => handlePurchase(item, "paypal")}
+            className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-yellow-500 text-white rounded-lg font-semibold hover:bg-yellow-600 transition-colors"
+          >
+            <CreditCard size={18} />
+            <span>{t('downloads.buttons.buyPaypal')}</span>
+          </button>
+          <button
+            onClick={() => handlePurchase(item, "bank")}
+            className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors"
+          >
+            <CreditCard size={18} />
+            <span>{t('downloads.buttons.buyBank')}</span>
+          </button>
+        </div>
+
+        {/* Or Verify Order */}
+        <div className="pt-4 border-t border-gray-200">
+          <p className="text-xs text-gray-600 mb-2 text-center">
+            {t('downloads.verification.alreadyPaid')}
+          </p>
+          <div className="flex gap-2">
+            <input
+              type="text"
+              placeholder={t('downloads.verification.orderCode')}
+              value={verifyingOrder === item.id ? orderCode : ""}
+              onChange={(e) => setOrderCode(e.target.value)}
+              onFocus={() => setVerifyingOrder(item.id)}
+              className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+            />
+            <button
+              onClick={() => handleVerifyOrder(item.id)}
+              disabled={verifyingOrder === item.id && orderCode.trim() === ""}
+              className="px-4 py-2 bg-gray-800 text-white rounded text-sm font-medium hover:bg-gray-900 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {t('downloads.verification.verify')}
+            </button>
+          </div>
+          {verifyingOrder === item.id && verifyMessage && (
+            <p className={`text-xs mt-2 ${
+              verifyMessage.includes("✅") ? "text-green-600" : "text-red-600"
+            }`}>
+              {verifyMessage}
+            </p>
+          )}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
@@ -343,10 +456,10 @@ export default function DownloadsPage() {
         <section className="py-20 bg-gradient-to-br from-blue-900 via-blue-800 to-blue-950 text-white">
           <div className="container-custom text-center">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              Downloads & Tài Nguyên
+              {t('downloads.hero.title')}
             </h1>
             <p className="text-xl text-blue-100 max-w-3xl mx-auto">
-              Hướng dẫn, indicators miễn phí và EA chuyên nghiệp
+              {t('downloads.hero.subtitle')}
             </p>
           </div>
         </section>
@@ -357,57 +470,66 @@ export default function DownloadsPage() {
             <div className="text-center mb-12">
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 text-blue-800 rounded-full mb-4">
                 <FileText size={20} />
-                <span className="font-semibold">Tài liệu hướng dẫn</span>
+                <span className="font-semibold">{t('downloads.pdfSection.badge')}</span>
               </div>
               <h2 className="text-3xl font-bold text-gray-800 mb-4">
-                Hướng Dẫn PDF Miễn Phí
+                {t('downloads.pdfSection.title')}
               </h2>
               <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Download tất cả tài liệu hướng dẫn chi tiết, hoàn toàn miễn phí
+                {t('downloads.pdfSection.description')}
               </p>
             </div>
 
             <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-              {pdfGuides.map((item) => (
-                <div key={item.id} className="bg-white border-2 border-gray-200 rounded-xl p-6 hover:border-blue-500 hover:shadow-xl transition-all">
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="p-3 bg-blue-100 rounded-lg">
-                      <FileText className="text-blue-600" size={24} />
+              {pdfGuides.map((item) => {
+                const translatedName = locale === 'en' && t(`downloads.pdfSection.items.${item.id}.name`) !== `downloads.pdfSection.items.${item.id}.name` 
+                  ? t(`downloads.pdfSection.items.${item.id}.name`)
+                  : item.name;
+                const translatedDesc = locale === 'en' && t(`downloads.pdfSection.items.${item.id}.description`) !== `downloads.pdfSection.items.${item.id}.description`
+                  ? t(`downloads.pdfSection.items.${item.id}.description`)
+                  : item.description;
+                
+                return (
+                  <div key={item.id} className="bg-white border-2 border-gray-200 rounded-xl p-6 hover:border-blue-500 hover:shadow-xl transition-all">
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="p-3 bg-blue-100 rounded-lg">
+                        <FileText className="text-blue-600" size={24} />
+                      </div>
+                      <span className="px-3 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-full">
+                        {t('downloads.badges.free')}
+                      </span>
                     </div>
-                    <span className="px-3 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-full">
-                      MIỄN PHÍ
-                    </span>
+
+                    <h3 className="text-xl font-bold text-gray-800 mb-2">
+                      {translatedName}
+                    </h3>
+                    
+                    <p className="text-gray-600 text-sm mb-4 leading-relaxed">
+                      {translatedDesc}
+                    </p>
+
+                    <div className="flex items-center justify-between text-xs text-gray-500 mb-4">
+                      <span>{item.version}</span>
+                      <span>{item.size}</span>
+                    </div>
+
+                    <button
+                      onClick={() => {
+                        const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+                        if (!token) {
+                          window.location.href = `/login?redirect=/downloads`;
+                        } else {
+                          handleFreeDownload(item);
+                        }
+                      }}
+                      className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+                    >
+                      <Download size={18} />
+                      <span>{t('downloads.buttons.download')}</span>
+                    </button>
                   </div>
-
-                  <h3 className="text-xl font-bold text-gray-800 mb-2">
-                    {item.name}
-                  </h3>
-                  
-                  <p className="text-gray-600 text-sm mb-4 leading-relaxed">
-                    {item.description}
-                  </p>
-
-                  <div className="flex items-center justify-between text-xs text-gray-500 mb-4">
-                    <span>{item.version}</span>
-                    <span>{item.size}</span>
-                  </div>
-
-                  <button
-                    onClick={() => {
-                      const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-                      if (!token) {
-                        window.location.href = `/login?redirect=/downloads`;
-                      } else {
-                        handleFreeDownload(item);
-                      }
-                    }}
-                    className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
-                  >
-                    <Download size={18} />
-                    <span>Tải xuống</span>
-                  </button>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </section>
@@ -418,50 +540,59 @@ export default function DownloadsPage() {
             <div className="text-center mb-12">
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-100 text-green-800 rounded-full mb-4">
                 <Gift size={20} />
-                <span className="font-semibold">Miễn phí cho cộng đồng</span>
+                <span className="font-semibold">{t('downloads.freeSection.badge')}</span>
               </div>
               <h2 className="text-3xl font-bold text-gray-800 mb-4">
-                Indicators & EA Miễn Phí
+                {t('downloads.freeSection.title')}
               </h2>
               <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Tools hữu ích cho mọi trader, hoàn toàn miễn phí và không giới hạn
+                {t('downloads.freeSection.description')}
               </p>
             </div>
 
             <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-              {freeItems.map((item) => (
-                <div key={item.id} className="bg-white border-2 border-gray-200 rounded-xl p-6 hover:border-green-500 hover:shadow-xl transition-all">
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="p-3 bg-green-100 rounded-lg">
-                      <CheckCircle className="text-green-600" size={24} />
+              {freeItems.map((item) => {
+                const translatedName = locale === 'en' && t(`downloads.freeSection.items.${item.id}.name`) !== `downloads.freeSection.items.${item.id}.name`
+                  ? t(`downloads.freeSection.items.${item.id}.name`)
+                  : item.name;
+                const translatedDesc = locale === 'en' && t(`downloads.freeSection.items.${item.id}.description`) !== `downloads.freeSection.items.${item.id}.description`
+                  ? t(`downloads.freeSection.items.${item.id}.description`)
+                  : item.description;
+                
+                return (
+                  <div key={item.id} className="bg-white border-2 border-gray-200 rounded-xl p-6 hover:border-green-500 hover:shadow-xl transition-all">
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="p-3 bg-green-100 rounded-lg">
+                        <CheckCircle className="text-green-600" size={24} />
+                      </div>
+                      <span className="px-3 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-full">
+                        {t('downloads.badges.free')}
+                      </span>
                     </div>
-                    <span className="px-3 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-full">
-                      FREE
-                    </span>
+
+                    <h3 className="text-xl font-bold text-gray-800 mb-2">
+                      {translatedName}
+                    </h3>
+                    
+                    <p className="text-gray-600 text-sm mb-4 leading-relaxed">
+                      {translatedDesc}
+                    </p>
+
+                    <div className="flex items-center justify-between text-xs text-gray-500 mb-4">
+                      <span>{item.version}</span>
+                      <span>{item.size}</span>
+                    </div>
+
+                    <button
+                      onClick={() => handleFreeDownload(item)}
+                      className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors"
+                    >
+                      <Download size={18} />
+                      <span>{t('downloads.buttons.downloadFree')}</span>
+                    </button>
                   </div>
-
-                  <h3 className="text-xl font-bold text-gray-800 mb-2">
-                    {item.name}
-                  </h3>
-                  
-                  <p className="text-gray-600 text-sm mb-4 leading-relaxed">
-                    {item.description}
-                  </p>
-
-                  <div className="flex items-center justify-between text-xs text-gray-500 mb-4">
-                    <span>{item.version}</span>
-                    <span>{item.size}</span>
-                  </div>
-
-                  <button
-                    onClick={() => handleFreeDownload(item)}
-                    className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors"
-                  >
-                    <Download size={18} />
-                    <span>Tải miễn phí</span>
-                  </button>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </section>
@@ -472,18 +603,18 @@ export default function DownloadsPage() {
             <div className="text-center mb-12">
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-purple-100 text-purple-800 rounded-full mb-4">
                 <ShieldCheck size={20} />
-                <span className="font-semibold">Sản phẩm bản quyền</span>
+                <span className="font-semibold">{t('downloads.paidSection.badge')}</span>
               </div>
               <h2 className="text-3xl font-bold text-gray-800 mb-4">
-                Indicators & EA Chuyên Nghiệp
+                {t('downloads.paidSection.title')}
               </h2>
               <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-6">
-                Sản phẩm premium với full support và cập nhật thường xuyên
+                {t('downloads.paidSection.description')}
               </p>
               <div className="flex items-center justify-center gap-4 text-sm text-gray-600">
                 <span className="flex items-center gap-2">
                   <CreditCard size={16} />
-                  Thanh toán: Stripe • PayPal
+                  {t('downloads.paidSection.paymentMethods')}
                 </span>
               </div>
             </div>
@@ -491,216 +622,20 @@ export default function DownloadsPage() {
             {/* MT4 Products */}
             <div className="mb-8">
               <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">
-                MetaTrader 4 (MT4)
+                {t('downloads.paidSection.mt4Title')}
               </h3>
               <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-                {paidItems.filter(item => item.platform === "MT4").map((item) => (
-                  <div key={item.id} className="bg-white border-2 border-purple-200 rounded-xl p-6 hover:border-purple-500 hover:shadow-2xl transition-all">
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="p-3 bg-purple-100 rounded-lg">
-                        <Lock className="text-purple-600" size={24} />
-                      </div>
-                      <div className="flex flex-col gap-1">
-                        <span className="px-3 py-1 bg-purple-100 text-purple-700 text-xs font-semibold rounded-full">
-                          PRO
-                        </span>
-                        <span className="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full text-center">
-                          MT4
-                        </span>
-                      </div>
-                    </div>
-
-                    <h3 className="text-xl font-bold text-gray-800 mb-2">
-                      {item.name.replace(" (MT4)", "")}
-                    </h3>
-                    
-                    <p className="text-gray-600 text-sm mb-4 leading-relaxed">
-                      {item.description}
-                    </p>
-
-                    <div className="flex items-center justify-between text-xs text-gray-500 mb-4">
-                      <span>{item.version}</span>
-                      <span>{item.size}</span>
-                    </div>
-
-                    <div className="mb-4 p-4 bg-purple-50 rounded-lg">
-                      <div className="text-3xl font-bold text-purple-600 mb-1">
-                        {item.price?.toLocaleString("vi-VN")}đ
-                      </div>
-                      <div className="text-xs text-gray-600">
-                        Mua 1 lần, sử dụng trọn đời
-                      </div>
-                      <div className="text-xs text-blue-600 mt-1">
-                        PayPal: ${((item.price || 0) / 24000).toFixed(2)} USD
-                        <span className="text-orange-600 ml-1">(Sandbox)</span>
-                      </div>
-                    </div>
-
-                    {/* Purchase Buttons */}
-                    <div className="space-y-2 mb-4">
-                      <button
-                        onClick={() => handlePurchase(item, "stripe")}
-                        className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
-                      >
-                        <CreditCard size={18} />
-                        <span>Mua với Stripe</span>
-                      </button>
-                      <button
-                        onClick={() => handlePurchase(item, "paypal")}
-                        className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-yellow-500 text-white rounded-lg font-semibold hover:bg-yellow-600 transition-colors"
-                      >
-                        <CreditCard size={18} />
-                        <span>Mua với PayPal</span>
-                      </button>
-                      <button
-                        onClick={() => handlePurchase(item, "bank")}
-                        className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors"
-                      >
-                        <CreditCard size={18} />
-                        <span>💳 Chuyển khoản NH</span>
-                      </button>
-                    </div>
-
-                    {/* Or Verify Order */}
-                    <div className="pt-4 border-t border-gray-200">
-                      <p className="text-xs text-gray-600 mb-2 text-center">
-                        Đã thanh toán? Nhập mã để tải:
-                      </p>
-                      <div className="flex gap-2">
-                        <input
-                          type="text"
-                          placeholder="Mã đơn hàng"
-                          value={verifyingOrder === item.id ? orderCode : ""}
-                          onChange={(e) => setOrderCode(e.target.value)}
-                          onFocus={() => setVerifyingOrder(item.id)}
-                          className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                        />
-                        <button
-                          onClick={() => handleVerifyOrder(item.id)}
-                          disabled={verifyingOrder === item.id && orderCode.trim() === ""}
-                          className="px-4 py-2 bg-gray-800 text-white rounded text-sm font-medium hover:bg-gray-900 disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                          Xác thực
-                        </button>
-                      </div>
-                      {verifyingOrder === item.id && verifyMessage && (
-                        <p className={`text-xs mt-2 ${
-                          verifyMessage.includes("✅") ? "text-green-600" : "text-red-600"
-                        }`}>
-                          {verifyMessage}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                ))}
+                {paidItems.filter(item => item.platform === "MT4").map(renderPaidProductCard)}
               </div>
             </div>
 
             {/* MT5 Products */}
             <div>
               <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">
-                MetaTrader 5 (MT5)
+                {t('downloads.paidSection.mt5Title')}
               </h3>
               <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-                {paidItems.filter(item => item.platform === "MT5").map((item) => (
-                  <div key={item.id} className="bg-white border-2 border-purple-200 rounded-xl p-6 hover:border-purple-500 hover:shadow-2xl transition-all">
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="p-3 bg-purple-100 rounded-lg">
-                        <Lock className="text-purple-600" size={24} />
-                      </div>
-                      <div className="flex flex-col gap-1">
-                        <span className="px-3 py-1 bg-purple-100 text-purple-700 text-xs font-semibold rounded-full">
-                          PRO
-                        </span>
-                        <span className="px-2 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-full text-center">
-                          MT5
-                        </span>
-                      </div>
-                    </div>
-
-                    <h3 className="text-xl font-bold text-gray-800 mb-2">
-                      {item.name.replace(" (MT5)", "")}
-                    </h3>
-                    
-                    <p className="text-gray-600 text-sm mb-4 leading-relaxed">
-                      {item.description}
-                    </p>
-
-                    <div className="flex items-center justify-between text-xs text-gray-500 mb-4">
-                      <span>{item.version}</span>
-                      <span>{item.size}</span>
-                    </div>
-
-                    <div className="mb-4 p-4 bg-purple-50 rounded-lg">
-                      <div className="text-3xl font-bold text-purple-600 mb-1">
-                        {item.price?.toLocaleString("vi-VN")}đ
-                      </div>
-                      <div className="text-xs text-gray-600">
-                        Mua 1 lần, sử dụng trọn đời
-                      </div>
-                      <div className="text-xs text-blue-600 mt-1">
-                        PayPal: ${((item.price || 0) / 24000).toFixed(2)} USD
-                        <span className="text-orange-600 ml-1">(Sandbox)</span>
-                      </div>
-                    </div>
-
-                    {/* Purchase Buttons */}
-                    <div className="space-y-2 mb-4">
-                      <button
-                        onClick={() => handlePurchase(item, "stripe")}
-                        className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
-                      >
-                        <CreditCard size={18} />
-                        <span>Mua với Stripe</span>
-                      </button>
-                      <button
-                        onClick={() => handlePurchase(item, "paypal")}
-                        className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-yellow-500 text-white rounded-lg font-semibold hover:bg-yellow-600 transition-colors"
-                      >
-                        <CreditCard size={18} />
-                        <span>Mua với PayPal</span>
-                      </button>
-                      <button
-                        onClick={() => handlePurchase(item, "bank")}
-                        className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors"
-                      >
-                        <CreditCard size={18} />
-                        <span>💳 Chuyển khoản NH</span>
-                      </button>
-                    </div>
-
-                    {/* Or Verify Order */}
-                    <div className="pt-4 border-t border-gray-200">
-                      <p className="text-xs text-gray-600 mb-2 text-center">
-                        Đã thanh toán? Nhập mã để tải:
-                      </p>
-                      <div className="flex gap-2">
-                        <input
-                          type="text"
-                          placeholder="Mã đơn hàng"
-                          value={verifyingOrder === item.id ? orderCode : ""}
-                          onChange={(e) => setOrderCode(e.target.value)}
-                          onFocus={() => setVerifyingOrder(item.id)}
-                          className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                        />
-                        <button
-                          onClick={() => handleVerifyOrder(item.id)}
-                          disabled={verifyingOrder === item.id && orderCode.trim() === ""}
-                          className="px-4 py-2 bg-gray-800 text-white rounded text-sm font-medium hover:bg-gray-900 disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                          Xác thực
-                        </button>
-                      </div>
-                      {verifyingOrder === item.id && verifyMessage && (
-                        <p className={`text-xs mt-2 ${
-                          verifyMessage.includes("✅") ? "text-green-600" : "text-red-600"
-                        }`}>
-                          {verifyMessage}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                ))}
+                {paidItems.filter(item => item.platform === "MT5").map(renderPaidProductCard)}
               </div>
             </div>
           </div>
@@ -708,17 +643,17 @@ export default function DownloadsPage() {
         <section className="py-20 bg-blue-50">
           <div className="container-custom text-center">
             <h2 className="text-3xl font-bold text-gray-800 mb-4">
-              Cần hỗ trợ?
+              {t('downloads.support.title')}
             </h2>
             <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-              Gặp vấn đề khi download hoặc cài đặt? Team support sẵn sàng giúp đỡ
+              {t('downloads.support.description')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/pricing#contact" className="btn-primary">
-                Liên hệ hỗ trợ
+                {t('downloads.support.contactButton')}
               </Link>
               <a href="https://t.me/+0ETUdIuYUzdhZWQ1" target="_blank" rel="noopener noreferrer" className="btn-secondary">
-                Chat Telegram
+                {t('downloads.support.telegramButton')}
               </a>
             </div>
           </div>
