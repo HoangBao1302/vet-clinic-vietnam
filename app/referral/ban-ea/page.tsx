@@ -56,10 +56,10 @@ export default function BanEAPage() {
               <div className="text-center mb-8">
                 <DollarSign className="w-16 h-16 text-green-600 mx-auto mb-4" />
                 <h2 className="text-3xl font-bold text-gray-800 mb-4">
-                  Ước Tính Thu Nhập
+                  {t('affiliatePages.banEA.calculator.title')}
                 </h2>
                 <p className="text-lg text-gray-600">
-                  Tính toán nhanh hoa hồng bạn có thể kiếm được
+                  {t('affiliatePages.banEA.calculator.subtitle')}
                 </p>
               </div>
 
@@ -67,43 +67,43 @@ export default function BanEAPage() {
                 <div className="bg-blue-50 rounded-xl p-6 text-center">
                   <div className="text-sm text-gray-600 mb-2">EA Demo ($299)</div>
                   <div className="text-4xl font-bold text-blue-600 mb-2">$90</div>
-                  <div className="text-xs text-gray-500">/ đơn hàng</div>
+                  <div className="text-xs text-gray-500">{t('affiliatePages.banEA.calculator.perOrder')}</div>
                   <div className="mt-4 pt-4 border-t border-blue-200">
-                    <div className="text-sm text-gray-700">10 sales = <strong className="text-blue-600">$900</strong></div>
-                    <div className="text-sm text-gray-700">50 sales = <strong className="text-blue-600">$4,500</strong></div>
+                    <div className="text-sm text-gray-700">{t('affiliatePages.banEA.calculator.sales10')} <strong className="text-blue-600">$900</strong></div>
+                    <div className="text-sm text-gray-700">{t('affiliatePages.banEA.calculator.sales50')} <strong className="text-blue-600">$4,500</strong></div>
                   </div>
                 </div>
 
                 <div className="bg-green-50 rounded-xl p-6 text-center border-2 border-green-500">
                   <div className="text-sm text-gray-600 mb-2">EA Standard ($499)</div>
                   <div className="text-4xl font-bold text-green-600 mb-2">$150</div>
-                  <div className="text-xs text-gray-500">/ đơn hàng</div>
+                  <div className="text-xs text-gray-500">{t('affiliatePages.banEA.calculator.perOrder')}</div>
                   <div className="mt-4 pt-4 border-t border-green-200">
-                    <div className="text-sm text-gray-700">10 sales = <strong className="text-green-600">$1,500</strong></div>
-                    <div className="text-sm text-gray-700">50 sales = <strong className="text-green-600">$7,500</strong></div>
+                    <div className="text-sm text-gray-700">{t('affiliatePages.banEA.calculator.sales10')} <strong className="text-green-600">$1,500</strong></div>
+                    <div className="text-sm text-gray-700">{t('affiliatePages.banEA.calculator.sales50')} <strong className="text-green-600">$7,500</strong></div>
                   </div>
                   <div className="mt-3">
-                    <span className="text-xs bg-green-600 text-white px-2 py-1 rounded-full">Best seller</span>
+                    <span className="text-xs bg-green-600 text-white px-2 py-1 rounded-full">{t('affiliatePages.banEA.calculator.bestSeller')}</span>
                   </div>
                 </div>
 
                 <div className="bg-purple-50 rounded-xl p-6 text-center">
                   <div className="text-sm text-gray-600 mb-2">EA Pro ($899)</div>
                   <div className="text-4xl font-bold text-purple-600 mb-2">$270</div>
-                  <div className="text-xs text-gray-500">/ đơn hàng</div>
+                  <div className="text-xs text-gray-500">{t('affiliatePages.banEA.calculator.perOrder')}</div>
                   <div className="mt-4 pt-4 border-t border-purple-200">
-                    <div className="text-sm text-gray-700">10 sales = <strong className="text-purple-600">$2,700</strong></div>
-                    <div className="text-sm text-gray-700">50 sales = <strong className="text-purple-600">$13,500</strong></div>
+                    <div className="text-sm text-gray-700">{t('affiliatePages.banEA.calculator.sales10')} <strong className="text-purple-600">$2,700</strong></div>
+                    <div className="text-sm text-gray-700">{t('affiliatePages.banEA.calculator.sales50')} <strong className="text-purple-600">$13,500</strong></div>
                   </div>
                 </div>
               </div>
 
               <div className="mt-8 bg-yellow-50 border border-yellow-200 rounded-lg p-6 text-center">
                 <p className="text-gray-700 text-lg">
-                  <strong>💰 Average affiliate:</strong> Kiếm <strong className="text-green-600">$500-$2,000</strong> / tháng
+                  <strong>💰 {t('affiliatePages.banEA.calculator.average')}</strong> {t('affiliatePages.banEA.calculator.averageEarning')}
                 </p>
                 <p className="text-gray-600 text-sm mt-2">
-                  Top performers: $5,000+ / tháng với traffic chất lượng cao
+                  {t('affiliatePages.banEA.calculator.topPerformers')}
                 </p>
               </div>
             </div>
@@ -115,7 +115,7 @@ export default function BanEAPage() {
           <div className="container-custom max-w-6xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold text-gray-800 mb-4">
-                Quyền Lợi Affiliate
+                {t('affiliatePages.banEA.benefits.title')}
               </h2>
             </div>
 
@@ -123,65 +123,68 @@ export default function BanEAPage() {
               <div className="bg-white rounded-xl shadow-lg p-6">
                 <CheckCircle className="w-12 h-12 text-green-600 mb-4" />
                 <h3 className="text-xl font-bold text-gray-800 mb-3">
-                  Hoa Hồng 30% Cực Cao
+                  {t('affiliatePages.banEA.benefits.highCommission.title')}
                 </h3>
                 <p className="text-gray-600 mb-4">
-                  Cao hơn hẳn so với các chương trình affiliate EA khác (thường 10-20%). 
-                  Bạn xứng đáng được hưởng nhiều hơn cho nỗ lực của mình.
+                  {t('affiliatePages.banEA.benefits.highCommission.description')}
                 </p>
                 <ul className="space-y-2 text-sm text-gray-700">
-                  <li>✓ $90 - $270 mỗi đơn hàng</li>
-                  <li>✓ Không giới hạn số đơn</li>
-                  <li>✓ Commission lifetime (không expire)</li>
+                  {Array.isArray(t('affiliatePages.banEA.benefits.highCommission.points')) && 
+                    (t('affiliatePages.banEA.benefits.highCommission.points') as string[]).map((point, i) => (
+                      <li key={i}>✓ {point}</li>
+                    ))
+                  }
                 </ul>
               </div>
 
               <div className="bg-white rounded-xl shadow-lg p-6">
                 <Clock className="w-12 h-12 text-blue-600 mb-4" />
                 <h3 className="text-xl font-bold text-gray-800 mb-3">
-                  Cookie 90 Ngày
+                  {t('affiliatePages.banEA.benefits.cookie.title')}
                 </h3>
                 <p className="text-gray-600 mb-4">
-                  Cookie tracking 90 ngày đảm bảo bạn vẫn được hoa hồng ngay cả khi 
-                  khách hàng mua sau 3 tháng kể từ lần click đầu tiên.
+                  {t('affiliatePages.banEA.benefits.cookie.description')}
                 </p>
                 <ul className="space-y-2 text-sm text-gray-700">
-                  <li>✓ Cookie 90 ngày (dài nhất thị trường)</li>
-                  <li>✓ Last-click attribution</li>
-                  <li>✓ Không lo mất commission</li>
+                  {Array.isArray(t('affiliatePages.banEA.benefits.cookie.points')) && 
+                    (t('affiliatePages.banEA.benefits.cookie.points') as string[]).map((point, i) => (
+                      <li key={i}>✓ {point}</li>
+                    ))
+                  }
                 </ul>
               </div>
 
               <div className="bg-white rounded-xl shadow-lg p-6">
                 <BarChart3 className="w-12 h-12 text-purple-600 mb-4" />
                 <h3 className="text-xl font-bold text-gray-800 mb-3">
-                  Dashboard Real-Time
+                  {t('affiliatePages.banEA.benefits.dashboard.title')}
                 </h3>
                 <p className="text-gray-600 mb-4">
-                  Tracking minh bạch 24/7 về clicks, conversions, và earnings. 
-                  Export report CSV bất cứ lúc nào.
+                  {t('affiliatePages.banEA.benefits.dashboard.description')}
                 </p>
                 <ul className="space-y-2 text-sm text-gray-700">
-                  <li>✓ Track clicks, conversions, revenue</li>
-                  <li>✓ View by date, campaign, source</li>
-                  <li>✓ Export CSV reports</li>
+                  {Array.isArray(t('affiliatePages.banEA.benefits.dashboard.points')) && 
+                    (t('affiliatePages.banEA.benefits.dashboard.points') as string[]).map((point, i) => (
+                      <li key={i}>✓ {point}</li>
+                    ))
+                  }
                 </ul>
               </div>
 
               <div className="bg-white rounded-xl shadow-lg p-6">
                 <Gift className="w-12 h-12 text-orange-600 mb-4" />
                 <h3 className="text-xl font-bold text-gray-800 mb-3">
-                  Marketing Materials Miễn Phí
+                  {t('affiliatePages.banEA.benefits.materials.title')}
                 </h3>
                 <p className="text-gray-600 mb-4">
-                  Banner ads, landing pages, email templates, video demos - 
-                  tất cả đã được chuẩn bị sẵn để bạn chỉ việc copy & paste.
+                  {t('affiliatePages.banEA.benefits.materials.description')}
                 </p>
                 <ul className="space-y-2 text-sm text-gray-700">
-                  <li>✓ 20+ banner designs (nhiều sizes)</li>
-                  <li>✓ Landing page templates</li>
-                  <li>✓ Email swipes & scripts</li>
-                  <li>✓ Video demos & tutorials</li>
+                  {Array.isArray(t('affiliatePages.banEA.benefits.materials.points')) && 
+                    (t('affiliatePages.banEA.benefits.materials.points') as string[]).map((point, i) => (
+                      <li key={i}>✓ {point}</li>
+                    ))
+                  }
                 </ul>
               </div>
             </div>
@@ -193,62 +196,27 @@ export default function BanEAPage() {
           <div className="container-custom max-w-5xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold text-gray-800 mb-4">
-                Cách Thức Hoạt Động
+                {t('affiliatePages.banEA.howItWorks.title')}
               </h2>
             </div>
 
             <div className="space-y-6">
-              <div className="bg-white rounded-xl shadow-lg p-6 flex items-start gap-6">
-                <div className="flex-shrink-0 w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center text-xl font-bold">
-                  1
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-gray-800 mb-2">Đăng Ký & Được Duyệt</h3>
-                  <p className="text-gray-600">
-                    Điền form đăng ký affiliate. Chúng tôi review và approve trong vòng 24h. 
-                    Yêu cầu: có website/blog/channel/group với audience quan tâm forex.
-                  </p>
-                </div>
-              </div>
-
-              <div className="bg-white rounded-xl shadow-lg p-6 flex items-start gap-6">
-                <div className="flex-shrink-0 w-12 h-12 bg-green-600 text-white rounded-full flex items-center justify-center text-xl font-bold">
-                  2
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-gray-800 mb-2">Nhận Tracking Link & Materials</h3>
-                  <p className="text-gray-600">
-                    Sau khi được approve, bạn nhận unique tracking link, access to dashboard, 
-                    và download đầy đủ marketing materials (banners, landing pages, emails).
-                  </p>
-                </div>
-              </div>
-
-              <div className="bg-white rounded-xl shadow-lg p-6 flex items-start gap-6">
-                <div className="flex-shrink-0 w-12 h-12 bg-purple-600 text-white rounded-full flex items-center justify-center text-xl font-bold">
-                  3
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-gray-800 mb-2">Promote EA ThebenchmarkTrader</h3>
-                  <p className="text-gray-600">
-                    Share tracking link qua blog posts, Youtube videos, Facebook groups, email newsletters, etc. 
-                    Sử dụng materials có sẵn hoặc tự sáng tạo content riêng.
-                  </p>
-                </div>
-              </div>
-
-              <div className="bg-white rounded-xl shadow-lg p-6 flex items-start gap-6">
-                <div className="flex-shrink-0 w-12 h-12 bg-orange-600 text-white rounded-full flex items-center justify-center text-xl font-bold">
-                  4
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-gray-800 mb-2">Track & Earn Commission</h3>
-                  <p className="text-gray-600">
-                    Mỗi lần có khách hàng mua EA qua link của bạn, bạn nhận 30% hoa hồng. 
-                    Track real-time trên dashboard. Chi trả hàng tuần qua bank transfer.
-                  </p>
-                </div>
-              </div>
+              {Array.isArray(t('affiliatePages.banEA.howItWorks.steps')) && 
+                (t('affiliatePages.banEA.howItWorks.steps') as any[]).map((step, index) => {
+                  const colors = ['bg-blue-600', 'bg-green-600', 'bg-purple-600', 'bg-orange-600'];
+                  return (
+                    <div key={index} className="bg-white rounded-xl shadow-lg p-6 flex items-start gap-6">
+                      <div className={`flex-shrink-0 w-12 h-12 ${colors[index]} text-white rounded-full flex items-center justify-center text-xl font-bold`}>
+                        {index + 1}
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-bold text-gray-800 mb-2">{step.title}</h3>
+                        <p className="text-gray-600">{step.description}</p>
+                      </div>
+                    </div>
+                  );
+                })
+              }
             </div>
           </div>
         </section>
@@ -258,56 +226,39 @@ export default function BanEAPage() {
           <div className="container-custom max-w-5xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold text-gray-800 mb-4">
-                Câu Chuyện Thành Công
+                {t('affiliatePages.banEA.successStories.title')}
               </h2>
             </div>
 
             <div className="grid md:grid-cols-2 gap-8">
-              <div className="bg-white rounded-xl shadow-lg p-6">
-                <div className="flex items-center gap-1 text-yellow-500 mb-3">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} size={16} fill="currentColor" />
-                  ))}
-                </div>
-                <p className="text-gray-700 mb-4 italic">
-                  "Tháng đầu tiên kiếm được $3,200 từ 21 sales. Tôi có kênh Youtube 50K subs về forex, 
-                  chỉ cần làm 1 video review EA và link affiliate trong description. 
-                  Cookie 90 ngày rất ưu việt!"
-                </p>
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold">
-                    AN
-                  </div>
-                  <div>
-                    <div className="font-semibold text-gray-800">Anh Nguyễn</div>
-                    <div className="text-sm text-gray-600">Youtube Creator - 50K subs</div>
-                    <div className="text-xs text-green-600 font-semibold">Kiếm $3,200 / tháng</div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white rounded-xl shadow-lg p-6">
-                <div className="flex items-center gap-1 text-yellow-500 mb-3">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} size={16} fill="currentColor" />
-                  ))}
-                </div>
-                <p className="text-gray-700 mb-4 italic">
-                  "Tôi viết blog về forex trading. Sau khi publish bài review EA ThebenchmarkTrader, 
-                  mỗi tháng có 10-15 sales organic từ SEO. Thu nhập thụ động mà không cần làm gì thêm. 
-                  Recommend!"
-                </p>
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center text-white font-bold">
-                    HT
-                  </div>
-                  <div>
-                    <div className="font-semibold text-gray-800">Hương Trần</div>
-                    <div className="text-sm text-gray-600">Forex Blogger</div>
-                    <div className="text-xs text-green-600 font-semibold">Kiếm $1,800 / tháng</div>
-                  </div>
-                </div>
-              </div>
+              {Array.isArray(t('affiliatePages.banEA.successStories.stories')) && 
+                (t('affiliatePages.banEA.successStories.stories') as any[]).map((story, index) => {
+                  const colors = ['bg-blue-600', 'bg-purple-600'];
+                  const initials = story.name.split(' ').map((n: string) => n[0]).join('');
+                  return (
+                    <div key={index} className="bg-white rounded-xl shadow-lg p-6">
+                      <div className="flex items-center gap-1 text-yellow-500 mb-3">
+                        {[...Array(5)].map((_, i) => (
+                          <Star key={i} size={16} fill="currentColor" />
+                        ))}
+                      </div>
+                      <p className="text-gray-700 mb-4 italic">
+                        "{story.quote}"
+                      </p>
+                      <div className="flex items-center gap-3">
+                        <div className={`w-12 h-12 ${colors[index]} rounded-full flex items-center justify-center text-white font-bold`}>
+                          {initials}
+                        </div>
+                        <div>
+                          <div className="font-semibold text-gray-800">{story.name}</div>
+                          <div className="text-sm text-gray-600">{story.role}</div>
+                          <div className="text-xs text-green-600 font-semibold">{story.earning}</div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })
+              }
             </div>
           </div>
         </section>
@@ -316,24 +267,24 @@ export default function BanEAPage() {
         <section className="py-20 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
           <div className="container-custom text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Sẵn Sàng Kiếm 30% Commission?
+              {t('affiliatePages.banEA.cta.title')}
             </h2>
             <p className="text-xl mb-8 max-w-2xl mx-auto">
-              Đăng ký ngay để nhận tracking link và bắt đầu kiếm tiền trong vòng 24h
+              {t('affiliatePages.banEA.cta.subtitle')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
                 href="/referral/apply"
                 className="inline-flex items-center justify-center px-8 py-4 bg-white text-blue-600 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors"
               >
-                Đăng Ký Affiliate Ngay
+                {t('affiliatePages.banEA.cta.registerButton')}
                 <ArrowRight size={20} className="ml-2" />
               </a>
               <Link
                 href="/referral"
                 className="inline-flex items-center justify-center px-8 py-4 border-2 border-white text-white rounded-lg font-bold text-lg hover:bg-white/10 transition-colors"
               >
-                Xem Các Chương Trình Khác
+                {t('affiliatePages.banEA.cta.viewOthersButton')}
               </Link>
             </div>
           </div>
