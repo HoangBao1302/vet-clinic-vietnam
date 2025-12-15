@@ -942,5 +942,114 @@
         }
       ]
     }
+  },
+  "affiliatePages": {
+    "banEA": {
+      "hero": {
+        "badge": "Commission cao nhất",
+        "title": "Affiliate Bán EA - 30% Hoa Hồng",
+        "subtitle": "Kiếm hoa hồng cao nhất với chương trình bán EA ThebenchmarkTrader. Phù hợp cho trader có community, kênh Youtube, hoặc blog.",
+        "stats": {
+          "commission": "Hoa hồng",
+          "cookie": "Cookie duration",
+          "price": "Giá EA"
+        }
+      },
+      "calculator": {
+        "title": "Ước Tính Thu Nhập",
+        "subtitle": "Tính toán nhanh hoa hồng bạn có thể kiếm được",
+        "perOrder": "/ đơn hàng",
+        "sales10": "10 sales =",
+        "sales50": "50 sales =",
+        "bestSeller": "Best seller",
+        "average": "Average affiliate:",
+        "averageEarning": "Kiếm $500-$2,000 / tháng",
+        "topPerformers": "Top performers: $5,000+ / tháng với traffic chất lượng cao"
+      },
+      "benefits": {
+        "title": "Quyền Lợi Affiliate",
+        "highCommission": {
+          "title": "Hoa Hồng 30% Cực Cao",
+          "description": "Cao hơn hẳn so với các chương trình affiliate EA khác (thường 10-20%). Bạn xứng đáng được hưởng nhiều hơn cho nỗ lực của mình.",
+          "points": [
+            "$90 - $270 mỗi đơn hàng",
+            "Không giới hạn số đơn",
+            "Commission lifetime (không expire)"
+          ]
+        },
+        "cookie": {
+          "title": "Cookie 90 Ngày",
+          "description": "Cookie tracking 90 ngày đảm bảo bạn vẫn được hoa hồng ngay cả khi khách hàng mua sau 3 tháng kể từ lần click đầu tiên.",
+          "points": [
+            "Cookie 90 ngày (dài nhất thị trường)",
+            "Last-click attribution",
+            "Không lo mất commission"
+          ]
+        },
+        "dashboard": {
+          "title": "Dashboard Real-Time",
+          "description": "Tracking minh bạch 24/7 về clicks, conversions, và earnings. Export report CSV bất cứ lúc nào.",
+          "points": [
+            "Track clicks, conversions, revenue",
+            "View by date, campaign, source",
+            "Export CSV reports"
+          ]
+        },
+        "materials": {
+          "title": "Marketing Materials Miễn Phí",
+          "description": "Banner ads, landing pages, email templates, video demos - tất cả đã được chuẩn bị sẵn để bạn chỉ việc copy & paste.",
+          "points": [
+            "20+ banner designs (nhiều sizes)",
+            "Landing page templates",
+            "Email swipes & scripts",
+            "Video demos & tutorials"
+          ]
+        }
+      },
+      "howItWorks": {
+        "title": "Cách Thức Hoạt Động",
+        "steps": [
+          {
+            "title": "Đăng Ký & Được Duyệt",
+            "description": "Điền form đăng ký affiliate. Chúng tôi review và approve trong vòng 24h. Yêu cầu: có website/blog/channel/group với audience quan tâm forex."
+          },
+          {
+            "title": "Nhận Tracking Link & Materials",
+            "description": "Sau khi được approve, bạn nhận unique tracking link, access to dashboard, và download đầy đủ marketing materials (banners, landing pages, emails)."
+          },
+          {
+            "title": "Promote EA ThebenchmarkTrader",
+            "description": "Share tracking link qua blog posts, Youtube videos, Facebook groups, email newsletters, etc. Sử dụng materials có sẵn hoặc tự sáng tạo content riêng."
+          },
+          {
+            "title": "Track & Earn Commission",
+            "description": "Mỗi lần có khách hàng mua EA qua link của bạn, bạn nhận 30% hoa hồng. Track real-time trên dashboard. Chi trả hàng tuần qua bank transfer."
+          }
+        ]
+      },
+      "successStories": {
+        "title": "Câu Chuyện Thành Công",
+        "stories": [
+          {
+            "quote": "Tháng đầu tiên kiếm được $3,200 từ 21 sales. Tôi có kênh Youtube 50K subs về forex, chỉ cần làm 1 video review EA và link affiliate trong description. Cookie 90 ngày rất ưu việt!",
+            "name": "Anh Nguyễn",
+            "role": "Youtube Creator - 50K subs",
+            "earning": "Kiếm $3,200 / tháng"
+          },
+          {
+            "quote": "Tôi viết blog về forex trading. Sau khi publish bài review EA ThebenchmarkTrader, mỗi tháng có 10-15 sales organic từ SEO. Thu nhập thụ động mà không cần làm gì thêm. Recommend!",
+            "name": "Hương Trần",
+            "role": "Forex Blogger",
+            "earning": "Kiếm $1,800 / tháng"
+          }
+        ]
+      },
+      "cta": {
+        "title": "Sẵn Sàng Kiếm 30% Commission?",
+        "subtitle": "Đăng ký ngay để nhận tracking link và bắt đầu kiếm tiền trong vòng 24h",
+        "registerButton": "Đăng Ký Affiliate Ngay",
+        "viewOthersButton": "Xem Các Chương Trình Khác"
+      }
+    }
   }
 }

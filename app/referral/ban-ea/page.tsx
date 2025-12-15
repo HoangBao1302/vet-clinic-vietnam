@@ -6,8 +6,11 @@ import StickyCallToAction from "@/components/StickyCallToAction";
 import AuthProtected from "@/components/AuthProtected";
 import { TrendingUp, DollarSign, CheckCircle, Clock, Users, BarChart3, Gift, ArrowRight, Star } from "lucide-react";
 import Link from "next/link";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 
 export default function BanEAPage() {
+  const { t } = useLocale();
+  
   return (
     <AuthProtected>
       <div className="min-h-screen bg-gray-50">
@@ -20,26 +23,25 @@ export default function BanEAPage() {
             <div className="max-w-4xl mx-auto text-center">
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-sm font-medium mb-6">
                 <TrendingUp size={16} />
-                <span>Commission cao nhất</span>
+                <span>{t('affiliatePages.banEA.hero.badge')}</span>
               </div>
               <h1 className="text-4xl md:text-6xl font-bold mb-6">
-                Affiliate Bán EA - <span className="text-yellow-400">30%</span> Hoa Hồng
+                {t('affiliatePages.banEA.hero.title').split('30%')[0]}<span className="text-yellow-400">30%</span>{t('affiliatePages.banEA.hero.title').split('30%')[1] || ' Hoa Hồng'}
               </h1>
               <p className="text-xl text-blue-100 leading-relaxed mb-8">
-                Kiếm hoa hồng cao nhất với chương trình bán EA ThebenchmarkTrader. 
-                Phù hợp cho trader có community, kênh Youtube, hoặc blog.
+                {t('affiliatePages.banEA.hero.subtitle')}
               </p>
               <div className="flex flex-wrap gap-4 justify-center">
                 <div className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full">
-                  <div className="text-sm text-blue-200">Hoa hồng</div>
+                  <div className="text-sm text-blue-200">{t('affiliatePages.banEA.hero.stats.commission')}</div>
                   <div className="text-3xl font-bold">30%</div>
                 </div>
                 <div className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full">
-                  <div className="text-sm text-blue-200">Cookie duration</div>
+                  <div className="text-sm text-blue-200">{t('affiliatePages.banEA.hero.stats.cookie')}</div>
                   <div className="text-2xl font-bold">90 ngày</div>
                 </div>
                 <div className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full">
-                  <div className="text-sm text-blue-200">Giá EA</div>
+                  <div className="text-sm text-blue-200">{t('affiliatePages.banEA.hero.stats.price')}</div>
                   <div className="text-2xl font-bold">$299-$899</div>
                 </div>
               </div>

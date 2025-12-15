@@ -942,5 +942,114 @@
         }
       ]
     }
+  },
+  "affiliatePages": {
+    "banEA": {
+      "hero": {
+        "badge": "Highest commission",
+        "title": "EA Sales Affiliate - 30% Commission",
+        "subtitle": "Earn the highest commission with EA ThebenchmarkTrader sales program. Perfect for traders with community, Youtube channel, or blog.",
+        "stats": {
+          "commission": "Commission",
+          "cookie": "Cookie duration",
+          "price": "EA Price"
+        }
+      },
+      "calculator": {
+        "title": "Income Estimate",
+        "subtitle": "Quick calculation of commissions you can earn",
+        "perOrder": "/ order",
+        "sales10": "10 sales =",
+        "sales50": "50 sales =",
+        "bestSeller": "Best seller",
+        "average": "Average affiliate:",
+        "averageEarning": "Earn $500-$2,000 / month",
+        "topPerformers": "Top performers: $5,000+ / month with high-quality traffic"
+      },
+      "benefits": {
+        "title": "Affiliate Benefits",
+        "highCommission": {
+          "title": "Extremely High 30% Commission",
+          "description": "Much higher than other EA affiliate programs (usually 10-20%). You deserve more for your efforts.",
+          "points": [
+            "$90 - $270 per order",
+            "Unlimited orders",
+            "Lifetime commission (no expiry)"
+          ]
+        },
+        "cookie": {
+          "title": "90-Day Cookie",
+          "description": "90-day cookie tracking ensures you still get commission even if customer buys 3 months after first click.",
+          "points": [
+            "90-day cookie (longest in market)",
+            "Last-click attribution",
+            "No worries about losing commission"
+          ]
+        },
+        "dashboard": {
+          "title": "Real-Time Dashboard",
+          "description": "Transparent 24/7 tracking of clicks, conversions, and earnings. Export CSV reports anytime.",
+          "points": [
+            "Track clicks, conversions, revenue",
+            "View by date, campaign, source",
+            "Export CSV reports"
+          ]
+        },
+        "materials": {
+          "title": "Free Marketing Materials",
+          "description": "Banner ads, landing pages, email templates, video demos - all prepared for you to just copy & paste.",
+          "points": [
+            "20+ banner designs (multiple sizes)",
+            "Landing page templates",
+            "Email swipes & scripts",
+            "Video demos & tutorials"
+          ]
+        }
+      },
+      "howItWorks": {
+        "title": "How It Works",
+        "steps": [
+          {
+            "title": "Register & Get Approved",
+            "description": "Fill out affiliate registration form. We review and approve within 24h. Requirement: have website/blog/channel/group with forex-interested audience."
+          },
+          {
+            "title": "Receive Tracking Link & Materials",
+            "description": "After approval, you receive unique tracking link, dashboard access, and download full marketing materials (banners, landing pages, emails)."
+          },
+          {
+            "title": "Promote EA ThebenchmarkTrader",
+            "description": "Share tracking link via blog posts, Youtube videos, Facebook groups, email newsletters, etc. Use ready materials or create your own content."
+          },
+          {
+            "title": "Track & Earn Commission",
+            "description": "Each time a customer buys EA through your link, you receive 30% commission. Track real-time on dashboard. Weekly payout via bank transfer."
+          }
+        ]
+      },
+      "successStories": {
+        "title": "Success Stories",
+        "stories": [
+          {
+            "quote": "First month earned $3,200 from 21 sales. I have a 50K subs Youtube channel about forex, just made 1 EA review video with affiliate link in description. 90-day cookie is excellent!",
+            "name": "Anh Nguyen",
+            "role": "Youtube Creator - 50K subs",
+            "earning": "Earning $3,200 / month"
+          },
+          {
+            "quote": "I write a blog about forex trading. After publishing EA ThebenchmarkTrader review, I get 10-15 organic sales monthly from SEO. Passive income without extra work. Recommend!",
+            "name": "Huong Tran",
+            "role": "Forex Blogger",
+            "earning": "Earning $1,800 / month"
+          }
+        ]
+      },
+      "cta": {
+        "title": "Ready to Earn 30% Commission?",
+        "subtitle": "Register now to receive tracking link and start earning within 24h",
+        "registerButton": "Register Affiliate Now",
+        "viewOthersButton": "View Other Programs"
+      }
+    }
   }
 }
