@@ -6,8 +6,11 @@ import StickyCallToAction from "@/components/StickyCallToAction";
 import AuthProtected from "@/components/AuthProtected";
 import { GraduationCap, DollarSign, CheckCircle, BookOpen, Video, FileText, Gift, ArrowRight, Star, Trophy } from "lucide-react";
 import Link from "next/link";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 
 export default function BanKhoaHocPage() {
+  const { t } = useLocale();
+  
   return (
     <AuthProtected>
       <div className="min-h-screen bg-gray-50">
@@ -20,26 +23,25 @@ export default function BanKhoaHocPage() {
             <div className="max-w-4xl mx-auto text-center">
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-sm font-medium mb-6">
                 <Trophy size={16} />
-                <span>Sản phẩm giá trị cao</span>
+                <span>{t('affiliatePages.banKhoaHoc.hero.badge')}</span>
               </div>
               <h1 className="text-4xl md:text-6xl font-bold mb-6">
-                Bán Khóa Học - <span className="text-yellow-400">25%</span> Hoa Hồng
+                {t('affiliatePages.banKhoaHoc.hero.title').split('25%')[0]}<span className="text-yellow-400">25%</span>{t('affiliatePages.banKhoaHoc.hero.title').split('25%')[1] || ' Hoa Hồng'}
               </h1>
               <p className="text-xl text-orange-100 leading-relaxed mb-8">
-                Affiliate cho khóa học Forex Trading Strategy, EA Setup & Optimization. 
-                Giá cao ($197-$997), hoa hồng hấp dẫn $49-$249 mỗi đơn!
+                {t('affiliatePages.banKhoaHoc.hero.subtitle')}
               </p>
               <div className="flex flex-wrap gap-4 justify-center">
                 <div className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full">
-                  <div className="text-sm text-orange-200">Hoa hồng</div>
+                  <div className="text-sm text-orange-200">{t('affiliatePages.banKhoaHoc.hero.stats.commission')}</div>
                   <div className="text-3xl font-bold">25%</div>
                 </div>
                 <div className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full">
-                  <div className="text-sm text-orange-200">Cookie</div>
+                  <div className="text-sm text-orange-200">{t('affiliatePages.banKhoaHoc.hero.stats.cookie')}</div>
                   <div className="text-2xl font-bold">60 ngày</div>
                 </div>
                 <div className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full">
-                  <div className="text-sm text-orange-200">Giá khóa học</div>
+                  <div className="text-sm text-orange-200">{t('affiliatePages.banKhoaHoc.hero.stats.courses')}</div>
                   <div className="text-2xl font-bold">$197-997</div>
                 </div>
               </div>
@@ -306,24 +308,24 @@ export default function BanKhoaHocPage() {
         <section className="py-20 bg-gradient-to-r from-orange-600 to-red-600 text-white">
           <div className="container-custom text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Bắt Đầu Kiếm $49-$249 Mỗi Sale
+              {t('affiliatePages.banKhoaHoc.cta.title')}
             </h2>
             <p className="text-xl mb-8 max-w-2xl mx-auto">
-              Đăng ký ngay, được tặng FREE access tất cả khóa học và nhận tracking link trong 24h
+              {t('affiliatePages.banKhoaHoc.cta.subtitle')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
                 href="/referral/apply"
                 className="inline-flex items-center justify-center px-8 py-4 bg-white text-orange-600 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors"
               >
-                Đăng Ký Affiliate Ngay
+                {t('affiliatePages.banKhoaHoc.cta.registerButton')}
                 <ArrowRight size={20} className="ml-2" />
               </a>
               <Link
                 href="/referral"
                 className="inline-flex items-center justify-center px-8 py-4 border-2 border-white text-white rounded-lg font-bold text-lg hover:bg-white/10 transition-colors"
               >
-                Xem Các Chương Trình Khác
+                {t('affiliatePages.banKhoaHoc.cta.viewOthersButton')}
               </Link>
             </div>
           </div>
