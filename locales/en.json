@@ -1310,5 +1310,59 @@
       "errorMessage": "❌ An error occurred. Please try again.",
       "connectionError": "❌ Connection error. Please try again later."
     }
+  },
+  "chatWidget": {
+    "buttonTooltip": "Need help? 💬",
+    "header": {
+      "title": "EA ThebenchmarkTrader",
+      "subtitle": "Virtual Assistant • Online"
+    },
+    "welcome": "Hello! 👋\n\nI'm the virtual assistant for EA ThebenchmarkTrader. I can help you with:\n\n💰 Pricing and EA packages\n📊 View real results\n🤖 How EA works\n🎯 Copy trading\n📥 Purchase/installation guide\n\nWhat are you interested in?",
+    "quickReplies": [
+      {
+        "text": "💰 How much is the EA?",
+        "answer": "EA ThebenchmarkTrader has 3 packages:\n\n📦 Demo: Free (demo account only)\n💎 Full Version: $300 (3 live accounts)\n🚀 Pro + Source: $600 (unlimited + source code)\n\nWhich package are you interested in?"
+      },
+      {
+        "text": "📊 View real results",
+        "answer": "We have 5+ verified accounts with real money results:\n\n✅ MQL5: +186% gain, 12.5% DD\n✅ Myfxbook: +215% gain, 14.2% DD\n✅ Tickmill Social: +168% gain (can copy)\n\nWould you like to see details?"
+      },
+      {
+        "text": "🤖 How does EA work?",
+        "answer": "EA ThebenchmarkTrader uses:\n\n📈 Multi-strategy: Trend + Range\n🛡️ Risk management: 1-2% per trade\n⏰ Time filter: Avoid major news\n📊 Multi-timeframe analysis\n\nEA automatically analyzes and places orders 24/7. What feature would you like to know more about?"
+      },
+      {
+        "text": "🎯 Can I copy trade?",
+        "answer": "Yes! You can copy trade directly:\n\n✅ Tickmill Social: Copy from $500\n✅ PuPrime Social: Copy from $200\n✅ MQL5 Signals: Auto-copy on MT4/MT5\n\nNo need to buy EA, just follow and copy. Do you have a broker account?"
+      },
+      {
+        "text": "📥 How to buy/download EA?",
+        "answer": "To purchase EA:\n\n1️⃣ Demo (Free): Fill form → Receive download link\n2️⃣ Full/Pro: Fill form → Transfer payment → Receive EA + License\n\n⏱️ Delivery: Within 24h (usually faster)\n💳 Payment: Bank transfer, Momo, ZaloPay\n\nWould you like to download demo or buy full version?"
+      },
+      {
+        "text": "🔧 Installation support available?",
+        "answer": "Full support available:\n\n📹 Detailed video tutorials\n📄 Complete documentation\n💬 Telegram support 24/7\n🎥 TeamViewer setup (if needed)\n\nFull/Pro package: Free 1-1 support\nDemo: Email support\n\nWhat do you need help with?"
+      },
+      {
+        "text": "❓ Other questions",
+        "answer": "For best support, you can:\n\n📱 Chat Telegram Group: t.me/+0ETUdIuYUzdhZWQ1\n📧 Email: support@thebenchmarktrader.com\n📞 Hotline: +84 765 452 515\n\nSupport team will respond within 1-2 hours (Mon-Fri, 9am-6pm). Which channel would you prefer?"
+      }
+    ],
+    "customMessageResponse": "Thank you for your question! 😊\n\nFor detailed support, please contact:\n\n📱 Telegram Group: t.me/+0ETUdIuYUzdhZWQ1\n📧 Email: support@thebenchmarktrader.com\n📞 Hotline: +84 765 452 515\n\nTeam will respond within 1-2 hours!",
+    "contactOptions": {
+      "telegram": "💬 Chat Telegram",
+      "email": "📧 Send Email",
+      "backMenu": "↩️ Back to menu"
+    },
+    "contactAnswers": {
+      "telegram": "Opening Telegram...",
+      "email": "Opening email...",
+      "backMenu": "How can I help you?"
+    },
+    "input": {
+      "placeholder": "Type your question...",
+      "hint": "Press Enter to send"
+    },
+    "processing": "Processing..."
   }
 }

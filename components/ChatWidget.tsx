@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { MessageCircle, X, Send, User, Bot, ExternalLink } from "lucide-react";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 
 interface Message {
   id: string;
@@ -18,64 +19,36 @@ interface QuickReply {
   action?: "telegram" | "email" | "pricing" | "live-results";
 }
 
-const quickReplies: QuickReply[] = [
-  {
-    id: "1",
-    text: "💰 Giá EA bao nhiêu?",
-    answer: "EA ThebenchmarkTrader có 3 gói:\n\n📦 Demo: Miễn phí (chỉ demo account)\n💎 Full Version: 7.900.000đ (3 tài khoản live)\n🚀 Pro + Source: 14.900.000đ (unlimited + source code)\n\nBạn quan tâm gói nào ạ?"
-  },
-  {
-    id: "2",
-    text: "📊 Xem kết quả thực tế",
-    answer: "Chúng tôi có 5+ tài khoản verified với kết quả real money:\n\n✅ MQL5: +186% gain, 12.5% DD\n✅ Myfxbook: +215% gain, 14.2% DD\n✅ Tickmill Social: +168% gain (có thể copy)\n\nBạn muốn xem chi tiết không?",
-    action: "live-results"
-  },
-  {
-    id: "3",
-    text: "🤖 EA hoạt động như thế nào?",
-    answer: "EA ThebenchmarkTrader sử dụng:\n\n📈 Đa chiến lược: Trend + Range\n🛡️ Quản trị rủi ro: 1-2% per trade\n⏰ Time filter: Tránh news quan trọng\n📊 Multi-timeframe analysis\n\nEA tự động phân tích và đặt lệnh 24/7. Bạn muốn biết thêm về tính năng nào?"
-  },
-  {
-    id: "4",
-    text: "🎯 Copy trading có được không?",
-    answer: "Có! Bạn có thể copy trading trực tiếp:\n\n✅ Tickmill Social: Copy từ $500\n✅ PuPrime Social: Copy từ $200\n✅ MQL5 Signals: Auto-copy trên MT4/MT5\n\nKhông cần mua EA, chỉ cần follow và copy. Bạn có tài khoản broker nào chưa?"
-  },
-  {
-    id: "5",
-    text: "📥 Làm sao để mua/tải EA?",
-    answer: "Để mua EA:\n\n1️⃣ Demo (Free): Điền form → Nhận link tải\n2️⃣ Full/Pro: Điền form → Chuyển khoản → Nhận EA + License\n\n⏱️ Delivery: Trong 24h (thường nhanh hơn)\n💳 Thanh toán: Bank transfer, Momo, ZaloPay\n\nBạn muốn tải demo hay mua full version?"
-  },
-  {
-    id: "6",
-    text: "🔧 Hỗ trợ cài đặt có không?",
-    answer: "Có đầy đủ hỗ trợ:\n\n📹 Video hướng dẫn chi tiết\n📄 Documentation đầy đủ\n💬 Telegram support 24/7\n🎥 TeamViewer setup (nếu cần)\n\nGói Full/Pro: Free support 1-1\nDemo: Email support\n\nBạn cần hỗ trợ phần nào?"
-  },
-  {
-    id: "7",
-    text: "❓ Câu hỏi khác",
-    answer: "Để được hỗ trợ tốt nhất, bạn có thể:\n\n📱 Chat Telegram Group: t.me/+0ETUdIuYUzdhZWQ1\n📧 Email: support@thebenchmarktrader.com\n📞 Hotline: +84 765 452 515\n\nTeam support sẽ trả lời trong vòng 1-2 giờ (T2-T6, 9h-18h). Bạn muốn liên hệ qua kênh nào?"
-  }
-];
-
 export default function ChatWidget() {
+  const { t, locale } = useLocale();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Get quick replies from translations
+  const quickReplies: QuickReply[] = Array.isArray(t('chatWidget.quickReplies'))
+    ? t('chatWidget.quickReplies').map((reply: any, index: number) => ({
+        id: (index + 1).toString(),
+        text: reply.text,
+        answer: reply.answer,
+        action: index === 1 ? "live-results" : undefined
+      }))
+    : [];
 
   useEffect(() => {
     if (isOpen && messages.length === 0) {
       // Welcome message
       const welcomeMessage: Message = {
         id: "welcome",
-        text: "Xin chào! 👋\n\nTôi là trợ lý ảo của EA ThebenchmarkTrader. Tôi có thể giúp bạn:\n\n💰 Thông tin giá và gói EA\n📊 Xem kết quả thực tế\n🤖 Cách EA hoạt động\n🎯 Copy trading\n📥 Hướng dẫn mua/cài đặt\n\nBạn quan tâm điều gì?",
+        text: t('chatWidget.welcome'),
         sender: "bot",
         timestamp: new Date(),
         options: quickReplies
       };
       setMessages([welcomeMessage]);
     }
-  }, [isOpen]);
+  }, [isOpen, locale]);
 
   useEffect(() => {
     scrollToBottom();
@@ -100,7 +73,7 @@ export default function ChatWidget() {
     setTimeout(() => {
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: reply.answer || "Đang xử lý...",
+        text: reply.answer || t('chatWidget.processing'),
         sender: "bot",
         timestamp: new Date(),
         options: reply.id === "7" ? undefined : quickReplies // Show options again except for "other"
@@ -143,26 +116,26 @@ export default function ChatWidget() {
     setTimeout(() => {
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: "Cảm ơn câu hỏi của bạn! 😊\n\nĐể được hỗ trợ chi tiết hơn, vui lòng liên hệ:\n\n📱 Telegram Group: t.me/+0ETUdIuYUzdhZWQ1\n📧 Email: support@thebenchmarktrader.com\n📞 Hotline: +84 765 452 515\n\nTeam sẽ trả lời trong 1-2 giờ!",
+        text: t('chatWidget.customMessageResponse'),
         sender: "bot",
         timestamp: new Date(),
         options: [
           {
             id: "contact-telegram",
-            text: "💬 Chat Telegram",
-            answer: "Đang mở Telegram...",
+            text: t('chatWidget.contactOptions.telegram'),
+            answer: t('chatWidget.contactAnswers.telegram'),
             action: "telegram"
           },
           {
             id: "contact-email",
-            text: "📧 Gửi Email",
-            answer: "Đang mở email...",
+            text: t('chatWidget.contactOptions.email'),
+            answer: t('chatWidget.contactAnswers.email'),
             action: "email"
           },
           {
             id: "back-menu",
-            text: "↩️ Quay lại menu",
-            answer: "Tôi có thể giúp gì cho bạn?",
+            text: t('chatWidget.contactOptions.backMenu'),
+            answer: t('chatWidget.contactAnswers.backMenu'),
           }
         ]
       };
@@ -194,7 +167,7 @@ export default function ChatWidget() {
             1
           </span>
           <span className="absolute bottom-full right-0 mb-2 px-4 py-2 bg-gray-800 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-            Cần hỗ trợ? 💬
+            {t('chatWidget.buttonTooltip')}
           </span>
         </button>
       )}
@@ -212,8 +185,8 @@ export default function ChatWidget() {
                 <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-400 rounded-full border-2 border-white"></span>
               </div>
               <div>
-                <h3 className="font-bold">EA ThebenchmarkTrader</h3>
-                <p className="text-xs text-blue-100">Trợ lý ảo • Online</p>
+                <h3 className="font-bold">{t('chatWidget.header.title')}</h3>
+                <p className="text-xs text-blue-100">{t('chatWidget.header.subtitle')}</p>
               </div>
             </div>
             <button
@@ -251,7 +224,7 @@ export default function ChatWidget() {
                           <p className="text-sm whitespace-pre-line leading-relaxed">{message.text}</p>
                         </div>
                         <p className={`text-xs text-gray-400 mt-1 ${message.sender === "user" ? "text-right" : "text-left"}`}>
-                          {message.timestamp.toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" })}
+                          {message.timestamp.toLocaleTimeString(locale === 'vi' ? 'vi-VN' : 'en-US', { hour: "2-digit", minute: "2-digit" })}
                         </p>
                       </div>
                     </div>
@@ -292,7 +265,7 @@ export default function ChatWidget() {
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
-                placeholder="Nhập câu hỏi của bạn..."
+                placeholder={t('chatWidget.input.placeholder')}
                 className="flex-1 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:border-blue-500 text-sm"
                 suppressHydrationWarning={true}
               />
@@ -307,7 +280,7 @@ export default function ChatWidget() {
               </button>
             </div>
             <p className="text-xs text-gray-500 mt-2 text-center">
-              Nhấn Enter để gửi
+              {t('chatWidget.input.hint')}
             </p>
           </div>
         </div>

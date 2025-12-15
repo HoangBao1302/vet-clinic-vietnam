@@ -1310,5 +1310,59 @@
       "errorMessage": "❌ Đã xảy ra lỗi. Vui lòng thử lại.",
       "connectionError": "❌ Đã xảy ra lỗi kết nối. Vui lòng thử lại sau."
     }
+  },
+  "chatWidget": {
+    "buttonTooltip": "Cần hỗ trợ? 💬",
+    "header": {
+      "title": "EA ThebenchmarkTrader",
+      "subtitle": "Trợ lý ảo • Online"
+    },
+    "welcome": "Xin chào! 👋\n\nTôi là trợ lý ảo của EA ThebenchmarkTrader. Tôi có thể giúp bạn:\n\n💰 Thông tin giá và gói EA\n📊 Xem kết quả thực tế\n🤖 Cách EA hoạt động\n🎯 Copy trading\n📥 Hướng dẫn mua/cài đặt\n\nBạn quan tâm điều gì?",
+    "quickReplies": [
+      {
+        "text": "💰 Giá EA bao nhiêu?",
+        "answer": "EA ThebenchmarkTrader có 3 gói:\n\n📦 Demo: Miễn phí (chỉ demo account)\n💎 Full Version: 7.900.000đ (3 tài khoản live)\n🚀 Pro + Source: 14.900.000đ (unlimited + source code)\n\nBạn quan tâm gói nào ạ?"
+      },
+      {
+        "text": "📊 Xem kết quả thực tế",
+        "answer": "Chúng tôi có 5+ tài khoản verified với kết quả real money:\n\n✅ MQL5: +186% gain, 12.5% DD\n✅ Myfxbook: +215% gain, 14.2% DD\n✅ Tickmill Social: +168% gain (có thể copy)\n\nBạn muốn xem chi tiết không?"
+      },
+      {
+        "text": "🤖 EA hoạt động như thế nào?",
+        "answer": "EA ThebenchmarkTrader sử dụng:\n\n📈 Đa chiến lược: Trend + Range\n🛡️ Quản trị rủi ro: 1-2% per trade\n⏰ Time filter: Tránh news quan trọng\n📊 Multi-timeframe analysis\n\nEA tự động phân tích và đặt lệnh 24/7. Bạn muốn biết thêm về tính năng nào?"
+      },
+      {
+        "text": "🎯 Copy trading có được không?",
+        "answer": "Có! Bạn có thể copy trading trực tiếp:\n\n✅ Tickmill Social: Copy từ $500\n✅ PuPrime Social: Copy từ $200\n✅ MQL5 Signals: Auto-copy trên MT4/MT5\n\nKhông cần mua EA, chỉ cần follow và copy. Bạn có tài khoản broker nào chưa?"
+      },
+      {
+        "text": "📥 Làm sao để mua/tải EA?",
+        "answer": "Để mua EA:\n\n1️⃣ Demo (Free): Điền form → Nhận link tải\n2️⃣ Full/Pro: Điền form → Chuyển khoản → Nhận EA + License\n\n⏱️ Delivery: Trong 24h (thường nhanh hơn)\n💳 Thanh toán: Bank transfer, Momo, ZaloPay\n\nBạn muốn tải demo hay mua full version?"
+      },
+      {
+        "text": "🔧 Hỗ trợ cài đặt có không?",
+        "answer": "Có đầy đủ hỗ trợ:\n\n📹 Video hướng dẫn chi tiết\n📄 Documentation đầy đủ\n💬 Telegram support 24/7\n🎥 TeamViewer setup (nếu cần)\n\nGói Full/Pro: Free support 1-1\nDemo: Email support\n\nBạn cần hỗ trợ phần nào?"
+      },
+      {
+        "text": "❓ Câu hỏi khác",
+        "answer": "Để được hỗ trợ tốt nhất, bạn có thể:\n\n📱 Chat Telegram Group: t.me/+0ETUdIuYUzdhZWQ1\n📧 Email: support@thebenchmarktrader.com\n📞 Hotline: +84 765 452 515\n\nTeam support sẽ trả lời trong vòng 1-2 giờ (T2-T6, 9h-18h). Bạn muốn liên hệ qua kênh nào?"
+      }
+    ],
+    "customMessageResponse": "Cảm ơn câu hỏi của bạn! 😊\n\nĐể được hỗ trợ chi tiết hơn, vui lòng liên hệ:\n\n📱 Telegram Group: t.me/+0ETUdIuYUzdhZWQ1\n📧 Email: support@thebenchmarktrader.com\n📞 Hotline: +84 765 452 515\n\nTeam sẽ trả lời trong 1-2 giờ!",
+    "contactOptions": {
+      "telegram": "💬 Chat Telegram",
+      "email": "📧 Gửi Email",
+      "backMenu": "↩️ Quay lại menu"
+    },
+    "contactAnswers": {
+      "telegram": "Đang mở Telegram...",
+      "email": "Đang mở email...",
+      "backMenu": "Tôi có thể giúp gì cho bạn?"
+    },
+    "input": {
+      "placeholder": "Nhập câu hỏi của bạn...",
+      "hint": "Nhấn Enter để gửi"
+    },
+    "processing": "Đang xử lý..."
   }
 }
