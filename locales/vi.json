@@ -1050,6 +1050,223 @@
         "registerButton": "Đăng Ký Affiliate Ngay",
         "viewOthersButton": "Xem Các Chương Trình Khác"
       }
+    },
+    "copySocial": {
+      "hero": {
+        "badge": "Thu nhập thụ động lâu dài",
+        "title": "Copy Social Trading - 10% Hoa Hồng",
+        "subtitle": "Giới thiệu khách hàng copy trading. Thu nhập thụ động recurring hàng tháng. Cookie lifetime - khách hàng mãi mãi là của bạn!",
+        "stats": {
+          "commission": "Hoa hồng",
+          "cookie": "Cookie",
+          "payout": "Payout"
+        }
+      },
+      "whyThis": {
+        "title": "Tại Sao Chọn Copy Social?",
+        "reasons": [
+          {
+            "title": "Thu Nhập Thụ Động Recurring",
+            "description": "Khác với bán EA (1 lần), copy trading tạo thu nhập hàng tháng. Khách copy 1 năm = bạn hưởng hoa hồng 12 tháng!"
+          },
+          {
+            "title": "Cookie Lifetime",
+            "description": "Một khi khách hàng click vào link của bạn, họ mãi mãi là của bạn. Không lo cookie expire hay mất commission."
+          },
+          {
+            "title": "Dễ Bán Hơn",
+            "description": "Copy trading dễ hơn mua EA. Khách không cần technical setup, chỉ 1 click copy. Conversion rate cao hơn!"
+          }
+        ],
+        "example": {
+          "title": "Ví dụ thu nhập:",
+          "scenario1": "1 khách copy với $5,000, profit share 20% → Master trader kiếm $200/tháng profit → Bạn nhận: $20/tháng",
+          "scenario2": "10 khách copy = $200/tháng passive income",
+          "scenario3": "50 khách copy = $1,000/tháng passive income"
+        }
+      },
+      "platforms": {
+        "title": "Các Platform Copy Trading",
+        "items": [
+          {
+            "name": "MQL5 Signals",
+            "commission": "10% profit share",
+            "description": "Platform copy trading chính thức của MetaTrader. Hàng triệu users, uy tín cao.",
+            "features": ["Integrated với MT4/MT5", "Auto copy trades", "Transparent performance"]
+          },
+          {
+            "name": "Myfxbook AutoTrade",
+            "commission": "10% profit share",
+            "description": "Platform phổ biến với community lớn. Tracking chi tiết, verified results.",
+            "features": ["Verified track records", "Risk management tools", "Community ratings"]
+          },
+          {
+            "name": "Tickmill Social",
+            "commission": "20% profit share",
+            "description": "Copy trading của broker Tickmill. Commission cao hơn, execution tốt.",
+            "features": ["FCA regulated", "Low spreads", "Fast execution"]
+          },
+          {
+            "name": "PuPrime Social",
+            "commission": "25% profit share",
+            "description": "Copy trading của PuPrime. Commission cao nhất, dễ onboard.",
+            "features": ["Highest commission", "$50 minimum", "Easy setup"]
+          }
+        ]
+      },
+      "howItWorks": {
+        "title": "Cách Thức Hoạt Động",
+        "steps": [
+          {
+            "title": "Đăng Ký & Setup",
+            "description": "Đăng ký affiliate program. Chúng tôi hướng dẫn setup tracking link cho từng platform (MQL5, Myfxbook, Tickmill, PuPrime)."
+          },
+          {
+            "title": "Promote Copy Trading",
+            "description": "Share link giới thiệu copy trading accounts. Có thể promote master account của chúng tôi hoặc tự tạo content về copy trading."
+          },
+          {
+            "title": "Khách Hàng Copy",
+            "description": "Khách hàng click link → Đăng ký → Deposit → Bắt đầu copy. Bạn được ghi nhận là referrer."
+          },
+          {
+            "title": "Nhận Hoa Hồng Hàng Tháng",
+            "description": "Mỗi tháng master account có profit → Platform trả profit share cho copiers → Bạn nhận 10-25% từ profit share đó. Recurring mãi mãi!"
+          }
+        ]
+      },
+      "successStories": {
+        "title": "Câu Chuyện Thành Công",
+        "stories": [
+          {
+            "quote": "Copy Social program tuyệt vời! Tháng đầu có 8 người copy, giờ sau 6 tháng vẫn còn 6 người active. Thu nhập $120-150/tháng mà không cần làm gì. Truly passive!",
+            "name": "Minh Lê",
+            "role": "Trading Community Admin",
+            "earning": "Kiếm $120-150 / tháng"
+          },
+          {
+            "quote": "Tôi có group Telegram 2000 người về forex. Share link copy trading, mỗi tháng có 2-3 người mới copy. Giờ có 25 copiers, thu nhập $400+/tháng. Best program!",
+            "name": "Tuấn Vũ",
+            "role": "Telegram Group Owner",
+            "earning": "Kiếm $400+ / tháng"
+          }
+        ]
+      },
+      "cta": {
+        "title": "Sẵn Sàng Thu Nhập Thụ Động?",
+        "subtitle": "Đăng ký ngay để bắt đầu giới thiệu copy trading và nhận hoa hồng recurring hàng tháng",
+        "registerButton": "Đăng Ký Affiliate Ngay",
+        "viewOthersButton": "Xem Các Chương Trình Khác"
+      }
+    },
+    "banKhoaHoc": {
+      "hero": {
+        "badge": "Sản phẩm giá trị cao",
+        "title": "Bán Khóa Học - 25% Hoa Hồng",
+        "subtitle": "Affiliate cho khóa học Forex Trading Strategy, EA Setup & Optimization. Giá cao ($197-$997), hoa hồng hấp dẫn ($49-$249).",
+        "stats": {
+          "commission": "Hoa hồng",
+          "cookie": "Cookie",
+          "courses": "Giá khóa học"
+        }
+      },
+      "courses": {
+        "title": "Các Khóa Học Có Sẵn",
+        "subtitle": "Promote các khóa học chất lượng cao với conversion rate tốt",
+        "items": [
+          {
+            "name": "Forex Foundation",
+            "price": "$197",
+            "commission": "$49",
+            "description": "Khóa học cơ bản về forex trading. Phù hợp cho beginner, conversion rate cao.",
+            "features": ["Forex basics đến advanced", "Technical & fundamental analysis", "Risk management strategies", "30+ video lessons", "Lifetime access"]
+          },
+          {
+            "name": "EA Mastery Course",
+            "price": "$497",
+            "commission": "$124",
+            "description": "Khóa học setup & optimize EA ThebenchmarkTrader. Best seller với conversion tốt nhất.",
+            "features": ["Setup & optimize EA Thebenchmark Trader", "Advanced parameter tuning", "Portfolio management", "Live trading sessions", "1-on-1 support + private group"],
+            "badge": "BEST SELLER"
+          },
+          {
+            "name": "Pro Trader Bundle",
+            "price": "$997",
+            "commission": "$249",
+            "description": "Bundle tất cả khóa học + 1-on-1 mentorship. High ticket, commission cao nhất.",
+            "features": ["All courses above", "1-on-1 mentorship (3 sessions)", "Custom EA settings for your style", "Priority support lifetime", "Quarterly strategy updates"]
+          }
+        ]
+      },
+      "benefits": {
+        "title": "Quyền Lợi Affiliate",
+        "items": [
+          {
+            "title": "Commission Cao $49-$249",
+            "description": "25% của giá khóa học. Với khóa $997, bạn nhận $249 mỗi sale - cao hơn nhiều so với bán EA.",
+            "points": ["Foundation (5 sales): $245", "EA Mastery (3 sales): $372", "Pro Bundle (2 sales): $498"]
+          },
+          {
+            "title": "Tặng Trial Khóa Học",
+            "description": "Affiliate được FREE access toàn bộ khóa học để test và review trước khi bán. Bạn cần hiểu sản phẩm để bán tốt!",
+            "points": ["Full access tất cả courses", "Join private community", "Certificate sau khi hoàn thành", "Dùng làm credential khi promote"]
+          },
+          {
+            "title": "Marketing Funnel Có Sẵn",
+            "description": "Landing pages, email sequences, webinar scripts đã được optimize với conversion rate cao. Chỉ việc copy & paste.",
+            "points": ["High-converting landing pages", "Email sequences (7-day nurture)", "Webinar presentation slides", "Social media post templates"]
+          },
+          {
+            "title": "Cookie 60 Ngày & Payout 2x/tháng",
+            "description": "Cookie 60 ngày đủ dài cho decision cycle của khóa học. Chi trả 2 lần/tháng (ngày 1 và 15).",
+            "points": ["Cookie 60 ngày (dài hơn standard)", "Payout 2 lần/tháng", "Min payout: $100", "Bank transfer / PayPal"]
+          }
+        ]
+      },
+      "howItWorks": {
+        "title": "Cách Thức Hoạt Động",
+        "steps": [
+          {
+            "title": "Đăng Ký & Nhận Trial",
+            "description": "Đăng ký affiliate. Nhận FREE access tất cả khóa học để tự học và review. Hoàn thành khóa học để hiểu sâu sản phẩm."
+          },
+          {
+            "title": "Nhận Marketing Materials",
+            "description": "Download landing pages, email templates, webinar slides. Hoặc tự tạo content review/testimonial dựa trên trải nghiệm thực tế."
+          },
+          {
+            "title": "Promote Khóa Học",
+            "description": "Share link qua blog, Youtube, email list, webinars. Có thể chạy ads nếu muốn scale. Conversion rate: 3-5% (cao hơn EA)."
+          },
+          {
+            "title": "Earn Commission",
+            "description": "Mỗi khi có người mua khóa học qua link, bạn nhận 25% commission. Track trên dashboard. Payout 2 lần/tháng."
+          }
+        ]
+      },
+      "successStories": {
+        "title": "Câu Chuyện Thành Công",
+        "stories": [
+          {
+            "quote": "Tôi làm 1 video review khóa EA Mastery (sau khi học xong). Video có 5K views, conversion ~3% = 150 sales. Kiếm được $18,600 từ 1 video. ROI cực cao!",
+            "name": "Đức Nguyễn",
+            "role": "Youtube Educator",
+            "earning": "Kiếm $800-3,000 / tháng"
+          },
+          {
+            "quote": "Email list 5000 subscribers về forex. Gửi email sequence promote khóa Foundation, conversion 2.5% = 125 sales = $6,125. Khóa học dễ bán hơn EA vì giá thấp hơn!",
+            "name": "Lan Phạm",
+            "role": "Email Marketer",
+            "earning": "Kiếm $1,200 / tháng"
+          }
+        ]
+      },
+      "cta": {
+        "title": "Sẵn Sàng Kiếm $49-$249/Sale?",
+        "subtitle": "Đăng ký ngay để nhận FREE trial khóa học và bắt đầu promote với commission cao",
+        "registerButton": "Đăng Ký Affiliate Ngay",
+        "viewOthersButton": "Xem Các Chương Trình Khác"
+      }
     }
   }
 }

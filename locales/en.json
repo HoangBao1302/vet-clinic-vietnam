@@ -1050,6 +1050,223 @@
         "registerButton": "Register Affiliate Now",
         "viewOthersButton": "View Other Programs"
       }
+    },
+    "copySocial": {
+      "hero": {
+        "badge": "Long-term passive income",
+        "title": "Copy Social Trading - 10% Commission",
+        "subtitle": "Refer customers to copy trading. Recurring passive income monthly. Lifetime cookie - customers are yours forever!",
+        "stats": {
+          "commission": "Commission",
+          "cookie": "Cookie",
+          "payout": "Payout"
+        }
+      },
+      "whyThis": {
+        "title": "Why Choose Copy Social?",
+        "reasons": [
+          {
+            "title": "Recurring Passive Income",
+            "description": "Unlike EA sales (one-time), copy trading creates monthly income. Customer copies for 1 year = you earn commission for 12 months!"
+          },
+          {
+            "title": "Lifetime Cookie",
+            "description": "Once a customer clicks your link, they're yours forever. No worries about cookie expiry or lost commissions."
+          },
+          {
+            "title": "Easier to Sell",
+            "description": "Copy trading is easier than buying EA. Customers don't need technical setup, just 1 click to copy. Higher conversion rate!"
+          }
+        ],
+        "example": {
+          "title": "Income example:",
+          "scenario1": "1 customer copies with $5,000, 20% profit share → Master trader earns $200/month profit → You receive: $20/month",
+          "scenario2": "10 customers copy = $200/month passive income",
+          "scenario3": "50 customers copy = $1,000/month passive income"
+        }
+      },
+      "platforms": {
+        "title": "Copy Trading Platforms",
+        "items": [
+          {
+            "name": "MQL5 Signals",
+            "commission": "10% profit share",
+            "description": "Official MetaTrader copy trading platform. Millions of users, high credibility.",
+            "features": ["Integrated with MT4/MT5", "Auto copy trades", "Transparent performance"]
+          },
+          {
+            "name": "Myfxbook AutoTrade",
+            "commission": "10% profit share",
+            "description": "Popular platform with large community. Detailed tracking, verified results.",
+            "features": ["Verified track records", "Risk management tools", "Community ratings"]
+          },
+          {
+            "name": "Tickmill Social",
+            "commission": "20% profit share",
+            "description": "Tickmill broker's copy trading. Higher commission, good execution.",
+            "features": ["FCA regulated", "Low spreads", "Fast execution"]
+          },
+          {
+            "name": "PuPrime Social",
+            "commission": "25% profit share",
+            "description": "PuPrime copy trading. Highest commission, easy onboarding.",
+            "features": ["Highest commission", "$50 minimum", "Easy setup"]
+          }
+        ]
+      },
+      "howItWorks": {
+        "title": "How It Works",
+        "steps": [
+          {
+            "title": "Register & Setup",
+            "description": "Register for affiliate program. We guide you to setup tracking links for each platform (MQL5, Myfxbook, Tickmill, PuPrime)."
+          },
+          {
+            "title": "Promote Copy Trading",
+            "description": "Share links introducing copy trading accounts. Can promote our master accounts or create your own content about copy trading."
+          },
+          {
+            "title": "Customers Copy",
+            "description": "Customer clicks link → Registers → Deposits → Starts copying. You're recorded as referrer."
+          },
+          {
+            "title": "Receive Monthly Commission",
+            "description": "Each month master account profits → Platform pays profit share to copiers → You receive 10-25% from that profit share. Recurring forever!"
+          }
+        ]
+      },
+      "successStories": {
+        "title": "Success Stories",
+        "stories": [
+          {
+            "quote": "Copy Social program is amazing! First month had 8 copiers, now after 6 months still have 6 active. Income $120-150/month without doing anything. Truly passive!",
+            "name": "Minh Le",
+            "role": "Trading Community Admin",
+            "earning": "Earning $120-150 / month"
+          },
+          {
+            "quote": "I have a 2000-member Telegram group about forex. Share copy trading link, each month 2-3 new copiers. Now have 25 copiers, income $400+/month. Best program!",
+            "name": "Tuan Vu",
+            "role": "Telegram Group Owner",
+            "earning": "Earning $400+ / month"
+          }
+        ]
+      },
+      "cta": {
+        "title": "Ready for Passive Income?",
+        "subtitle": "Register now to start referring copy trading and receive recurring monthly commissions",
+        "registerButton": "Register Affiliate Now",
+        "viewOthersButton": "View Other Programs"
+      }
+    },
+    "banKhoaHoc": {
+      "hero": {
+        "badge": "High-value products",
+        "title": "Course Sales - 25% Commission",
+        "subtitle": "Affiliate for Forex Trading Strategy, EA Setup & Optimization courses. High prices ($197-$997), attractive commissions ($49-$249).",
+        "stats": {
+          "commission": "Commission",
+          "cookie": "Cookie",
+          "courses": "Course prices"
+        }
+      },
+      "courses": {
+        "title": "Available Courses",
+        "subtitle": "Promote high-quality courses with good conversion rates",
+        "items": [
+          {
+            "name": "Forex Foundation",
+            "price": "$197",
+            "commission": "$49",
+            "description": "Basic forex trading course. Suitable for beginners, high conversion rate.",
+            "features": ["Forex basics to advanced", "Technical & fundamental analysis", "Risk management strategies", "30+ video lessons", "Lifetime access"]
+          },
+          {
+            "name": "EA Mastery Course",
+            "price": "$497",
+            "commission": "$124",
+            "description": "Course on setup & optimize EA ThebenchmarkTrader. Best seller with best conversion.",
+            "features": ["Setup & optimize EA ThebenchmarkTrader", "Advanced parameter tuning", "Portfolio management", "Live trading sessions", "1-on-1 support + private group"],
+            "badge": "BEST SELLER"
+          },
+          {
+            "name": "Pro Trader Bundle",
+            "price": "$997",
+            "commission": "$249",
+            "description": "Bundle of all courses + 1-on-1 mentorship. High ticket, highest commission.",
+            "features": ["All courses above", "1-on-1 mentorship (3 sessions)", "Custom EA settings for your style", "Priority support lifetime", "Quarterly strategy updates"]
+          }
+        ]
+      },
+      "benefits": {
+        "title": "Affiliate Benefits",
+        "items": [
+          {
+            "title": "High Commission $49-$249",
+            "description": "25% of course price. With $997 course, you receive $249 per sale - much higher than EA sales.",
+            "points": ["Foundation (5 sales): $245", "EA Mastery (3 sales): $372", "Pro Bundle (2 sales): $498"]
+          },
+          {
+            "title": "Free Course Trial",
+            "description": "Affiliates get FREE access to all courses to test and review before selling. You need to understand the product to sell well!",
+            "points": ["Full access to all courses", "Join private community", "Certificate upon completion", "Use as credentials when promoting"]
+          },
+          {
+            "title": "Ready Marketing Funnel",
+            "description": "Landing pages, email sequences, webinar scripts already optimized with high conversion rates. Just copy & paste.",
+            "points": ["High-converting landing pages", "Email sequences (7-day nurture)", "Webinar presentation slides", "Social media post templates"]
+          },
+          {
+            "title": "60-Day Cookie & 2x/Month Payout",
+            "description": "60-day cookie is long enough for course decision cycle. Payout twice monthly (1st and 15th).",
+            "points": ["60-day cookie (longer than standard)", "Payout twice monthly", "Min payout: $100", "Bank transfer / PayPal"]
+          }
+        ]
+      },
+      "howItWorks": {
+        "title": "How It Works",
+        "steps": [
+          {
+            "title": "Register & Get Trial",
+            "description": "Register affiliate. Receive FREE access to all courses to learn and review. Complete courses to deeply understand products."
+          },
+          {
+            "title": "Receive Marketing Materials",
+            "description": "Download landing pages, email templates, webinar slides. Or create your own review/testimonial content based on real experience."
+          },
+          {
+            "title": "Promote Courses",
+            "description": "Share links via blog, Youtube, email list, webinars. Can run ads if you want to scale. Conversion rate: 3-5% (higher than EA)."
+          },
+          {
+            "title": "Earn Commission",
+            "description": "Each time someone buys a course through your link, you receive 25% commission. Track on dashboard. Payout twice monthly."
+          }
+        ]
+      },
+      "successStories": {
+        "title": "Success Stories",
+        "stories": [
+          {
+            "quote": "I made 1 review video of EA Mastery course (after completing it). Video got 5K views, ~3% conversion = 150 sales. Earned $18,600 from 1 video. Extremely high ROI!",
+            "name": "Duc Nguyen",
+            "role": "Youtube Educator",
+            "earning": "Earning $800-3,000 / month"
+          },
+          {
+            "quote": "Email list of 5000 forex subscribers. Sent email sequence promoting Foundation course, 2.5% conversion = 125 sales = $6,125. Courses easier to sell than EA because lower price!",
+            "name": "Lan Pham",
+            "role": "Email Marketer",
+            "earning": "Earning $1,200 / month"
+          }
+        ]
+      },
+      "cta": {
+        "title": "Ready to Earn $49-$249/Sale?",
+        "subtitle": "Register now to receive FREE course trial and start promoting with high commissions",
+        "registerButton": "Register Affiliate Now",
+        "viewOthersButton": "View Other Programs"
+      }
     }
   }
 }
