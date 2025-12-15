@@ -794,5 +794,153 @@
         }
       ]
     }
+  },
+  "affiliate": {
+    "hero": {
+      "badge": "Kiếm Thu Nhập Thụ Động",
+      "title": "Chương Trình Tiếp Thị Liên Kết",
+      "subtitle": "Kiếm tiền bằng cách giới thiệu EA, Copy Trading, và Khóa Học Forex. Hoa hồng cao, tracking minh bạch, chi trả đúng hạn.",
+      "stats": {
+        "commission": "Hoa hồng cao nhất",
+        "cookie": "Cookie tối đa",
+        "partners": "Đối tác"
+      }
+    },
+    "whyJoin": {
+      "highCommission": {
+        "title": "Hoa Hồng Cao",
+        "description": "10-30% mỗi đơn hàng, cao nhất thị trường"
+      },
+      "transparent": {
+        "title": "Minh Bạch",
+        "description": "Dashboard tracking real-time mọi click & sale"
+      },
+      "support": {
+        "title": "Hỗ Trợ Tốt",
+        "description": "Dedicated manager, materials, training"
+      },
+      "onTime": {
+        "title": "Chi Trả Đúng Hạn",
+        "description": "Không delay, không lý do từ chối"
+      }
+    },
+    "programs": {
+      "title": "3 Chương Trình Affiliate",
+      "subtitle": "Chọn chương trình phù hợp với audience của bạn. Bạn có thể tham gia cả 3 cùng lúc!",
+      "commissionLabel": "Hoa hồng",
+      "learnMore": "Tìm Hiểu Thêm",
+      "details": {
+        "cookie": "Cookie:",
+        "minPayout": "Min Payout:",
+        "method": "Phương thức:"
+      },
+      "items": {
+        "ea-sales": {
+          "title": "Bán EA",
+          "description": "Kiếm hoa hồng cao nhất với chương trình bán EA ThebenchmarkTrader. Phù hợp cho trader có community hoặc kênh youtube/blog.",
+          "benefits": [
+            "Hoa hồng 30% cho mỗi đơn hàng thành công",
+            "Tracking link riêng với cookie 90 ngày",
+            "Dashboard theo dõi real-time",
+            "Marketing materials & banner ads miễn phí",
+            "Được ưu tiên support kỹ thuật",
+            "Chi trả hàng tuần qua bank transfer"
+          ]
+        },
+        "copy-social": {
+          "title": "Copy Social Trading",
+          "description": "Giới thiệu khách hàng copy trading trên MQL5, Myfxbook, Tickmill Social hoặc PuPrime Social. Thu nhập thụ động lâu dài.",
+          "benefits": [
+            "Hoa hồng 10% từ profit share hàng tháng",
+            "Thu nhập thụ động recurring (khách copy = bạn vẫn hưởng hoa hồng)",
+            "Cookie lifetime (khách hàng mãi mãi là của bạn)",
+            "Không cần bán hàng, chỉ giới thiệu",
+            "Dashboard tracking số followers & earnings",
+            "Chi trả hàng tháng"
+          ]
+        },
+        "courses": {
+          "title": "Bán Khóa Học",
+          "description": "Affiliate cho khóa học Forex Trading Strategy, EA Setup & Optimization. Sản phẩm giá trị cao, hoa hồng hấp dẫn.",
+          "benefits": [
+            "Hoa hồng 25% cho mỗi khóa học bán được",
+            "Khóa học từ $197 - $997 (hoa hồng $49 - $249)",
+            "Tặng trial khóa học để bạn test trước khi bán",
+            "Marketing funnel & email templates có sẵn",
+            "Cookie 60 ngày",
+            "Chi trả 2 lần/tháng"
+          ]
+        }
+      }
+    },
+    "howItWorks": {
+      "title": "Cách Thức Hoạt Động",
+      "subtitle": "Chỉ 4 bước đơn giản để bắt đầu kiếm tiền",
+      "steps": [
+        {
+          "title": "Đăng Ký",
+          "description": "Điền form đăng ký, được duyệt trong 24h"
+        },
+        {
+          "title": "Nhận Link",
+          "description": "Nhận affiliate link, banner, materials"
+        },
+        {
+          "title": "Chia Sẻ",
+          "description": "Share link trên blog, youtube, social"
+        },
+        {
+          "title": "Kiếm Tiền",
+          "description": "Nhận hoa hồng mỗi khi có sale"
+        }
+      ]
+    },
+    "testimonials": {
+      "title": "Đối Tác Nói Gì Về Chúng Tôi",
+      "items": [
+        {
+          "quote": "Kiếm được $3,200 trong tháng đầu tiên. Dashboard tracking rất chi tiết, chi trả đúng hạn!",
+          "name": "Anh Nguyễn",
+          "role": "Youtube 50K subs"
+        },
+        {
+          "quote": "Copy Social program tuyệt vời! Thu nhập thụ động mỗi tháng mà không cần làm gì thêm.",
+          "name": "Minh Lê",
+          "role": "Trading Community"
+        },
+        {
+          "quote": "Marketing materials chuyên nghiệp. Support team nhiệt tình. Highly recommend!",
+          "name": "Hương Trần",
+          "role": "Forex Blogger"
+        }
+      ]
+    },
+    "cta": {
+      "title": "Sẵn Sàng Bắt Đầu Kiếm Tiền?",
+      "subtitle": "Đăng ký ngay hôm nay và nhận tracking link trong vòng 24h. Miễn phí, không rủi ro, không yêu cầu đầu tư.",
+      "registerButton": "Đăng Ký Affiliate Ngay",
+      "consultButton": "Hoặc Liên Hệ Tư Vấn"
+    },
+    "faq": {
+      "title": "Câu Hỏi Thường Gặp",
+      "items": [
+        {
+          "question": "Tôi có cần website/blog để tham gia không?",
+          "answer": "Không bắt buộc! Bạn có thể share link qua Facebook, Telegram, Youtube comments, hoặc bất kỳ kênh nào bạn có audience quan tâm đến forex trading."
+        },
+        {
+          "question": "Khi nào tôi nhận được tiền?",
+          "answer": "Bán EA & Khóa học: Chi trả hàng tuần/2 tuần 1 lần. Copy Social: Chi trả hàng tháng. Minimum payout $50-$100 tùy chương trình."
+        },
+        {
+          "question": "Tôi có thể tham gia cả 3 chương trình?",
+          "answer": "Có! Bạn có thể promote cả EA, Copy Trading, và Khóa Học cùng lúc. Mỗi chương trình có tracking link riêng."
+        },
+        {
+          "question": "Làm sao để tracking được sale của mình?",
+          "answer": "Sau khi được duyệt, bạn sẽ có quyền truy cập vào Affiliate Dashboard với tracking real-time về clicks, conversions, earnings. Update 24/7."
+        }
+      ]
+    }
   }
 }

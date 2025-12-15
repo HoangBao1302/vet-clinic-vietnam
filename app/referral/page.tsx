@@ -6,6 +6,7 @@ import StickyCallToAction from "@/components/StickyCallToAction";
 import AuthProtected from "@/components/AuthProtected";
 import { Gift, TrendingUp, Users, GraduationCap, DollarSign, CheckCircle, Star, ChevronRight, Copy as CopyIcon, Handshake } from "lucide-react";
 import Link from "next/link";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 
 interface AffiliateProgram {
   id: string;
@@ -85,6 +86,8 @@ const affiliatePrograms: AffiliateProgram[] = [
 ];
 
 export default function ReferralPage() {
+  const { t, locale } = useLocale();
+  
   return (
     <AuthProtected>
       <div className="min-h-screen bg-gray-50">
@@ -97,26 +100,25 @@ export default function ReferralPage() {
             <div className="max-w-4xl mx-auto text-center">
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-sm font-medium mb-6">
                 <Gift size={16} />
-                <span>Kiếm Thu Nhập Thụ Động</span>
+                <span>{t('affiliate.hero.badge')}</span>
               </div>
               <h1 className="text-4xl md:text-6xl font-bold mb-6">
-                Chương Trình Tiếp Thị Liên Kết
+                {t('affiliate.hero.title')}
               </h1>
               <p className="text-xl text-blue-100 leading-relaxed mb-8">
-                Kiếm tiền bằng cách giới thiệu EA, Copy Trading, và Khóa Học Forex. 
-                Hoa hồng cao, tracking minh bạch, chi trả đúng hạn.
+                {t('affiliate.hero.subtitle')}
               </p>
               <div className="flex flex-wrap gap-4 justify-center">
                 <div className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full">
-                  <div className="text-sm text-blue-200">Hoa hồng cao nhất</div>
+                  <div className="text-sm text-blue-200">{t('affiliate.hero.stats.commission')}</div>
                   <div className="text-2xl font-bold">30%</div>
                 </div>
                 <div className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full">
-                  <div className="text-sm text-blue-200">Cookie tối đa</div>
+                  <div className="text-sm text-blue-200">{t('affiliate.hero.stats.cookie')}</div>
                   <div className="text-2xl font-bold">Lifetime</div>
                 </div>
                 <div className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full">
-                  <div className="text-sm text-blue-200">Đối tác</div>
+                  <div className="text-sm text-blue-200">{t('affiliate.hero.stats.partners')}</div>
                   <div className="text-2xl font-bold">200+</div>
                 </div>
               </div>
@@ -130,23 +132,23 @@ export default function ReferralPage() {
             <div className="grid md:grid-cols-4 gap-6 max-w-5xl mx-auto">
               <div className="text-center">
                 <DollarSign className="w-12 h-12 text-green-600 mx-auto mb-3" />
-                <h3 className="font-semibold text-gray-800 mb-1">Hoa Hồng Cao</h3>
-                <p className="text-sm text-gray-600">10-30% mỗi đơn hàng, cao nhất thị trường</p>
+                <h3 className="font-semibold text-gray-800 mb-1">{t('affiliate.whyJoin.highCommission.title')}</h3>
+                <p className="text-sm text-gray-600">{t('affiliate.whyJoin.highCommission.description')}</p>
               </div>
               <div className="text-center">
                 <CheckCircle className="w-12 h-12 text-blue-600 mx-auto mb-3" />
-                <h3 className="font-semibold text-gray-800 mb-1">Minh Bạch</h3>
-                <p className="text-sm text-gray-600">Dashboard tracking real-time mọi click & sale</p>
+                <h3 className="font-semibold text-gray-800 mb-1">{t('affiliate.whyJoin.transparent.title')}</h3>
+                <p className="text-sm text-gray-600">{t('affiliate.whyJoin.transparent.description')}</p>
               </div>
               <div className="text-center">
                 <Handshake className="w-12 h-12 text-purple-600 mx-auto mb-3" />
-                <h3 className="font-semibold text-gray-800 mb-1">Hỗ Trợ Tốt</h3>
-                <p className="text-sm text-gray-600">Dedicated manager, materials, training</p>
+                <h3 className="font-semibold text-gray-800 mb-1">{t('affiliate.whyJoin.support.title')}</h3>
+                <p className="text-sm text-gray-600">{t('affiliate.whyJoin.support.description')}</p>
               </div>
               <div className="text-center">
                 <Star className="w-12 h-12 text-orange-600 mx-auto mb-3" />
-                <h3 className="font-semibold text-gray-800 mb-1">Chi Trả Đúng Hạn</h3>
-                <p className="text-sm text-gray-600">Không delay, không lý do từ chối</p>
+                <h3 className="font-semibold text-gray-800 mb-1">{t('affiliate.whyJoin.onTime.title')}</h3>
+                <p className="text-sm text-gray-600">{t('affiliate.whyJoin.onTime.description')}</p>
               </div>
             </div>
           </div>
@@ -157,16 +159,19 @@ export default function ReferralPage() {
           <div className="container-custom">
             <div className="text-center mb-16">
               <h2 className="text-3xl font-bold text-gray-800 mb-4">
-                3 Chương Trình Affiliate
+                {t('affiliate.programs.title')}
               </h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                Chọn chương trình phù hợp với audience của bạn. Bạn có thể tham gia cả 3 cùng lúc!
+                {t('affiliate.programs.subtitle')}
               </p>
             </div>
 
             <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-12">
               {affiliatePrograms.map((program, index) => {
                 const IconComponent = program.icon;
+                const programData = t(`affiliate.programs.items.${program.id}`) as any;
+                const benefits = Array.isArray(programData?.benefits) ? programData.benefits : program.benefits;
+                
                 return (
                   <div 
                     key={index}
@@ -175,20 +180,20 @@ export default function ReferralPage() {
                     {/* Card Header */}
                     <div className={`bg-gradient-to-r ${program.color} p-6 text-white`}>
                       <IconComponent className="w-12 h-12 mb-3" />
-                      <h3 className="text-2xl font-bold mb-2">{program.title}</h3>
+                      <h3 className="text-2xl font-bold mb-2">{programData?.title || program.title}</h3>
                       <div className="text-3xl font-bold">{program.commission}</div>
-                      <div className="text-sm opacity-90">Hoa hồng</div>
+                      <div className="text-sm opacity-90">{t('affiliate.programs.commissionLabel')}</div>
                     </div>
 
                     {/* Card Body */}
                     <div className="p-6">
                       <p className="text-gray-700 mb-6 leading-relaxed">
-                        {program.description}
+                        {programData?.description || program.description}
                       </p>
 
                       {/* Benefits */}
                       <div className="space-y-3 mb-6">
-                        {program.benefits.map((benefit, i) => (
+                        {benefits.map((benefit: string, i: number) => (
                           <div key={i} className="flex items-start gap-2">
                             <CheckCircle size={18} className="text-green-600 flex-shrink-0 mt-0.5" />
                             <span className="text-sm text-gray-700">{benefit}</span>
@@ -199,15 +204,15 @@ export default function ReferralPage() {
                       {/* Details */}
                       <div className="bg-gray-50 rounded-lg p-4 mb-6 space-y-2 text-sm">
                         <div className="flex justify-between">
-                          <span className="text-gray-600">Cookie:</span>
+                          <span className="text-gray-600">{t('affiliate.programs.details.cookie')}</span>
                           <span className="font-semibold text-gray-800">{program.cookieDuration}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-gray-600">Min Payout:</span>
+                          <span className="text-gray-600">{t('affiliate.programs.details.minPayout')}</span>
                           <span className="font-semibold text-gray-800">{program.minPayout}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-gray-600">Phương thức:</span>
+                          <span className="text-gray-600">{t('affiliate.programs.details.method')}</span>
                           <span className="font-semibold text-gray-800 text-xs">{program.payoutMethod}</span>
                         </div>
                       </div>
@@ -217,7 +222,7 @@ export default function ReferralPage() {
                         href={`/referral/${program.slug}`}
                         className="block text-center px-6 py-3 bg-gray-800 text-white rounded-lg font-semibold hover:bg-gray-900 transition-colors"
                       >
-                        Tìm Hiểu Thêm
+                        {t('affiliate.programs.learnMore')}
                         <ChevronRight size={18} className="inline ml-1" />
                       </Link>
                     </div>
@@ -233,53 +238,26 @@ export default function ReferralPage() {
           <div className="container-custom max-w-5xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold text-gray-800 mb-4">
-                Cách Thức Hoạt Động
+                {t('affiliate.howItWorks.title')}
               </h2>
               <p className="text-lg text-gray-600">
-                Chỉ 4 bước đơn giản để bắt đầu kiếm tiền
+                {t('affiliate.howItWorks.subtitle')}
               </p>
             </div>
 
             <div className="grid md:grid-cols-4 gap-8">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-blue-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
-                  1
-                </div>
-                <h3 className="text-xl font-bold text-gray-800 mb-2">Đăng Ký</h3>
-                <p className="text-gray-600 text-sm">
-                  Điền form đăng ký, được duyệt trong 24h
-                </p>
-              </div>
-
-              <div className="text-center">
-                <div className="w-16 h-16 bg-green-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
-                  2
-                </div>
-                <h3 className="text-xl font-bold text-gray-800 mb-2">Nhận Link</h3>
-                <p className="text-gray-600 text-sm">
-                  Nhận affiliate link, banner, materials
-                </p>
-              </div>
-
-              <div className="text-center">
-                <div className="w-16 h-16 bg-purple-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
-                  3
-                </div>
-                <h3 className="text-xl font-bold text-gray-800 mb-2">Chia Sẻ</h3>
-                <p className="text-gray-600 text-sm">
-                  Share link trên blog, youtube, social
-                </p>
-              </div>
-
-              <div className="text-center">
-                <div className="w-16 h-16 bg-orange-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
-                  4
-                </div>
-                <h3 className="text-xl font-bold text-gray-800 mb-2">Kiếm Tiền</h3>
-                <p className="text-gray-600 text-sm">
-                  Nhận hoa hồng mỗi khi có sale
-                </p>
-              </div>
+              {Array.isArray(t('affiliate.howItWorks.steps')) && (t('affiliate.howItWorks.steps') as any[]).map((step: any, index: number) => {
+                const colors = ['bg-blue-600', 'bg-green-600', 'bg-purple-600', 'bg-orange-600'];
+                return (
+                  <div key={index} className="text-center">
+                    <div className={`w-16 h-16 ${colors[index]} text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4`}>
+                      {index + 1}
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-800 mb-2">{step.title}</h3>
+                    <p className="text-gray-600 text-sm">{step.description}</p>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </section>
@@ -289,70 +267,37 @@ export default function ReferralPage() {
           <div className="container-custom max-w-5xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold text-gray-800 mb-4">
-                Đối Tác Nói Gì Về Chúng Tôi
+                {t('affiliate.testimonials.title')}
               </h2>
             </div>
 
             <div className="grid md:grid-cols-3 gap-8">
-              <div className="bg-white rounded-xl shadow-lg p-6">
-                <div className="flex items-center gap-1 text-yellow-500 mb-3">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} size={16} fill="currentColor" />
-                  ))}
-                </div>
-                <p className="text-gray-700 mb-4 italic">
-                  "Kiếm được $3,200 trong tháng đầu tiên. Dashboard tracking rất chi tiết, chi trả đúng hạn!"
-                </p>
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold">
-                    AN
+              {Array.isArray(t('affiliate.testimonials.items')) && (t('affiliate.testimonials.items') as any[]).map((testimonial: any, index: number) => {
+                const colors = ['bg-blue-600', 'bg-green-600', 'bg-purple-600'];
+                const initials = testimonial.name.split(' ').map((n: string) => n[0]).join('');
+                
+                return (
+                  <div key={index} className="bg-white rounded-xl shadow-lg p-6">
+                    <div className="flex items-center gap-1 text-yellow-500 mb-3">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} size={16} fill="currentColor" />
+                      ))}
+                    </div>
+                    <p className="text-gray-700 mb-4 italic">
+                      "{testimonial.quote}"
+                    </p>
+                    <div className="flex items-center gap-3">
+                      <div className={`w-10 h-10 ${colors[index]} rounded-full flex items-center justify-center text-white font-bold`}>
+                        {initials}
+                      </div>
+                      <div>
+                        <div className="font-semibold text-gray-800">{testimonial.name}</div>
+                        <div className="text-sm text-gray-600">{testimonial.role}</div>
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <div className="font-semibold text-gray-800">Anh Nguyễn</div>
-                    <div className="text-sm text-gray-600">Youtube 50K subs</div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white rounded-xl shadow-lg p-6">
-                <div className="flex items-center gap-1 text-yellow-500 mb-3">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} size={16} fill="currentColor" />
-                  ))}
-                </div>
-                <p className="text-gray-700 mb-4 italic">
-                  "Copy Social program tuyệt vời! Thu nhập thụ động mỗi tháng mà không cần làm gì thêm."
-                </p>
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center text-white font-bold">
-                    ML
-                  </div>
-                  <div>
-                    <div className="font-semibold text-gray-800">Minh Lê</div>
-                    <div className="text-sm text-gray-600">Trading Community</div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white rounded-xl shadow-lg p-6">
-                <div className="flex items-center gap-1 text-yellow-500 mb-3">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} size={16} fill="currentColor" />
-                  ))}
-                </div>
-                <p className="text-gray-700 mb-4 italic">
-                  "Marketing materials chuyên nghiệp. Support team nhiệt tình. Highly recommend!"
-                </p>
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center text-white font-bold">
-                    HT
-                  </div>
-                  <div>
-                    <div className="font-semibold text-gray-800">Hương Trần</div>
-                    <div className="text-sm text-gray-600">Forex Blogger</div>
-                  </div>
-                </div>
-              </div>
+                );
+              })}
             </div>
           </div>
         </section>
@@ -361,11 +306,10 @@ export default function ReferralPage() {
         <section className="py-20 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
           <div className="container-custom text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Sẵn Sàng Bắt Đầu Kiếm Tiền?
+              {t('affiliate.cta.title')}
             </h2>
             <p className="text-xl mb-8 max-w-2xl mx-auto">
-              Đăng ký ngay hôm nay và nhận tracking link trong vòng 24h. 
-              Miễn phí, không rủi ro, không yêu cầu đầu tư.
+              {t('affiliate.cta.subtitle')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
@@ -373,13 +317,13 @@ export default function ReferralPage() {
                 className="inline-flex items-center justify-center px-8 py-4 bg-white text-blue-600 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors"
               >
                 <Gift size={20} className="mr-2" />
-                Đăng Ký Affiliate Ngay
+                {t('affiliate.cta.registerButton')}
               </a>
               <a
                 href="/pricing#contact"
                 className="inline-flex items-center justify-center px-8 py-4 border-2 border-white text-white rounded-lg font-bold text-lg hover:bg-white/10 transition-colors"
               >
-                Hoặc Liên Hệ Tư Vấn
+                {t('affiliate.cta.consultButton')}
               </a>
             </div>
           </div>
@@ -390,50 +334,21 @@ export default function ReferralPage() {
           <div className="container-custom max-w-4xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold text-gray-800 mb-4">
-                Câu Hỏi Thường Gặp
+                {t('affiliate.faq.title')}
               </h2>
             </div>
 
             <div className="space-y-6">
-              <div className="bg-white rounded-lg shadow p-6">
-                <h3 className="text-lg font-bold text-gray-800 mb-2">
-                  Tôi có cần website/blog để tham gia không?
-                </h3>
-                <p className="text-gray-600">
-                  Không bắt buộc! Bạn có thể share link qua Facebook, Telegram, Youtube comments, 
-                  hoặc bất kỳ kênh nào bạn có audience quan tâm đến forex trading.
-                </p>
-              </div>
-
-              <div className="bg-white rounded-lg shadow p-6">
-                <h3 className="text-lg font-bold text-gray-800 mb-2">
-                  Khi nào tôi nhận được tiền?
-                </h3>
-                <p className="text-gray-600">
-                  Bán EA & Khóa học: Chi trả hàng tuần/2 tuần 1 lần. Copy Social: Chi trả hàng tháng. 
-                  Minimum payout $50-$100 tùy chương trình.
-                </p>
-              </div>
-
-              <div className="bg-white rounded-lg shadow p-6">
-                <h3 className="text-lg font-bold text-gray-800 mb-2">
-                  Tôi có thể tham gia cả 3 chương trình?
-                </h3>
-                <p className="text-gray-600">
-                  Có! Bạn có thể promote cả EA, Copy Trading, và Khóa Học cùng lúc. 
-                  Mỗi chương trình có tracking link riêng.
-                </p>
-              </div>
-
-              <div className="bg-white rounded-lg shadow p-6">
-                <h3 className="text-lg font-bold text-gray-800 mb-2">
-                  Làm sao để tracking được sale của mình?
-                </h3>
-                <p className="text-gray-600">
-                  Sau khi được duyệt, bạn sẽ có quyền truy cập vào Affiliate Dashboard với tracking 
-                  real-time về clicks, conversions, earnings. Update 24/7.
-                </p>
-              </div>
+              {Array.isArray(t('affiliate.faq.items')) && (t('affiliate.faq.items') as any[]).map((faq: any, index: number) => (
+                <div key={index} className="bg-white rounded-lg shadow p-6">
+                  <h3 className="text-lg font-bold text-gray-800 mb-2">
+                    {faq.question}
+                  </h3>
+                  <p className="text-gray-600">
+                    {faq.answer}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
         </section>

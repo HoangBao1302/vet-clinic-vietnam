@@ -794,5 +794,153 @@
         }
       ]
     }
+  },
+  "affiliate": {
+    "hero": {
+      "badge": "Earn Passive Income",
+      "title": "Affiliate Marketing Program",
+      "subtitle": "Earn money by referring EA, Copy Trading, and Forex Courses. High commissions, transparent tracking, on-time payments.",
+      "stats": {
+        "commission": "Highest commission",
+        "cookie": "Max cookie",
+        "partners": "Partners"
+      }
+    },
+    "whyJoin": {
+      "highCommission": {
+        "title": "High Commission",
+        "description": "10-30% per order, highest in the market"
+      },
+      "transparent": {
+        "title": "Transparent",
+        "description": "Real-time dashboard tracking all clicks & sales"
+      },
+      "support": {
+        "title": "Great Support",
+        "description": "Dedicated manager, materials, training"
+      },
+      "onTime": {
+        "title": "On-Time Payment",
+        "description": "No delays, no rejection reasons"
+      }
+    },
+    "programs": {
+      "title": "3 Affiliate Programs",
+      "subtitle": "Choose the program that fits your audience. You can join all 3 at once!",
+      "commissionLabel": "Commission",
+      "learnMore": "Learn More",
+      "details": {
+        "cookie": "Cookie:",
+        "minPayout": "Min Payout:",
+        "method": "Method:"
+      },
+      "items": {
+        "ea-sales": {
+          "title": "EA Sales",
+          "description": "Earn the highest commission with EA ThebenchmarkTrader sales program. Perfect for traders with community or youtube/blog channels.",
+          "benefits": [
+            "30% commission for each successful order",
+            "Unique tracking link with 90-day cookie",
+            "Real-time tracking dashboard",
+            "Free marketing materials & banner ads",
+            "Priority technical support",
+            "Weekly payout via bank transfer"
+          ]
+        },
+        "copy-social": {
+          "title": "Copy Social Trading",
+          "description": "Refer customers to copy trading on MQL5, Myfxbook, Tickmill Social or PuPrime Social. Long-term passive income.",
+          "benefits": [
+            "10% commission from monthly profit share",
+            "Recurring passive income (customer copies = you still earn)",
+            "Lifetime cookie (customer is yours forever)",
+            "No selling needed, just referral",
+            "Dashboard tracking followers & earnings",
+            "Monthly payout"
+          ]
+        },
+        "courses": {
+          "title": "Course Sales",
+          "description": "Affiliate for Forex Trading Strategy, EA Setup & Optimization courses. High-value products, attractive commissions.",
+          "benefits": [
+            "25% commission for each course sold",
+            "Courses from $197 - $997 (commission $49 - $249)",
+            "Free trial course for you to test before selling",
+            "Ready-made marketing funnel & email templates",
+            "60-day cookie",
+            "Bi-weekly payout"
+          ]
+        }
+      }
+    },
+    "howItWorks": {
+      "title": "How It Works",
+      "subtitle": "Just 4 simple steps to start earning",
+      "steps": [
+        {
+          "title": "Register",
+          "description": "Fill registration form, approved within 24h"
+        },
+        {
+          "title": "Get Link",
+          "description": "Receive affiliate link, banners, materials"
+        },
+        {
+          "title": "Share",
+          "description": "Share link on blog, youtube, social"
+        },
+        {
+          "title": "Earn Money",
+          "description": "Receive commission for each sale"
+        }
+      ]
+    },
+    "testimonials": {
+      "title": "What Our Partners Say",
+      "items": [
+        {
+          "quote": "Earned $3,200 in the first month. Dashboard tracking is very detailed, payments on time!",
+          "name": "Anh Nguyen",
+          "role": "Youtube 50K subs"
+        },
+        {
+          "quote": "Copy Social program is amazing! Passive income every month without doing anything extra.",
+          "name": "Minh Le",
+          "role": "Trading Community"
+        },
+        {
+          "quote": "Professional marketing materials. Support team is enthusiastic. Highly recommend!",
+          "name": "Huong Tran",
+          "role": "Forex Blogger"
+        }
+      ]
+    },
+    "cta": {
+      "title": "Ready to Start Earning?",
+      "subtitle": "Register today and receive tracking link within 24h. Free, no risk, no investment required.",
+      "registerButton": "Register Affiliate Now",
+      "consultButton": "Or Contact for Consultation"
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "items": [
+        {
+          "question": "Do I need a website/blog to join?",
+          "answer": "Not required! You can share links via Facebook, Telegram, Youtube comments, or any channel where you have an audience interested in forex trading."
+        },
+        {
+          "question": "When will I receive payment?",
+          "answer": "EA & Course sales: Weekly/bi-weekly payout. Copy Social: Monthly payout. Minimum payout $50-$100 depending on program."
+        },
+        {
+          "question": "Can I join all 3 programs?",
+          "answer": "Yes! You can promote EA, Copy Trading, and Courses simultaneously. Each program has its own tracking link."
+        },
+        {
+          "question": "How can I track my sales?",
+          "answer": "After approval, you'll have access to Affiliate Dashboard with real-time tracking of clicks, conversions, earnings. Updated 24/7."
+        }
+      ]
+    }
   }
 }
