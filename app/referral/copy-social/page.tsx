@@ -9,7 +9,7 @@ import Link from "next/link";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 
 export default function CopySocialPage() {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   
   return (
     <AuthProtected>
@@ -56,54 +56,33 @@ export default function CopySocialPage() {
               <div className="text-center mb-8">
                 <Users className="w-16 h-16 text-green-600 mx-auto mb-4" />
                 <h2 className="text-3xl font-bold text-gray-800 mb-4">
-                  Tại Sao Chọn Copy Social?
+                  {t('affiliatePages.copySocial.whyThis.title')}
                 </h2>
               </div>
 
               <div className="grid md:grid-cols-2 gap-8">
                 <div className="space-y-6">
-                  <div className="flex items-start gap-4">
-                    <div className="flex-shrink-0 w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                      <Infinity className="w-5 h-5 text-green-600" />
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-gray-800 mb-1">Thu Nhập Thụ Động Recurring</h3>
-                      <p className="text-gray-600 text-sm">
-                        Khác với bán EA (1 lần), copy trading tạo thu nhập hàng tháng. 
-                        Khách copy 1 năm = bạn hưởng hoa hồng 12 tháng!
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-4">
-                    <div className="flex-shrink-0 w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                      <Clock className="w-5 h-5 text-blue-600" />
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-gray-800 mb-1">Cookie Lifetime</h3>
-                      <p className="text-gray-600 text-sm">
-                        Một khi khách hàng click vào link của bạn, họ mãi mãi là của bạn. 
-                        Không lo cookie expire hay mất commission.
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-4">
-                    <div className="flex-shrink-0 w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
-                      <TrendingUp className="w-5 h-5 text-purple-600" />
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-gray-800 mb-1">Dễ Bán Hơn</h3>
-                      <p className="text-gray-600 text-sm">
-                        Copy trading dễ hơn mua EA. Khách không cần technical setup, 
-                        chỉ 1 click copy. Conversion rate cao hơn!
-                      </p>
-                    </div>
-                  </div>
+                  {Array.isArray(t('affiliatePages.copySocial.whyThis.reasons')) && 
+                    t('affiliatePages.copySocial.whyThis.reasons').map((reason: any, idx: number) => (
+                      <div key={idx} className="flex items-start gap-4">
+                        <div className={`flex-shrink-0 w-10 h-10 ${idx === 0 ? 'bg-green-100' : idx === 1 ? 'bg-blue-100' : 'bg-purple-100'} rounded-full flex items-center justify-center`}>
+                          {idx === 0 && <Infinity className="w-5 h-5 text-green-600" />}
+                          {idx === 1 && <Clock className="w-5 h-5 text-blue-600" />}
+                          {idx === 2 && <TrendingUp className="w-5 h-5 text-purple-600" />}
+                        </div>
+                        <div>
+                          <h3 className="font-bold text-gray-800 mb-1">{reason.title}</h3>
+                          <p className="text-gray-600 text-sm">{reason.description}</p>
+                        </div>
+                      </div>
+                    ))
+                  }
                 </div>
 
                 <div className="bg-gradient-to-br from-green-50 to-blue-50 rounded-xl p-6">
-                  <h3 className="text-xl font-bold text-gray-800 mb-4">Ví dụ thu nhập:</h3>
+                  <h3 className="text-xl font-bold text-gray-800 mb-4">
+                    {t('affiliatePages.copySocial.whyThis.example.title')}
+                  </h3>
                   <div className="space-y-4">
                     <div className="bg-white rounded-lg p-4">
                       <div className="text-sm text-gray-600 mb-1">1 khách copy với $5,000</div>
@@ -135,10 +114,13 @@ export default function CopySocialPage() {
           <div className="container-custom max-w-6xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold text-gray-800 mb-4">
-                Các Nền Tảng Copy Trading
+                {t('affiliatePages.copySocial.platforms.title')}
               </h2>
               <p className="text-lg text-gray-600">
-                Bạn kiếm hoa hồng khi giới thiệu khách copy trên các platform này
+                {locale === 'vi' 
+                  ? 'Bạn kiếm hoa hồng khi giới thiệu khách copy trên các platform này'
+                  : 'Earn commissions by referring customers to copy on these platforms'
+                }
               </p>
             </div>
 
@@ -150,20 +132,22 @@ export default function CopySocialPage() {
                   </div>
                   <div>
                     <h3 className="text-xl font-bold text-gray-800">MQL5 Signals</h3>
-                    <div className="text-sm text-gray-600">Copy trên MT4/MT5</div>
+                    <div className="text-sm text-gray-600">
+                      {locale === 'vi' ? 'Copy trên MT4/MT5' : 'Copy on MT4/MT5'}
+                    </div>
                   </div>
                 </div>
                 <ul className="space-y-2 text-sm text-gray-700 mb-4">
-                  <li>✓ Copy tự động trên MetaTrader</li>
-                  <li>✓ Hàng triệu user trên MQL5</li>
+                  <li>✓ {locale === 'vi' ? 'Copy tự động trên MetaTrader' : 'Auto copy on MetaTrader'}</li>
+                  <li>✓ {locale === 'vi' ? 'Hàng triệu user trên MQL5' : 'Millions of users on MQL5'}</li>
                   <li>✓ Verified performance</li>
-                  <li>✓ Subscription $30-100/tháng</li>
+                  <li>✓ {locale === 'vi' ? 'Subscription $30-100/tháng' : 'Subscription $30-100/month'}</li>
                 </ul>
                 <Link
                   href="/live-results"
                   className="text-blue-600 font-semibold hover:underline inline-flex items-center gap-1"
                 >
-                  Xem tài khoản MQL5
+                  {locale === 'vi' ? 'Xem tài khoản MQL5' : 'View MQL5 account'}
                   <ArrowRight size={16} />
                 </Link>
               </div>
@@ -175,20 +159,22 @@ export default function CopySocialPage() {
                   </div>
                   <div>
                     <h3 className="text-xl font-bold text-gray-800">Myfxbook AutoTrade</h3>
-                    <div className="text-sm text-gray-600">AutoTrade với nhiều broker</div>
+                    <div className="text-sm text-gray-600">
+                      {locale === 'vi' ? 'AutoTrade với nhiều broker' : 'AutoTrade with multiple brokers'}
+                    </div>
                   </div>
                 </div>
                 <ul className="space-y-2 text-sm text-gray-700 mb-4">
                   <li>✓ AutoTrade system</li>
-                  <li>✓ Nhiều broker hỗ trợ</li>
-                  <li>✓ Track record minh bạch</li>
-                  <li>✓ Setup 1 lần, sync forever</li>
+                  <li>✓ {locale === 'vi' ? 'Nhiều broker hỗ trợ' : 'Multiple brokers supported'}</li>
+                  <li>✓ {locale === 'vi' ? 'Track record minh bạch' : 'Transparent track record'}</li>
+                  <li>✓ {locale === 'vi' ? 'Setup 1 lần, sync forever' : 'Setup once, sync forever'}</li>
                 </ul>
                 <Link
                   href="/live-results"
                   className="text-green-600 font-semibold hover:underline inline-flex items-center gap-1"
                 >
-                  Xem tài khoản Myfxbook
+                  {locale === 'vi' ? 'Xem tài khoản Myfxbook' : 'View Myfxbook account'}
                   <ArrowRight size={16} />
                 </Link>
               </div>
@@ -200,20 +186,22 @@ export default function CopySocialPage() {
                   </div>
                   <div>
                     <h3 className="text-xl font-bold text-gray-800">Tickmill Social</h3>
-                    <div className="text-sm text-gray-600">Copy native trên Tickmill</div>
+                    <div className="text-sm text-gray-600">
+                      {locale === 'vi' ? 'Copy native trên Tickmill' : 'Native copy on Tickmill'}
+                    </div>
                   </div>
                 </div>
                 <ul className="space-y-2 text-sm text-gray-700 mb-4">
-                  <li>✓ 1-click copy, dễ nhất</li>
-                  <li>✓ Không cần EA hoặc setup</li>
-                  <li>✓ 50+ investors đang copy</li>
+                  <li>✓ {locale === 'vi' ? '1-click copy, dễ nhất' : '1-click copy, easiest'}</li>
+                  <li>✓ {locale === 'vi' ? 'Không cần EA hoặc setup' : 'No EA or setup needed'}</li>
+                  <li>✓ {locale === 'vi' ? '50+ investors đang copy' : '50+ investors copying'}</li>
                   <li>✓ Profit share 20%</li>
                 </ul>
                 <Link
                   href="/live-results"
                   className="text-orange-600 font-semibold hover:underline inline-flex items-center gap-1"
                 >
-                  Xem Tickmill Social
+                  {locale === 'vi' ? 'Xem Tickmill Social' : 'View Tickmill Social'}
                   <ArrowRight size={16} />
                 </Link>
               </div>
@@ -225,12 +213,14 @@ export default function CopySocialPage() {
                   </div>
                   <div>
                     <h3 className="text-xl font-bold text-gray-800">PuPrime Social</h3>
-                    <div className="text-sm text-gray-600">Copy với vốn thấp</div>
+                    <div className="text-sm text-gray-600">
+                      {locale === 'vi' ? 'Copy với vốn thấp' : 'Copy with low capital'}
+                    </div>
                   </div>
                 </div>
                 <ul className="space-y-2 text-sm text-gray-700 mb-4">
-                  <li>✓ Minimum $200 để copy</li>
-                  <li>✓ Phù hợp trader mới</li>
+                  <li>✓ {locale === 'vi' ? 'Minimum $200 để copy' : 'Minimum $200 to copy'}</li>
+                  <li>✓ {locale === 'vi' ? 'Phù hợp trader mới' : 'Suitable for new traders'}</li>
                   <li>✓ 30+ followers</li>
                   <li>✓ Profit share 25%</li>
                 </ul>
@@ -238,7 +228,7 @@ export default function CopySocialPage() {
                   href="/live-results"
                   className="text-purple-600 font-semibold hover:underline inline-flex items-center gap-1"
                 >
-                  Xem PuPrime Social
+                  {locale === 'vi' ? 'Xem PuPrime Social' : 'View PuPrime Social'}
                   <ArrowRight size={16} />
                 </Link>
               </div>
@@ -251,7 +241,7 @@ export default function CopySocialPage() {
           <div className="container-custom max-w-5xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold text-gray-800 mb-4">
-                Quyền Lợi Affiliate
+                {locale === 'vi' ? 'Quyền Lợi Affiliate' : 'Affiliate Benefits'}
               </h2>
             </div>
 
@@ -260,7 +250,10 @@ export default function CopySocialPage() {
                 <Infinity className="w-12 h-12 text-green-600 mx-auto mb-4" />
                 <h3 className="text-xl font-bold text-gray-800 mb-3">Lifetime Cookie</h3>
                 <p className="text-gray-600 text-sm">
-                  Khách hàng mãi mãi là của bạn. Không expire, không mất commission.
+                  {locale === 'vi' 
+                    ? 'Khách hàng mãi mãi là của bạn. Không expire, không mất commission.'
+                    : 'Customers are yours forever. No expiry, no lost commissions.'
+                  }
                 </p>
               </div>
 
@@ -268,7 +261,10 @@ export default function CopySocialPage() {
                 <DollarSign className="w-12 h-12 text-blue-600 mx-auto mb-4" />
                 <h3 className="text-xl font-bold text-gray-800 mb-3">Monthly Payout</h3>
                 <p className="text-gray-600 text-sm">
-                  Chi trả hàng tháng. Min payout $50. Bank transfer hoặc PayPal.
+                  {locale === 'vi'
+                    ? 'Chi trả hàng tháng. Min payout $50. Bank transfer hoặc PayPal.'
+                    : 'Monthly payout. Min $50. Bank transfer or PayPal.'
+                  }
                 </p>
               </div>
 
@@ -276,7 +272,10 @@ export default function CopySocialPage() {
                 <Gift className="w-12 h-12 text-purple-600 mx-auto mb-4" />
                 <h3 className="text-xl font-bold text-gray-800 mb-3">Marketing Support</h3>
                 <p className="text-gray-600 text-sm">
-                  Banners, landing pages, video tutorials để promote copy trading.
+                  {locale === 'vi'
+                    ? 'Banners, landing pages, video tutorials để promote copy trading.'
+                    : 'Banners, landing pages, video tutorials to promote copy trading.'
+                  }
                 </p>
               </div>
             </div>
@@ -293,9 +292,10 @@ export default function CopySocialPage() {
                 ))}
               </div>
               <p className="text-gray-700 text-lg mb-6 italic">
-                "Copy Social là chương trình yêu thích của tôi. Tháng đầu kiếm $180, 
-                tháng 6 đã $650/tháng và vẫn tăng. Passive income thực sự, 
-                không cần làm gì sau khi refer xong. Highly recommend cho ai muốn thu nhập dài hạn!"
+                {locale === 'vi'
+                  ? '"Copy Social là chương trình yêu thích của tôi. Tháng đầu kiếm $180, tháng 6 đã $650/tháng và vẫn tăng. Passive income thực sự, không cần làm gì sau khi refer xong. Highly recommend cho ai muốn thu nhập dài hạn!"'
+                  : '"Copy Social is my favorite program. First month earned $180, by month 6 already $650/month and still growing. True passive income, no work needed after referring. Highly recommend for anyone wanting long-term income!"'
+                }
               </p>
               <div className="flex items-center gap-4">
                 <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
@@ -303,8 +303,12 @@ export default function CopySocialPage() {
                 </div>
                 <div>
                   <div className="font-bold text-gray-800 text-lg">Minh Lê</div>
-                  <div className="text-gray-600">Trading Community - 2,000 members</div>
-                  <div className="text-green-600 font-semibold">$650/tháng passive income</div>
+                  <div className="text-gray-600">
+                    {locale === 'vi' ? 'Trading Community - 2,000 members' : 'Trading Community - 2,000 members'}
+                  </div>
+                  <div className="text-green-600 font-semibold">
+                    {locale === 'vi' ? '$650/tháng passive income' : '$650/month passive income'}
+                  </div>
                 </div>
               </div>
             </div>
