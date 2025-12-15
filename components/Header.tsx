@@ -536,6 +536,11 @@ export default function Header() {
                   </Link>
                 )}
               </div>
+
+              {/* Mobile Language Switcher */}
+              <div className="border-t border-gray-200 pt-4 mt-4 flex justify-center">
+                <LanguageSwitcher />
+              </div>
             </nav>
           </div>
         )}
