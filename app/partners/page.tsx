@@ -7,12 +7,22 @@ import StickyCallToAction from "@/components/StickyCallToAction";
 import { Award, TrendingUp, DollarSign, Shield, ArrowRightLeft, Headphones, AlertCircle } from "lucide-react";
 import { partners } from "@/data/partners";
 import type { PartnerInfo } from "@/data/partners";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 
 export default function PartnersPage() {
+  const { t, locale } = useLocale();
   const [selectedPartner, setSelectedPartner] = useState<number | null>(null);
   
   // Filter only active partners
   const activePartners = partners.filter(p => p.active).sort((a, b) => a.order - b.order);
+
+  // Helper to get localized partner field
+  const getLocalizedField = (partner: PartnerInfo, field: 'spread' | 'license' | 'deposit' | 'support' | 'notes'): string[] => {
+    const englishField = `${field}_en` as keyof PartnerInfo;
+    return locale === 'en' && partner[englishField] 
+      ? (partner[englishField] as string[])
+      : partner[field];
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -24,14 +34,13 @@ export default function PartnersPage() {
           <div className="container-custom">
             <div className="max-w-4xl mx-auto text-center">
               <div className="inline-block px-4 py-2 bg-blue-700/50 rounded-full text-sm font-medium mb-6">
-                Broker Partners
+                {t('partners.hero.badge')}
               </div>
               <h1 className="text-4xl md:text-6xl font-bold mb-6">
-                Đối Tác Broker Uy Tín
+                {t('partners.hero.title')}
               </h1>
               <p className="text-xl text-blue-100 leading-relaxed">
-                Danh sách các broker được khuyến nghị để sử dụng EA Forex ThebenchmarkTrader. 
-                Mỗi broker đều được đánh giá kỹ về spread, giấy phép, và hỗ trợ khách hàng.
+                {t('partners.hero.description')}
               </p>
             </div>
           </div>
@@ -73,10 +82,10 @@ export default function PartnersPage() {
                     <div className="space-y-3">
                       <div className="flex items-center gap-2 text-blue-600 font-semibold mb-4">
                         <TrendingUp className="w-5 h-5" />
-                        <h3>Spread & Phí</h3>
+                        <h3>{t('partners.sections.spread')}</h3>
                       </div>
                       <ul className="space-y-2 text-sm text-gray-700">
-                        {partner.spread.map((item, i) => (
+                        {getLocalizedField(partner, 'spread').map((item, i) => (
                           <li key={i} className="flex items-start gap-2">
                             <span className="text-blue-500 mt-1">•</span>
                             <span>{item}</span>
@@ -89,10 +98,10 @@ export default function PartnersPage() {
                     <div className="space-y-3">
                       <div className="flex items-center gap-2 text-blue-600 font-semibold mb-4">
                         <Shield className="w-5 h-5" />
-                        <h3>Giấy Phép</h3>
+                        <h3>{t('partners.sections.license')}</h3>
                       </div>
                       <ul className="space-y-2 text-sm text-gray-700">
-                        {partner.license.map((item, i) => (
+                        {getLocalizedField(partner, 'license').map((item, i) => (
                           <li key={i} className="flex items-start gap-2">
                             <span className="text-green-500 mt-1">✓</span>
                             <span>{item}</span>
@@ -105,10 +114,10 @@ export default function PartnersPage() {
                     <div className="space-y-3">
                       <div className="flex items-center gap-2 text-blue-600 font-semibold mb-4">
                         <ArrowRightLeft className="w-5 h-5" />
-                        <h3>Nạp & Rút</h3>
+                        <h3>{t('partners.sections.deposit')}</h3>
                       </div>
                       <ul className="space-y-2 text-sm text-gray-700">
-                        {partner.deposit.map((item, i) => (
+                        {getLocalizedField(partner, 'deposit').map((item, i) => (
                           <li key={i} className="flex items-start gap-2">
                             <span className="text-blue-500 mt-1">•</span>
                             <span>{item}</span>
@@ -121,10 +130,10 @@ export default function PartnersPage() {
                     <div className="space-y-3">
                       <div className="flex items-center gap-2 text-blue-600 font-semibold mb-4">
                         <Headphones className="w-5 h-5" />
-                        <h3>Hỗ Trợ</h3>
+                        <h3>{t('partners.sections.support')}</h3>
                       </div>
                       <ul className="space-y-2 text-sm text-gray-700">
-                        {partner.support.map((item, i) => (
+                        {getLocalizedField(partner, 'support').map((item, i) => (
                           <li key={i} className="flex items-start gap-2">
                             <span className="text-blue-500 mt-1">•</span>
                             <span>{item}</span>
@@ -137,10 +146,10 @@ export default function PartnersPage() {
                     <div className="space-y-3">
                       <div className="flex items-center gap-2 text-blue-600 font-semibold mb-4">
                         <AlertCircle className="w-5 h-5" />
-                        <h3>Lưu Ý</h3>
+                        <h3>{t('partners.sections.notes')}</h3>
                       </div>
                       <ul className="space-y-2 text-sm text-gray-700">
-                        {partner.notes.map((item, i) => (
+                        {getLocalizedField(partner, 'notes').map((item, i) => (
                           <li key={i} className="leading-relaxed">
                             {item}
                           </li>
@@ -155,10 +164,10 @@ export default function PartnersPage() {
                     <div className="space-y-3">
                       <div className="flex items-center gap-2 text-blue-600 font-semibold">
                         <TrendingUp className="w-5 h-5" />
-                        <h3>Spread & Phí Giao Dịch</h3>
+                        <h3>{t('partners.sections.spreadFull')}</h3>
                       </div>
                       <ul className="space-y-2 text-sm text-gray-700 pl-7">
-                        {partner.spread.map((item, i) => (
+                        {getLocalizedField(partner, 'spread').map((item, i) => (
                           <li key={i}>• {item}</li>
                         ))}
                       </ul>
@@ -170,10 +179,10 @@ export default function PartnersPage() {
                     <div className="space-y-3">
                       <div className="flex items-center gap-2 text-blue-600 font-semibold">
                         <Shield className="w-5 h-5" />
-                        <h3>Giấy Phép</h3>
+                        <h3>{t('partners.sections.license')}</h3>
                       </div>
                       <ul className="space-y-2 text-sm text-gray-700 pl-7">
-                        {partner.license.map((item, i) => (
+                        {getLocalizedField(partner, 'license').map((item, i) => (
                           <li key={i}>✓ {item}</li>
                         ))}
                       </ul>
@@ -185,10 +194,10 @@ export default function PartnersPage() {
                     <div className="space-y-3">
                       <div className="flex items-center gap-2 text-blue-600 font-semibold">
                         <ArrowRightLeft className="w-5 h-5" />
-                        <h3>Nạp và Rút Tiền</h3>
+                        <h3>{t('partners.sections.depositFull')}</h3>
                       </div>
                       <ul className="space-y-2 text-sm text-gray-700 pl-7">
-                        {partner.deposit.map((item, i) => (
+                        {getLocalizedField(partner, 'deposit').map((item, i) => (
                           <li key={i}>• {item}</li>
                         ))}
                       </ul>
@@ -200,10 +209,10 @@ export default function PartnersPage() {
                     <div className="space-y-3">
                       <div className="flex items-center gap-2 text-blue-600 font-semibold">
                         <Headphones className="w-5 h-5" />
-                        <h3>Liên Hệ và Hỗ Trợ</h3>
+                        <h3>{t('partners.sections.supportFull')}</h3>
                       </div>
                       <ul className="space-y-2 text-sm text-gray-700 pl-7">
-                        {partner.support.map((item, i) => (
+                        {getLocalizedField(partner, 'support').map((item, i) => (
                           <li key={i}>• {item}</li>
                         ))}
                       </ul>
@@ -215,10 +224,10 @@ export default function PartnersPage() {
                     <div className="space-y-3">
                       <div className="flex items-center gap-2 text-blue-600 font-semibold">
                         <AlertCircle className="w-5 h-5" />
-                        <h3>Một Số Lưu Ý</h3>
+                        <h3>{t('partners.sections.notesFull')}</h3>
                       </div>
                       <ul className="space-y-2 text-sm text-gray-700 pl-2">
-                        {partner.notes.map((item, i) => (
+                        {getLocalizedField(partner, 'notes').map((item, i) => (
                           <li key={i}>{item}</li>
                         ))}
                       </ul>
@@ -234,13 +243,13 @@ export default function PartnersPage() {
                         rel="noopener noreferrer"
                         className="px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors text-center"
                       >
-                        Mở Tài Khoản với {partner.name}
+                        {t('partners.cta.openAccount', { name: partner.name })}
                       </a>
                       <a
                         href="#contact"
                         className="px-6 py-3 border-2 border-blue-600 text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-colors text-center"
                       >
-                        Tư Vấn Broker Phù Hợp
+                        {t('partners.cta.consultBroker')}
                       </a>
                     </div>
                   </div>
