@@ -621,5 +621,116 @@
         "passwordMismatch": "Passwords do not match"
       }
     }
+  },
+  "downloads": {
+    "auth": {
+      "checking": "Checking authentication...",
+      "refreshHint": "If the page doesn't load, please refresh (F5)",
+      "redirecting": "Redirecting to login page..."
+    },
+    "hero": {
+      "title": "Download EA & Documentation",
+      "subtitle": "Download free EA, indicators, and comprehensive guides. Everything you need to start automated trading."
+    },
+    "badges": {
+      "free": "Free",
+      "pro": "PRO"
+    },
+    "buttons": {
+      "download": "Download",
+      "downloadFree": "Free Download",
+      "buyStripe": "Buy with Stripe (Card)",
+      "buyPaypal": "Buy with PayPal (Sandbox)",
+      "buyBank": "Bank Transfer"
+    },
+    "pdfSection": {
+      "badge": "Documentation",
+      "title": "Free PDF Guides",
+      "description": "Complete documentation from installation to optimization. Download now to start the right way.",
+      "items": {
+        "guide-installation": {
+          "name": "EA ThebenchmarkTrader Installation Guide",
+          "description": "Detailed step-by-step EA installation on MT4/MT5, parameter configuration, and troubleshooting"
+        },
+        "guide-parameters": {
+          "name": "EA Parameter Optimization Guide",
+          "description": "How to adjust Risk%, Lot Size, Max Positions for each account type"
+        },
+        "guide-broker": {
+          "name": "Broker Selection & Setup Guide",
+          "description": "Broker comparison, account opening, verification, and deposit. Complete checklist included"
+        }
+      }
+    },
+    "freeSection": {
+      "badge": "Free Tools",
+      "title": "Free Indicators & EA Demo",
+      "description": "Quality tools completely free for the Vietnamese trader community.",
+      "items": {
+        "indicator-support-resistance": {
+          "name": "Support & Resistance Indicator (Free)",
+          "description": "Automatically draws support and resistance zones on all timeframes. Completely free for the community."
+        },
+        "indicator-trend-lines": {
+          "name": "Auto Trend Lines Indicator (Free)",
+          "description": "Automatically draws accurate trendlines. Compatible with MT4/MT5."
+        },
+        "ea-demo": {
+          "name": "EA ThebenchmarkTrader Demo (Free)",
+          "description": "Full-featured demo version, runs on demo accounts only. No time limit."
+        }
+      }
+    },
+    "paidSection": {
+      "badge": "Premium Products",
+      "title": "Professional EA & Indicators",
+      "description": "Pro tools with verified results. One-time purchase, lifetime use. Updates and VIP support included.",
+      "paymentMethods": "Payment: Stripe, PayPal, Bank Transfer",
+      "oneTimePurchase": "One-time purchase, lifetime use",
+      "mt4Title": "MT4 Products",
+      "mt5Title": "MT5 Products",
+      "items": {
+        "indicator-pro-mt4": {
+          "name": "Multi-Indicator Pro Pack",
+          "description": "Set of 10 professional indicators: SR, Trend, Momentum, Volume, Auto Fibonacci, and more."
+        },
+        "ea-full-mt4": {
+          "name": "EA ThebenchmarkTrader Full Version",
+          "description": "Full version for live accounts. License for 3 accounts, free updates for 1 year."
+        },
+        "ea-pro-source-mt4": {
+          "name": "EA ThebenchmarkTrader Pro + Source Code",
+          "description": "Pro version with full source code. Unlimited accounts, lifetime updates, VIP support."
+        },
+        "indicator-pro-mt5": {
+          "name": "Multi-Indicator Pro Pack",
+          "description": "Set of 10 professional indicators: SR, Trend, Momentum, Volume, Auto Fibonacci, and more."
+        },
+        "ea-full-mt5": {
+          "name": "EA ThebenchmarkTrader Full Version",
+          "description": "Full version for live accounts. License for 3 accounts, free updates for 1 year."
+        },
+        "ea-pro-source-mt5": {
+          "name": "EA ThebenchmarkTrader Pro + Source Code",
+          "description": "Pro version with full source code. Unlimited accounts, lifetime updates, VIP support."
+        }
+      }
+    },
+    "verification": {
+      "alreadyPaid": "Already paid? Enter your order code:",
+      "orderCode": "Order code",
+      "verify": "Verify",
+      "enterCode": "Please enter order code",
+      "success": "✅ Verification successful! Downloading...",
+      "invalidCode": "Invalid order code or payment not confirmed",
+      "wrongProduct": "This code is for product",
+      "error": "Verification error. Please try again later."
+    },
+    "support": {
+      "title": "Need Support?",
+      "description": "Our support team is always ready to help via Telegram or email. Don't hesitate to contact us!",
+      "contactButton": "Contact Support",
+      "telegramButton": "Join Telegram Group"
+    }
   }
 }

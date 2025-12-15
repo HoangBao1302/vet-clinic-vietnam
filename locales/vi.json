@@ -621,5 +621,116 @@
         "passwordMismatch": "Mật khẩu không khớp"
       }
     }
+  },
+  "downloads": {
+    "auth": {
+      "checking": "Đang kiểm tra xác thực...",
+      "refreshHint": "Nếu trang không tải, vui lòng refresh (F5)",
+      "redirecting": "Đang chuyển hướng đến trang đăng nhập..."
+    },
+    "hero": {
+      "title": "Tải Xuống EA & Tài Liệu",
+      "subtitle": "Download EA, indicators miễn phí và tài liệu hướng dẫn đầy đủ. Mọi thứ bạn cần để bắt đầu giao dịch tự động."
+    },
+    "badges": {
+      "free": "Miễn Phí",
+      "pro": "PRO"
+    },
+    "buttons": {
+      "download": "Tải Xuống",
+      "downloadFree": "Tải Miễn Phí",
+      "buyStripe": "Mua qua Stripe (Card)",
+      "buyPaypal": "Mua qua PayPal (Sandbox)",
+      "buyBank": "Chuyển khoản Ngân hàng"
+    },
+    "pdfSection": {
+      "badge": "Tài liệu Hướng Dẫn",
+      "title": "Hướng Dẫn PDF Miễn Phí",
+      "description": "Tài liệu đầy đủ từ cài đặt đến tối ưu hóa. Download ngay để bắt đầu đúng cách.",
+      "items": {
+        "guide-installation": {
+          "name": "Hướng dẫn cài đặt EA ThebenchmarkTrader",
+          "description": "PDF chi tiết từng bước cài đặt EA trên MT4/MT5, cấu hình tham số và troubleshooting"
+        },
+        "guide-parameters": {
+          "name": "Hướng dẫn tối ưu tham số EA",
+          "description": "Cách điều chỉnh Risk%, Lot Size, Max Positions cho từng loại tài khoản"
+        },
+        "guide-broker": {
+          "name": "Hướng dẫn chọn và setup broker",
+          "description": "So sánh broker, mở tài khoản, verify và deposit. Kèm checklist đầy đủ"
+        }
+      }
+    },
+    "freeSection": {
+      "badge": "Miễn Phí",
+      "title": "Indicators & EA Demo Miễn Phí",
+      "description": "Công cụ chất lượng hoàn toàn miễn phí cho cộng đồng trader Việt Nam.",
+      "items": {
+        "indicator-support-resistance": {
+          "name": "Support & Resistance Indicator (Free)",
+          "description": "Indicator tự động vẽ vùng hỗ trợ kháng cự trên mọi timeframe. Hoàn toàn miễn phí cho cộng đồng."
+        },
+        "indicator-trend-lines": {
+          "name": "Auto Trend Lines Indicator (Free)",
+          "description": "Tự động vẽ đường xu hướng (trendlines) chính xác. Compatible MT4/MT5."
+        },
+        "ea-demo": {
+          "name": "EA ThebenchmarkTrader Demo (Free)",
+          "description": "Phiên bản demo đầy đủ tính năng, chỉ chạy trên tài khoản demo. Không giới hạn thời gian."
+        }
+      }
+    },
+    "paidSection": {
+      "badge": "Sản Phẩm Premium",
+      "title": "EA & Indicators Chuyên Nghiệp",
+      "description": "Công cụ pro với verified results. Mua 1 lần, dùng trọn đời. Hỗ trợ cập nhật và VIP support.",
+      "paymentMethods": "Thanh toán: Stripe, PayPal, Chuyển khoản",
+      "oneTimePurchase": "Mua 1 lần, dùng trọn đời",
+      "mt4Title": "Sản Phẩm MT4",
+      "mt5Title": "Sản Phẩm MT5",
+      "items": {
+        "indicator-pro-mt4": {
+          "name": "Multi-Indicator Pro Pack",
+          "description": "Bộ 10 indicators chuyên nghiệp: SR, Trend, Momentum, Volume, Fibonacci auto và nhiều hơn."
+        },
+        "ea-full-mt4": {
+          "name": "EA ThebenchmarkTrader Full Version",
+          "description": "Phiên bản đầy đủ cho tài khoản thực. License 3 tài khoản, cập nhật miễn phí 1 năm."
+        },
+        "ea-pro-source-mt4": {
+          "name": "EA ThebenchmarkTrader Pro + Source Code",
+          "description": "Phiên bản Pro với source code đầy đủ. Unlimited accounts, cập nhật trọn đời, hỗ trợ VIP."
+        },
+        "indicator-pro-mt5": {
+          "name": "Multi-Indicator Pro Pack",
+          "description": "Bộ 10 indicators chuyên nghiệp: SR, Trend, Momentum, Volume, Fibonacci auto và nhiều hơn."
+        },
+        "ea-full-mt5": {
+          "name": "EA ThebenchmarkTrader Full Version",
+          "description": "Phiên bản đầy đủ cho tài khoản thực. License 3 tài khoản, cập nhật miễn phí 1 năm."
+        },
+        "ea-pro-source-mt5": {
+          "name": "EA ThebenchmarkTrader Pro + Source Code",
+          "description": "Phiên bản Pro với source code đầy đủ. Unlimited accounts, cập nhật trọn đời, hỗ trợ VIP."
+        }
+      }
+    },
+    "verification": {
+      "alreadyPaid": "Đã thanh toán? Nhập mã đơn hàng:",
+      "orderCode": "Mã đơn hàng",
+      "verify": "Xác Nhận",
+      "enterCode": "Vui lòng nhập mã đơn hàng",
+      "success": "✅ Xác nhận thành công! Đang tải xuống...",
+      "invalidCode": "Mã đơn hàng không hợp lệ hoặc chưa thanh toán",
+      "wrongProduct": "Mã này dành cho sản phẩm",
+      "error": "Lỗi xác thực. Vui lòng thử lại sau."
+    },
+    "support": {
+      "title": "Cần Hỗ Trợ?",
+      "description": "Team support luôn sẵn sàng hỗ trợ bạn qua Telegram hoặc email. Đừng ngại liên hệ!",
+      "contactButton": "Liên Hệ Support",
+      "telegramButton": "Join Telegram Group"
+    }
   }
 }
