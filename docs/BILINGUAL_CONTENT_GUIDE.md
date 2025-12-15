@@ -282,6 +282,7 @@ Các phần này được quản lý qua file `locales/vi.json` và `locales/en.
 | Affiliate - Copy Social | ✅ Hoàn thành | JSON files | ❌ |
 | Affiliate - Bán Khóa Học | ✅ Hoàn thành | JSON files | ❌ |
 | Affiliate - Apply | ⏳ Chưa hoàn thành | Cần migrate | ❌ |
+| ChatWidget | ✅ Hoàn thành | JSON files | ❌ |
 
 ---
 

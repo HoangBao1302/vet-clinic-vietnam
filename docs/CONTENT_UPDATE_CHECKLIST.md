@@ -148,6 +148,7 @@ git push origin main
 | Partners | `data/partners.ts` | ❌ KHÔNG | 🟡 Trung bình |
 | Pricing | `locales/*.json` | ❌ KHÔNG | 🟡 Trung bình |
 | Homepage | `locales/*.json` | ❌ KHÔNG | 🔵 Thấp |
+| ChatWidget | `locales/*.json` | ❌ KHÔNG | 🟡 Trung bình |
 | Other Pages | `locales/*.json` | ❌ KHÔNG | 🔵 Thấp |
 
 ---
