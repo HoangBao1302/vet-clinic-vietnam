@@ -1268,5 +1268,47 @@
         "viewOthersButton": "View Other Programs"
       }
     }
+  },
+  "blogPage": {
+    "hero": {
+      "title": "EA ThebenchmarkTrader Blog",
+      "subtitle": "Market news, trading knowledge and in-depth EA guides"
+    },
+    "categories": {
+      "all": {
+        "name": "📚 All",
+        "description": "All articles about trading, market analysis and EA"
+      },
+      "news": {
+        "name": "📰 News",
+        "description": "Market news, economic data and latest analysis"
+      },
+      "education": {
+        "name": "🎓 Education",
+        "description": "Trading knowledge, strategies and technical analysis"
+      },
+      "ea-leopard": {
+        "name": "🤖 EA ThebenchmarkTrader",
+        "description": "Guides, updates and EA ThebenchmarkTrader optimization"
+      }
+    },
+    "postsCount": "articles",
+    "featured": "Featured Article",
+    "readMore": "Read more",
+    "views": "views",
+    "allPosts": "All Articles",
+    "otherPosts": "Other Articles",
+    "postsInCategory": "articles in this category",
+    "noPosts": {
+      "title": "No articles in this category yet",
+      "subtitle": "Check back later for the latest articles"
+    },
+    "loading": "Loading articles...",
+    "newsletter": {
+      "emailPlaceholder": "Please enter your email",
+      "successMessage": "✅ Successfully subscribed! Thank you for your interest.",
+      "errorMessage": "❌ An error occurred. Please try again.",
+      "connectionError": "❌ Connection error. Please try again later."
+    }
   }
 }

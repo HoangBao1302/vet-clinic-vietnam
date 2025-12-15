@@ -1268,5 +1268,47 @@
         "viewOthersButton": "Xem Các Chương Trình Khác"
       }
     }
+  },
+  "blogPage": {
+    "hero": {
+      "title": "Blog EA ThebenchmarkTrader",
+      "subtitle": "Tin tức thị trường, kiến thức giao dịch và hướng dẫn chuyên sâu về EA"
+    },
+    "categories": {
+      "all": {
+        "name": "📚 Tất cả",
+        "description": "Tất cả bài viết về trading, phân tích thị trường và EA"
+      },
+      "news": {
+        "name": "📰 Tin Tức",
+        "description": "Tin tức thị trường, dữ liệu kinh tế và phân tích mới nhất"
+      },
+      "education": {
+        "name": "🎓 Đào Tạo",
+        "description": "Kiến thức trading, chiến lược và kỹ thuật phân tích"
+      },
+      "ea-leopard": {
+        "name": "🤖 EA ThebenchmarkTrader",
+        "description": "Hướng dẫn, cập nhật và tối ưu EA ThebenchmarkTrader"
+      }
+    },
+    "postsCount": "bài viết",
+    "featured": "Bài viết nổi bật",
+    "readMore": "Đọc tiếp",
+    "views": "lượt xem",
+    "allPosts": "Tất cả bài viết",
+    "otherPosts": "Bài viết khác",
+    "postsInCategory": "bài viết trong mục này",
+    "noPosts": {
+      "title": "Chưa có bài viết trong mục này",
+      "subtitle": "Hãy quay lại sau để xem các bài viết mới nhất"
+    },
+    "loading": "Đang tải bài viết...",
+    "newsletter": {
+      "emailPlaceholder": "Vui lòng nhập email của bạn",
+      "successMessage": "✅ Đăng ký thành công! Cảm ơn bạn đã quan tâm.",
+      "errorMessage": "❌ Đã xảy ra lỗi. Vui lòng thử lại.",
+      "connectionError": "❌ Đã xảy ra lỗi kết nối. Vui lòng thử lại sau."
+    }
   }
 }
