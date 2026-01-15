@@ -9,6 +9,7 @@ import { FileText, Download, Lock, CheckCircle, Gift, ShieldCheck, CreditCard } 
 import Link from "next/link";
 import { useAuth } from "@/lib/authContext";
 import { useLocale } from "@/lib/i18n/LocaleContext";
+import { PAYMENT_METHODS, isPaymentMethodEnabled, type PaymentMethodType } from "@/config/paymentMethods";
 
 interface DownloadItem {
   id: string;
@@ -390,26 +391,58 @@ export default function DownloadsPage() {
 
         {/* Purchase Buttons */}
         <div className="space-y-2 mb-4">
+          {/* Stripe Button */}
           <button
-            onClick={() => handlePurchase(item, "stripe")}
-            className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+            onClick={() => isPaymentMethodEnabled('stripe') && handlePurchase(item, "stripe")}
+            disabled={!isPaymentMethodEnabled('stripe')}
+            className={`w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-semibold transition-colors ${
+              isPaymentMethodEnabled('stripe')
+                ? 'bg-blue-600 text-white hover:bg-blue-700 cursor-pointer'
+                : 'bg-gray-300 text-gray-500 cursor-not-allowed opacity-60'
+            }`}
+            title={!isPaymentMethodEnabled('stripe') ? (locale === 'en' ? PAYMENT_METHODS.stripe.disabledMessageEn : PAYMENT_METHODS.stripe.disabledMessage) : ''}
           >
             <CreditCard size={18} />
             <span>{t('downloads.buttons.buyStripe')}</span>
+            {!isPaymentMethodEnabled('stripe') && (
+              <span className="text-xs ml-2">({locale === 'en' ? PAYMENT_METHODS.stripe.disabledMessageEn : PAYMENT_METHODS.stripe.disabledMessage})</span>
+            )}
           </button>
+
+          {/* PayPal Button */}
           <button
-            onClick={() => handlePurchase(item, "paypal")}
-            className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-yellow-500 text-white rounded-lg font-semibold hover:bg-yellow-600 transition-colors"
+            onClick={() => isPaymentMethodEnabled('paypal') && handlePurchase(item, "paypal")}
+            disabled={!isPaymentMethodEnabled('paypal')}
+            className={`w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-semibold transition-colors ${
+              isPaymentMethodEnabled('paypal')
+                ? 'bg-yellow-500 text-white hover:bg-yellow-600 cursor-pointer'
+                : 'bg-gray-300 text-gray-500 cursor-not-allowed opacity-60'
+            }`}
+            title={!isPaymentMethodEnabled('paypal') ? (locale === 'en' ? PAYMENT_METHODS.paypal.disabledMessageEn : PAYMENT_METHODS.paypal.disabledMessage) : ''}
           >
             <CreditCard size={18} />
             <span>{t('downloads.buttons.buyPaypal')}</span>
+            {!isPaymentMethodEnabled('paypal') && (
+              <span className="text-xs ml-2">({locale === 'en' ? PAYMENT_METHODS.paypal.disabledMessageEn : PAYMENT_METHODS.paypal.disabledMessage})</span>
+            )}
           </button>
+
+          {/* Bank Transfer Button */}
           <button
-            onClick={() => handlePurchase(item, "bank")}
-            className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors"
+            onClick={() => isPaymentMethodEnabled('bank') && handlePurchase(item, "bank")}
+            disabled={!isPaymentMethodEnabled('bank')}
+            className={`w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-semibold transition-colors ${
+              isPaymentMethodEnabled('bank')
+                ? 'bg-green-600 text-white hover:bg-green-700 cursor-pointer'
+                : 'bg-gray-300 text-gray-500 cursor-not-allowed opacity-60'
+            }`}
+            title={!isPaymentMethodEnabled('bank') ? (locale === 'en' ? PAYMENT_METHODS.bank.disabledMessageEn : PAYMENT_METHODS.bank.disabledMessage) : ''}
           >
             <CreditCard size={18} />
             <span>{t('downloads.buttons.buyBank')}</span>
+            {!isPaymentMethodEnabled('bank') && (
+              <span className="text-xs ml-2">({locale === 'en' ? PAYMENT_METHODS.bank.disabledMessageEn : PAYMENT_METHODS.bank.disabledMessage})</span>
+            )}
           </button>
         </div>
 
