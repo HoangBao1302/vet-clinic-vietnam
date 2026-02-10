@@ -5,7 +5,13 @@
   "outputDirectory": ".next",
   "github": {
     "silent": true
-  }
+  },
+  "crons": [
+    {
+      "path": "/api/cron/keep-mongodb-alive",
+      "schedule": "0 0 * * 1"
+    }
+  ]
 }
 
 
