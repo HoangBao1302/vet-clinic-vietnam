@@ -14,10 +14,14 @@ export default function EditFeaturedAccountPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [formData, setFormData] = useState({
+    name: "",
+    platform: "",
     broker: "",
-    accountNumber: "",
     gain: "",
-    year: new Date().getFullYear(),
+    drawdown: "",
+    days: "",
+    link: "",
+    copyable: false,
     active: true,
     order: 0
   });
@@ -31,13 +35,18 @@ export default function EditFeaturedAccountPage() {
       const response = await fetch(`/api/admin/featured-accounts/${accountId}`);
       if (response.ok) {
         const data = await response.json();
+        const account = data.account;
         setFormData({
-          broker: data.account.broker || "",
-          accountNumber: data.account.accountNumber || "",
-          gain: data.account.gain || "",
-          year: data.account.year || new Date().getFullYear(),
-          active: data.account.active !== undefined ? data.account.active : true,
-          order: data.account.order || 0
+          name: account.name || "",
+          platform: account.platform || "",
+          broker: account.broker || "",
+          gain: account.gain || "",
+          drawdown: account.drawdown || "",
+          days: account.days || "",
+          link: account.link || "",
+          copyable: account.copyable || false,
+          active: account.active !== undefined ? account.active : true,
+          order: account.order || 0
         });
       } else {
         alert('Featured account not found');
@@ -59,6 +68,7 @@ export default function EditFeaturedAccountPage() {
       const response = await fetch(`/api/admin/featured-accounts/${accountId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify(formData)
       });
 
@@ -116,6 +126,36 @@ export default function EditFeaturedAccountPage() {
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Name *
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.name}
+                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        required
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                        placeholder="ThebenchmarkTrader Live #1"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Platform *
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.platform}
+                        onChange={(e) => setFormData({ ...formData, platform: e.target.value })}
+                        required
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                        placeholder="MQL5, Myfxbook, Tickmill Social"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
                         Broker *
                       </label>
                       <input
@@ -124,19 +164,21 @@ export default function EditFeaturedAccountPage() {
                         onChange={(e) => setFormData({ ...formData, broker: e.target.value })}
                         required
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                        placeholder="Tickmill"
                       />
                     </div>
 
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Account Number *
+                        Gain *
                       </label>
                       <input
                         type="text"
-                        value={formData.accountNumber}
-                        onChange={(e) => setFormData({ ...formData, accountNumber: e.target.value })}
+                        value={formData.gain}
+                        onChange={(e) => setFormData({ ...formData, gain: e.target.value })}
                         required
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                        placeholder="+4359%"
                       />
                     </div>
                   </div>
@@ -144,31 +186,45 @@ export default function EditFeaturedAccountPage() {
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Gain
+                        Drawdown *
                       </label>
                       <input
                         type="text"
-                        value={formData.gain}
-                        onChange={(e) => setFormData({ ...formData, gain: e.target.value })}
+                        value={formData.drawdown}
+                        onChange={(e) => setFormData({ ...formData, drawdown: e.target.value })}
+                        required
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-                        placeholder="+245%"
+                        placeholder="28.5%"
                       />
                     </div>
 
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Year *
+                        Days *
                       </label>
                       <input
-                        type="number"
-                        min="2020"
-                        max="2030"
-                        value={formData.year}
-                        onChange={(e) => setFormData({ ...formData, year: parseInt(e.target.value) })}
+                        type="text"
+                        value={formData.days}
+                        onChange={(e) => setFormData({ ...formData, days: e.target.value })}
                         required
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                        placeholder="1638"
                       />
                     </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Profile Link *
+                    </label>
+                    <input
+                      type="url"
+                      value={formData.link}
+                      onChange={(e) => setFormData({ ...formData, link: e.target.value })}
+                      required
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                      placeholder="https://www.mql5.com/en/signals/..."
+                    />
                   </div>
 
                   <div>
@@ -179,23 +235,38 @@ export default function EditFeaturedAccountPage() {
                       type="number"
                       min="0"
                       value={formData.order}
-                      onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) })}
+                      onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) || 0 })}
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
                     />
                     <p className="text-sm text-gray-500 mt-1">Lower number = higher position</p>
                   </div>
 
-                  <div className="flex items-center gap-3">
-                    <input
-                      type="checkbox"
-                      id="active"
-                      checked={formData.active}
-                      onChange={(e) => setFormData({ ...formData, active: e.target.checked })}
-                      className="w-5 h-5 text-yellow-600 rounded focus:ring-yellow-500"
-                    />
-                    <label htmlFor="active" className="text-sm font-semibold text-gray-700">
-                      Active (Show on website)
-                    </label>
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3">
+                      <input
+                        type="checkbox"
+                        id="copyable"
+                        checked={formData.copyable}
+                        onChange={(e) => setFormData({ ...formData, copyable: e.target.checked })}
+                        className="w-5 h-5 text-yellow-600 rounded focus:ring-yellow-500"
+                      />
+                      <label htmlFor="copyable" className="text-sm font-semibold text-gray-700">
+                        Copyable (Can be copied by users)
+                      </label>
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                      <input
+                        type="checkbox"
+                        id="active"
+                        checked={formData.active}
+                        onChange={(e) => setFormData({ ...formData, active: e.target.checked })}
+                        className="w-5 h-5 text-yellow-600 rounded focus:ring-yellow-500"
+                      />
+                      <label htmlFor="active" className="text-sm font-semibold text-gray-700">
+                        Active (Show on website)
+                      </label>
+                    </div>
                   </div>
                 </div>
 

@@ -11,16 +11,14 @@ export default function CreateFeaturedAccountPage() {
   const [saving, setSaving] = useState(false);
   const [formData, setFormData] = useState({
     id: "",
+    name: "",
+    platform: "",
     broker: "",
-    accountNumber: "",
-    startBalance: "",
-    currentBalance: "",
-    totalProfit: "",
     gain: "",
-    monthlyReturn: "",
-    maxDrawdown: "",
-    verified: false,
-    year: new Date().getFullYear(),
+    drawdown: "",
+    days: "",
+    link: "",
+    copyable: false,
     active: true,
     order: 999
   });
@@ -33,6 +31,7 @@ export default function CreateFeaturedAccountPage() {
       const response = await fetch('/api/admin/featured-accounts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify(formData)
       });
 
@@ -87,8 +86,38 @@ export default function CreateFeaturedAccountPage() {
                       required
                       pattern="[a-z0-9-]+"
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-                      placeholder="e.g. featured-2024-1"
+                      placeholder="featured-1"
                     />
+                  </div>
+
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Name *
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.name}
+                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        required
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                        placeholder="ThebenchmarkTrader Live #1"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Platform *
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.platform}
+                        onChange={(e) => setFormData({ ...formData, platform: e.target.value })}
+                        required
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                        placeholder="MQL5, Myfxbook, Tickmill Social"
+                      />
+                    </div>
                   </div>
 
                   <div className="grid md:grid-cols-2 gap-6">
@@ -102,101 +131,21 @@ export default function CreateFeaturedAccountPage() {
                         onChange={(e) => setFormData({ ...formData, broker: e.target.value })}
                         required
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                        placeholder="Tickmill"
                       />
                     </div>
 
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Account Number *
-                      </label>
-                      <input
-                        type="text"
-                        value={formData.accountNumber}
-                        onChange={(e) => setFormData({ ...formData, accountNumber: e.target.value })}
-                        required
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid md:grid-cols-3 gap-6">
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Start Balance
-                      </label>
-                      <input
-                        type="text"
-                        value={formData.startBalance}
-                        onChange={(e) => setFormData({ ...formData, startBalance: e.target.value })}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-                        placeholder="$5,000"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Current Balance
-                      </label>
-                      <input
-                        type="text"
-                        value={formData.currentBalance}
-                        onChange={(e) => setFormData({ ...formData, currentBalance: e.target.value })}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-                        placeholder="$17,250"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Total Profit
-                      </label>
-                      <input
-                        type="text"
-                        value={formData.totalProfit}
-                        onChange={(e) => setFormData({ ...formData, totalProfit: e.target.value })}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-                        placeholder="$12,250"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid md:grid-cols-3 gap-6">
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Gain
+                        Gain *
                       </label>
                       <input
                         type="text"
                         value={formData.gain}
                         onChange={(e) => setFormData({ ...formData, gain: e.target.value })}
+                        required
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-                        placeholder="+245%"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Monthly Return
-                      </label>
-                      <input
-                        type="text"
-                        value={formData.monthlyReturn}
-                        onChange={(e) => setFormData({ ...formData, monthlyReturn: e.target.value })}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-                        placeholder="+18%"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Max Drawdown
-                      </label>
-                      <input
-                        type="text"
-                        value={formData.maxDrawdown}
-                        onChange={(e) => setFormData({ ...formData, maxDrawdown: e.target.value })}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-                        placeholder="8.5%"
+                        placeholder="+4359%"
                       />
                     </div>
                   </div>
@@ -204,44 +153,72 @@ export default function CreateFeaturedAccountPage() {
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Year *
+                        Drawdown *
                       </label>
                       <input
-                        type="number"
-                        min="2020"
-                        max="2030"
-                        value={formData.year}
-                        onChange={(e) => setFormData({ ...formData, year: parseInt(e.target.value) })}
+                        type="text"
+                        value={formData.drawdown}
+                        onChange={(e) => setFormData({ ...formData, drawdown: e.target.value })}
                         required
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                        placeholder="28.5%"
                       />
                     </div>
 
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Display Order
+                        Days *
                       </label>
                       <input
-                        type="number"
-                        min="0"
-                        value={formData.order}
-                        onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) })}
+                        type="text"
+                        value={formData.days}
+                        onChange={(e) => setFormData({ ...formData, days: e.target.value })}
+                        required
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                        placeholder="1638"
                       />
                     </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Profile Link *
+                    </label>
+                    <input
+                      type="url"
+                      value={formData.link}
+                      onChange={(e) => setFormData({ ...formData, link: e.target.value })}
+                      required
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                      placeholder="https://www.mql5.com/en/signals/..."
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Display Order
+                    </label>
+                    <input
+                      type="number"
+                      min="0"
+                      value={formData.order}
+                      onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) || 0 })}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                    />
+                    <p className="text-sm text-gray-500 mt-1">Lower number = higher position</p>
                   </div>
 
                   <div className="space-y-3">
                     <div className="flex items-center gap-3">
                       <input
                         type="checkbox"
-                        id="verified"
-                        checked={formData.verified}
-                        onChange={(e) => setFormData({ ...formData, verified: e.target.checked })}
+                        id="copyable"
+                        checked={formData.copyable}
+                        onChange={(e) => setFormData({ ...formData, copyable: e.target.checked })}
                         className="w-5 h-5 text-yellow-600 rounded focus:ring-yellow-500"
                       />
-                      <label htmlFor="verified" className="text-sm font-semibold text-gray-700">
-                        Verified Account
+                      <label htmlFor="copyable" className="text-sm font-semibold text-gray-700">
+                        Copyable (Can be copied by users)
                       </label>
                     </div>
 
