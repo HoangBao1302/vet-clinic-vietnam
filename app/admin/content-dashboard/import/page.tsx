@@ -17,6 +17,7 @@ export default function ImportDataPage() {
   const [importing, setImporting] = useState(false);
   const [loadingData, setLoadingData] = useState(false);
   const [dataLoaded, setDataLoaded] = useState(false);
+  const [updateExisting, setUpdateExisting] = useState(false);
   const [dataCounts, setDataCounts] = useState({
     partners: 0,
     tradingAccounts: 0,
@@ -92,22 +93,52 @@ export default function ImportDataPage() {
 
     for (const partner of partnersData) {
       try {
-        const response = await fetch('/api/admin/partners', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(partner)
-        });
+        if (updateExisting) {
+          // Try to update first, if not exists then create
+          const updateResponse = await fetch(`/api/admin/partners/${partner.id}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(partner)
+          });
 
-        if (response.ok) {
-          success++;
-        } else {
-          const data = await response.json();
-          if (data.error && data.error.includes('already exists')) {
-            skipped++;
-            console.log(`Partner ${partner.name} already exists - skipped`);
+          if (updateResponse.ok) {
+            success++;
+            console.log(`Updated partner: ${partner.name}`);
+          } else if (updateResponse.status === 404) {
+            // Not found, create new
+            const createResponse = await fetch('/api/admin/partners', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(partner)
+            });
+            if (createResponse.ok) {
+              success++;
+              console.log(`Created partner: ${partner.name}`);
+            } else {
+              failed++;
+            }
           } else {
             failed++;
-            console.error(`Failed to import partner ${partner.name}:`, data.error);
+          }
+        } else {
+          // Only create new (skip existing)
+          const response = await fetch('/api/admin/partners', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(partner)
+          });
+
+          if (response.ok) {
+            success++;
+          } else {
+            const data = await response.json();
+            if (data.error && data.error.includes('already exists')) {
+              skipped++;
+              console.log(`Partner ${partner.name} already exists - skipped`);
+            } else {
+              failed++;
+              console.error(`Failed to import partner ${partner.name}:`, data.error);
+            }
           }
         }
       } catch (error) {
@@ -126,22 +157,49 @@ export default function ImportDataPage() {
 
     for (const account of accountsData) {
       try {
-        const response = await fetch('/api/admin/trading-accounts', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(account)
-        });
+        if (updateExisting) {
+          const updateResponse = await fetch(`/api/admin/trading-accounts/${account.id}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(account)
+          });
 
-        if (response.ok) {
-          success++;
-        } else {
-          const data = await response.json();
-          if (data.error && data.error.includes('already exists')) {
-            skipped++;
-            console.log(`Trading account ${account.id} already exists - skipped`);
+          if (updateResponse.ok) {
+            success++;
+            console.log(`Updated account: ${account.id}`);
+          } else if (updateResponse.status === 404) {
+            const createResponse = await fetch('/api/admin/trading-accounts', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(account)
+            });
+            if (createResponse.ok) {
+              success++;
+              console.log(`Created account: ${account.id}`);
+            } else {
+              failed++;
+            }
           } else {
             failed++;
-            console.error(`Failed to import account ${account.id}:`, data.error);
+          }
+        } else {
+          const response = await fetch('/api/admin/trading-accounts', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(account)
+          });
+
+          if (response.ok) {
+            success++;
+          } else {
+            const data = await response.json();
+            if (data.error && data.error.includes('already exists')) {
+              skipped++;
+              console.log(`Trading account ${account.id} already exists - skipped`);
+            } else {
+              failed++;
+              console.error(`Failed to import account ${account.id}:`, data.error);
+            }
           }
         }
       } catch (error) {
@@ -160,22 +218,49 @@ export default function ImportDataPage() {
 
     for (const account of featuredData) {
       try {
-        const response = await fetch('/api/admin/featured-accounts', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(account)
-        });
+        if (updateExisting) {
+          const updateResponse = await fetch(`/api/admin/featured-accounts/${account.id}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(account)
+          });
 
-        if (response.ok) {
-          success++;
-        } else {
-          const data = await response.json();
-          if (data.error && data.error.includes('already exists')) {
-            skipped++;
-            console.log(`Featured account ${account.id} already exists - skipped`);
+          if (updateResponse.ok) {
+            success++;
+            console.log(`Updated featured account: ${account.id}`);
+          } else if (updateResponse.status === 404) {
+            const createResponse = await fetch('/api/admin/featured-accounts', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(account)
+            });
+            if (createResponse.ok) {
+              success++;
+              console.log(`Created featured account: ${account.id}`);
+            } else {
+              failed++;
+            }
           } else {
             failed++;
-            console.error(`Failed to import featured account ${account.id}:`, data.error);
+          }
+        } else {
+          const response = await fetch('/api/admin/featured-accounts', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(account)
+          });
+
+          if (response.ok) {
+            success++;
+          } else {
+            const data = await response.json();
+            if (data.error && data.error.includes('already exists')) {
+              skipped++;
+              console.log(`Featured account ${account.id} already exists - skipped`);
+            } else {
+              failed++;
+              console.error(`Failed to import featured account ${account.id}:`, data.error);
+            }
           }
         }
       } catch (error) {
@@ -284,9 +369,26 @@ export default function ImportDataPage() {
                         <p className="text-sm text-gray-600">Featured Accounts</p>
                       </div>
                     </div>
-                    <p className="text-sm text-gray-500 mb-8">
-                      ⚠️ Existing records with the same ID will be skipped (not overwritten)
-                    </p>
+
+                    <div className="mb-6 max-w-md mx-auto">
+                      <label className="flex items-center justify-center gap-3 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={updateExisting}
+                          onChange={(e) => setUpdateExisting(e.target.checked)}
+                          className="w-5 h-5 text-blue-600 rounded focus:ring-blue-500"
+                        />
+                        <span className="text-sm text-gray-700">
+                          <strong>Update existing records</strong> (nếu record đã tồn tại, cập nhật thay vì skip)
+                        </span>
+                      </label>
+                      {!updateExisting && (
+                        <p className="text-xs text-gray-500 mt-2">
+                          ⚠️ Chế độ mặc định: Records đã tồn tại sẽ bị bỏ qua
+                        </p>
+                      )}
+                    </div>
+
                     <button
                       onClick={handleImport}
                       disabled={importing}
@@ -300,7 +402,7 @@ export default function ImportDataPage() {
                       ) : (
                         <>
                           <Upload size={20} />
-                          Start Import
+                          {updateExisting ? 'Start Import & Update' : 'Start Import (Skip Existing)'}
                         </>
                       )}
                     </button>
