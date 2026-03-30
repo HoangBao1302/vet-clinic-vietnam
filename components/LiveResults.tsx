@@ -1,19 +1,44 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { ExternalLink, TrendingUp, CheckCircle, Youtube } from "lucide-react";
 import Link from "next/link";
-import { featuredAccounts } from "@/data/featuredAccounts";
 import type { FeaturedAccount } from "@/data/featuredAccounts";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 
 export default function LiveResults() {
   const { t } = useLocale();
-  
-  // Filter only active featured accounts and sort by order
-  const activeFeaturedAccounts = featuredAccounts
-    .filter(a => a.active)
-    .sort((a, b) => a.order - b.order)
-    .slice(0, 3); // Only show top 3
+  const [activeFeaturedAccounts, setActiveFeaturedAccounts] = useState<FeaturedAccount[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchFeaturedAccounts();
+  }, []);
+
+  const fetchFeaturedAccounts = async () => {
+    try {
+      const response = await fetch('/api/featured-accounts');
+      if (response.ok) {
+        const data = await response.json();
+        const accounts = (data.accounts || []).slice(0, 3);
+        setActiveFeaturedAccounts(accounts);
+      }
+    } catch (error) {
+      console.error('Error fetching featured accounts:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <section id="live-results" className="py-20 bg-gradient-to-br from-green-50 to-blue-50">
+        <div className="container-custom text-center">
+          <p>Loading...</p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="live-results" className="py-20 bg-gradient-to-br from-green-50 to-blue-50">

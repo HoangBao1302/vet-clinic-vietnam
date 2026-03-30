@@ -1,17 +1,49 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import StickyCallToAction from "@/components/StickyCallToAction";
 import { ExternalLink, TrendingUp, Shield, Users, BarChart3, Youtube, Copy, CheckCircle, AlertCircle } from "lucide-react";
-import { tradingAccounts } from "@/data/tradingAccounts";
 import type { TradingAccount } from "@/data/tradingAccounts";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 
 export default function LiveResultsPage() {
   const { t, locale } = useLocale();
-  // Filter only active trading accounts
-  const activeAccounts = tradingAccounts.filter(a => a.active).sort((a, b) => a.order - b.order);
+  const [activeAccounts, setActiveAccounts] = useState<TradingAccount[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchAccounts();
+  }, []);
+
+  const fetchAccounts = async () => {
+    try {
+      const response = await fetch('/api/trading-accounts');
+      if (response.ok) {
+        const data = await response.json();
+        setActiveAccounts(data.accounts || []);
+      }
+    } catch (error) {
+      console.error('Error fetching trading accounts:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <main className="pt-20">
+          <div className="container-custom py-12 text-center">
+            <p>Loading...</p>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">

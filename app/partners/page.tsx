@@ -1,21 +1,37 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import StickyCallToAction from "@/components/StickyCallToAction";
 import { Award, TrendingUp, DollarSign, Shield, ArrowRightLeft, Headphones, AlertCircle } from "lucide-react";
-import { partners } from "@/data/partners";
 import type { PartnerInfo } from "@/data/partners";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 
 export default function PartnersPage() {
   const { t, locale } = useLocale();
   const [selectedPartner, setSelectedPartner] = useState<number | null>(null);
-  
-  // Filter only active partners
-  const activePartners = partners.filter(p => p.active).sort((a, b) => a.order - b.order);
+  const [activePartners, setActivePartners] = useState<PartnerInfo[]>([]);
+  const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    fetchPartners();
+  }, []);
+
+  const fetchPartners = async () => {
+    try {
+      const response = await fetch('/api/partners');
+      if (response.ok) {
+        const data = await response.json();
+        setActivePartners(data.partners || []);
+      }
+    } catch (error) {
+      console.error('Error fetching partners:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
   // Helper to get localized partner field
   const getLocalizedField = (partner: PartnerInfo, field: 'spread' | 'license' | 'deposit' | 'support' | 'notes'): string[] => {
     const englishField = `${field}_en` as keyof PartnerInfo;
@@ -23,6 +39,20 @@ export default function PartnersPage() {
       ? (partner[englishField] as string[])
       : partner[field];
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <main className="pt-20">
+          <div className="container-custom py-12 text-center">
+            <p>Loading...</p>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
