@@ -4,17 +4,50 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { Upload, CheckCircle, XCircle, AlertCircle } from "lucide-react";
+import { Upload, CheckCircle, XCircle, AlertCircle, RefreshCw } from "lucide-react";
+
+interface ImportResult {
+  success: number;
+  failed: number;
+  total: number;
+}
 
 export default function ImportDataPage() {
   const router = useRouter();
   const [importing, setImporting] = useState(false);
+  const [loadingData, setLoadingData] = useState(false);
+  const [dataLoaded, setDataLoaded] = useState(false);
+  const [dataCounts, setDataCounts] = useState({
+    partners: 0,
+    tradingAccounts: 0,
+    featuredAccounts: 0
+  });
   const [results, setResults] = useState<{
-    partners?: { success: number; failed: number; total: number };
-    tradingAccounts?: { success: number; failed: number; total: number };
-    featuredAccounts?: { success: number; failed: number; total: number };
+    partners?: ImportResult;
+    tradingAccounts?: ImportResult;
+    featuredAccounts?: ImportResult;
   }>({});
   const [error, setError] = useState<string | null>(null);
+
+  // Load data counts from API
+  const loadDataInfo = async () => {
+    setLoadingData(true);
+    try {
+      const response = await fetch('/api/admin/import/prepare');
+      if (response.ok) {
+        const data = await response.json();
+        setDataCounts(data.counts);
+        setDataLoaded(true);
+        setError(null);
+      } else {
+        throw new Error('Failed to load data from files');
+      }
+    } catch (err: any) {
+      setError(err.message || 'Failed to load data');
+    } finally {
+      setLoadingData(false);
+    }
+  };
 
   const handleImport = async () => {
     setImporting(true);
@@ -22,14 +55,22 @@ export default function ImportDataPage() {
     setResults({});
 
     try {
+      // Fetch data from API endpoint
+      const dataResponse = await fetch('/api/admin/import/prepare');
+      if (!dataResponse.ok) {
+        throw new Error('Failed to fetch import data');
+      }
+
+      const { data } = await dataResponse.json();
+
       // Import Partners
-      const partnersRes = await importPartners();
+      const partnersRes = await importPartners(data.partners);
       
       // Import Trading Accounts
-      const tradingAccountsRes = await importTradingAccounts();
+      const tradingAccountsRes = await importTradingAccounts(data.tradingAccounts);
       
       // Import Featured Accounts
-      const featuredAccountsRes = await importFeaturedAccounts();
+      const featuredAccountsRes = await importFeaturedAccounts(data.featuredAccounts);
 
       setResults({
         partners: partnersRes,
@@ -44,53 +85,10 @@ export default function ImportDataPage() {
     }
   };
 
-  const importPartners = async () => {
-    // This data is hardcoded from data/partners.ts
-    // In production, you might want to fetch this from the files or have it as a JSON endpoint
-    const partnersData = [
-      {
-        id: "tickmill",
-        name: "Tickmill",
-        website: "https://tickmill.com",
-        rating: 4.5,
-        active: true,
-        order: 1,
-        spread: ["Spread từ 0.0 pips (tài khoản Pro)"],
-        license: ["FCA (UK)", "CySEC (Cyprus)"],
-        deposit: ["Nạp tối thiểu: $100"],
-        support: ["Support 24/7"],
-        notes: ["Broker uy tín"]
-      },
-      {
-        id: "thinkmarkets",
-        name: "ThinkMarkets",
-        website: "https://thinkmarkets.com",
-        rating: 4.3,
-        active: true,
-        order: 2,
-        spread: ["Spread từ 0.0 pips"],
-        license: ["FCA (UK)", "ASIC (Australia)"],
-        deposit: ["Nạp tối thiểu: $250"],
-        support: ["Support đa ngôn ngữ"],
-        notes: ["Platform tốt"]
-      },
-      {
-        id: "puprime",
-        name: "PuPrime",
-        website: "https://puprime.com",
-        rating: 4.1,
-        active: true,
-        order: 3,
-        spread: ["Spread thấp"],
-        license: ["VFSC (Vanuatu)"],
-        deposit: ["Nạp tối thiểu: $20"],
-        support: ["Support 24/5"],
-        notes: ["Phù hợp trader mới"]
-      }
-    ];
-
+  const importPartners = async (partnersData: any[]): Promise<ImportResult> => {
     let success = 0;
     let failed = 0;
+    let skipped = 0;
 
     for (const partner of partnersData) {
       try {
@@ -105,10 +103,11 @@ export default function ImportDataPage() {
         } else {
           const data = await response.json();
           if (data.error && data.error.includes('already exists')) {
-            // Skip existing partners
-            console.log(`Partner ${partner.name} already exists`);
+            skipped++;
+            console.log(`Partner ${partner.name} already exists - skipped`);
           } else {
             failed++;
+            console.error(`Failed to import partner ${partner.name}:`, data.error);
           }
         }
       } catch (error) {
@@ -117,41 +116,13 @@ export default function ImportDataPage() {
       }
     }
 
-    return { success, failed, total: partnersData.length };
+    return { success, failed: failed + skipped, total: partnersData.length };
   };
 
-  const importTradingAccounts = async () => {
-    const accountsData = [
-      {
-        id: "tickmill-pro-1",
-        broker: "Tickmill",
-        account: "12345678",
-        gain: "+245%",
-        balance: "$12,450",
-        maxDrawdown: "8.5%",
-        monthlyProfit: "+18%",
-        verified: true,
-        status: "Đang hoạt động",
-        active: true,
-        order: 1
-      },
-      {
-        id: "thinkmarkets-std-1",
-        broker: "ThinkMarkets",
-        account: "87654321",
-        gain: "+189%",
-        balance: "$8,920",
-        maxDrawdown: "12.3%",
-        monthlyProfit: "+15%",
-        verified: true,
-        status: "Đang hoạt động",
-        active: true,
-        order: 2
-      }
-    ];
-
+  const importTradingAccounts = async (accountsData: any[]): Promise<ImportResult> => {
     let success = 0;
     let failed = 0;
+    let skipped = 0;
 
     for (const account of accountsData) {
       try {
@@ -166,56 +137,26 @@ export default function ImportDataPage() {
         } else {
           const data = await response.json();
           if (data.error && data.error.includes('already exists')) {
-            console.log(`Account ${account.broker} already exists`);
+            skipped++;
+            console.log(`Trading account ${account.id} already exists - skipped`);
           } else {
             failed++;
+            console.error(`Failed to import account ${account.id}:`, data.error);
           }
         }
       } catch (error) {
         failed++;
-        console.error(`Failed to import account ${account.broker}:`, error);
+        console.error(`Failed to import account:`, error);
       }
     }
 
-    return { success, failed, total: accountsData.length };
+    return { success, failed: failed + skipped, total: accountsData.length };
   };
 
-  const importFeaturedAccounts = async () => {
-    const featuredData = [
-      {
-        id: "featured-2024-1",
-        broker: "Tickmill",
-        accountNumber: "12345678",
-        startBalance: "$5,000",
-        currentBalance: "$17,250",
-        totalProfit: "$12,250",
-        gain: "+245%",
-        monthlyReturn: "+18%",
-        maxDrawdown: "8.5%",
-        verified: true,
-        year: 2024,
-        active: true,
-        order: 1
-      },
-      {
-        id: "featured-2023-1",
-        broker: "ThinkMarkets",
-        accountNumber: "87654321",
-        startBalance: "$3,000",
-        currentBalance: "$8,670",
-        totalProfit: "$5,670",
-        gain: "+189%",
-        monthlyReturn: "+15%",
-        maxDrawdown: "12.3%",
-        verified: true,
-        year: 2023,
-        active: true,
-        order: 2
-      }
-    ];
-
+  const importFeaturedAccounts = async (featuredData: any[]): Promise<ImportResult> => {
     let success = 0;
     let failed = 0;
+    let skipped = 0;
 
     for (const account of featuredData) {
       try {
@@ -230,18 +171,20 @@ export default function ImportDataPage() {
         } else {
           const data = await response.json();
           if (data.error && data.error.includes('already exists')) {
-            console.log(`Featured account ${account.broker} already exists`);
+            skipped++;
+            console.log(`Featured account ${account.id} already exists - skipped`);
           } else {
             failed++;
+            console.error(`Failed to import featured account ${account.id}:`, data.error);
           }
         }
       } catch (error) {
         failed++;
-        console.error(`Failed to import featured account ${account.broker}:`, error);
+        console.error(`Failed to import featured account:`, error);
       }
     }
 
-    return { success, failed, total: featuredData.length };
+    return { success, failed: failed + skipped, total: featuredData.length };
   };
 
   const getTotalStats = () => {
@@ -273,6 +216,11 @@ export default function ImportDataPage() {
   const totalStats = getTotalStats();
   const hasResults = Object.keys(results).length > 0;
 
+  // Auto-load data info on mount
+  if (!dataLoaded && !loadingData && !error) {
+    loadDataInfo();
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
@@ -296,19 +244,46 @@ export default function ImportDataPage() {
                   <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
                     <XCircle className="text-red-600 flex-shrink-0 mt-0.5" size={20} />
                     <div>
-                      <h3 className="font-semibold text-red-900">Import Error</h3>
+                      <h3 className="font-semibold text-red-900">Error</h3>
                       <p className="text-red-700 text-sm">{error}</p>
+                      <button
+                        onClick={loadDataInfo}
+                        className="mt-2 text-sm text-red-600 underline hover:text-red-800"
+                      >
+                        Try again
+                      </button>
                     </div>
                   </div>
                 )}
 
-                {!hasResults ? (
+                {loadingData && (
+                  <div className="text-center py-8">
+                    <RefreshCw size={48} className="animate-spin mx-auto text-blue-600 mb-4" />
+                    <p className="text-gray-600">Loading data from files...</p>
+                  </div>
+                )}
+
+                {!hasResults && dataLoaded && !loadingData ? (
                   <div className="text-center py-8">
                     <AlertCircle size={64} className="mx-auto text-blue-600 mb-4" />
                     <h2 className="text-2xl font-bold mb-4">Ready to Import Data</h2>
-                    <p className="text-gray-600 mb-6">
-                      This will import sample data for Partners, Trading Accounts, and Featured Accounts into MongoDB.
+                    <p className="text-gray-600 mb-4">
+                      Found data in files:
                     </p>
+                    <div className="grid grid-cols-3 gap-4 mb-6 max-w-2xl mx-auto">
+                      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                        <p className="text-3xl font-bold text-blue-600">{dataCounts.partners}</p>
+                        <p className="text-sm text-gray-600">Partners</p>
+                      </div>
+                      <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                        <p className="text-3xl font-bold text-green-600">{dataCounts.tradingAccounts}</p>
+                        <p className="text-sm text-gray-600">Trading Accounts</p>
+                      </div>
+                      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                        <p className="text-3xl font-bold text-yellow-600">{dataCounts.featuredAccounts}</p>
+                        <p className="text-sm text-gray-600">Featured Accounts</p>
+                      </div>
+                    </div>
                     <p className="text-sm text-gray-500 mb-8">
                       ⚠️ Existing records with the same ID will be skipped (not overwritten)
                     </p>
@@ -319,7 +294,7 @@ export default function ImportDataPage() {
                     >
                       {importing ? (
                         <>
-                          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                          <RefreshCw size={20} className="animate-spin" />
                           Importing...
                         </>
                       ) : (
@@ -330,7 +305,7 @@ export default function ImportDataPage() {
                       )}
                     </button>
                   </div>
-                ) : (
+                ) : hasResults ? (
                   <div>
                     <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-start gap-3">
                       <CheckCircle className="text-green-600 flex-shrink-0 mt-0.5" size={20} />
@@ -352,7 +327,7 @@ export default function ImportDataPage() {
                           </h3>
                           <p className="text-sm text-gray-600">
                             Success: {results.partners.success} / Total: {results.partners.total}
-                            {results.partners.failed > 0 && ` (Failed: ${results.partners.failed})`}
+                            {results.partners.failed > 0 && ` (Skipped/Failed: ${results.partners.failed})`}
                           </p>
                         </div>
                       )}
@@ -365,7 +340,7 @@ export default function ImportDataPage() {
                           </h3>
                           <p className="text-sm text-gray-600">
                             Success: {results.tradingAccounts.success} / Total: {results.tradingAccounts.total}
-                            {results.tradingAccounts.failed > 0 && ` (Failed: ${results.tradingAccounts.failed})`}
+                            {results.tradingAccounts.failed > 0 && ` (Skipped/Failed: ${results.tradingAccounts.failed})`}
                           </p>
                         </div>
                       )}
@@ -378,7 +353,7 @@ export default function ImportDataPage() {
                           </h3>
                           <p className="text-sm text-gray-600">
                             Success: {results.featuredAccounts.success} / Total: {results.featuredAccounts.total}
-                            {results.featuredAccounts.failed > 0 && ` (Failed: ${results.featuredAccounts.failed})`}
+                            {results.featuredAccounts.failed > 0 && ` (Skipped/Failed: ${results.featuredAccounts.failed})`}
                           </p>
                         </div>
                       )}
@@ -395,6 +370,7 @@ export default function ImportDataPage() {
                         onClick={() => {
                           setResults({});
                           setError(null);
+                          loadDataInfo();
                         }}
                         className="flex-1 px-6 py-3 bg-gray-200 text-gray-800 rounded-lg font-semibold hover:bg-gray-300"
                       >
@@ -402,7 +378,7 @@ export default function ImportDataPage() {
                       </button>
                     </div>
                   </div>
-                )}
+                ) : null}
               </div>
             </div>
           </div>
