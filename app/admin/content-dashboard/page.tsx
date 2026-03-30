@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { 
-  Building2, TrendingUp, Star, Trash2, Eye, EyeOff, RefreshCw
+  Building2, TrendingUp, Star, Trash2, Eye, EyeOff, RefreshCw, Edit, Plus, ChevronDown, ChevronUp, Upload
 } from "lucide-react";
 import { useAuth } from "@/lib/authContext";
 
@@ -48,6 +48,7 @@ export default function ContentDashboard() {
   const { user, isAuthenticated } = useAuth();
   const [activeTab, setActiveTab] = useState<TabType>('partners');
   const [loading, setLoading] = useState(true);
+  const [expandedId, setExpandedId] = useState<string | null>(null);
   
   // State for data
   const [partners, setPartners] = useState<Partner[]>([]);
@@ -379,12 +380,22 @@ export default function ContentDashboard() {
                     <div className="p-6">
                       <div className="flex justify-between items-center mb-6">
                         <h2 className="text-2xl font-bold">Partners Management</h2>
-                        <a
-                          href="/admin/content-dashboard/import"
-                          className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
-                        >
-                          Import Data
-                        </a>
+                        <div className="flex gap-2">
+                          <a
+                            href="/admin/content-dashboard/import"
+                            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center gap-2"
+                          >
+                            <Upload size={18} />
+                            Import Data
+                          </a>
+                          <button
+                            onClick={() => router.push('/admin/content-dashboard/partners/create')}
+                            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
+                          >
+                            <Plus size={18} />
+                            Add Partner
+                          </button>
+                        </div>
                       </div>
                       
                       {partners.length === 0 ? (
@@ -435,14 +446,44 @@ export default function ContentDashboard() {
                                     {partner.active ? <EyeOff size={18} /> : <Eye size={18} />}
                                   </button>
                                   <button
+                                    onClick={() => router.push(`/admin/content-dashboard/partners/edit/${partner.id}`)}
+                                    className="p-2 bg-blue-100 text-blue-700 rounded hover:bg-blue-200"
+                                    title="Edit"
+                                  >
+                                    <Edit size={18} />
+                                  </button>
+                                  <button
                                     onClick={() => handlePartnerDelete(partner.id)}
                                     className="p-2 bg-red-100 text-red-700 rounded hover:bg-red-200"
                                     title="Delete"
                                   >
                                     <Trash2 size={18} />
                                   </button>
+                                  <button
+                                    onClick={() => setExpandedId(expandedId === partner.id ? null : partner.id)}
+                                    className="p-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200"
+                                    title="Toggle details"
+                                  >
+                                    {expandedId === partner.id ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+                                  </button>
                                 </div>
                               </div>
+                              {expandedId === partner.id && (
+                                <div className="mt-4 pt-4 border-t border-gray-200 grid md:grid-cols-2 gap-4 text-sm">
+                                  <div>
+                                    <strong className="text-gray-700">Order:</strong>
+                                    <p className="text-gray-600">#{partner.order}</p>
+                                  </div>
+                                  <div>
+                                    <strong className="text-gray-700">Website:</strong>
+                                    <p className="text-gray-600">
+                                      <a href={partner.website} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                                        {partner.website}
+                                      </a>
+                                    </p>
+                                  </div>
+                                </div>
+                              )}
                             </div>
                           ))}
                         </div>
@@ -455,6 +496,13 @@ export default function ContentDashboard() {
                     <div className="p-6">
                       <div className="flex justify-between items-center mb-6">
                         <h2 className="text-2xl font-bold">Trading Accounts Management</h2>
+                        <button
+                          onClick={() => router.push('/admin/content-dashboard/trading-accounts/create')}
+                          className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center gap-2"
+                        >
+                          <Plus size={18} />
+                          Add Account
+                        </button>
                       </div>
                       
                       {tradingAccounts.length === 0 ? (
@@ -501,12 +549,21 @@ export default function ContentDashboard() {
                                         ? 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200' 
                                         : 'bg-green-100 text-green-700 hover:bg-green-200'
                                     }`}
+                                    title={account.active ? 'Deactivate' : 'Activate'}
                                   >
                                     {account.active ? <EyeOff size={18} /> : <Eye size={18} />}
                                   </button>
                                   <button
+                                    onClick={() => router.push(`/admin/content-dashboard/trading-accounts/edit/${account.id}`)}
+                                    className="p-2 bg-blue-100 text-blue-700 rounded hover:bg-blue-200"
+                                    title="Edit"
+                                  >
+                                    <Edit size={18} />
+                                  </button>
+                                  <button
                                     onClick={() => handleTradingAccountDelete(account.id)}
                                     className="p-2 bg-red-100 text-red-700 rounded hover:bg-red-200"
+                                    title="Delete"
                                   >
                                     <Trash2 size={18} />
                                   </button>
@@ -524,6 +581,13 @@ export default function ContentDashboard() {
                     <div className="p-6">
                       <div className="flex justify-between items-center mb-6">
                         <h2 className="text-2xl font-bold">Featured Accounts Management</h2>
+                        <button
+                          onClick={() => router.push('/admin/content-dashboard/featured-accounts/create')}
+                          className="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 flex items-center gap-2"
+                        >
+                          <Plus size={18} />
+                          Add Featured
+                        </button>
                       </div>
                       
                       {featuredAccounts.length === 0 ? (
@@ -577,12 +641,21 @@ export default function ContentDashboard() {
                                         ? 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200' 
                                         : 'bg-green-100 text-green-700 hover:bg-green-200'
                                     }`}
+                                    title={account.active ? 'Deactivate' : 'Activate'}
                                   >
                                     {account.active ? <EyeOff size={18} /> : <Eye size={18} />}
                                   </button>
                                   <button
+                                    onClick={() => router.push(`/admin/content-dashboard/featured-accounts/edit/${account.id}`)}
+                                    className="p-2 bg-blue-100 text-blue-700 rounded hover:bg-blue-200"
+                                    title="Edit"
+                                  >
+                                    <Edit size={18} />
+                                  </button>
+                                  <button
                                     onClick={() => handleFeaturedAccountDelete(account.id)}
                                     className="p-2 bg-red-100 text-red-700 rounded hover:bg-red-200"
+                                    title="Delete"
                                   >
                                     <Trash2 size={18} />
                                   </button>

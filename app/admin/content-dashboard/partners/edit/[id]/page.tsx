@@ -4,290 +4,216 @@ import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { ArrowLeft, Save, Plus, X, Building2 } from "lucide-react";
-import { useAuth } from "@/lib/authContext";
-import { partners } from "@/data/partners";
-import type { PartnerInfo } from "@/data/partners";
+import { Save, X, ArrowLeft } from "lucide-react";
 
 export default function EditPartnerPage() {
   const router = useRouter();
   const params = useParams();
-  const { user, isAuthenticated } = useAuth();
-  const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState<PartnerInfo | null>(null);
-  const [currentList, setCurrentList] = useState<"spread" | "license" | "deposit" | "support" | "notes">("spread");
-  const [listItemInput, setListItemInput] = useState("");
+  const partnerId = params.id as string;
+
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    website: "",
+    rating: 0,
+    active: true,
+    order: 0
+  });
 
   useEffect(() => {
-    if (!isAuthenticated || user?.role !== "admin") {
-      router.push("/login?redirect=/admin/content-dashboard");
-      return;
-    }
+    fetchPartner();
+  }, [partnerId]);
 
-    const partnerId = params.id as string;
-    const partner = partners.find(p => p.id === partnerId);
-    
-    if (!partner) {
-      alert("Partner không tồn tại!");
-      router.push("/admin/content-dashboard");
-      return;
-    }
-
-    setFormData(partner);
-  }, [params, isAuthenticated, user, router]);
-
-  if (!isAuthenticated || user?.role !== "admin" || !formData) {
-    return null;
-  }
-
-  const handleAddListItem = () => {
-    if (listItemInput.trim() && formData) {
-      setFormData({
-        ...formData,
-        [currentList]: [...formData[currentList], listItemInput.trim()]
-      });
-      setListItemInput("");
-    }
-  };
-
-  const handleRemoveListItem = (listType: typeof currentList, index: number) => {
-    if (!formData) return;
-    setFormData({
-      ...formData,
-      [listType]: formData[listType].filter((_, i) => i !== index)
-    });
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!formData?.name || !formData?.website) {
-      alert("Vui lòng điền đầy đủ thông tin bắt buộc (Tên, Website)!");
-      return;
-    }
-
-    setLoading(true);
+  const fetchPartner = async () => {
     try {
-      // TODO: Call API to update partner
-      console.log("Updating partner:", formData);
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      alert("Cập nhật partner thành công!");
-      router.push("/admin/content-dashboard");
+      const response = await fetch(`/api/admin/partners/${partnerId}`);
+      if (response.ok) {
+        const data = await response.json();
+        setFormData({
+          name: data.partner.name || "",
+          website: data.partner.website || "",
+          rating: data.partner.rating || 0,
+          active: data.partner.active !== undefined ? data.partner.active : true,
+          order: data.partner.order || 0
+        });
+      } else {
+        alert('Partner not found');
+        router.push('/admin/content-dashboard');
+      }
     } catch (error) {
-      console.error("Error updating partner:", error);
-      alert("Có lỗi xảy ra khi cập nhật partner!");
+      console.error('Error fetching partner:', error);
+      alert('Error loading partner');
     } finally {
       setLoading(false);
     }
   };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSaving(true);
+
+    try {
+      const response = await fetch(`/api/admin/partners/${partnerId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+
+      if (response.ok) {
+        alert('Partner updated successfully!');
+        router.push('/admin/content-dashboard');
+      } else {
+        const data = await response.json();
+        alert(`Error: ${data.error || 'Failed to update partner'}`);
+      }
+    } catch (error) {
+      console.error('Error updating partner:', error);
+      alert('Error updating partner');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <main className="pt-20">
+          <div className="container-custom py-12 text-center">
+            <p>Loading...</p>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
       
       <main className="pt-20">
-        <div className="container-custom py-8">
-          {/* Header */}
-          <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
+        <section className="py-12">
+          <div className="container-custom max-w-4xl">
+            <div className="bg-white rounded-lg shadow-md overflow-hidden">
+              <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-8">
                 <button
-                  onClick={() => router.back()}
-                  className="p-2 hover:bg-gray-100 rounded-lg"
+                  onClick={() => router.push('/admin/content-dashboard')}
+                  className="flex items-center gap-2 text-white hover:text-gray-200 mb-4"
                 >
-                  <ArrowLeft size={24} />
+                  <ArrowLeft size={20} />
+                  Back to Dashboard
                 </button>
-                <div>
-                  <h1 className="text-3xl font-bold flex items-center gap-3">
-                    <Building2 className="text-blue-600" size={32} />
-                    Chỉnh Sửa Partner: {formData.name}
-                  </h1>
-                  <p className="text-gray-600 mt-1">Cập nhật thông tin broker partner</p>
-                </div>
+                <h1 className="text-3xl font-bold">Edit Partner</h1>
+                <p className="text-blue-100 mt-2">Update partner information</p>
               </div>
+
+              <form onSubmit={handleSubmit} className="p-8">
+                <div className="space-y-6">
+                  {/* Name */}
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Partner Name *
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      required
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      placeholder="e.g. Tickmill"
+                    />
+                  </div>
+
+                  {/* Website */}
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Website URL *
+                    </label>
+                    <input
+                      type="url"
+                      value={formData.website}
+                      onChange={(e) => setFormData({ ...formData, website: e.target.value })}
+                      required
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      placeholder="https://example.com"
+                    />
+                  </div>
+
+                  {/* Rating */}
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Rating (0-5) *
+                    </label>
+                    <input
+                      type="number"
+                      min="0"
+                      max="5"
+                      step="0.1"
+                      value={formData.rating}
+                      onChange={(e) => setFormData({ ...formData, rating: parseFloat(e.target.value) })}
+                      required
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  </div>
+
+                  {/* Order */}
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Display Order
+                    </label>
+                    <input
+                      type="number"
+                      min="0"
+                      value={formData.order}
+                      onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) })}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                    <p className="text-sm text-gray-500 mt-1">Lower number = higher position</p>
+                  </div>
+
+                  {/* Active */}
+                  <div className="flex items-center gap-3">
+                    <input
+                      type="checkbox"
+                      id="active"
+                      checked={formData.active}
+                      onChange={(e) => setFormData({ ...formData, active: e.target.checked })}
+                      className="w-5 h-5 text-blue-600 rounded focus:ring-blue-500"
+                    />
+                    <label htmlFor="active" className="text-sm font-semibold text-gray-700">
+                      Active (Show on website)
+                    </label>
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex gap-4 mt-8 pt-6 border-t border-gray-200">
+                  <button
+                    type="submit"
+                    disabled={saving}
+                    className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <Save size={20} />
+                    {saving ? 'Saving...' : 'Save Changes'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => router.push('/admin/content-dashboard')}
+                    className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-gray-200 text-gray-800 rounded-lg font-semibold hover:bg-gray-300"
+                  >
+                    <X size={20} />
+                    Cancel
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
-
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-md p-6 space-y-6">
-            {/* Basic Info */}
-            <div className="grid md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Tên Partner * <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Website * <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="url"
-                  value={formData.website}
-                  onChange={(e) => setFormData({ ...formData, website: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Logo URL
-                </label>
-                <input
-                  type="url"
-                  value={formData.logo || ""}
-                  onChange={(e) => setFormData({ ...formData, logo: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Rating (0-5)
-                </label>
-                <input
-                  type="number"
-                  min="0"
-                  max="5"
-                  step="0.1"
-                  value={formData.rating}
-                  onChange={(e) => setFormData({ ...formData, rating: parseFloat(e.target.value) })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Order (Thứ tự hiển thị)
-                </label>
-                <input
-                  type="number"
-                  min="1"
-                  value={formData.order}
-                  onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-              </div>
-
-              <div className="flex items-center">
-                <input
-                  type="checkbox"
-                  id="active"
-                  checked={formData.active}
-                  onChange={(e) => setFormData({ ...formData, active: e.target.checked })}
-                  className="w-5 h-5 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
-                />
-                <label htmlFor="active" className="ml-2 text-sm font-semibold text-gray-700">
-                  Active (Hiển thị trên website)
-                </label>
-              </div>
-            </div>
-
-            {/* Lists Management */}
-            <div className="border-t border-gray-200 pt-6">
-              <h2 className="text-xl font-bold mb-4">Quản lý Danh Sách</h2>
-              
-              {/* Tabs */}
-              <div className="flex flex-wrap gap-2 mb-4 border-b border-gray-200">
-                {(["spread", "license", "deposit", "support", "notes"] as const).map((listType) => (
-                  <button
-                    key={listType}
-                    type="button"
-                    onClick={() => setCurrentList(listType)}
-                    className={`px-4 py-2 rounded-t-lg font-medium transition-colors ${
-                      currentList === listType
-                        ? "bg-blue-600 text-white"
-                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                    }`}
-                  >
-                    {listType === "spread" && "Spread & Phí"}
-                    {listType === "license" && "Giấy Phép"}
-                    {listType === "deposit" && "Nạp & Rút"}
-                    {listType === "support" && "Hỗ Trợ"}
-                    {listType === "notes" && "Lưu Ý"}
-                  </button>
-                ))}
-              </div>
-
-              {/* Add Item */}
-              <div className="flex gap-2 mb-4">
-                <input
-                  type="text"
-                  value={listItemInput}
-                  onChange={(e) => setListItemInput(e.target.value)}
-                  onKeyPress={(e) => e.key === "Enter" && (e.preventDefault(), handleAddListItem())}
-                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder={`Thêm item mới cho ${currentList}...`}
-                />
-                <button
-                  type="button"
-                  onClick={handleAddListItem}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
-                >
-                  <Plus size={18} />
-                  Thêm
-                </button>
-              </div>
-
-              {/* List Items */}
-              <div className="space-y-2">
-                {formData[currentList].map((item, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg"
-                  >
-                    <span className="flex-1 text-sm">{item}</span>
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveListItem(currentList, index)}
-                      className="p-1 text-red-600 hover:bg-red-100 rounded"
-                    >
-                      <X size={18} />
-                    </button>
-                  </div>
-                ))}
-                {formData[currentList].length === 0 && (
-                  <p className="text-gray-500 text-sm italic">Chưa có item nào. Hãy thêm item mới!</p>
-                )}
-              </div>
-            </div>
-
-            {/* Actions */}
-            <div className="flex items-center justify-end gap-4 pt-6 border-t border-gray-200">
-              <button
-                type="button"
-                onClick={() => router.back()}
-                className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
-              >
-                Hủy
-              </button>
-              <button
-                type="submit"
-                disabled={loading}
-                className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                <Save size={18} />
-                {loading ? "Đang lưu..." : "Cập Nhật Partner"}
-              </button>
-            </div>
-          </form>
-        </div>
+        </section>
       </main>
 
       <Footer />
     </div>
   );
 }
-
