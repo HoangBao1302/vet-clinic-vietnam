@@ -2,19 +2,16 @@ import mongoose, { Schema, Document } from "mongoose";
 
 export interface IFeaturedAccount extends Document {
   id: string;
+  name: string;
+  platform: string;
   broker: string;
-  accountNumber: string;
-  startBalance: string;
-  currentBalance: string;
-  totalProfit: string;
   gain: string;
-  monthlyReturn: string;
-  maxDrawdown: string;
-  verified: boolean;
-  year: number;
+  drawdown: string;
+  days: string;
+  link: string;
+  copyable: boolean;
   active: boolean;
   order: number;
-  broker_en?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -28,33 +25,19 @@ const FeaturedAccountSchema: Schema = new Schema(
       trim: true,
       index: true,
     },
+    name: {
+      type: String,
+      required: [true, "Name is required"],
+      trim: true,
+    },
+    platform: {
+      type: String,
+      required: [true, "Platform is required"],
+      trim: true,
+    },
     broker: {
       type: String,
       required: [true, "Broker name is required"],
-      trim: true,
-    },
-    broker_en: {
-      type: String,
-      trim: true,
-    },
-    accountNumber: {
-      type: String,
-      required: [true, "Account number is required"],
-      trim: true,
-    },
-    startBalance: {
-      type: String,
-      required: [true, "Start balance is required"],
-      trim: true,
-    },
-    currentBalance: {
-      type: String,
-      required: [true, "Current balance is required"],
-      trim: true,
-    },
-    totalProfit: {
-      type: String,
-      required: [true, "Total profit is required"],
       trim: true,
     },
     gain: {
@@ -62,23 +45,24 @@ const FeaturedAccountSchema: Schema = new Schema(
       required: [true, "Gain is required"],
       trim: true,
     },
-    monthlyReturn: {
+    drawdown: {
       type: String,
-      required: [true, "Monthly return is required"],
+      required: [true, "Drawdown is required"],
       trim: true,
     },
-    maxDrawdown: {
+    days: {
       type: String,
-      required: [true, "Max drawdown is required"],
+      required: [true, "Days is required"],
       trim: true,
     },
-    verified: {
+    link: {
+      type: String,
+      required: [true, "Link is required"],
+      trim: true,
+    },
+    copyable: {
       type: Boolean,
       default: false,
-    },
-    year: {
-      type: Number,
-      required: [true, "Year is required"],
     },
     active: {
       type: Boolean,
@@ -97,7 +81,7 @@ const FeaturedAccountSchema: Schema = new Schema(
 );
 
 // Create index for sorting
-FeaturedAccountSchema.index({ order: 1, year: -1, broker: 1 });
+FeaturedAccountSchema.index({ order: 1, platform: 1 });
 
 const FeaturedAccount = mongoose.models.FeaturedAccount || mongoose.model<IFeaturedAccount>("FeaturedAccount", FeaturedAccountSchema);
 

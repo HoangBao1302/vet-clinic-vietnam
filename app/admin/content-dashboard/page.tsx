@@ -526,6 +526,9 @@ export default function ContentDashboard() {
                               <div className="flex items-center justify-between">
                                 <div className="flex-1">
                                   <div className="flex items-center gap-3 mb-2">
+                                    <span className="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm font-bold">
+                                      #{account.order}
+                                    </span>
                                     <h3 className="text-xl font-bold">{account.broker}</h3>
                                     <span className={`px-2 py-1 rounded text-xs font-semibold ${
                                       account.active 
@@ -534,11 +537,16 @@ export default function ContentDashboard() {
                                     }`}>
                                       {account.active ? 'Active' : 'Inactive'}
                                     </span>
+                                    <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs font-semibold">
+                                      {(account as any).platform || 'N/A'}
+                                    </span>
                                   </div>
                                   <div className="flex gap-4 text-sm text-gray-600">
-                                    <span><strong>Account:</strong> {account.account}</span>
-                                    <span><strong>Gain:</strong> {account.gain}</span>
-                                    <span><strong>Balance:</strong> {account.balance}</span>
+                                    <span><strong>Account:</strong> {(account as any).accountNumber || (account as any).account || 'N/A'}</span>
+                                    <span><strong>Gain:</strong> {(account as any).stats?.gain || account.gain || 'N/A'}</span>
+                                    {(account as any).stats?.drawdown && (
+                                      <span><strong>Drawdown:</strong> {(account as any).stats.drawdown}</span>
+                                    )}
                                   </div>
                                 </div>
                                 <div className="flex items-center gap-2">
@@ -616,7 +624,7 @@ export default function ContentDashboard() {
                                     <span className="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm font-bold">
                                       #{account.order}
                                     </span>
-                                    <h3 className="text-xl font-bold">{account.broker}</h3>
+                                    <h3 className="text-xl font-bold">{(account as any).name || account.broker}</h3>
                                     <span className={`px-2 py-1 rounded text-xs font-semibold ${
                                       account.active 
                                         ? 'bg-green-100 text-green-700' 
@@ -625,12 +633,14 @@ export default function ContentDashboard() {
                                       {account.active ? 'Active' : 'Inactive'}
                                     </span>
                                     <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs font-semibold">
-                                      {account.year}
+                                      {(account as any).platform || 'N/A'}
                                     </span>
                                   </div>
                                   <div className="flex gap-4 text-sm text-gray-600">
-                                    <span><strong>Account:</strong> {account.accountNumber}</span>
+                                    <span><strong>Broker:</strong> {account.broker}</span>
                                     <span><strong>Gain:</strong> {account.gain}</span>
+                                    {(account as any).drawdown && <span><strong>Drawdown:</strong> {(account as any).drawdown}</span>}
+                                    {(account as any).days && <span><strong>Days:</strong> {(account as any).days}</span>}
                                   </div>
                                 </div>
                                 <div className="flex items-center gap-2">

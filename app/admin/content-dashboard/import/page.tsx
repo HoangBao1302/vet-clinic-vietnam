@@ -18,6 +18,7 @@ export default function ImportDataPage() {
   const [loadingData, setLoadingData] = useState(false);
   const [dataLoaded, setDataLoaded] = useState(false);
   const [updateExisting, setUpdateExisting] = useState(false);
+  const [clearing, setClearing] = useState(false);
   const [dataCounts, setDataCounts] = useState({
     partners: 0,
     tradingAccounts: 0,
@@ -47,6 +48,35 @@ export default function ImportDataPage() {
       setError(err.message || 'Failed to load data');
     } finally {
       setLoadingData(false);
+    }
+  };
+
+  const handleClearAll = async () => {
+    if (!confirm('⚠️ WARNING: This will DELETE ALL content data (Partners, Trading Accounts, Featured Accounts) from MongoDB.\n\nAre you absolutely sure?')) {
+      return;
+    }
+
+    setClearing(true);
+    setError(null);
+
+    try {
+      const response = await fetch('/api/admin/clear-all', {
+        method: 'DELETE',
+        credentials: 'include',
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        alert(`✅ Cleared successfully!\n\nDeleted:\n- Partners: ${data.deleted.partners}\n- Trading Accounts: ${data.deleted.tradingAccounts}\n- Featured Accounts: ${data.deleted.featuredAccounts}\n\nYou can now import fresh data.`);
+        setResults({});
+      } else {
+        const data = await response.json();
+        alert(`Error: ${data.error || 'Failed to clear data'}`);
+      }
+    } catch (err: any) {
+      setError(err.message || 'Failed to clear data');
+    } finally {
+      setClearing(false);
     }
   };
 
@@ -406,23 +436,43 @@ export default function ImportDataPage() {
                       )}
                     </div>
 
-                    <button
-                      onClick={handleImport}
-                      disabled={importing}
-                      className="px-8 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center gap-2"
-                    >
-                      {importing ? (
-                        <>
-                          <RefreshCw size={20} className="animate-spin" />
-                          Importing...
-                        </>
-                      ) : (
-                        <>
-                          <Upload size={20} />
-                          {updateExisting ? 'Start Import & Update' : 'Start Import (Skip Existing)'}
-                        </>
-                      )}
-                    </button>
+                    <div className="flex gap-4 justify-center items-center flex-wrap">
+                      <button
+                        onClick={handleClearAll}
+                        disabled={importing || clearing}
+                        className="px-6 py-2 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center gap-2 text-sm"
+                      >
+                        {clearing ? (
+                          <>
+                            <RefreshCw size={16} className="animate-spin" />
+                            Clearing...
+                          </>
+                        ) : (
+                          <>
+                            <XCircle size={16} />
+                            Clear All Data First
+                          </>
+                        )}
+                      </button>
+
+                      <button
+                        onClick={handleImport}
+                        disabled={importing || clearing}
+                        className="px-8 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center gap-2"
+                      >
+                        {importing ? (
+                          <>
+                            <RefreshCw size={20} className="animate-spin" />
+                            Importing...
+                          </>
+                        ) : (
+                          <>
+                            <Upload size={20} />
+                            {updateExisting ? 'Start Import & Update' : 'Start Import (Skip Existing)'}
+                          </>
+                        )}
+                      </button>
+                    </div>
                   </div>
                 ) : hasResults ? (
                   <div>

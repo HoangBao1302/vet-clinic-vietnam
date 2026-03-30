@@ -2,18 +2,31 @@ import mongoose, { Schema, Document } from "mongoose";
 
 export interface ITradingAccount extends Document {
   id: string;
+  platform: string;
+  accountName: string;
+  accountNumber: string;
   broker: string;
-  account: string;
-  gain: string;
-  balance: string;
-  maxDrawdown: string;
-  monthlyProfit: string;
   verified: boolean;
-  status: string;
+  stats: {
+    gain: string;
+    drawdown: string;
+    winRate: string;
+    profitFactor: string;
+    tradingDays: string;
+  };
+  links: {
+    profile?: string;
+    copyTrade?: string;
+    youtube?: string;
+  };
+  description: string;
+  description_en: string;
+  highlights: string[];
+  highlights_en: string[];
+  badge?: string;
+  badge_en?: string;
   active: boolean;
   order: number;
-  broker_en?: string;
-  status_en?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -27,52 +40,63 @@ const TradingAccountSchema: Schema = new Schema(
       trim: true,
       index: true,
     },
-    broker: {
+    platform: {
       type: String,
-      required: [true, "Broker name is required"],
+      required: [true, "Platform is required"],
       trim: true,
     },
-    broker_en: {
+    accountName: {
       type: String,
+      required: [true, "Account name is required"],
       trim: true,
     },
-    account: {
+    accountNumber: {
       type: String,
       required: [true, "Account number is required"],
       trim: true,
     },
-    gain: {
+    broker: {
       type: String,
-      required: [true, "Gain is required"],
-      trim: true,
-    },
-    balance: {
-      type: String,
-      required: [true, "Balance is required"],
-      trim: true,
-    },
-    maxDrawdown: {
-      type: String,
-      required: [true, "Max drawdown is required"],
-      trim: true,
-    },
-    monthlyProfit: {
-      type: String,
-      required: [true, "Monthly profit is required"],
+      required: [true, "Broker name is required"],
       trim: true,
     },
     verified: {
       type: Boolean,
       default: false,
     },
-    status: {
-      type: String,
-      required: [true, "Status is required"],
-      trim: true,
+    stats: {
+      gain: { type: String, required: true },
+      drawdown: { type: String, required: true },
+      winRate: { type: String, required: true },
+      profitFactor: { type: String, required: true },
+      tradingDays: { type: String, required: true },
     },
-    status_en: {
+    links: {
+      profile: { type: String },
+      copyTrade: { type: String },
+      youtube: { type: String },
+    },
+    description: {
       type: String,
-      trim: true,
+      required: [true, "Description is required"],
+    },
+    description_en: {
+      type: String,
+      required: [true, "English description is required"],
+    },
+    highlights: {
+      type: [String],
+      default: [],
+    },
+    highlights_en: {
+      type: [String],
+      default: [],
+    },
+    badge: {
+      type: String,
+    },
+    badge_en: {
+      type: String,
     },
     active: {
       type: Boolean,
@@ -91,7 +115,7 @@ const TradingAccountSchema: Schema = new Schema(
 );
 
 // Create index for sorting
-TradingAccountSchema.index({ order: 1, broker: 1 });
+TradingAccountSchema.index({ order: 1, platform: 1 });
 
 const TradingAccount = mongoose.models.TradingAccount || mongoose.model<ITradingAccount>("TradingAccount", TradingAccountSchema);
 
