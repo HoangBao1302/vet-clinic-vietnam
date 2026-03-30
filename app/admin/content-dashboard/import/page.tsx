@@ -98,6 +98,7 @@ export default function ImportDataPage() {
           const updateResponse = await fetch(`/api/admin/partners/${partner.id}`, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
             body: JSON.stringify(partner)
           });
 
@@ -109,6 +110,7 @@ export default function ImportDataPage() {
             const createResponse = await fetch('/api/admin/partners', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
+              credentials: 'include',
               body: JSON.stringify(partner)
             });
             if (createResponse.ok) {
@@ -125,6 +127,7 @@ export default function ImportDataPage() {
           const response = await fetch('/api/admin/partners', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
             body: JSON.stringify(partner)
           });
 
@@ -161,6 +164,7 @@ export default function ImportDataPage() {
           const updateResponse = await fetch(`/api/admin/trading-accounts/${account.id}`, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
             body: JSON.stringify(account)
           });
 
@@ -171,6 +175,7 @@ export default function ImportDataPage() {
             const createResponse = await fetch('/api/admin/trading-accounts', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
+              credentials: 'include',
               body: JSON.stringify(account)
             });
             if (createResponse.ok) {
@@ -178,14 +183,19 @@ export default function ImportDataPage() {
               console.log(`Created account: ${account.id}`);
             } else {
               failed++;
+              const errorData = await createResponse.json();
+              console.error(`Failed to create account ${account.id}:`, errorData);
             }
           } else {
             failed++;
+            const errorData = await updateResponse.json();
+            console.error(`Failed to update account ${account.id}:`, updateResponse.status, errorData);
           }
         } else {
           const response = await fetch('/api/admin/trading-accounts', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
             body: JSON.stringify(account)
           });
 
@@ -222,6 +232,7 @@ export default function ImportDataPage() {
           const updateResponse = await fetch(`/api/admin/featured-accounts/${account.id}`, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
             body: JSON.stringify(account)
           });
 
@@ -232,6 +243,7 @@ export default function ImportDataPage() {
             const createResponse = await fetch('/api/admin/featured-accounts', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
+              credentials: 'include',
               body: JSON.stringify(account)
             });
             if (createResponse.ok) {
@@ -239,14 +251,19 @@ export default function ImportDataPage() {
               console.log(`Created featured account: ${account.id}`);
             } else {
               failed++;
+              const errorData = await createResponse.json();
+              console.error(`Failed to create featured account ${account.id}:`, errorData);
             }
           } else {
             failed++;
+            const errorData = await updateResponse.json();
+            console.error(`Failed to update featured account ${account.id}:`, updateResponse.status, errorData);
           }
         } else {
           const response = await fetch('/api/admin/featured-accounts', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
             body: JSON.stringify(account)
           });
 
