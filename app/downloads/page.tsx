@@ -113,10 +113,129 @@ export default function DownloadsPage() {
     };
   };
 
-  // Combine PDF guides (static) + Products from MongoDB
+  // Fallback hardcoded products (used if MongoDB is empty)
+  const fallbackProducts: DownloadItem[] = [
+    // Free Indicators & EA
+    {
+      id: "indicator-support-resistance",
+      name: "Support & Resistance Indicator (Free)",
+      description: "Indicator tự động vẽ vùng hỗ trợ kháng cự trên mọi timeframe. Hoàn toàn miễn phí cho cộng đồng.",
+      version: "v3.2",
+      size: "120 KB",
+      type: "indicator",
+      free: true,
+      downloadUrl: "/downloads/files/SR-Indicator-Free.ex4"
+    },
+    {
+      id: "indicator-trend-lines",
+      name: "Auto Trend Lines Indicator (Free)",
+      description: "Tự động vẽ đường xu hướng (trendlines) chính xác. Compatible MT4/MT5.",
+      version: "v2.1",
+      size: "95 KB",
+      type: "indicator",
+      free: true,
+      downloadUrl: "/downloads/files/TrendLines-Free.ex4"
+    },
+    {
+      id: "ea-demo",
+      name: "EA ThebenchmarkTrader Demo (Free)",
+      description: "Phiên bản demo đầy đủ tính năng, chỉ chạy trên tài khoản demo. Không giới hạn thời gian.",
+      version: "v2.0 Demo",
+      size: "450 KB",
+      type: "ea",
+      free: true,
+      downloadUrl: "/downloads/files/ThebenchmarkTrader-Demo.ex5"
+    },
+    // Paid MT4 Products
+    {
+      id: "indicator-pro-mt4",
+      name: "Multi-Indicator Pro Pack (MT4)",
+      description: "Bộ 10 indicators chuyên nghiệp: SR, Trend, Momentum, Volume, Fibonacci auto và nhiều hơn.",
+      version: "v5.0 Pro",
+      size: "2.8 MB",
+      type: "indicator",
+      free: false,
+      requiresPayment: true,
+      price: 1990000,
+      downloadUrl: "/downloads/files/Indicator-Pro-Pack-MT4.zip",
+      platform: "MT4"
+    },
+    {
+      id: "ea-full-mt4",
+      name: "EA ThebenchmarkTrader Full Version (MT4)",
+      description: "Phiên bản đầy đủ cho tài khoản thực. License 3 tài khoản, cập nhật miễn phí 1 năm.",
+      version: "v2.0 Full",
+      size: "680 KB",
+      type: "ea",
+      free: false,
+      requiresPayment: true,
+      price: 7900000,
+      downloadUrl: "/downloads/files/ThebenchmarkTrader-Full-MT4.ex4",
+      platform: "MT4"
+    },
+    {
+      id: "ea-pro-source-mt4",
+      name: "EA ThebenchmarkTrader Pro + Source Code (MT4)",
+      description: "Phiên bản Pro với source code đầy đủ. Unlimited accounts, cập nhật trọn đời, hỗ trợ VIP.",
+      version: "v2.0 Pro",
+      size: "197 KB",
+      type: "ea",
+      free: false,
+      requiresPayment: true,
+      price: 14900000,
+      downloadUrl: "/downloads/files/ThebenchmarkTrader-Pro-Source-MT4.zip",
+      platform: "MT4"
+    },
+    // Paid MT5 Products
+    {
+      id: "indicator-pro-mt5",
+      name: "Multi-Indicator Pro Pack (MT5)",
+      description: "Bộ 10 indicators chuyên nghiệp: SR, Trend, Momentum, Volume, Fibonacci auto và nhiều hơn.",
+      version: "v5.0 Pro",
+      size: "2.8 MB",
+      type: "indicator",
+      free: false,
+      requiresPayment: true,
+      price: 1990000,
+      downloadUrl: "/downloads/files/Indicator-Pro-Pack-MT5.zip",
+      platform: "MT5"
+    },
+    {
+      id: "ea-full-mt5",
+      name: "EA ThebenchmarkTrader Full Version (MT5)",
+      description: "Phiên bản đầy đủ cho tài khoản thực. License 3 tài khoản, cập nhật miễn phí 1 năm.",
+      version: "v2.0 Full",
+      size: "680 KB",
+      type: "ea",
+      free: false,
+      requiresPayment: true,
+      price: 7900000,
+      downloadUrl: "/downloads/files/ThebenchmarkTrader-Full-MT5.ex5",
+      platform: "MT5"
+    },
+    {
+      id: "ea-pro-source-mt5",
+      name: "EA ThebenchmarkTrader Pro + Source Code (MT5)",
+      description: "Phiên bản Pro với source code đầy đủ. Unlimited accounts, cập nhật trọn đời, hỗ trợ VIP.",
+      version: "v2.0 Pro",
+      size: "197 KB",
+      type: "ea",
+      free: false,
+      requiresPayment: true,
+      price: 14900000,
+      downloadUrl: "/downloads/files/ThebenchmarkTrader-Pro-Source-MT5.zip",
+      platform: "MT5"
+    }
+  ];
+
+  // Combine PDF guides (static) + Products from MongoDB (or fallback if empty)
+  const productItems = products.length > 0 
+    ? products.map(mapProductToDownloadItem)
+    : fallbackProducts;
+    
   const allDownloads: DownloadItem[] = [
     ...pdfGuides,
-    ...products.map(mapProductToDownloadItem)
+    ...productItems
   ];
 
   // Simplified authentication check - only redirect if definitely not authenticated
