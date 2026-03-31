@@ -269,8 +269,13 @@ export default function DownloadsPage() {
     ...productItems
   ];
 
+  // Filter downloads by type - MUST be before early returns
+  const pdfGuidesFiltered = allDownloads.filter(d => d.type === "pdf");
+  const freeItems = allDownloads.filter(d => d.type !== "pdf" && d.free);
+  const paidItems = allDownloads.filter(d => !d.free && d.requiresPayment);
+
   // Show loading if not authenticated yet, but only if we have auth data
-  const hasAuthData = typeof window !== 'undefined' && (localStorage.getItem('token') || localStorage.getItem('user'));
+  const hasAuthData = typeof window !== 'undefined' ? (localStorage.getItem('token') || localStorage.getItem('user')) : false;
   
   // If we have auth data but context is not ready, show loading
   if (!isAuthenticated && hasAuthData) {
@@ -387,10 +392,6 @@ export default function DownloadsPage() {
       }, 5000); // Increased timeout to read error message
     }
   };
-
-  const pdfGuides = allDownloads.filter(d => d.type === "pdf");
-  const freeItems = allDownloads.filter(d => d.type !== "pdf" && d.free);
-  const paidItems = allDownloads.filter(d => !d.free && d.requiresPayment);
 
   // Helper function to render paid product card
   const renderPaidProductCard = (item: DownloadItem) => {
@@ -568,7 +569,7 @@ export default function DownloadsPage() {
             </div>
 
             <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-              {pdfGuides.map((item) => {
+              {pdfGuidesFiltered.map((item) => {
                 const translatedName = locale === 'en' && t(`downloads.pdfSection.items.${item.id}.name`) !== `downloads.pdfSection.items.${item.id}.name` 
                   ? t(`downloads.pdfSection.items.${item.id}.name`)
                   : item.name;
