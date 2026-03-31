@@ -19,6 +19,7 @@ import {
   Clock,
   Star,
   RefreshCw,
+  Upload,
 } from "lucide-react";
 import { IProduct } from "@/types/product";
 
@@ -172,6 +173,13 @@ export default function AdminProductsPage() {
               </p>
             </div>
             <div className="flex gap-3">
+              <Link
+                href="/admin/products/import"
+                className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+              >
+                <Upload size={20} className="mr-2" />
+                Import Products
+              </Link>
               <Link
                 href="/admin/products/create"
                 className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
