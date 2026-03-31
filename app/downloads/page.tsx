@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useAuth } from "@/lib/authContext";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 import { PAYMENT_METHODS, isPaymentMethodEnabled, type PaymentMethodType } from "@/config/paymentMethods";
+import { IProduct } from "@/types/product";
 
 interface DownloadItem {
   id: string;
@@ -25,8 +26,8 @@ interface DownloadItem {
   platform?: "MT4" | "MT5";
 }
 
-const downloads: DownloadItem[] = [
-  // Section 1: Hướng dẫn PDF
+// Static PDF guides (không phải products, luôn free)
+const pdfGuides: DownloadItem[] = [
   {
     id: "guide-installation",
     name: "Hướng dẫn cài đặt EA ThebenchmarkTrader",
@@ -56,121 +57,6 @@ const downloads: DownloadItem[] = [
     type: "pdf",
     free: true,
     downloadUrl: "/downloads/files/Broker-Setup-Guide.pdf"
-  },
-
-  // Section 2: Free Indicator & EA
-  {
-    id: "indicator-support-resistance",
-    name: "Support & Resistance Indicator (Free)",
-    description: "Indicator tự động vẽ vùng hỗ trợ kháng cự trên mọi timeframe. Hoàn toàn miễn phí cho cộng đồng.",
-    version: "v3.2",
-    size: "120 KB",
-    type: "indicator",
-    free: true,
-    downloadUrl: "/downloads/files/SR-Indicator-Free.ex4"
-  },
-  {
-    id: "indicator-trend-lines",
-    name: "Auto Trend Lines Indicator (Free)",
-    description: "Tự động vẽ đường xu hướng (trendlines) chính xác. Compatible MT4/MT5.",
-    version: "v2.1",
-    size: "95 KB",
-    type: "indicator",
-    free: true,
-    downloadUrl: "/downloads/files/TrendLines-Free.ex4"
-  },
-  {
-    id: "ea-demo",
-    name: "EA ThebenchmarkTrader Demo (Free)",
-    description: "Phiên bản demo đầy đủ tính năng, chỉ chạy trên tài khoản demo. Không giới hạn thời gian.",
-    version: "v2.0 Demo",
-    size: "450 KB",
-    type: "ea",
-    free: true,
-    downloadUrl: "/downloads/files/ThebenchmarkTrader-Demo.ex5"
-  },
-
-  // Section 3: Paid Products
-  // MT4 Products
-  {
-    id: "indicator-pro-mt4",
-    name: "Multi-Indicator Pro Pack (MT4)",
-    description: "Bộ 10 indicators chuyên nghiệp: SR, Trend, Momentum, Volume, Fibonacci auto và nhiều hơn.",
-    version: "v5.0 Pro",
-    size: "2.8 MB",
-    type: "indicator",
-    free: false,
-    requiresPayment: true,
-    price: 1990000,
-    downloadUrl: "/downloads/files/Indicator-Pro-Pack-MT4.zip",
-    platform: "MT4"
-  },
-  {
-    id: "ea-full-mt4",
-    name: "EA ThebenchmarkTrader Full Version (MT4)",
-    description: "Phiên bản đầy đủ cho tài khoản thực. License 3 tài khoản, cập nhật miễn phí 1 năm.",
-    version: "v2.0 Full",
-    size: "680 KB",
-    type: "ea",
-    free: false,
-    requiresPayment: true,
-    price: 7900000,
-    downloadUrl: "/downloads/files/ThebenchmarkTrader-Full-MT4.ex4",
-    platform: "MT4"
-  },
-  {
-    id: "ea-pro-source-mt4",
-    name: "EA ThebenchmarkTrader Pro + Source Code (MT4)",
-    description: "Phiên bản Pro với source code đầy đủ. Unlimited accounts, cập nhật trọn đời, hỗ trợ VIP.",
-    version: "v2.0 Pro",
-    size: "197 KB",
-    type: "ea",
-    free: false,
-    requiresPayment: true,
-    price: 14900000,
-    downloadUrl: "/downloads/files/ThebenchmarkTrader-Pro-Source-MT4.zip",
-    platform: "MT4"
-  },
-
-  // MT5 Products
-  {
-    id: "indicator-pro-mt5",
-    name: "Multi-Indicator Pro Pack (MT5)",
-    description: "Bộ 10 indicators chuyên nghiệp: SR, Trend, Momentum, Volume, Fibonacci auto và nhiều hơn.",
-    version: "v5.0 Pro",
-    size: "2.8 MB",
-    type: "indicator",
-    free: false,
-    requiresPayment: true,
-    price: 1990000,
-    downloadUrl: "/downloads/files/Indicator-Pro-Pack-MT5.zip",
-    platform: "MT5"
-  },
-  {
-    id: "ea-full-mt5",
-    name: "EA ThebenchmarkTrader Full Version (MT5)",
-    description: "Phiên bản đầy đủ cho tài khoản thực. License 3 tài khoản, cập nhật miễn phí 1 năm.",
-    version: "v2.0 Full",
-    size: "680 KB",
-    type: "ea",
-    free: false,
-    requiresPayment: true,
-    price: 7900000,
-    downloadUrl: "/downloads/files/ThebenchmarkTrader-Full-MT5.ex5",
-    platform: "MT5"
-  },
-  {
-    id: "ea-pro-source-mt5",
-    name: "EA ThebenchmarkTrader Pro + Source Code (MT5)",
-    description: "Phiên bản Pro với source code đầy đủ. Unlimited accounts, cập nhật trọn đời, hỗ trợ VIP.",
-    version: "v2.0 Pro",
-    size: "197 KB",
-    type: "ea",
-    free: false,
-    requiresPayment: true,
-    price: 14900000,
-    downloadUrl: "/downloads/files/ThebenchmarkTrader-Pro-Source-MT5.zip",
-    platform: "MT5"
   }
 ];
 
@@ -181,6 +67,57 @@ export default function DownloadsPage() {
   const [verifyingOrder, setVerifyingOrder] = useState<string | null>(null);
   const [orderCode, setOrderCode] = useState("");
   const [verifyMessage, setVerifyMessage] = useState("");
+  const [products, setProducts] = useState<IProduct[]>([]);
+  const [loadingProducts, setLoadingProducts] = useState(true);
+
+  // Simplified authentication check - only redirect if definitely not authenticated
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    try {
+      const response = await fetch('/api/products');
+      if (response.ok) {
+        const data = await response.json();
+        setProducts(data.products || []);
+      }
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    } finally {
+      setLoadingProducts(false);
+    }
+  };
+
+  // Map MongoDB Products to DownloadItem format
+  const mapProductToDownloadItem = (product: IProduct): DownloadItem => {
+    const isFree = product.price === 0 || product.id.includes('demo') || product.id.includes('free');
+    const typeMap: { [key: string]: "pdf" | "indicator" | "ea" } = {
+      'indicator': 'indicator',
+      'ea-full': 'ea',
+      'ea-pro-source': 'ea'
+    };
+
+    return {
+      id: product.id,
+      name: product.name,
+      description: product.description,
+      version: product.version || "v1.0",
+      size: product.size || "N/A",
+      type: typeMap[product.category] || 'ea',
+      free: isFree,
+      downloadUrl: product.downloadUrl,
+      requiresPayment: !isFree,
+      price: product.price,
+      platform: product.platform
+    };
+  };
+
+  // Combine PDF guides (static) + Products from MongoDB
+  const allDownloads: DownloadItem[] = [
+    ...pdfGuides,
+    ...products.map(mapProductToDownloadItem)
+  ];
 
   // Simplified authentication check - only redirect if definitely not authenticated
   useEffect(() => {
@@ -334,9 +271,9 @@ export default function DownloadsPage() {
     }
   };
 
-  const pdfGuides = downloads.filter(d => d.type === "pdf");
-  const freeItems = downloads.filter(d => d.type !== "pdf" && d.free);
-  const paidItems = downloads.filter(d => !d.free && d.requiresPayment);
+  const pdfGuides = allDownloads.filter(d => d.type === "pdf");
+  const freeItems = allDownloads.filter(d => d.type !== "pdf" && d.free);
+  const paidItems = allDownloads.filter(d => !d.free && d.requiresPayment);
 
   // Helper function to render paid product card
   const renderPaidProductCard = (item: DownloadItem) => {
@@ -652,25 +589,34 @@ export default function DownloadsPage() {
               </div>
             </div>
 
-            {/* MT4 Products */}
-            <div className="mb-8">
-              <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">
-                {t('downloads.paidSection.mt4Title')}
-              </h3>
-              <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-                {paidItems.filter(item => item.platform === "MT4").map(renderPaidProductCard)}
+            {loadingProducts ? (
+              <div className="text-center py-12">
+                <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+                <p className="mt-4 text-gray-600">Đang tải sản phẩm từ MongoDB...</p>
               </div>
-            </div>
+            ) : (
+              <>
+                {/* MT4 Products */}
+                <div className="mb-8">
+                  <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+                    {t('downloads.paidSection.mt4Title')}
+                  </h3>
+                  <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                    {paidItems.filter(item => item.platform === "MT4").map(renderPaidProductCard)}
+                  </div>
+                </div>
 
-            {/* MT5 Products */}
-            <div>
-              <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">
-                {t('downloads.paidSection.mt5Title')}
-              </h3>
-              <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-                {paidItems.filter(item => item.platform === "MT5").map(renderPaidProductCard)}
-              </div>
-            </div>
+                {/* MT5 Products */}
+                <div>
+                  <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+                    {t('downloads.paidSection.mt5Title')}
+                  </h3>
+                  <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                    {paidItems.filter(item => item.platform === "MT5").map(renderPaidProductCard)}
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         </section>
         <section className="py-20 bg-blue-50">
