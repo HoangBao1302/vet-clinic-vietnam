@@ -14,6 +14,15 @@ const ARTICLE_MAX_AGE_MS = 2 * 60 * 60 * 1000;
 
 const NEWS_QUERY = 'forex OR currency OR EUR/USD OR gold trading';
 
+const FOREX_KEYWORDS = [
+  'forex', 'fx', 'currency', 'currencies', 'eur/usd', 'gbp/usd', 'usd/jpy',
+  'usd/chf', 'aud/usd', 'nzd/usd', 'usd/cad', 'exchange rate', 'central bank',
+  'fed', 'ecb', 'boe', 'boj', 'rba', 'gold', 'xau', 'pip', 'forex market',
+  'currency pair', 'dollar index', 'dxy', 'yen', 'euro', 'pound sterling',
+  'swiss franc', 'forex trading', 'foreign exchange', 'monetary policy',
+  'interest rate', 'inflation', 'cpi', 'nfp', 'nonfarm', 'fomc',
+];
+
 function loadEnv() {
   try {
     require('dotenv').config({ path: path.join(process.cwd(), '.env.local') });
@@ -92,6 +101,20 @@ function isRecentArticle(article, now = Date.now()) {
   return now - publishedAt <= ARTICLE_MAX_AGE_MS;
 }
 
+function isForexRelevant(article) {
+  const text = `${article.title || ''} ${article.source || ''}`.toLowerCase();
+  return FOREX_KEYWORDS.some((keyword) => {
+    const pattern = keyword.includes('/')
+      ? keyword
+      : `\\b${keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`;
+    return new RegExp(pattern, 'i').test(text);
+  });
+}
+
+function twoHoursAgoIso(now = Date.now()) {
+  return new Date(now - ARTICLE_MAX_AGE_MS).toISOString();
+}
+
 function dedupeArticles(articles) {
   const seen = new Set();
   const unique = [];
@@ -127,12 +150,13 @@ function formatSlackMessage(articles, timestamp = new Date()) {
   return lines.join('\n').trim();
 }
 
-async function fetchNewsApi(apiKey) {
+async function fetchNewsApi(apiKey, fromIso) {
   const params = new URLSearchParams({
     q: NEWS_QUERY,
     language: 'en',
     sortBy: 'publishedAt',
     pageSize: '5',
+    from: fromIso,
     apiKey,
   });
 
@@ -185,7 +209,7 @@ async function main() {
   loadEnv();
 
   const newsApiKey = process.env.NEWS_API_KEY;
-  const alphaVantageKey = process.env.ALPHA_VANTAGE_API_KEY;
+  const alphaVantageKey = process.env.ALPHA_VANTAGE_API_KEY || process.env.ALPHA_VANTAGE_KEY;
   const now = Date.now();
   const state = loadState();
 
@@ -232,7 +256,7 @@ async function main() {
 
   if (newsApiKey && !newsApiLimited) {
     try {
-      collected.push(...await fetchNewsApi(newsApiKey));
+      collected.push(...await fetchNewsApi(newsApiKey, twoHoursAgoIso(now)));
       state.newsApiUsage.count += 1;
     } catch (error) {
       if (/rate limit|too many requests|429/i.test(error.message)) {
@@ -266,7 +290,8 @@ async function main() {
 
   const postedSet = new Set((state.postedUrls || []).map((url) => url.toLowerCase()));
   const freshArticles = dedupeArticles(collected)
-    .filter(isRecentArticle)
+    .filter((article) => isRecentArticle(article, now))
+    .filter(isForexRelevant)
     .filter((article) => article.url && !postedSet.has(article.url.toLowerCase()))
     .slice(0, 5);
 
