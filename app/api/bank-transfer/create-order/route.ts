@@ -119,7 +119,7 @@ export async function POST(request: NextRequest) {
               📱 Telegram Group: t.me/+0ETUdIuYUzdhZWQ1
             </p>
             <p style="color: #1e293b; margin: 5px 0;">
-              📞 Hotline: +84 765 452 515
+              📞 Hotline: +1925 582 0779
             </p>
           </div>
 

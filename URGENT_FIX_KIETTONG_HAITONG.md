@@ -208,7 +208,7 @@ Xin lỗi vì sự bất tiện!
 
 Support:
 📧 support@thebenchmarktrader.com
-📱 +84 765 452 515
+📱 +1925 582 0779
 ```
 
 ---

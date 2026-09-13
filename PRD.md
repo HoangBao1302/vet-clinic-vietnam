@@ -36,7 +36,7 @@ Create a professional, elegant landing page for a family veterinary clinic using
 ### 1. Header & Navigation
 - **Top Bar**: 
   - Social media icons (Facebook, Instagram, Twitter)
-  - Phone number: +84765452515
+  - Phone number: +1925 582 0779
   - Address: 74 Lê Trọng Tấn, Tây Thạnh Ward, Ho Chi Minh City Việt Nam
 - **Main Navigation**:
   - Text-based logo
@@ -128,7 +128,7 @@ Create a professional, elegant landing page for a family veterinary clinic using
 - **Business Information**:
   - Clinic name and logo
   - Address: 74 Lê Trọng Tấn, Tây Thạnh Ward, Ho Chi Minh City Việt Nam
-  - Phone: +84765452515
+  - Phone: +1925 582 0779
   - Business hours
   - Social media profiles
 

@@ -208,7 +208,7 @@ Trên dashboard:
 
 Liên hệ:
 - Email: support@thebenchmarktrader.com
-- Phone: +84 765 452 515
+- Phone: +1925 582 0779
 - Facebook: [ThebenchmarkTrader](https://facebook.com/thebenchmarktrader)
 
 ---
