@@ -164,7 +164,7 @@ Chúng tôi muốn kiểm tra xem bạn đã download được sản phẩm EA T
 
 Nếu còn bất kỳ vấn đề gì, vui lòng reply email này hoặc liên hệ:
 📱 Telegram: t.me/+0ETUdIuYUzdhZWQ1
-📞 Hotline: +84 765 452 515
+📞 Hotline: +1925 582 0779
 
 Xin lỗi một lần nữa vì sự bất tiện!
 
@@ -337,7 +337,7 @@ Nếu không tìm được, update script line 30-35 với criteria khác.
 **Contact Info**:
 - 📧 Email: support@thebenchmarktrader.com
 - 📱 Telegram: t.me/+0ETUdIuYUzdhZWQ1
-- 📞 Hotline: +84 765 452 515
+- 📞 Hotline: +1925 582 0779
 
 ---
 

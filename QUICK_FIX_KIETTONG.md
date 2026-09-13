@@ -114,7 +114,7 @@ Amount: 14.900.000đ (CORRECT)
 
 - 📧 support@thebenchmarktrader.com
 - 📱 t.me/+0ETUdIuYUzdhZWQ1  
-- 📞 +84 765 452 515
+- 📞 +1925 582 0779
 
 ---
 

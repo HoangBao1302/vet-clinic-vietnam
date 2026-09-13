@@ -263,7 +263,7 @@ export default function PrivacyPolicy() {
                       <strong>Email:</strong> privacy@thebenchmarktrader.com
                     </p>
                     <p className="text-gray-700 mb-2">
-                      <strong>Hotline:</strong> +84 765 452 515
+                      <strong>Hotline:</strong> +1925 582 0779
                     </p>
                     <p className="text-gray-700 mb-2">
                       <strong>Telegram:</strong> @thebenchmarktrader

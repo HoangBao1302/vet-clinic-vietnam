@@ -493,7 +493,7 @@ export const downloadEmail = (orderInfo: any) => `
       <ul>
         <li>📧 Email: support@thebenchmarktrader.com</li>
         <li>📱 Telegram Group: t.me/+0ETUdIuYUzdhZWQ1</li>
-        <li>📞 Hotline: +84 765 452 515</li>
+        <li>📞 Hotline: +1925 582 0779</li>
       </ul>
     </div>
     <div class="footer">

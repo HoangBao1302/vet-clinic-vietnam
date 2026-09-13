@@ -288,7 +288,7 @@ ${productId?.includes('mt5') ? `... MT5 instructions ...` : `... MT4 instruction
 <ul>
   <li>📧 Email: support@thebenchmarktrader.com</li>
   <li>📱 Telegram: t.me/+0ETUdIuYUzdhZWQ1</li>
-  <li>📞 Hotline: +84 765 452 515</li>
+  <li>📞 Hotline: +1925 582 0779</li>
 </ul>
 ```
 

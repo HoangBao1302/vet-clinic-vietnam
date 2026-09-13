@@ -189,7 +189,7 @@ function SuccessContent() {
                   📧 Email
                 </a>
                 <span className="text-gray-300">•</span>
-                <a href="tel:+84765452515" className="text-blue-600 hover:underline">
+                <a href="tel:+1925 582 0779" className="text-blue-600 hover:underline">
                   📞 Hotline
                 </a>
               </div>

@@ -140,7 +140,7 @@ support@thebenchmarktrader.com
 
 **Hotline:**
 ```
-+84 765 452 515
++1925 582 0779
 ```
 
 ### **Cập Nhật Links:**
@@ -541,7 +541,7 @@ Create a config file `config/chat.ts`:
 export const chatConfig = {
   telegram: "https://t.me/+0ETUdIuYUzdhZWQ1",
   email: "support@thebenchmarktrader.com",
-  hotline: "+84 765 452 515",
+  hotline: "+1925 582 0779",
   whatsapp: "84765452515",
   zaloOA: "YOUR_OA_ID",
   workingHours: "T2-T6, 9h-18h (GMT+7)"

@@ -236,7 +236,7 @@ export async function PUT(
               </div>
               <div class="footer">
                 <p><strong>EA Forex ThebenchmarkTrader</strong></p>
-                <p>📧 Email: support@thebenchmarktrader.com | 📱 Phone: +84 765 452 515</p>
+                <p>📧 Email: support@thebenchmarktrader.com | 📱 Phone: +1925 582 0779</p>
                 <p>&copy; 2025 EA Forex ThebenchmarkTrader. All rights reserved.</p>
               </div>
             </div>

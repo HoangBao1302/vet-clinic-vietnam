@@ -416,7 +416,7 @@ node fix-kiettong-order.js
 ### Customer Contact:
 - 📧 support@thebenchmarktrader.com
 - 📱 Telegram: t.me/+0ETUdIuYUzdhZWQ1
-- 📞 Hotline: +84 765 452 515
+- 📞 Hotline: +1925 582 0779
 
 ---
 
