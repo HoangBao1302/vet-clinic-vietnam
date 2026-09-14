@@ -14,6 +14,13 @@ const ARTICLE_MAX_AGE_MS = 2 * 60 * 60 * 1000;
 
 const NEWS_QUERY = 'forex OR currency OR EUR/USD OR gold trading';
 
+const FOREX_RELEVANCE_PATTERN = /\b(forex|fx\b|currenc(?:y|ies)|exchange rate|EUR\/USD|GBP\/USD|USD\/JPY|USD\/CHF|AUD\/USD|NZD\/USD|USD\/CAD|XAUUSD|gold trading|gold price|central bank|monetary policy|interest rate|dollar index|dxy\b|foreign exchange|forex market|currency pair|pip\b|carry trade|federal reserve|ecb\b|bank of england|bank of japan)\b/i;
+
+function isForexRelevant(article) {
+  const text = `${article.title || ''} ${article.source || ''}`;
+  return FOREX_RELEVANCE_PATTERN.test(text);
+}
+
 function loadEnv() {
   try {
     require('dotenv').config({ path: path.join(process.cwd(), '.env.local') });
@@ -185,7 +192,7 @@ async function main() {
   loadEnv();
 
   const newsApiKey = process.env.NEWS_API_KEY;
-  const alphaVantageKey = process.env.ALPHA_VANTAGE_API_KEY;
+  const alphaVantageKey = process.env.ALPHA_VANTAGE_API_KEY || process.env.ALPHA_VANTAGE_KEY;
   const now = Date.now();
   const state = loadState();
 
@@ -266,7 +273,8 @@ async function main() {
 
   const postedSet = new Set((state.postedUrls || []).map((url) => url.toLowerCase()));
   const freshArticles = dedupeArticles(collected)
-    .filter(isRecentArticle)
+    .filter((article) => isRecentArticle(article, now))
+    .filter(isForexRelevant)
     .filter((article) => article.url && !postedSet.has(article.url.toLowerCase()))
     .slice(0, 5);
 
