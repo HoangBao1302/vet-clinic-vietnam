@@ -14,6 +14,8 @@ const ARTICLE_MAX_AGE_MS = 2 * 60 * 60 * 1000;
 
 const NEWS_QUERY = 'forex OR currency OR EUR/USD OR gold trading';
 
+const FOREX_RELEVANCE_PATTERN = /\b(forex|fx\b|currency|currencies|eur\/usd|gbp\/usd|usd\/jpy|usd\/chf|aud\/usd|nzd\/usd|usd\/cad|exchange rate|central bank|fed\b|ecb\b|boj\b|boe\b|interest rate|gold\b|xau|oil\b|crude|commodit|dollar|euro\b|yen\b|pound sterling|swiss franc)\b/i;
+
 function loadEnv() {
   try {
     require('dotenv').config({ path: path.join(process.cwd(), '.env.local') });
@@ -127,12 +129,23 @@ function formatSlackMessage(articles, timestamp = new Date()) {
   return lines.join('\n').trim();
 }
 
-async function fetchNewsApi(apiKey) {
+function newsApiFromParam(now = Date.now()) {
+  const from = new Date(now - ARTICLE_MAX_AGE_MS);
+  return from.toISOString().replace(/\.\d{3}Z$/, 'Z');
+}
+
+function isForexRelevant(article) {
+  const text = `${article.title || ''} ${article.source || ''}`;
+  return FOREX_RELEVANCE_PATTERN.test(text);
+}
+
+async function fetchNewsApi(apiKey, now = Date.now()) {
   const params = new URLSearchParams({
     q: NEWS_QUERY,
     language: 'en',
     sortBy: 'publishedAt',
     pageSize: '5',
+    from: newsApiFromParam(now),
     apiKey,
   });
 
@@ -185,7 +198,7 @@ async function main() {
   loadEnv();
 
   const newsApiKey = process.env.NEWS_API_KEY;
-  const alphaVantageKey = process.env.ALPHA_VANTAGE_API_KEY;
+  const alphaVantageKey = process.env.ALPHA_VANTAGE_API_KEY || process.env.ALPHA_VANTAGE_KEY;
   const now = Date.now();
   const state = loadState();
 
@@ -232,7 +245,7 @@ async function main() {
 
   if (newsApiKey && !newsApiLimited) {
     try {
-      collected.push(...await fetchNewsApi(newsApiKey));
+      collected.push(...await fetchNewsApi(newsApiKey, now));
       state.newsApiUsage.count += 1;
     } catch (error) {
       if (/rate limit|too many requests|429/i.test(error.message)) {
@@ -266,7 +279,8 @@ async function main() {
 
   const postedSet = new Set((state.postedUrls || []).map((url) => url.toLowerCase()));
   const freshArticles = dedupeArticles(collected)
-    .filter(isRecentArticle)
+    .filter((article) => isRecentArticle(article, now))
+    .filter(isForexRelevant)
     .filter((article) => article.url && !postedSet.has(article.url.toLowerCase()))
     .slice(0, 5);
 
