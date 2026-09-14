@@ -14,6 +14,8 @@ const ARTICLE_MAX_AGE_MS = 2 * 60 * 60 * 1000;
 
 const NEWS_QUERY = 'forex OR currency OR EUR/USD OR gold trading';
 
+const FOREX_RELEVANCE_PATTERN = /\b(forex|fx|currenc(?:y|ies)|eur\/usd|gbp\/usd|usd\/jpy|usd\/cad|aud\/usd|exchange rate|central bank|federal reserve|ecb|boe|boj|interest rate|pip(?:s)?|gold trading|xauusd|xau\/usd|foreign exchange|dollar index|dxy|usd|eur|gbp|jpy|aud|cad|chf|nzd|yen|dollar|euro|pound|sterling|franc|yuan|renminbi)\b/i;
+
 function loadEnv() {
   try {
     require('dotenv').config({ path: path.join(process.cwd(), '.env.local') });
@@ -92,6 +94,11 @@ function isRecentArticle(article, now = Date.now()) {
   return now - publishedAt <= ARTICLE_MAX_AGE_MS;
 }
 
+function isForexRelevant(article) {
+  const text = `${article.title || ''} ${article.source || ''}`;
+  return FOREX_RELEVANCE_PATTERN.test(text);
+}
+
 function dedupeArticles(articles) {
   const seen = new Set();
   const unique = [];
@@ -127,12 +134,14 @@ function formatSlackMessage(articles, timestamp = new Date()) {
   return lines.join('\n').trim();
 }
 
-async function fetchNewsApi(apiKey) {
+async function fetchNewsApi(apiKey, now = Date.now()) {
+  const from = new Date(now - ARTICLE_MAX_AGE_MS).toISOString();
   const params = new URLSearchParams({
     q: NEWS_QUERY,
     language: 'en',
     sortBy: 'publishedAt',
     pageSize: '5',
+    from,
     apiKey,
   });
 
@@ -185,7 +194,7 @@ async function main() {
   loadEnv();
 
   const newsApiKey = process.env.NEWS_API_KEY;
-  const alphaVantageKey = process.env.ALPHA_VANTAGE_API_KEY;
+  const alphaVantageKey = process.env.ALPHA_VANTAGE_API_KEY || process.env.ALPHA_VANTAGE_KEY;
   const now = Date.now();
   const state = loadState();
 
@@ -232,7 +241,7 @@ async function main() {
 
   if (newsApiKey && !newsApiLimited) {
     try {
-      collected.push(...await fetchNewsApi(newsApiKey));
+      collected.push(...await fetchNewsApi(newsApiKey, now));
       state.newsApiUsage.count += 1;
     } catch (error) {
       if (/rate limit|too many requests|429/i.test(error.message)) {
@@ -266,7 +275,8 @@ async function main() {
 
   const postedSet = new Set((state.postedUrls || []).map((url) => url.toLowerCase()));
   const freshArticles = dedupeArticles(collected)
-    .filter(isRecentArticle)
+    .filter((article) => isRecentArticle(article, now))
+    .filter(isForexRelevant)
     .filter((article) => article.url && !postedSet.has(article.url.toLowerCase()))
     .slice(0, 5);
 
