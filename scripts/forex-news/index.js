@@ -14,6 +14,8 @@ const ARTICLE_MAX_AGE_MS = 2 * 60 * 60 * 1000;
 
 const NEWS_QUERY = 'forex OR currency OR EUR/USD OR gold trading';
 
+const FOREX_RELEVANCE_PATTERN = /\b(forex|fx\b|foreign exchange|currency|currencies|eur\/usd|gbp\/usd|usd\/jpy|usd\/chf|aud\/usd|nzd\/usd|usd\/cad|exchange rate|central bank|federal reserve|\bfed\b|ecb\b|boj\b|boe\b|dollar|euro|yen|pound sterling|sterling|gold\b|xau|silver\b|oil\b|crude|commodity|commodities|interest rate|rate cut|rate hike|inflation|cpi\b|ppi\b|nfp\b|nonfarm|treasury|bond yield|pip\b|pipette|metatrader|oanda|ig markets|forexlive|fxstreet|dailyfx)\b/i;
+
 function loadEnv() {
   try {
     require('dotenv').config({ path: path.join(process.cwd(), '.env.local') });
@@ -127,12 +129,23 @@ function formatSlackMessage(articles, timestamp = new Date()) {
   return lines.join('\n').trim();
 }
 
+function newsApiFromParam(hoursAgo = 2) {
+  const from = new Date(Date.now() - hoursAgo * 60 * 60 * 1000);
+  return from.toISOString().replace(/\.\d{3}Z$/, 'Z');
+}
+
+function isForexRelevant(article) {
+  const haystack = `${article.title || ''} ${article.url || ''}`;
+  return FOREX_RELEVANCE_PATTERN.test(haystack);
+}
+
 async function fetchNewsApi(apiKey) {
   const params = new URLSearchParams({
     q: NEWS_QUERY,
     language: 'en',
     sortBy: 'publishedAt',
     pageSize: '5',
+    from: newsApiFromParam(2),
     apiKey,
   });
 
@@ -185,7 +198,7 @@ async function main() {
   loadEnv();
 
   const newsApiKey = process.env.NEWS_API_KEY;
-  const alphaVantageKey = process.env.ALPHA_VANTAGE_API_KEY;
+  const alphaVantageKey = process.env.ALPHA_VANTAGE_API_KEY || process.env.ALPHA_VANTAGE_KEY;
   const now = Date.now();
   const state = loadState();
 
@@ -266,7 +279,8 @@ async function main() {
 
   const postedSet = new Set((state.postedUrls || []).map((url) => url.toLowerCase()));
   const freshArticles = dedupeArticles(collected)
-    .filter(isRecentArticle)
+    .filter((article) => isRecentArticle(article, now))
+    .filter(isForexRelevant)
     .filter((article) => article.url && !postedSet.has(article.url.toLowerCase()))
     .slice(0, 5);
 
