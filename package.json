@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "forex-news": "node scripts/forex-news/index.js"
+    "forex-news": "node scripts/forex-news/index.js",
+    "forex-news-digest": "node scripts/forex-news/rss-digest.js"
   },
   "dependencies": {
     "@paypal/checkout-server-sdk": "^1.0.3",
