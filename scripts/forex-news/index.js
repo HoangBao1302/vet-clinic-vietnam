@@ -13,6 +13,7 @@ const FETCH_INTERVAL_MS = 2 * 60 * 60 * 1000;
 const ARTICLE_MAX_AGE_MS = 2 * 60 * 60 * 1000;
 
 const NEWS_QUERY = 'forex OR currency OR EUR/USD OR gold trading';
+const FOREX_RELEVANCE_PATTERN = /\b(forex|fx\b|currency|currencies|eur\/usd|gbp\/usd|usd\/jpy|exchange rate|central bank|fed\b|ecb\b|boe\b|boj\b|interest rate|gold trading|xauusd|foreign exchange)\b/i;
 
 function loadEnv() {
   try {
@@ -80,8 +81,9 @@ function normalizeTitle(title) {
     .trim();
 }
 
-function articleKey(article) {
-  return article.url || normalizeTitle(article.title);
+function isForexRelevant(article) {
+  const text = `${article.title || ''} ${article.source || ''}`;
+  return FOREX_RELEVANCE_PATTERN.test(text);
 }
 
 function isRecentArticle(article, now = Date.now()) {
@@ -127,12 +129,13 @@ function formatSlackMessage(articles, timestamp = new Date()) {
   return lines.join('\n').trim();
 }
 
-async function fetchNewsApi(apiKey) {
+async function fetchNewsApi(apiKey, fromIso) {
   const params = new URLSearchParams({
     q: NEWS_QUERY,
     language: 'en',
     sortBy: 'publishedAt',
     pageSize: '5',
+    from: fromIso,
     apiKey,
   });
 
@@ -185,8 +188,9 @@ async function main() {
   loadEnv();
 
   const newsApiKey = process.env.NEWS_API_KEY;
-  const alphaVantageKey = process.env.ALPHA_VANTAGE_API_KEY;
+  const alphaVantageKey = process.env.ALPHA_VANTAGE_API_KEY || process.env.ALPHA_VANTAGE_KEY;
   const now = Date.now();
+  const fromIso = new Date(now - ARTICLE_MAX_AGE_MS).toISOString();
   const state = loadState();
 
   resetDailyUsage(state);
@@ -232,7 +236,7 @@ async function main() {
 
   if (newsApiKey && !newsApiLimited) {
     try {
-      collected.push(...await fetchNewsApi(newsApiKey));
+      collected.push(...await fetchNewsApi(newsApiKey, fromIso));
       state.newsApiUsage.count += 1;
     } catch (error) {
       if (/rate limit|too many requests|429/i.test(error.message)) {
@@ -266,7 +270,8 @@ async function main() {
 
   const postedSet = new Set((state.postedUrls || []).map((url) => url.toLowerCase()));
   const freshArticles = dedupeArticles(collected)
-    .filter(isRecentArticle)
+    .filter((article) => isRecentArticle(article, now))
+    .filter((article) => article.provider !== 'alphavantage' || isForexRelevant(article))
     .filter((article) => article.url && !postedSet.has(article.url.toLowerCase()))
     .slice(0, 5);
 
