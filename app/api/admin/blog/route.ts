@@ -86,15 +86,34 @@ export async function POST(request: NextRequest) {
     });
 
     if (existing) {
-      return NextResponse.json(
-        {
-          duplicate: true,
-          message: "Post already exists",
-          existingId: existing._id,
-          existingSlug: existing.slug,
+      // Daily automation may re-run the same slug — update in place
+      existing.title = title;
+      existing.excerpt = excerpt.slice(0, 490);
+      existing.content = content;
+      existing.category = category;
+      existing.tags = Array.isArray(tags) ? tags.slice(0, 10) : [];
+      existing.author = {
+        id: "automation",
+        name: authorName,
+        email: "automation@thebenchmarktrader.com",
+      };
+      existing.status = status === "published" ? "published" : existing.status;
+      if (status === "published") {
+        existing.publishedAt = new Date(date || Date.now());
+      }
+      await existing.save();
+
+      return NextResponse.json({
+        success: true,
+        updated: true,
+        message: "Blog post updated",
+        post: {
+          id: existing._id,
+          slug: existing.slug,
+          title: existing.title,
+          status: existing.status,
         },
-        { status: 409 }
-      );
+      });
     }
 
     const post = new BlogPost({
