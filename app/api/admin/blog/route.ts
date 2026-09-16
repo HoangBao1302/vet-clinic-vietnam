@@ -34,6 +34,16 @@ function autoExcerpt(content: string, maxLen = 200): string {
   return first.trim().slice(0, maxLen);
 }
 
+function pickCoverImage(raw: unknown): string {
+  const fallback = "/vet-images/1.png";
+  if (typeof raw !== "string") return fallback;
+  const image = raw.trim();
+  if (!image || image.length > 500) return fallback;
+  if (image.startsWith("/vet-images/") && !image.includes("..")) return image;
+  if (image.startsWith("https://") && !image.includes(" ")) return image;
+  return fallback;
+}
+
 // POST: Automation endpoint — publish a blog post via API key
 export async function POST(request: NextRequest) {
   // Verify API key
@@ -68,6 +78,7 @@ export async function POST(request: NextRequest) {
       slug: rawSlug,
       source,
       filePath,
+      image: rawImage,
     } = body;
 
     // Validate required fields
@@ -128,7 +139,7 @@ export async function POST(request: NextRequest) {
       },
       category,
       tags: Array.isArray(tags) ? tags.slice(0, 10) : [],
-      image: "/vet-images/1.png",
+      image: pickCoverImage(rawImage),
       featured: false,
       isPremium: false,
       status: status === "published" ? "published" : "draft",
