@@ -74,7 +74,7 @@
     "subtitle": "Tự động hóa giao dịch, kiểm soát rủi ro, tối ưu lợi nhuận",
     "description": "EA Forex chuyên nghiệp với thuật toán giao dịch tự động, quản lý rủi ro thông minh và tỷ lệ thắng vượt trội",
     "badges": {
-      "mt4mt5": "MT4/MT5",
+      "mt4mt5": "MT4®/MT5®",
       "riskControl": "Risk Control",
       "backtestFriendly": "Backtest-Friendly"
     },
@@ -107,7 +107,7 @@
     "reportLogDesc": "Ghi lại chi tiết mọi giao dịch, phân tích hiệu suất và cung cấp báo cáo minh bạch hàng ngày.",
     "customizableNote": "💡 Tất cả tính năng đều có thể tùy chỉnh theo nhu cầu giao dịch của bạn"
   },
-  "slogan": "Tin tưởng bởi hơn 500+ Traders trên toàn Việt Nam",
+  "slogan": "5 tài khoản Real Money đã Verified — 80+ copiers theo dõi real-time"
   "strategy": {
     "title": "Triết lý giao dịch minh bạch",
     "description": "EA ThebenchmarkTrader được xây dựng trên nguyên tắc minh bạch tuyệt đối. Mọi điều kiện vào lệnh, ra lệnh và quản trị rủi ro đều được công khai, không có \"hộp đen\" bí ẩn.",
@@ -131,8 +131,10 @@
     "winRateDesc": "Tỷ lệ lệnh thắng",
     "riskReward": "Risk:Reward",
     "riskRewardDesc": "Tỷ lệ rủi ro/lợi nhuận",
-    "testimonialsTitle": "Phản hồi từ khách hàng",
-    "testimonialsSubtitle": "Hơn 500+ trader đang sử dụng EA ThebenchmarkTrader",
+    "testimonialsTitle": "Kết quả Verified, không lời nói",
+    "testimonialsSubtitle": "5 tài khoản Real Money đã Verified. Track record công khai, 80+ copiers đang theo dõi real-time.",
+    "verifiedCta": "Xem bằng chứng →",
+    "verifiedBadge": "Verified",
     "videoTitle": "Xem Kết Quả Thực Tế",
     "videoDesc": "Xem video backtest chi tiết và phân tích hiệu suất EA trên các cặp tiền tệ khác nhau",
     "watchBacktest": "Xem Video Backtest",
@@ -234,7 +236,7 @@
         "features": [
           "Chạy trên tài khoản demo",
           "Đầy đủ tính năng EA",
-          "Hỗ trợ MT4/MT5",
+          "Hỗ trợ MT4®/MT5®",
           "Báo cáo hiệu suất",
           "Hướng dẫn cài đặt",
           "Hỗ trợ email"
@@ -463,7 +465,8 @@
     "hero": {
       "badge": "100% Verified Real Money Accounts",
       "title": "Kết Quả Giao Dịch Thực Tế",
-      "subtitle": "Tất cả tài khoản đều là real money, được verify bởi các nền tảng uy tín như MQL5, Myfxbook, và tracking công khai 24/7. Không photoshop, không demo, không fake.",
+      "subtitle": "Tất cả tài khoản đều là real money, được verify bởi các nền tảng uy tín như MQL5®, Myfxbook, và tracking công khai 24/7. Không photoshop, không demo, không fake.",
+      "metaquotes": "MetaTrader®, MT4®, MT5®, MQL4®, MQL5® là nhãn hiệu đăng ký của MetaQuotes Ltd.",
       "totalProfit": "Tổng lợi nhuận",
       "totalProfitValue": "+1,000%+",
       "verifiedAccounts": "Verified accounts",
@@ -501,7 +504,7 @@
       "title": "Hướng Dẫn Copy Trading",
       "subtitle": "Xem video hướng dẫn chi tiết cách copy trading trên từng platform",
       "mql5Title": "📊 MQL5 Signals",
-      "mql5Desc": "Copy tín hiệu tự động trên MT4/MT5. Phù hợp nếu bạn muốn control risk tự mình.",
+      "mql5Desc": "Copy tín hiệu tự động trên MT4®/MT5®. Phù hợp nếu bạn muốn control risk tự mình.",
       "mql5Link": "Xem hướng dẫn MQL5",
       "myfxbookTitle": "📈 Myfxbook AutoTrade",
       "myfxbookDesc": "AutoTrade qua Myfxbook với nhiều broker. Setup 1 lần, auto sync forever.",
@@ -525,7 +528,9 @@
       "fees": "Phí copy:",
       "feesDesc": "Tickmill (20% profit share), PuPrime (25% profit share), MQL5/Myfxbook (fee khác nhau tùy platform). Đọc kỹ terms trước khi copy.",
       "recommendation": "Khuyến nghị:",
-      "recommendationDesc": "Test trên demo/vốn nhỏ trước. Theo dõi ít nhất 1 tháng trước khi scale up. Không bao giờ all-in vào 1 strategy."
+      "recommendationDesc": "Test trên demo/vốn nhỏ trước. Theo dõi ít nhất 1 tháng trước khi scale up. Không bao giờ all-in vào 1 strategy.",
+      "brokerTitle": "Lưu ý về broker:",
+      "broker": "Tên broker (Tickmill, ThinkMarkets, PuPrime) được nhắc đến chỉ nhằm tham khảo. Đây là các công ty độc lập, không liên kết hay được bảo trợ bởi TheBenchmarkTrader. Việc chọn broker là quyết định của người dùng. TheBenchmarkTrader không chịu trách nhiệm về dịch vụ của broker."
     },
     "cta": {
       "title": "Sẵn sàng bắt đầu?",
@@ -550,6 +555,8 @@
     "address": "Địa Chỉ",
     "addressValue": "Hà Nội, Việt Nam",
     "copyright": "© {year} EA Forex ThebenchmarkTrader. Bảo lưu mọi quyền.",
+    "metaquotesAttribution": "MetaTrader®, MT4®, MT5®, MQL4®, và MQL5® là nhãn hiệu đã đăng ký của MetaQuotes Ltd. TheBenchmarkTrader không liên kết, được bảo trợ, hoặc đại diện cho MetaQuotes Ltd.",
+    "brokerDisclaimer": "Tên broker (Tickmill, ThinkMarkets, PuPrime, v.v.) được nhắc đến chỉ nhằm mục đích tham khảo. Các broker là công ty độc lập và không liên kết, được bảo trợ, hoặc đại diện cho TheBenchmarkTrader. Người dùng tự chịu trách nhiệm chọn broker phù hợp.",
     "riskWarning": "Cảnh Báo Rủi Ro",
     "readyToStart": "Sẵn sàng bắt đầu giao dịch tự động?",
     "buyEANow": "Mua EA Ngay",

@@ -74,7 +74,7 @@
     "subtitle": "Automate Trading, Control Risk, Optimize Profit",
     "description": "Professional Forex EA with automated trading algorithm, smart risk management and outstanding win rate",
     "badges": {
-      "mt4mt5": "MT4/MT5",
+      "mt4mt5": "MT4®/MT5®",
       "riskControl": "Risk Control",
       "backtestFriendly": "Backtest-Friendly"
     },
@@ -107,7 +107,7 @@
     "reportLogDesc": "Records every trade in detail, analyzes performance, and provides transparent daily reports.",
     "customizableNote": "💡 All features are customizable to your trading needs"
   },
-  "slogan": "Trusted by 500+ Traders across Vietnam",
+  "slogan": "5 verified real-money accounts — 80+ copiers tracking in real time"
   "strategy": {
     "title": "Transparent Trading Philosophy",
     "description": "EA ThebenchmarkTrader is built on the principle of absolute transparency. All entry conditions, exit rules, and risk management are openly disclosed, with no mysterious \"black box\".",
@@ -131,8 +131,10 @@
     "winRateDesc": "Winning trade percentage",
     "riskReward": "Risk:Reward",
     "riskRewardDesc": "Risk/Reward ratio",
-    "testimonialsTitle": "Customer Feedback",
-    "testimonialsSubtitle": "Over 500+ traders are using EA ThebenchmarkTrader",
+    "testimonialsTitle": "Verified results, not testimonials",
+    "testimonialsSubtitle": "5 verified real-money accounts. Public track record, 80+ copiers watching in real time.",
+    "verifiedCta": "See the evidence →",
+    "verifiedBadge": "Verified",
     "videoTitle": "See Real Results",
     "videoDesc": "Watch detailed backtest videos and performance analysis of the EA on different currency pairs",
     "watchBacktest": "Watch Backtest Video",
@@ -234,7 +236,7 @@
         "features": [
           "Works on demo accounts",
           "Full EA features",
-          "MT4/MT5 support",
+          "MT4®/MT5® support",
           "Performance reports",
           "Installation guide",
           "Email support"
@@ -463,7 +465,8 @@
     "hero": {
       "badge": "100% Verified Real Money Accounts",
       "title": "Real Trading Results",
-      "subtitle": "All accounts are real money, verified by reputable platforms like MQL5, Myfxbook, and publicly tracked 24/7. No photoshop, no demo, no fake.",
+      "subtitle": "All accounts are real money, verified by reputable platforms like MQL5®, Myfxbook, and publicly tracked 24/7. No photoshop, no demo, no fake.",
+      "metaquotes": "MetaTrader®, MT4®, MT5®, MQL4® and MQL5® are registered trademarks of MetaQuotes Ltd.",
       "totalProfit": "Total Profit",
       "totalProfitValue": "+1,000%+",
       "verifiedAccounts": "Verified accounts",
@@ -501,7 +504,7 @@
       "title": "Copy Trading Guide",
       "subtitle": "Watch detailed video guide on how to copy trade on each platform",
       "mql5Title": "📊 MQL5 Signals",
-      "mql5Desc": "Automatically copy signals on MT4/MT5. Suitable if you want to control risk yourself.",
+      "mql5Desc": "Automatically copy signals on MT4®/MT5®. Suitable if you want to control risk yourself.",
       "mql5Link": "Watch MQL5 Guide",
       "myfxbookTitle": "📈 Myfxbook AutoTrade",
       "myfxbookDesc": "AutoTrade via Myfxbook with multiple brokers. Set up once, auto sync forever.",
@@ -525,7 +528,9 @@
       "fees": "Copy fees:",
       "feesDesc": "Tickmill (20% profit share), PuPrime (25% profit share), MQL5/Myfxbook (varies by platform). Read terms carefully before copying.",
       "recommendation": "Recommendation:",
-      "recommendationDesc": "Test on demo/small capital first. Monitor for at least 1 month before scaling up. Never go all-in on 1 strategy."
+      "recommendationDesc": "Test on demo/small capital first. Monitor for at least 1 month before scaling up. Never go all-in on 1 strategy.",
+      "brokerTitle": "Broker notice:",
+      "broker": "Broker names (Tickmill, ThinkMarkets, PuPrime) are mentioned for reference only. These are independent companies and are not affiliated with, sponsored by, or representatives of TheBenchmarkTrader. Choosing a broker is the user's decision. TheBenchmarkTrader is not responsible for broker services."
     },
     "cta": {
       "title": "Ready to Start?",
@@ -550,6 +555,8 @@
     "address": "Address",
     "addressValue": "Hanoi, Vietnam",
     "copyright": "© {year} EA Forex ThebenchmarkTrader. All rights reserved.",
+    "metaquotesAttribution": "MetaTrader®, MT4®, MT5®, MQL4®, and MQL5® are registered trademarks of MetaQuotes Ltd. TheBenchmarkTrader is not affiliated with, sponsored by, or a representative of MetaQuotes Ltd.",
+    "brokerDisclaimer": "Broker names (Tickmill, ThinkMarkets, PuPrime, etc.) are mentioned for reference only. Brokers are independent companies and are not affiliated with, sponsored by, or representatives of TheBenchmarkTrader. Users are responsible for choosing a suitable broker.",
     "riskWarning": "Risk Warning",
     "readyToStart": "Ready to start automated trading?",
     "buyEANow": "Buy EA Now",

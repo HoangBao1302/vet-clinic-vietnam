@@ -61,8 +61,11 @@ export default function LiveResultsPage() {
               <h1 className="text-4xl md:text-6xl font-bold mb-6">
                 {t('liveResultsPage.hero.title')}
               </h1>
-              <p className="text-xl text-green-100 leading-relaxed mb-8">
+              <p className="text-xl text-green-100 leading-relaxed mb-2">
                 {t('liveResultsPage.hero.subtitle')}
+              </p>
+              <p className="text-green-200/80 text-xs mt-2 mb-8">
+                {t('liveResultsPage.hero.metaquotes')}
               </p>
               <div className="flex flex-wrap gap-4 justify-center">
                 <div className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full">
@@ -248,6 +251,17 @@ export default function LiveResultsPage() {
           </div>
         </section>
 
+        <section className="pb-4">
+          <div className="container-custom max-w-5xl mx-auto">
+            <div className="bg-gray-50 rounded-lg p-4 mt-6">
+              <p className="text-xs text-gray-500">
+                <strong>{t('liveResultsPage.disclaimer.brokerTitle')}</strong>{" "}
+                {t('liveResultsPage.disclaimer.broker')}
+              </p>
+            </div>
+          </div>
+        </section>
+
         {/* Copy Trading Guide Section */}
         <section className="py-20 bg-gradient-to-br from-blue-50 to-purple-50">
           <div className="container-custom max-w-5xl mx-auto">
@@ -355,7 +369,7 @@ export default function LiveResultsPage() {
         </section>
 
         {/* Disclaimer */}
-        <section className="py-12 bg-yellow-50 border-y border-yellow-200">
+        <section id="risk-warning" className="py-12 bg-yellow-50 border-y border-yellow-200">
           <div className="container-custom max-w-4xl mx-auto">
             <div className="flex items-start gap-4">
               <AlertCircle className="w-6 h-6 text-yellow-600 flex-shrink-0 mt-1" />

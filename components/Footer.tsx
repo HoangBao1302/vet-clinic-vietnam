@@ -1,37 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { Facebook, Instagram, Twitter, Phone, Mail, MessageCircle, Youtube } from "lucide-react";
 import Link from "next/link";
-import { useRouter, usePathname } from "next/navigation";
 import Newsletter from "./Newsletter";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 
 export default function Footer() {
-  const [isClient, setIsClient] = useState(false);
-  const router = useRouter();
-  const pathname = usePathname();
   const { t } = useLocale();
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  const scrollToSection = (sectionId: string) => {
-    if (typeof window !== "undefined") {
-      // Nếu không ở trang chủ, navigate về trang chủ trước
-      if (pathname !== "/") {
-        router.push(`/#${sectionId}`);
-        return;
-      }
-      
-      // Nếu đã ở trang chủ, scroll trực tiếp
-      const element = document.getElementById(sectionId);
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
-      }
-    }
-  };
 
   return (
     <footer className="bg-gray-800 text-white">
@@ -99,22 +74,14 @@ export default function Footer() {
             <h3 className="text-lg font-semibold text-white mb-4">{t('footer.quickLinks')}</h3>
             <ul className="space-y-2">
               <li>
-                <button
-                  onClick={() => isClient && scrollToSection("home")}
-                  className="text-gray-300 hover:text-white transition-colors"
-                  suppressHydrationWarning
-                >
+                <Link href="/" className="text-gray-300 hover:text-white transition-colors">
                   {t('nav.home')}
-                </button>
+                </Link>
               </li>
               <li>
-                <button
-                  onClick={() => isClient && scrollToSection("features")}
-                  className="text-gray-300 hover:text-white transition-colors"
-                  suppressHydrationWarning
-                >
+                <Link href="/#features" className="text-gray-300 hover:text-white transition-colors">
                   {t('nav.features')}
-                </button>
+                </Link>
               </li>
               <li>
                 <Link href="/pricing" className="text-gray-300 hover:text-white transition-colors">
@@ -147,13 +114,9 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <button
-                  onClick={() => isClient && scrollToSection("contact")}
-                  className="text-gray-300 hover:text-white transition-colors"
-                  suppressHydrationWarning
-                >
+                <Link href="/#contact" className="text-gray-300 hover:text-white transition-colors">
                   {t('nav.contact')}
-                </button>
+                </Link>
               </li>
             </ul>
           </div>
@@ -237,7 +200,7 @@ export default function Footer() {
         <div className="border-t border-gray-700 mt-8 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-300 text-sm">
-              {t('footer.copyright', { year: new Date().getFullYear() })}
+              {String(t('footer.copyright')).replace('{year}', String(new Date().getFullYear()))}
             </p>
             <div className="flex space-x-6 mt-4 md:mt-0">
               <Link href="/privacy" className="text-gray-300 hover:text-white text-sm transition-colors">
@@ -246,10 +209,18 @@ export default function Footer() {
               <Link href="/terms" className="text-gray-300 hover:text-white text-sm transition-colors">
                 {t('footer.links.terms')}
               </Link>
-              <a href="#" className="text-gray-300 hover:text-white text-sm transition-colors">
+              <Link href="/live-results#risk-warning" className="text-gray-300 hover:text-white text-sm transition-colors">
                 {t('footer.riskWarning')}
-              </a>
+              </Link>
             </div>
+          </div>
+          <div className="mt-6 pt-4 border-t border-gray-700 space-y-2">
+            <p className="text-gray-400 text-xs leading-relaxed">
+              {t('footer.metaquotesAttribution')}
+            </p>
+            <p className="text-gray-500 text-xs leading-relaxed">
+              {t('footer.brokerDisclaimer')}
+            </p>
           </div>
         </div>
       </div>
