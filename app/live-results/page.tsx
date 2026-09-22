@@ -388,6 +388,11 @@ export default function LiveResultsPage() {
                   <p>
                     <strong>{t('liveResultsPage.disclaimer.recommendation')}</strong> {t('liveResultsPage.disclaimer.recommendationDesc')}
                   </p>
+                  {locale === "en" && (
+                    <p>
+                      <strong>Operator:</strong> Thebenchmarktrader LLC, 177 S Lexington St Ste 100, Harrisonville, MO 64701
+                    </p>
+                  )}
                 </div>
               </div>
             </div>

@@ -198,6 +198,12 @@ export default function TermsOfService() {
                 <h2 className="text-2xl font-bold text-gray-800 mb-4">11. Liên Hệ</h2>
                 <div className="mb-6">
                   <p className="text-gray-700 mb-3">
+                    <strong>Company:</strong> Thebenchmarktrader LLC
+                  </p>
+                  <p className="text-gray-700 mb-3">
+                    <strong>Address:</strong> 177 S Lexington St Ste 100, Harrisonville, MO 64701
+                  </p>
+                  <p className="text-gray-700 mb-3">
                     <strong>Email:</strong> support@thebenchmarktrader.com
                   </p>
                   <p className="text-gray-700 mb-3">

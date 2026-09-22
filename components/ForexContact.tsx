@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Phone, Mail, Clock, MessageCircle, Send, AlertCircle } from "lucide-react";
+import { Phone, Mail, Clock, MessageCircle, Send, AlertCircle, Building2, MapPin } from "lucide-react";
 import HoneypotField from "@/components/HoneypotField";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 
@@ -13,7 +13,7 @@ function isValidEmail(email: string): boolean {
 }
 
 export default function ForexContact() {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   
   const [formData, setFormData] = useState({
     name: "",
@@ -295,6 +295,28 @@ export default function ForexContact() {
                 <h3 className="text-2xl font-bold text-gray-800 mb-6">{t('contact.contactInfoTitle')}</h3>
                 
                 <div className="space-y-4">
+                  {locale === "en" && (
+                    <>
+                      <div className="flex items-start space-x-4">
+                        <div className="flex-shrink-0 w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center">
+                          <Building2 className="text-slate-700" size={24} />
+                        </div>
+                        <div>
+                          <h4 className="font-semibold text-gray-800 mb-1">Company</h4>
+                          <p className="text-gray-600">{t('contact.companyName')}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start space-x-4">
+                        <div className="flex-shrink-0 w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                          <MapPin className="text-orange-600" size={24} />
+                        </div>
+                        <div>
+                          <h4 className="font-semibold text-gray-800 mb-1">{t('contact.addressLabel')}</h4>
+                          <p className="text-gray-600">{t('contact.addressValue')}</p>
+                        </div>
+                      </div>
+                    </>
+                  )}
                   <div className="flex items-start space-x-4">
                     <div className="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
                       <Phone className="text-blue-600" size={24} />
