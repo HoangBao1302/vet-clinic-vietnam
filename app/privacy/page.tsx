@@ -5,15 +5,16 @@ import { useRouter } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { CheckCircle, XCircle, Shield, Lock, Eye, Database, Server } from "lucide-react";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 
 export default function PrivacyPolicy() {
   const router = useRouter();
+  const { locale } = useLocale();
+  const isEn = locale === "en";
   const [agreed, setAgreed] = useState(false);
 
   const handleAccept = () => {
-    if (agreed) {
-      router.push("/register");
-    }
+    if (agreed) router.push("/register");
   };
 
   const handleDecline = () => {
@@ -23,179 +24,208 @@ export default function PrivacyPolicy() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
-      
+
       <main className="pt-20">
-        {/* Header */}
         <section className="py-8 bg-gradient-to-r from-green-600 to-blue-600 text-white">
           <div className="container-custom">
             <h1 className="text-4xl font-bold flex items-center gap-3">
               <Shield size={40} />
-              Chính Sách Bảo Mật
+              {isEn ? "Privacy Policy" : "Chính Sách Bảo Mật"}
             </h1>
             <p className="text-green-100 mt-2">
-              Cam kết bảo vệ thông tin cá nhân và dữ liệu của bạn
+              {isEn
+                ? "How Thebenchmarktrader LLC collects, uses, and protects your information"
+                : "Cam kết bảo vệ thông tin cá nhân và dữ liệu của bạn"}
             </p>
           </div>
         </section>
 
-        {/* Content */}
         <section className="py-12">
           <div className="container-custom max-w-4xl">
             <div className="bg-white rounded-lg shadow-lg p-8">
-              
-              {/* Security Notice */}
               <div className="bg-green-50 border-l-4 border-green-400 p-4 mb-8">
                 <div className="flex items-start">
                   <Lock className="text-green-600 mt-1 mr-3" size={20} />
                   <div>
-                    <h3 className="text-green-800 font-semibold">Bảo Mật Tuyệt Đối</h3>
+                    <h3 className="text-green-800 font-semibold">
+                      {isEn ? "Strong Security" : "Bảo Mật Tuyệt Đối"}
+                    </h3>
                     <p className="text-green-700 text-sm mt-1">
-                      Chúng tôi sử dụng mã hóa SSL 256-bit và các công nghệ bảo mật tiên tiến nhất 
-                      để bảo vệ thông tin của bạn.
+                      {isEn
+                        ? "We use 256-bit SSL encryption and industry-standard safeguards to protect your information."
+                        : "Chúng tôi sử dụng mã hóa SSL 256-bit và các công nghệ bảo mật tiên tiến nhất để bảo vệ thông tin của bạn."}
                     </p>
                   </div>
                 </div>
               </div>
 
-              {/* Privacy Content */}
               <div className="prose max-w-none">
-                
-                <h2 className="text-2xl font-bold text-gray-800 mb-4">1. Thông Tin Chúng Tôi Thu Thập</h2>
+                <h2 className="text-2xl font-bold text-gray-800 mb-4">
+                  {isEn ? "1. Information We Collect" : "1. Thông Tin Chúng Tôi Thu Thập"}
+                </h2>
                 <div className="mb-6">
-                  <h3 className="text-lg font-semibold text-gray-800 mb-2">1.1 Thông Tin Cá Nhân</h3>
+                  <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                    {isEn ? "1.1 Personal Information" : "1.1 Thông Tin Cá Nhân"}
+                  </h3>
                   <ul className="text-gray-700 mb-4 space-y-1">
-                    <li>• Họ tên và địa chỉ email</li>
-                    <li>• Số điện thoại liên lạc</li>
-                    <li>• Thông tin thanh toán (được mã hóa)</li>
-                    <li>• Địa chỉ IP và thông tin trình duyệt</li>
+                    <li>• {isEn ? "Name and email address" : "Họ tên và địa chỉ email"}</li>
+                    <li>• {isEn ? "Phone number" : "Số điện thoại liên lạc"}</li>
+                    <li>• {isEn ? "Payment information (encrypted)" : "Thông tin thanh toán (được mã hóa)"}</li>
+                    <li>• {isEn ? "IP address and browser information" : "Địa chỉ IP và thông tin trình duyệt"}</li>
                   </ul>
-                  
-                  <h3 className="text-lg font-semibold text-gray-800 mb-2">1.2 Thông Tin Giao Dịch</h3>
+
+                  <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                    {isEn ? "1.2 Transaction Information" : "1.2 Thông Tin Giao Dịch"}
+                  </h3>
                   <ul className="text-gray-700 mb-4 space-y-1">
-                    <li>• Lịch sử mua hàng và thanh toán</li>
-                    <li>• Thông tin sử dụng EA và indicators</li>
-                    <li>• Dữ liệu hiệu suất giao dịch (nếu bạn chia sẻ)</li>
-                    <li>• Logs truy cập và hoạt động trên website</li>
+                    <li>• {isEn ? "Purchase and payment history" : "Lịch sử mua hàng và thanh toán"}</li>
+                    <li>• {isEn ? "EA and indicator usage information" : "Thông tin sử dụng EA và indicators"}</li>
+                    <li>• {isEn ? "Trading performance data (if you share it)" : "Dữ liệu hiệu suất giao dịch (nếu bạn chia sẻ)"}</li>
+                    <li>• {isEn ? "Website access and activity logs" : "Logs truy cập và hoạt động trên website"}</li>
                   </ul>
                 </div>
 
-                <h2 className="text-2xl font-bold text-gray-800 mb-4">2. Mục Đích Sử Dụng Thông Tin</h2>
+                <h2 className="text-2xl font-bold text-gray-800 mb-4">
+                  {isEn ? "2. How We Use Information" : "2. Mục Đích Sử Dụng Thông Tin"}
+                </h2>
                 <div className="mb-6">
                   <div className="grid md:grid-cols-2 gap-4">
                     <div className="bg-blue-50 p-4 rounded-lg">
-                      <h3 className="font-semibold text-blue-800 mb-2">Dịch Vụ Chính</h3>
+                      <h3 className="font-semibold text-blue-800 mb-2">
+                        {isEn ? "Core Services" : "Dịch Vụ Chính"}
+                      </h3>
                       <ul className="text-blue-700 text-sm space-y-1">
-                        <li>• Cung cấp EA và indicators</li>
-                        <li>• Hỗ trợ kỹ thuật</li>
-                        <li>• Xử lý thanh toán</li>
-                        <li>• Gửi thông báo quan trọng</li>
+                        <li>• {isEn ? "Provide EA and indicators" : "Cung cấp EA và indicators"}</li>
+                        <li>• {isEn ? "Technical support" : "Hỗ trợ kỹ thuật"}</li>
+                        <li>• {isEn ? "Payment processing" : "Xử lý thanh toán"}</li>
+                        <li>• {isEn ? "Send important notices" : "Gửi thông báo quan trọng"}</li>
                       </ul>
                     </div>
                     <div className="bg-green-50 p-4 rounded-lg">
-                      <h3 className="font-semibold text-green-800 mb-2">Cải Thiện Dịch Vụ</h3>
+                      <h3 className="font-semibold text-green-800 mb-2">
+                        {isEn ? "Service Improvement" : "Cải Thiện Dịch Vụ"}
+                      </h3>
                       <ul className="text-green-700 text-sm space-y-1">
-                        <li>• Phân tích hiệu suất</li>
-                        <li>• Phát triển tính năng mới</li>
-                        <li>• Tối ưu hóa EA</li>
-                        <li>• Nghiên cứu thị trường</li>
+                        <li>• {isEn ? "Performance analysis" : "Phân tích hiệu suất"}</li>
+                        <li>• {isEn ? "New feature development" : "Phát triển tính năng mới"}</li>
+                        <li>• {isEn ? "EA optimization" : "Tối ưu hóa EA"}</li>
+                        <li>• {isEn ? "Market research" : "Nghiên cứu thị trường"}</li>
                       </ul>
                     </div>
                   </div>
                 </div>
 
-                <h2 className="text-2xl font-bold text-gray-800 mb-4">3. Bảo Mật Dữ Liệu</h2>
+                <h2 className="text-2xl font-bold text-gray-800 mb-4">
+                  {isEn ? "3. Data Security" : "3. Bảo Mật Dữ Liệu"}
+                </h2>
                 <div className="mb-6">
                   <div className="bg-gray-50 p-4 rounded-lg mb-4">
                     <h3 className="font-semibold text-gray-800 mb-2 flex items-center gap-2">
                       <Database size={20} />
-                      Công Nghệ Bảo Mật
+                      {isEn ? "Security Technology" : "Công Nghệ Bảo Mật"}
                     </h3>
                     <ul className="text-gray-700 text-sm space-y-1">
-                      <li>• Mã hóa SSL/TLS 256-bit cho tất cả kết nối</li>
-                      <li>• Mã hóa AES-256 cho dữ liệu lưu trữ</li>
-                      <li>• Hash mật khẩu với bcrypt và salt</li>
-                      <li>• Token JWT với thời gian hết hạn ngắn</li>
-                      <li>• Firewall và DDoS protection</li>
+                      <li>• {isEn ? "256-bit SSL/TLS for all connections" : "Mã hóa SSL/TLS 256-bit cho tất cả kết nối"}</li>
+                      <li>• {isEn ? "AES-256 for stored data" : "Mã hóa AES-256 cho dữ liệu lưu trữ"}</li>
+                      <li>• {isEn ? "Password hashing with bcrypt and salt" : "Hash mật khẩu với bcrypt và salt"}</li>
+                      <li>• {isEn ? "Short-lived JWT tokens" : "Token JWT với thời gian hết hạn ngắn"}</li>
+                      <li>• {isEn ? "Firewall and DDoS protection" : "Firewall và DDoS protection"}</li>
                     </ul>
                   </div>
-                  
                   <div className="bg-gray-50 p-4 rounded-lg">
                     <h3 className="font-semibold text-gray-800 mb-2 flex items-center gap-2">
                       <Server size={20} />
-                      Bảo Mật Hạ Tầng
+                      {isEn ? "Infrastructure Security" : "Bảo Mật Hạ Tầng"}
                     </h3>
                     <ul className="text-gray-700 text-sm space-y-1">
-                      <li>• Server đặt tại các trung tâm dữ liệu uy tín</li>
-                      <li>• Backup tự động hàng ngày</li>
-                      <li>• Monitoring 24/7</li>
-                      <li>• Access control nghiêm ngặt</li>
-                      <li>• Audit logs đầy đủ</li>
+                      <li>• {isEn ? "Servers in reputable data centers" : "Server đặt tại các trung tâm dữ liệu uy tín"}</li>
+                      <li>• {isEn ? "Daily automatic backups" : "Backup tự động hàng ngày"}</li>
+                      <li>• {isEn ? "24/7 monitoring" : "Monitoring 24/7"}</li>
+                      <li>• {isEn ? "Strict access control" : "Access control nghiêm ngặt"}</li>
+                      <li>• {isEn ? "Complete audit logs" : "Audit logs đầy đủ"}</li>
                     </ul>
                   </div>
                 </div>
 
-                <h2 className="text-2xl font-bold text-gray-800 mb-4">4. Chia Sẻ Thông Tin</h2>
+                <h2 className="text-2xl font-bold text-gray-800 mb-4">
+                  {isEn ? "4. Information Sharing" : "4. Chia Sẻ Thông Tin"}
+                </h2>
                 <div className="mb-6">
                   <p className="text-gray-700 mb-3">
-                    <strong>Chúng tôi KHÔNG bán, cho thuê hoặc chia sẻ thông tin cá nhân của bạn với bên thứ ba</strong> 
-                    trừ các trường hợp sau:
+                    {isEn
+                      ? "We do NOT sell, rent, or share your personal information with third parties except in the following cases:"
+                      : "Chúng tôi KHÔNG bán, cho thuê hoặc chia sẻ thông tin cá nhân của bạn với bên thứ ba trừ các trường hợp sau:"}
                   </p>
-                  
                   <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4">
-                    <h3 className="text-yellow-800 font-semibold mb-2">Trường Hợp Ngoại Lệ</h3>
+                    <h3 className="text-yellow-800 font-semibold mb-2">
+                      {isEn ? "Limited Exceptions" : "Trường Hợp Ngoại Lệ"}
+                    </h3>
                     <ul className="text-yellow-700 text-sm space-y-1">
-                      <li>• Có yêu cầu từ cơ quan pháp luật</li>
-                      <li>• Để bảo vệ quyền lợi hợp pháp của chúng tôi</li>
-                      <li>• Với nhà cung cấp dịch vụ thanh toán (Stripe, PayPal)</li>
-                      <li>• Khi bạn đồng ý rõ ràng</li>
+                      <li>• {isEn ? "When required by law" : "Có yêu cầu từ cơ quan pháp luật"}</li>
+                      <li>• {isEn ? "To protect our lawful rights" : "Để bảo vệ quyền lợi hợp pháp của chúng tôi"}</li>
+                      <li>• {isEn ? "With payment processors (Stripe, PayPal)" : "Với nhà cung cấp dịch vụ thanh toán (Stripe, PayPal)"}</li>
+                      <li>• {isEn ? "When you give clear consent" : "Khi bạn đồng ý rõ ràng"}</li>
                     </ul>
                   </div>
                 </div>
 
-                <h2 className="text-2xl font-bold text-gray-800 mb-4">5. Cookie và Tracking</h2>
+                <h2 className="text-2xl font-bold text-gray-800 mb-4">
+                  {isEn ? "5. Cookies and Tracking" : "5. Cookie và Tracking"}
+                </h2>
                 <div className="mb-6">
                   <p className="text-gray-700 mb-3">
-                    Chúng tôi sử dụng cookie để cải thiện trải nghiệm người dùng và phân tích website:
+                    {isEn
+                      ? "We use cookies to improve user experience and analyze website traffic:"
+                      : "Chúng tôi sử dụng cookie để cải thiện trải nghiệm người dùng và phân tích website:"}
                   </p>
-                  
                   <div className="grid md:grid-cols-2 gap-4">
                     <div className="bg-blue-50 p-4 rounded-lg">
-                      <h3 className="font-semibold text-blue-800 mb-2">Cookie Cần Thiết</h3>
+                      <h3 className="font-semibold text-blue-800 mb-2">
+                        {isEn ? "Essential Cookies" : "Cookie Cần Thiết"}
+                      </h3>
                       <ul className="text-blue-700 text-sm space-y-1">
-                        <li>• Duy trì đăng nhập</li>
-                        <li>• Lưu cài đặt cá nhân</li>
-                        <li>• Bảo mật phiên làm việc</li>
-                        <li>• Chức năng cơ bản</li>
+                        <li>• {isEn ? "Keep you signed in" : "Duy trì đăng nhập"}</li>
+                        <li>• {isEn ? "Save personal settings" : "Lưu cài đặt cá nhân"}</li>
+                        <li>• {isEn ? "Secure your session" : "Bảo mật phiên làm việc"}</li>
+                        <li>• {isEn ? "Core site functions" : "Chức năng cơ bản"}</li>
                       </ul>
                     </div>
                     <div className="bg-green-50 p-4 rounded-lg">
-                      <h3 className="font-semibold text-green-800 mb-2">Cookie Phân Tích</h3>
+                      <h3 className="font-semibold text-green-800 mb-2">
+                        {isEn ? "Analytics Cookies" : "Cookie Phân Tích"}
+                      </h3>
                       <ul className="text-green-700 text-sm space-y-1">
                         <li>• Google Analytics</li>
-                        <li>• Thống kê truy cập</li>
-                        <li>• Hiệu suất website</li>
-                        <li>• Tối ưu hóa UX</li>
+                        <li>• {isEn ? "Traffic statistics" : "Thống kê truy cập"}</li>
+                        <li>• {isEn ? "Website performance" : "Hiệu suất website"}</li>
+                        <li>• {isEn ? "UX optimization" : "Tối ưu hóa UX"}</li>
                       </ul>
                     </div>
                   </div>
                 </div>
 
-                <h2 className="text-2xl font-bold text-gray-800 mb-4">6. Quyền Của Bạn</h2>
+                <h2 className="text-2xl font-bold text-gray-800 mb-4">
+                  {isEn ? "6. Your Rights" : "6. Quyền Của Bạn"}
+                </h2>
                 <div className="mb-6">
                   <div className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-3">
                       <div className="flex items-start gap-2">
                         <Eye className="text-blue-600 mt-1" size={16} />
                         <div>
-                          <h3 className="font-semibold text-gray-800">Quyền Truy Cập</h3>
-                          <p className="text-gray-600 text-sm">Xem thông tin cá nhân của bạn</p>
+                          <h3 className="font-semibold text-gray-800">{isEn ? "Access" : "Quyền Truy Cập"}</h3>
+                          <p className="text-gray-600 text-sm">
+                            {isEn ? "View your personal information" : "Xem thông tin cá nhân của bạn"}
+                          </p>
                         </div>
                       </div>
                       <div className="flex items-start gap-2">
                         <CheckCircle className="text-green-600 mt-1" size={16} />
                         <div>
-                          <h3 className="font-semibold text-gray-800">Quyền Chỉnh Sửa</h3>
-                          <p className="text-gray-600 text-sm">Cập nhật thông tin không chính xác</p>
+                          <h3 className="font-semibold text-gray-800">{isEn ? "Correction" : "Quyền Chỉnh Sửa"}</h3>
+                          <p className="text-gray-600 text-sm">
+                            {isEn ? "Update inaccurate information" : "Cập nhật thông tin không chính xác"}
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -203,94 +233,106 @@ export default function PrivacyPolicy() {
                       <div className="flex items-start gap-2">
                         <XCircle className="text-red-600 mt-1" size={16} />
                         <div>
-                          <h3 className="font-semibold text-gray-800">Quyền Xóa</h3>
-                          <p className="text-gray-600 text-sm">Yêu cầu xóa tài khoản và dữ liệu</p>
+                          <h3 className="font-semibold text-gray-800">{isEn ? "Deletion" : "Quyền Xóa"}</h3>
+                          <p className="text-gray-600 text-sm">
+                            {isEn ? "Request account and data deletion" : "Yêu cầu xóa tài khoản và dữ liệu"}
+                          </p>
                         </div>
                       </div>
                       <div className="flex items-start gap-2">
                         <Shield className="text-purple-600 mt-1" size={16} />
                         <div>
-                          <h3 className="font-semibold text-gray-800">Quyền Bảo Mật</h3>
-                          <p className="text-gray-600 text-sm">Bảo vệ dữ liệu cá nhân</p>
+                          <h3 className="font-semibold text-gray-800">{isEn ? "Protection" : "Quyền Bảo Mật"}</h3>
+                          <p className="text-gray-600 text-sm">
+                            {isEn ? "Protection of personal data" : "Bảo vệ dữ liệu cá nhân"}
+                          </p>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <h2 className="text-2xl font-bold text-gray-800 mb-4">7. Lưu Trữ Dữ Liệu</h2>
+                <h2 className="text-2xl font-bold text-gray-800 mb-4">
+                  {isEn ? "7. Data Retention" : "7. Lưu Trữ Dữ Liệu"}
+                </h2>
                 <div className="mb-6">
                   <p className="text-gray-700 mb-3">
-                    Chúng tôi lưu trữ dữ liệu của bạn trong thời gian cần thiết:
+                    {isEn
+                      ? "We keep your data only as long as needed:"
+                      : "Chúng tôi lưu trữ dữ liệu của bạn trong thời gian cần thiết:"}
                   </p>
                   <ul className="text-gray-700 mb-4 space-y-1">
-                    <li>• <strong>Thông tin tài khoản:</strong> Cho đến khi bạn xóa tài khoản</li>
-                    <li>• <strong>Dữ liệu giao dịch:</strong> 7 năm (theo quy định pháp luật)</li>
-                    <li>• <strong>Logs hệ thống:</strong> 1 năm</li>
-                    <li>• <strong>Dữ liệu phân tích:</strong> 2 năm</li>
+                    <li>• <strong>{isEn ? "Account information:" : "Thông tin tài khoản:"}</strong> {isEn ? "Until you delete your account" : "Cho đến khi bạn xóa tài khoản"}</li>
+                    <li>• <strong>{isEn ? "Transaction data:" : "Dữ liệu giao dịch:"}</strong> {isEn ? "7 years (as required by law)" : "7 năm (theo quy định pháp luật)"}</li>
+                    <li>• <strong>{isEn ? "System logs:" : "Logs hệ thống:"}</strong> {isEn ? "1 year" : "1 năm"}</li>
+                    <li>• <strong>{isEn ? "Analytics data:" : "Dữ liệu phân tích:"}</strong> {isEn ? "2 years" : "2 năm"}</li>
                   </ul>
                 </div>
 
-                <h2 className="text-2xl font-bold text-gray-800 mb-4">8. Bảo Vệ Trẻ Em</h2>
+                <h2 className="text-2xl font-bold text-gray-800 mb-4">
+                  {isEn ? "8. Children's Privacy" : "8. Bảo Vệ Trẻ Em"}
+                </h2>
                 <div className="mb-6">
                   <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                    <h3 className="text-red-800 font-semibold mb-2">⚠️ Cảnh Báo</h3>
+                    <h3 className="text-red-800 font-semibold mb-2">
+                      {isEn ? "Notice" : "Cảnh Báo"}
+                    </h3>
                     <p className="text-red-700 text-sm">
-                      Dịch vụ của chúng tôi dành cho người từ 18 tuổi trở lên. 
-                      Chúng tôi không thu thập thông tin từ trẻ em dưới 18 tuổi.
+                      {isEn
+                        ? "Our services are for people 18 years or older. We do not knowingly collect information from children under 18."
+                        : "Dịch vụ của chúng tôi dành cho người từ 18 tuổi trở lên. Chúng tôi không thu thập thông tin từ trẻ em dưới 18 tuổi."}
                     </p>
                   </div>
                 </div>
 
-                <h2 className="text-2xl font-bold text-gray-800 mb-4">9. Cập Nhật Chính Sách</h2>
+                <h2 className="text-2xl font-bold text-gray-800 mb-4">
+                  {isEn ? "9. Policy Updates" : "9. Cập Nhật Chính Sách"}
+                </h2>
                 <div className="mb-6">
                   <p className="text-gray-700 mb-3">
-                    Chúng tôi có thể cập nhật chính sách bảo mật này. 
-                    Thay đổi quan trọng sẽ được thông báo qua email hoặc trên website.
+                    {isEn
+                      ? "We may update this privacy policy. Material changes will be announced by email or on the website."
+                      : "Chúng tôi có thể cập nhật chính sách bảo mật này. Thay đổi quan trọng sẽ được thông báo qua email hoặc trên website."}
                   </p>
                   <p className="text-gray-700 mb-3">
-                    Việc tiếp tục sử dụng dịch vụ sau khi cập nhật được coi là chấp nhận chính sách mới.
+                    {isEn
+                      ? "Continued use of the service after an update means you accept the new policy."
+                      : "Việc tiếp tục sử dụng dịch vụ sau khi cập nhật được coi là chấp nhận chính sách mới."}
                   </p>
                 </div>
 
-                <h2 className="text-2xl font-bold text-gray-800 mb-4">10. Liên Hệ</h2>
+                <h2 className="text-2xl font-bold text-gray-800 mb-4">
+                  {isEn ? "10. Contact" : "10. Liên Hệ"}
+                </h2>
                 <div className="mb-6">
                   <p className="text-gray-700 mb-3">
-                    Nếu bạn có câu hỏi về chính sách bảo mật hoặc muốn thực hiện quyền của mình:
+                    {isEn
+                      ? "If you have questions about this policy or want to exercise your rights:"
+                      : "Nếu bạn có câu hỏi về chính sách bảo mật hoặc muốn thực hiện quyền của mình:"}
                   </p>
                   <div className="bg-gray-50 p-4 rounded-lg">
-                    <p className="text-gray-700 mb-2">
-                      <strong>Company:</strong> Thebenchmarktrader LLC
-                    </p>
-                    <p className="text-gray-700 mb-2">
-                      <strong>Address:</strong> 177 S Lexington St Ste 100, Harrisonville, MO 64701
-                    </p>
-                    <p className="text-gray-700 mb-2">
-                      <strong>Email:</strong> privacy@thebenchmarktrader.com
-                    </p>
-                    <p className="text-gray-700 mb-2">
-                      <strong>Hotline:</strong> +1925 582 0779
-                    </p>
-                    <p className="text-gray-700 mb-2">
-                      <strong>Telegram:</strong> @thebenchmarktrader
-                    </p>
-                    <p className="text-gray-700">
-                      <strong>Thời gian phản hồi:</strong> 24-48 giờ
-                    </p>
+                    <p className="text-gray-700 mb-2"><strong>{isEn ? "Company:" : "Công ty:"}</strong> Thebenchmarktrader LLC</p>
+                    <p className="text-gray-700 mb-2"><strong>{isEn ? "Address:" : "Địa chỉ:"}</strong> 177 S Lexington St Ste 100, Harrisonville, MO 64701</p>
+                    <p className="text-gray-700 mb-2"><strong>Email:</strong> privacy@thebenchmarktrader.com</p>
+                    <p className="text-gray-700 mb-2"><strong>Hotline:</strong> +1925 582 0779</p>
+                    <p className="text-gray-700 mb-2"><strong>Telegram:</strong> @thebenchmarktrader</p>
+                    <p className="text-gray-700"><strong>{isEn ? "Response time:" : "Thời gian phản hồi:"}</strong> 24-48 {isEn ? "hours" : "giờ"}</p>
                   </div>
                 </div>
 
                 <div className="bg-green-50 border border-green-200 rounded-lg p-4 mt-8">
                   <p className="text-green-800 text-sm">
-                    <strong>Cập nhật lần cuối:</strong> {new Date().toLocaleDateString('vi-VN')}
+                    <strong>{isEn ? "Last updated:" : "Cập nhật lần cuối:"}</strong>{" "}
+                    {new Date().toLocaleDateString(isEn ? "en-US" : "vi-VN")}
                   </p>
                   <p className="text-green-700 text-sm mt-1">
-                    Chúng tôi cam kết bảo vệ quyền riêng tư của bạn và tuân thủ các quy định pháp luật về bảo vệ dữ liệu cá nhân.
+                    {isEn
+                      ? "Thebenchmarktrader LLC is committed to protecting your privacy and complying with applicable data-protection laws."
+                      : "Chúng tôi cam kết bảo vệ quyền riêng tư của bạn và tuân thủ các quy định pháp luật về bảo vệ dữ liệu cá nhân."}
                   </p>
                 </div>
               </div>
 
-              {/* Action Buttons */}
               <div className="mt-12 pt-8 border-t border-gray-200">
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <button
@@ -298,23 +340,21 @@ export default function PrivacyPolicy() {
                     className="flex items-center justify-center gap-2 px-8 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-semibold"
                   >
                     <XCircle size={20} />
-                    Từ Chối
+                    {isEn ? "Decline" : "Từ Chối"}
                   </button>
-                  
                   <button
                     onClick={handleAccept}
                     disabled={!agreed}
                     className={`flex items-center justify-center gap-2 px-8 py-3 rounded-lg transition-colors font-semibold ${
-                      agreed 
-                        ? 'bg-green-600 text-white hover:bg-green-700' 
-                        : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                      agreed
+                        ? "bg-green-600 text-white hover:bg-green-700"
+                        : "bg-gray-300 text-gray-500 cursor-not-allowed"
                     }`}
                   >
                     <CheckCircle size={20} />
-                    Đồng Ý và Tiếp Tục
+                    {isEn ? "Agree and Continue" : "Đồng Ý và Tiếp Tục"}
                   </button>
                 </div>
-                
                 <div className="mt-4 text-center">
                   <label className="flex items-center justify-center gap-2 text-sm text-gray-600">
                     <input
@@ -323,7 +363,9 @@ export default function PrivacyPolicy() {
                       onChange={(e) => setAgreed(e.target.checked)}
                       className="w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
                     />
-                    Tôi đã đọc và đồng ý với chính sách bảo mật
+                    {isEn
+                      ? "I have read and agree to this privacy policy"
+                      : "Tôi đã đọc và đồng ý với chính sách bảo mật"}
                   </label>
                 </div>
               </div>

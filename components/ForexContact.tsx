@@ -295,28 +295,24 @@ export default function ForexContact() {
                 <h3 className="text-2xl font-bold text-gray-800 mb-6">{t('contact.contactInfoTitle')}</h3>
                 
                 <div className="space-y-4">
-                  {locale === "en" && (
-                    <>
-                      <div className="flex items-start space-x-4">
-                        <div className="flex-shrink-0 w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center">
-                          <Building2 className="text-slate-700" size={24} />
-                        </div>
-                        <div>
-                          <h4 className="font-semibold text-gray-800 mb-1">Company</h4>
-                          <p className="text-gray-600">{t('contact.companyName')}</p>
-                        </div>
-                      </div>
-                      <div className="flex items-start space-x-4">
-                        <div className="flex-shrink-0 w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
-                          <MapPin className="text-orange-600" size={24} />
-                        </div>
-                        <div>
-                          <h4 className="font-semibold text-gray-800 mb-1">{t('contact.addressLabel')}</h4>
-                          <p className="text-gray-600">{t('contact.addressValue')}</p>
-                        </div>
-                      </div>
-                    </>
-                  )}
+                  <div className="flex items-start space-x-4">
+                    <div className="flex-shrink-0 w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center">
+                      <Building2 className="text-slate-700" size={24} />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-800 mb-1">{locale === "en" ? "Company" : "Công ty"}</h4>
+                      <p className="text-gray-600">{t('contact.companyName')}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-4">
+                    <div className="flex-shrink-0 w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                      <MapPin className="text-orange-600" size={24} />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-800 mb-1">{t('contact.addressLabel')}</h4>
+                      <p className="text-gray-600">{t('contact.addressValue')}</p>
+                    </div>
+                  </div>
                   <div className="flex items-start space-x-4">
                     <div className="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
                       <Phone className="text-blue-600" size={24} />

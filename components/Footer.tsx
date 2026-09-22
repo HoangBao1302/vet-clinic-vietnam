@@ -6,7 +6,7 @@ import Newsletter from "./Newsletter";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 
 export default function Footer() {
-  const { t, locale } = useLocale();
+  const { t } = useLocale();
 
   return (
     <footer className="bg-gray-800 text-white">
@@ -166,18 +166,14 @@ export default function Footer() {
           <div>
             <h3 className="text-lg font-semibold text-white mb-4">{t('footer.contactInfo')}</h3>
             <div className="space-y-3">
-              {locale === "en" && (
-                <>
-                  <div className="flex items-start space-x-3">
-                    <Building2 className="w-5 h-5 text-gray-300 mt-0.5 shrink-0" />
-                    <span className="text-gray-300">{t('footer.companyName')}</span>
-                  </div>
-                  <div className="flex items-start space-x-3">
-                    <MapPin className="w-5 h-5 text-gray-300 mt-0.5 shrink-0" />
-                    <span className="text-gray-300">{t('footer.addressValue')}</span>
-                  </div>
-                </>
-              )}
+              <div className="flex items-start space-x-3">
+                <Building2 className="w-5 h-5 text-gray-300 mt-0.5 shrink-0" />
+                <span className="text-gray-300">{t('footer.companyName')}</span>
+              </div>
+              <div className="flex items-start space-x-3">
+                <MapPin className="w-5 h-5 text-gray-300 mt-0.5 shrink-0" />
+                <span className="text-gray-300">{t('footer.addressValue')}</span>
+              </div>
               <div className="flex items-center space-x-3">
                 <Phone className="w-5 h-5 text-gray-300" />
                 <span className="text-gray-300">{t('common.phone')}</span>
@@ -226,11 +222,9 @@ export default function Footer() {
               </Link>
             </div>
           </div>
-          {locale === "en" && (
-            <p className="text-gray-400 text-xs mt-4 text-center md:text-right">
-              {t('footer.companyName')} · {t('footer.addressValue')}
-            </p>
-          )}
+          <p className="text-gray-400 text-xs mt-4 text-center md:text-right">
+            {t('footer.companyName')} · {t('footer.addressValue')}
+          </p>
           <div className="mt-6 pt-4 border-t border-gray-700 space-y-2">
             <p className="text-gray-400 text-xs leading-relaxed">
               {t('footer.metaquotesAttribution')}
