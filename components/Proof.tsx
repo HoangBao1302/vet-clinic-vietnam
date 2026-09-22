@@ -1,12 +1,41 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { TrendingUp, Shield, Target, Youtube, PlayCircle } from "lucide-react";
 import { useLocale } from "@/lib/i18n/LocaleContext";
-import { tradingAccounts } from "@/data/tradingAccounts";
+import { tradingAccounts as fallbackAccounts, type TradingAccount } from "@/data/tradingAccounts";
+
+function sortActiveAccounts(accounts: TradingAccount[]) {
+  return [...accounts]
+    .filter((account) => account.active !== false)
+    .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+}
 
 export default function Proof() {
   const { t } = useLocale();
+  const [verifiedAccounts, setVerifiedAccounts] = useState<TradingAccount[]>(
+    sortActiveAccounts(fallbackAccounts)
+  );
+
+  useEffect(() => {
+    const fetchAccounts = async () => {
+      try {
+        const response = await fetch("/api/trading-accounts");
+        if (!response.ok) return;
+
+        const data = await response.json();
+        const accounts = (data.accounts || []) as TradingAccount[];
+        if (accounts.length > 0) {
+          setVerifiedAccounts(sortActiveAccounts(accounts));
+        }
+      } catch (error) {
+        console.error("Error fetching trading accounts:", error);
+      }
+    };
+
+    fetchAccounts();
+  }, []);
 
   const stats = [
     {
@@ -38,10 +67,6 @@ export default function Proof() {
       color: "text-orange-600"
     }
   ];
-
-  const verifiedAccounts = [...tradingAccounts]
-    .filter((account) => account.active)
-    .sort((a, b) => a.order - b.order);
 
   return (
     <section id="proof" className="py-20 bg-gray-50">
@@ -91,7 +116,7 @@ export default function Proof() {
 
         <div className="flex flex-wrap justify-center gap-4">
           {verifiedAccounts.map((account) => {
-            const href = account.links.profile || "/live-results";
+            const href = account.links?.profile || "/live-results";
             const isExternal = href.startsWith("http");
             return (
               <a
@@ -101,7 +126,7 @@ export default function Proof() {
                 rel={isExternal ? "noopener noreferrer" : undefined}
                 className="bg-white px-6 py-4 rounded-xl shadow hover:shadow-md transition min-w-[180px] text-center"
               >
-                <div className="text-2xl font-bold text-green-600">{account.stats.gain}</div>
+                <div className="text-2xl font-bold text-green-600">{account.stats?.gain}</div>
                 <div className="text-sm text-gray-500 mt-1">{account.accountName}</div>
                 <div className="text-xs text-gray-400 mt-1">
                   {account.platform} — {t("proof.verifiedBadge")}

@@ -22,10 +22,20 @@ interface Partner {
 interface TradingAccount {
   _id?: string;
   id: string;
+  platform?: string;
+  accountName?: string;
+  accountNumber?: string;
   broker: string;
-  account: string;
-  gain: string;
-  balance: string;
+  account?: string;
+  gain?: string;
+  balance?: string;
+  stats?: {
+    gain?: string;
+    drawdown?: string;
+    winRate?: string;
+    profitFactor?: string;
+    tradingDays?: string;
+  };
   active: boolean;
   order: number;
 }
@@ -311,8 +321,8 @@ export default function ContentDashboard() {
                   <TrendingUp className="text-green-600" size={32} />
                 </div>
                 <p className="text-3xl font-bold text-gray-800">{stats.tradingAccounts.total}</p>
-                <p className="text-sm text-gray-600">Trading Accounts</p>
-                <p className="text-xs text-gray-500 mt-1">{stats.tradingAccounts.active} active</p>
+                <p className="text-sm text-gray-600">Homepage Proof / Live Results</p>
+                <p className="text-xs text-gray-500 mt-1">{stats.tradingAccounts.active} active on homepage</p>
               </div>
 
               <div className="bg-white rounded-lg shadow-md p-6">
@@ -349,7 +359,7 @@ export default function ContentDashboard() {
                     }`}
                   >
                     <TrendingUp size={16} />
-                    Trading Accounts ({stats.tradingAccounts.total})
+                    Homepage Proof ({stats.tradingAccounts.total})
                   </button>
                   <button
                     onClick={() => setActiveTab('featured-accounts')}
@@ -494,8 +504,13 @@ export default function ContentDashboard() {
                   {/* Trading Accounts Tab */}
                   {activeTab === 'trading-accounts' && (
                     <div className="p-6">
-                      <div className="flex justify-between items-center mb-6">
-                        <h2 className="text-2xl font-bold">Trading Accounts Management</h2>
+                      <div className="flex justify-between items-center mb-4">
+                        <div>
+                          <h2 className="text-2xl font-bold">Homepage Proof Accounts</h2>
+                          <p className="text-sm text-gray-500 mt-1">
+                            Tab này quản lý 5 thẻ % trên homepage (Kết quả Verified) và trang /live-results.
+                          </p>
+                        </div>
                         <button
                           onClick={() => router.push('/admin/content-dashboard/trading-accounts/create')}
                           className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center gap-2"
@@ -508,7 +523,10 @@ export default function ContentDashboard() {
                       {tradingAccounts.length === 0 ? (
                         <div className="text-center py-12">
                           <TrendingUp size={48} className="mx-auto text-gray-400 mb-4" />
-                          <p className="text-gray-600 mb-4">Chưa có trading accounts nào</p>
+                          <p className="text-gray-600 mb-2">Chưa có tài khoản nào trong MongoDB</p>
+                          <p className="text-sm text-gray-500 mb-4">
+                            Homepage đang tạm dùng data file. Import để sửa tên, % gain, link verified từ đây.
+                          </p>
                           <a
                             href="/admin/content-dashboard/import"
                             className="inline-block px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
@@ -529,7 +547,12 @@ export default function ContentDashboard() {
                                     <span className="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm font-bold">
                                       #{account.order}
                                     </span>
-                                    <h3 className="text-xl font-bold">{account.broker}</h3>
+                                    <span className="text-xl font-bold text-green-600">
+                                      {account.stats?.gain || account.gain || 'N/A'}
+                                    </span>
+                                    <h3 className="text-xl font-bold">
+                                      {account.accountName || account.broker}
+                                    </h3>
                                     <span className={`px-2 py-1 rounded text-xs font-semibold ${
                                       account.active 
                                         ? 'bg-green-100 text-green-700' 
@@ -538,14 +561,14 @@ export default function ContentDashboard() {
                                       {account.active ? 'Active' : 'Inactive'}
                                     </span>
                                     <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs font-semibold">
-                                      {(account as any).platform || 'N/A'}
+                                      {account.platform || 'N/A'}
                                     </span>
                                   </div>
                                   <div className="flex gap-4 text-sm text-gray-600">
-                                    <span><strong>Account:</strong> {(account as any).accountNumber || (account as any).account || 'N/A'}</span>
-                                    <span><strong>Gain:</strong> {(account as any).stats?.gain || account.gain || 'N/A'}</span>
-                                    {(account as any).stats?.drawdown && (
-                                      <span><strong>Drawdown:</strong> {(account as any).stats.drawdown}</span>
+                                    <span><strong>Broker:</strong> {account.broker}</span>
+                                    <span><strong>Account:</strong> {account.accountNumber || account.account || 'N/A'}</span>
+                                    {account.stats?.drawdown && (
+                                      <span><strong>Drawdown:</strong> {account.stats.drawdown}</span>
                                     )}
                                   </div>
                                 </div>
