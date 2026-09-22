@@ -50,17 +50,17 @@ export const tradingAccounts: TradingAccount[] = [
       profile: "https://www.mql5.com/en/signals/2327790",
       youtube: "https://www.youtube.com/@ThebenchmarkTraderEA"
     },
-    description: "Tài khoản live đầu tiên chạy EA ThebenchmarkTrader trên Tickmill. Verified bởi MQL5, tất cả giao dịch được tracking real-time.",
-    description_en: "First live account running EA ThebenchmarkTrader on Tickmill. Verified by MQL5, all trades tracked in real-time.",
+    description: "Tài khoản live đầu tiên chạy EA ThebenchmarkTrader trên Tickmill. Verified bởi MQL5®, tất cả giao dịch được tracking real-time.",
+    description_en: "First live account running EA ThebenchmarkTrader on Tickmill. Verified by MQL5®, all trades tracked in real-time.",
     highlights: [
-      "✅ Verified bởi MQL5.com",
+      "✅ Verified bởi MQL5®.com",
       "📈 Lợi nhuận ổn định 593 ngày",
       "🛡️ Drawdown được kiểm soát < 30%",
       "💰 Risk 1.5% mỗi lệnh",
       "⏰ Trade trên EURUSD M5, AUDUSD M5"
     ],
     highlights_en: [
-      "✅ Verified by MQL5.com",
+      "✅ Verified by MQL5®.com",
       "📈 Stable profit for 593 days",
       "🛡️ Drawdown controlled < 30%",
       "💰 Risk 1.5% per trade",
@@ -89,17 +89,17 @@ export const tradingAccounts: TradingAccount[] = [
       profile: "https://www.mql5.com/en/signals/YOUR_SIGNAL_ID_2",
       youtube: "https://www.youtube.com/watch?v=MQL5_TUTORIAL_ID"
     },
-    description: "Tài khoản thứ 2 với risk thấp hơn, phù hợp cho trader bảo thủ. Verified bởi MQL5.",
-    description_en: "Second account with lower risk, suitable for conservative traders. Verified by MQL5.",
+    description: "Tài khoản thứ 2 với risk thấp hơn, phù hợp cho trader bảo thủ. Verified bởi MQL5®.",
+    description_en: "Second account with lower risk, suitable for conservative traders. Verified by MQL5®.",
     highlights: [
-      "✅ Verified bởi MQL5.com",
+      "✅ Verified bởi MQL5®.com",
       "🎯 Win rate cao nhất (71%)",
       "🛡️ Drawdown thấp nhất (9.8%)",
       "💰 Risk 1% mỗi lệnh",
       "⏰ Trade trên GBPUSD H1"
     ],
     highlights_en: [
-      "✅ Verified by MQL5.com",
+      "✅ Verified by MQL5®.com",
       "🎯 Highest win rate (71%)",
       "🛡️ Lowest drawdown (9.8%)",
       "💰 Risk 1% per trade",

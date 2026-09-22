@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, type MouseEvent } from "react";
 import { Facebook, Instagram, Twitter, Menu, X, Phone, Mail, ChevronDown, LogIn, User, LogOut, TrendingUp } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -78,6 +78,14 @@ export default function Header() {
     }
   };
 
+  const handleSectionNav = (sectionId: string) => (event: MouseEvent<HTMLAnchorElement>) => {
+    if (pathname === "/") {
+      event.preventDefault();
+      scrollToSection(sectionId);
+    }
+    setIsMenuOpen(false);
+  };
+
   return (
     <header className="bg-white shadow-lg sticky top-0 z-50">
       {/* Top Bar */}
@@ -145,20 +153,20 @@ export default function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-6 text-sm">
-            <button
-              onClick={() => isClient && scrollToSection("home")}
+            <Link
+              href="/"
+              onClick={handleSectionNav("home")}
               className="text-gray-700 hover:text-primary-600 transition-colors font-medium whitespace-nowrap"
-              suppressHydrationWarning
             >
               {t('nav.home')}
-            </button>
-            <button
-              onClick={() => isClient && scrollToSection("features")}
+            </Link>
+            <Link
+              href="/#features"
+              onClick={handleSectionNav("features")}
               className="text-gray-700 hover:text-primary-600 transition-colors font-medium whitespace-nowrap"
-              suppressHydrationWarning
             >
               {t('nav.features')}
-            </button>
+            </Link>
             <Link
               href="/pricing"
               className="text-gray-700 hover:text-primary-600 transition-colors font-medium whitespace-nowrap"
@@ -257,13 +265,13 @@ export default function Header() {
               )}
             </div>
             
-            <button
-              onClick={() => isClient && scrollToSection("contact")}
+            <Link
+              href="/#contact"
+              onClick={handleSectionNav("contact")}
               className="text-gray-700 hover:text-primary-600 transition-colors font-medium whitespace-nowrap"
-              suppressHydrationWarning
             >
               {t('nav.contact')}
-            </button>
+            </Link>
 
             {/* User Menu / Login */}
             {isAuthenticated && user ? (
@@ -371,20 +379,20 @@ export default function Header() {
         {isClient && isMenuOpen && (
           <div className="md:hidden bg-white border-t border-gray-200 py-4">
             <nav className="flex flex-col space-y-4">
-              <button
-                onClick={() => scrollToSection("home")}
+              <Link
+                href="/"
+                onClick={handleSectionNav("home")}
                 className="text-left text-gray-700 hover:text-primary-600 transition-colors font-medium"
-                suppressHydrationWarning
               >
                 {t('nav.home')}
-              </button>
-              <button
-                onClick={() => scrollToSection("features")}
+              </Link>
+              <Link
+                href="/#features"
+                onClick={handleSectionNav("features")}
                 className="text-left text-gray-700 hover:text-primary-600 transition-colors font-medium"
-                suppressHydrationWarning
               >
                 {t('nav.features')}
-              </button>
+              </Link>
               <Link
                 href="/pricing"
                 className="text-left text-gray-700 hover:text-primary-600 transition-colors font-medium"
@@ -463,13 +471,13 @@ export default function Header() {
                 </div>
               </div>
               
-              <button
-                onClick={() => scrollToSection("contact")}
+              <Link
+                href="/#contact"
+                onClick={handleSectionNav("contact")}
                 className="text-left text-gray-700 hover:text-primary-600 transition-colors font-medium"
-                suppressHydrationWarning
               >
                 {t('nav.contact')}
-              </button>
+              </Link>
 
               {/* Mobile Login/User Menu */}
               <div className="border-t border-gray-200 pt-4 mt-4">

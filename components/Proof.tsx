@@ -5,6 +5,7 @@ import Link from "next/link";
 import { TrendingUp, Shield, Target, Youtube, PlayCircle } from "lucide-react";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 import { tradingAccounts as fallbackAccounts, type TradingAccount } from "@/data/tradingAccounts";
+import { withMetaQuotesMark } from "@/lib/trademarks";
 
 function sortActiveAccounts(accounts: TradingAccount[]) {
   return [...accounts]
@@ -129,7 +130,7 @@ export default function Proof() {
                 <div className="text-2xl font-bold text-green-600">{account.stats?.gain}</div>
                 <div className="text-sm text-gray-500 mt-1">{account.accountName}</div>
                 <div className="text-xs text-gray-400 mt-1">
-                  {account.platform} — {t("proof.verifiedBadge")}
+                  {withMetaQuotesMark(account.platform)} — {t("proof.verifiedBadge")}
                 </div>
               </a>
             );
