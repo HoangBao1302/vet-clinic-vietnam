@@ -14,6 +14,14 @@ const ARTICLE_MAX_AGE_MS = 2 * 60 * 60 * 1000;
 
 const NEWS_QUERY = 'forex OR currency OR EUR/USD OR gold trading';
 
+const FOREX_KEYWORDS = [
+  'forex', 'fx', 'currency', 'currencies', 'exchange rate', 'eur/usd', 'gbp/usd',
+  'usd/jpy', 'usd/chf', 'aud/usd', 'nzd/usd', 'usd/cad', 'dollar', 'euro', 'yen',
+  'pound', 'sterling', 'franc', 'central bank', 'fed', 'ecb', 'boe', 'boj', 'rba',
+  'gold', 'xau', 'silver', 'xag', 'oil', 'crude', 'commodity', 'pip', 'spread',
+  'forex market', 'currency pair', 'foreign exchange', 'monetary policy', 'interest rate',
+];
+
 function loadEnv() {
   try {
     require('dotenv').config({ path: path.join(process.cwd(), '.env.local') });
@@ -84,6 +92,17 @@ function articleKey(article) {
   return article.url || normalizeTitle(article.title);
 }
 
+function isForexRelevant(article) {
+  const text = `${article.title || ''} ${article.source || ''}`.toLowerCase();
+  return FOREX_KEYWORDS.some((keyword) => {
+    if (keyword.includes(' ')) {
+      return text.includes(keyword);
+    }
+    const pattern = new RegExp(`\\b${keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
+    return pattern.test(text);
+  });
+}
+
 function isRecentArticle(article, now = Date.now()) {
   const publishedAt = new Date(article.publishedAt).getTime();
   if (Number.isNaN(publishedAt)) {
@@ -128,11 +147,13 @@ function formatSlackMessage(articles, timestamp = new Date()) {
 }
 
 async function fetchNewsApi(apiKey) {
+  const from = new Date(Date.now() - ARTICLE_MAX_AGE_MS).toISOString();
   const params = new URLSearchParams({
     q: NEWS_QUERY,
     language: 'en',
     sortBy: 'publishedAt',
     pageSize: '5',
+    from,
     apiKey,
   });
 
@@ -185,7 +206,7 @@ async function main() {
   loadEnv();
 
   const newsApiKey = process.env.NEWS_API_KEY;
-  const alphaVantageKey = process.env.ALPHA_VANTAGE_API_KEY;
+  const alphaVantageKey = process.env.ALPHA_VANTAGE_API_KEY || process.env.ALPHA_VANTAGE_KEY;
   const now = Date.now();
   const state = loadState();
 
@@ -266,7 +287,8 @@ async function main() {
 
   const postedSet = new Set((state.postedUrls || []).map((url) => url.toLowerCase()));
   const freshArticles = dedupeArticles(collected)
-    .filter(isRecentArticle)
+    .filter((article) => isRecentArticle(article, now))
+    .filter(isForexRelevant)
     .filter((article) => article.url && !postedSet.has(article.url.toLowerCase()))
     .slice(0, 5);
 
