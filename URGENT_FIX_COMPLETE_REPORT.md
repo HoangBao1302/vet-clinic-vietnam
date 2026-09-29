@@ -108,7 +108,7 @@ If you have SMTP credentials ready:
 # Set environment variables
 $env:SMTP_HOST="smtp.gmail.com"
 $env:SMTP_PORT="587"
-$env:SMTP_USER="baotong130277@gmail.com"
+$env:SMTP_USER="support@thebenchmarktrader.com"
 $env:SMTP_PASS="your-app-password-here"
 
 # Run script

@@ -112,7 +112,7 @@ Create script to resend email with correct info:
 ```bash
 $env:SMTP_HOST="smtp.gmail.com"
 $env:SMTP_PORT="587"
-$env:SMTP_USER="baotong130277@gmail.com"
+$env:SMTP_USER="support@thebenchmarktrader.com"
 $env:SMTP_PASS="your-app-password"
 
 # Edit resend-correct-emails.js first with hoangkim's order

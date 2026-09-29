@@ -13,7 +13,7 @@ https://thebenchmarktrader.com/login
 ```
 
 ### **1.2. Nhập thông tin đăng nhập**
-- **Email:** `hoangkim.helen@gmail.com`
+- **Email:** `support@thebenchmarktrader.com`
 - **Password:** (mật khẩu bạn đã đăng ký)
 - Nhấn **"Đăng nhập"** hoặc **"Login"**
 

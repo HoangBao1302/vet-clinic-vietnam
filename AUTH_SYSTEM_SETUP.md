@@ -43,7 +43,7 @@ NEXT_PUBLIC_SITE_URL=http://localhost:3000
 # SMTP Email - Cấu hình Gmail
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
-SMTP_USER=support@ThebenchmarkTrader.com
+SMTP_USER=support@thebenchmarktrader.com
 SMTP_PASS=your-gmail-app-password
 ```
 

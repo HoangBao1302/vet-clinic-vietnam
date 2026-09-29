@@ -49,8 +49,8 @@ export async function POST(request: NextRequest) {
               <ul style="color: #1e3a8a; margin: 10px 0; padding-left: 20px;">
                 <li>SMTP Host: ${process.env.SMTP_HOST || 'smtp.gmail.com'}</li>
                 <li>SMTP Port: ${process.env.SMTP_PORT || '587'}</li>
-                <li>SMTP User: ${process.env.SMTP_USER || 'baotong130277@gmail.com'}</li>
-                <li>SMTP From: ${process.env.SMTP_FROM || 'support@ThebenchmarkTrader.com'}</li>
+                <li>SMTP User: ${process.env.SMTP_USER || 'support@thebenchmarktrader.com'}</li>
+                <li>SMTP From: ${process.env.SMTP_FROM || 'support@thebenchmarktrader.com'}</li>
               </ul>
             </div>
           </div>

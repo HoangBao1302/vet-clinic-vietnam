@@ -5,7 +5,7 @@ const transporter = nodemailer.createTransport({
   port: parseInt(process.env.SMTP_PORT || '587'),
   secure: false, // true for 465, false for other ports
   auth: {
-    user: process.env.SMTP_USER || 'baotong130277@gmail.com', // Use original Gmail account for auth
+    user: process.env.SMTP_USER || 'support@thebenchmarktrader.com',
     pass: process.env.SMTP_PASS,
   },
   tls: {
@@ -36,12 +36,12 @@ export async function sendEmail({ to, subject, html }: SendEmailOptions) {
     console.log('📧 SMTP_HOST:', process.env.SMTP_HOST);
     console.log('📧 SMTP_PORT:', process.env.SMTP_PORT);
     console.log('📧 To:', to);
-    console.log('📧 From:', process.env.SMTP_FROM || 'support@ThebenchmarkTrader.com');
+    console.log('📧 From:', process.env.SMTP_FROM || 'support@thebenchmarktrader.com');
     
     const startTime = Date.now();
     
     const info = await transporter.sendMail({
-      from: `"EA Forex ThebenchmarkTrader" <${process.env.SMTP_FROM || 'support@ThebenchmarkTrader.com'}>`,
+      from: `"EA Forex ThebenchmarkTrader" <${process.env.SMTP_FROM || 'support@thebenchmarktrader.com'}>`,
       to,
       subject,
       html,
