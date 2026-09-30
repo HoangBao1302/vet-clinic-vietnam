@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
       const payerName = body.resource?.payer?.name;
       
       // Get amount - may vary depending on event type
-      const amountUSD = parseFloat(
+      let amountUSD = parseFloat(
         body.resource?.amount?.value || 
         body.resource?.purchase_units?.[0]?.amount?.value || 
         '0'
