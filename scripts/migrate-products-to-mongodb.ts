@@ -17,7 +17,7 @@ const products = [
     description: "Bộ 10 indicators chuyên nghiệp: SR, Trend, Momentum, Volume, Fibonacci auto và nhiều hơn.",
     platform: "MT4",
     category: "indicator",
-    price: 1990000,
+    price: 3,
     version: "v5.0 Pro",
     size: "2.8 MB",
     icon: "📊",
@@ -50,7 +50,7 @@ const products = [
     description: "Phiên bản đầy đủ cho tài khoản thực. License 3 tài khoản, cập nhật miễn phí 1 năm.",
     platform: "MT4",
     category: "ea-full",
-    price: 7900000,
+    price: 329,
     version: "v2.0 Full",
     size: "680 KB",
     icon: "🤖",
@@ -84,7 +84,7 @@ const products = [
     description: "Phiên bản Pro với source code đầy đủ. Unlimited accounts, cập nhật trọn đời, hỗ trợ VIP.",
     platform: "MT4",
     category: "ea-pro-source",
-    price: 14900000,
+    price: 621,
     version: "v2.0 Pro",
     size: "197 KB",
     icon: "💎",
@@ -122,7 +122,7 @@ const products = [
     description: "Bộ 10 indicators chuyên nghiệp: SR, Trend, Momentum, Volume, Fibonacci auto và nhiều hơn.",
     platform: "MT5",
     category: "indicator",
-    price: 1990000,
+    price: 3,
     version: "v5.0 Pro",
     size: "2.8 MB",
     icon: "📊",
@@ -155,7 +155,7 @@ const products = [
     description: "Phiên bản đầy đủ cho tài khoản thực. License 3 tài khoản, cập nhật miễn phí 1 năm.",
     platform: "MT5",
     category: "ea-full",
-    price: 7900000,
+    price: 329,
     version: "v2.0 Full",
     size: "680 KB",
     icon: "🤖",
@@ -189,7 +189,7 @@ const products = [
     description: "Phiên bản Pro với source code đầy đủ. Unlimited accounts, cập nhật trọn đời, hỗ trợ VIP.",
     platform: "MT5",
     category: "ea-pro-source",
-    price: 14900000,
+    price: 621,
     version: "v2.0 Pro",
     size: "197 KB",
     icon: "💎",
@@ -234,8 +234,20 @@ async function migrateProducts() {
     console.log(`📊 Existing products in database: ${existingCount}`);
 
     if (existingCount > 0) {
-      console.log("⚠️  Products already exist. Skipping migration.");
-      console.log("💡 To re-migrate, delete products from MongoDB first.\n");
+      console.log("🔄 Products exist. Updating USD prices...\n");
+      for (const productData of products) {
+        const result = await Product.updateOne(
+          { id: productData.id },
+          { $set: { price: productData.price, currency: "USD" } }
+        );
+        console.log(
+          result.modifiedCount > 0 || result.matchedCount > 0
+            ? `✅ Updated ${productData.id} → $${productData.price}`
+            : `⚠️  Not found: ${productData.id}`
+        );
+      }
+      await mongoose.connection.close();
+      console.log("\n✅ USD price update completed!");
       process.exit(0);
     }
 

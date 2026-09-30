@@ -3,6 +3,7 @@ import connectDB from "@/lib/mongodb";
 import AffiliateClick from "@/lib/models/AffiliateClick";
 import User from "@/lib/models/User";
 import Order from "@/lib/models/Order";
+import { PRODUCT_PRICES_USD } from "@/config/productPrices";
 
 // Force rebuild: 2024-10-29 21:15 - Fix PayPal webhook deployment issue
 export async function POST(request: NextRequest) {
@@ -123,8 +124,17 @@ export async function POST(request: NextRequest) {
         // Amount-based detection with tolerance
         const tolerance = 100000; // 100K VND tolerance
         
-        if (Math.abs(amountVND - 14900000) < tolerance) {
-          productId = 'ea-pro-source-mt4'; // Default to MT4, will be corrected if needed
+        if (Math.abs(amountUSD - 621) < 2) {
+          productId = 'ea-pro-source-mt4';
+          console.warn(`💡 ProductId detected from USD amount: ${productId} ($${amountUSD.toFixed(2)})`);
+        } else if (Math.abs(amountUSD - 329) < 2) {
+          productId = 'ea-full-mt4';
+          console.warn(`💡 ProductId detected from USD amount: ${productId} ($${amountUSD.toFixed(2)})`);
+        } else if (Math.abs(amountUSD - 3) < 1) {
+          productId = 'indicator-pro-mt4';
+          console.warn(`💡 ProductId detected from USD amount: ${productId} ($${amountUSD.toFixed(2)})`);
+        } else if (Math.abs(amountVND - 14900000) < tolerance) {
+          productId = 'ea-pro-source-mt4';
           console.warn(`💡 ProductId detected from amount: ${productId} (${amountVND.toLocaleString('vi-VN')}đ ≈ 14.9M) - MT4 assumed, may auto-correct`);
         } else if (Math.abs(amountVND - 7900000) < tolerance) {
           productId = 'ea-full-mt4';
@@ -134,7 +144,7 @@ export async function POST(request: NextRequest) {
           console.warn(`💡 ProductId detected from amount: ${productId} (${amountVND.toLocaleString('vi-VN')}đ ≈ 1.99M) - MT4 assumed, may auto-correct`);
         } else {
           productId = 'unknown';
-          console.error(`❌ Could not detect productId from amount: ${amountVND.toLocaleString('vi-VN')}đ`);
+          console.error(`❌ Could not detect productId from amount: $${amountUSD.toFixed(2)}`);
         }
       }
       
@@ -251,34 +261,24 @@ export async function POST(request: NextRequest) {
       }
       
       // VALIDATION: Verify amount matches expected product price
-      const expectedPrices: Record<string, number> = {
-        'ea-pro-source-mt4': 14900000,
-        'ea-pro-source-mt5': 14900000,
-        'ea-full-mt4': 7900000,
-        'ea-full-mt5': 7900000,
-        'indicator-pro-mt4': 1990000,
-        'indicator-pro-mt5': 1990000,
-      };
+      const expectedPrices = PRODUCT_PRICES_USD;
       
       const expectedPrice = expectedPrices[productId];
       if (expectedPrice) {
-        // CRITICAL FIX: Always use expected price based on productId
-        // PayPal amount may be incorrect for CHECKOUT.ORDER.APPROVED event
-        if (Math.abs(amountVND - expectedPrice) > 100000) {
-          console.warn('⚠️ AMOUNT MISMATCH - Using expected price based on productId:', {
+        if (Math.abs(amountVND - expectedPrice * 24000) > 100000 && Math.abs(amountUSD - expectedPrice) > 1) {
+          console.warn('⚠️ AMOUNT MISMATCH - Using expected USD price based on productId:', {
             productId,
-            expectedPrice: `${expectedPrice.toLocaleString('vi-VN')}đ`,
-            paypalAmount: `${amountVND.toLocaleString('vi-VN')}đ`,
-            difference: `${Math.abs(amountVND - expectedPrice).toLocaleString('vi-VN')}đ`,
+            expectedPrice: `$${expectedPrice}`,
+            paypalAmount: `$${amountUSD.toFixed(2)}`,
             action: 'Correcting to expected price'
           });
         }
         
-        // ALWAYS use expected price (productId is source of truth)
+        amountUSD = expectedPrice;
         amountVND = expectedPrice;
-        amount = Math.round(expectedPrice * 100); // Convert to cents
+        amount = Math.round(expectedPrice * 100);
         
-        console.log(`✅ Amount set from productId: ${amountVND.toLocaleString('vi-VN')}đ (${productId})`);
+        console.log(`✅ Amount set from productId: $${amountUSD} (${productId})`);
       } else {
         console.warn(`⚠️ Unknown productId: ${productId} - using PayPal amount: ${amountVND.toLocaleString('vi-VN')}đ`);
       }

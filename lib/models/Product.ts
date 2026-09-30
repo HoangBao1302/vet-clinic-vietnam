@@ -17,7 +17,7 @@ const ProductSchema = new Schema<IProduct>(
     // Pricing
     price: { type: Number, required: true },
     originalPrice: Number,
-    currency: { type: String, default: "VND" },
+    currency: { type: String, default: "USD" },
     
     // Product Info
     version: String,

@@ -6,6 +6,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { CreditCard, Lock, CheckCircle, ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import { formatUsd } from "@/config/productPrices";
 
 function CheckoutContent() {
   const searchParams = useSearchParams();
@@ -131,7 +132,7 @@ function CheckoutContent() {
                   <div className="flex justify-between">
                     <span className="text-gray-600">Giá:</span>
                     <span className="font-semibold text-gray-800">
-                      {itemPrice.toLocaleString("vi-VN")}đ
+                      {formatUsd(itemPrice)}
                     </span>
                   </div>
                 </div>
@@ -140,12 +141,12 @@ function CheckoutContent() {
                   <div className="flex justify-between text-xl">
                     <span className="font-bold text-gray-800">Tổng cộng:</span>
                     <span className="font-bold text-blue-600">
-                      {itemPrice.toLocaleString("vi-VN")}đ
+                      {formatUsd(itemPrice)}
                     </span>
                   </div>
                   {paymentMethod === "paypal" && (
                     <div className="text-sm text-gray-600 mt-1 text-right">
-                      ≈ ${(itemPrice / 24000).toFixed(2)} USD
+                      {formatUsd(itemPrice)}
                       <span className="text-orange-600 ml-1">(Sandbox)</span>
                     </div>
                   )}

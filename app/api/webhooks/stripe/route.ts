@@ -3,6 +3,7 @@ import connectDB from "@/lib/mongodb";
 import AffiliateClick from "@/lib/models/AffiliateClick";
 import User from "@/lib/models/User";
 import Order from "@/lib/models/Order";
+import { PRODUCT_PRICES_USD } from "@/config/productPrices";
 
 // Force rebuild: 2024-10-29 21:15 - Fix Stripe webhook deployment issue
 export async function POST(request: NextRequest) {
@@ -50,54 +51,40 @@ export async function POST(request: NextRequest) {
       let productName = session.metadata?.productName || 'Unknown Product';
       
       // Amount in VND (Stripe stores in smallest currency unit - cents for VND)
-      let amountVND = session.amount_total / 100;
+      let amountUSD = session.amount_total / 100;
       
       console.log('🔍 Stripe Webhook ProductID Detection:', {
         productId,
         productName,
-        amountVND: `${amountVND.toLocaleString('vi-VN')}đ`,
+        amountUSD: `$${amountUSD.toFixed(2)}`,
         amountCents: session.amount_total,
         customerEmail: session.customer_email
       });
       
-      // VALIDATION: Verify amount matches expected product price
-      const expectedPrices: Record<string, number> = {
-        'ea-pro-source-mt4': 14900000,
-        'ea-pro-source-mt5': 14900000,
-        'ea-full-mt4': 7900000,
-        'ea-full-mt5': 7900000,
-        'indicator-pro-mt4': 1990000,
-        'indicator-pro-mt5': 1990000,
-      };
+      const expectedPrices = PRODUCT_PRICES_USD;
       
       const expectedPrice = expectedPrices[productId];
       if (expectedPrice) {
-        // CRITICAL FIX: Always use expected price based on productId
-        // This prevents incorrect amount in emails due to Stripe calculation errors
-        if (Math.abs(amountVND - expectedPrice) > 100000) {
-          console.warn('⚠️ STRIPE AMOUNT MISMATCH - Using expected price based on productId:', {
+        if (Math.abs(amountUSD - expectedPrice) > 1) {
+          console.warn('⚠️ STRIPE AMOUNT MISMATCH - Using expected USD price based on productId:', {
             productId,
-            expectedPrice: `${expectedPrice.toLocaleString('vi-VN')}đ`,
-            stripeAmount: `${amountVND.toLocaleString('vi-VN')}đ`,
-            difference: `${Math.abs(amountVND - expectedPrice).toLocaleString('vi-VN')}đ`,
+            expectedPrice: `$${expectedPrice}`,
+            stripeAmount: `$${amountUSD.toFixed(2)}`,
             action: 'Correcting to expected price'
           });
         }
         
-        // ALWAYS use expected price (productId is source of truth)
-        amountVND = expectedPrice;
+        amountUSD = expectedPrice;
         
-        console.log(`✅ Amount set from productId: ${amountVND.toLocaleString('vi-VN')}đ (${productId})`);
+        console.log(`✅ Amount set from productId: $${amountUSD} (${productId})`);
       } else {
-        // Auto-correct productId based on amount if productId is unknown
         if (productId === 'unknown' || !productId) {
           console.warn('⚠️ ProductId is unknown, trying amount detection...');
           for (const [pid, price] of Object.entries(expectedPrices)) {
-            if (Math.abs(amountVND - price) < 100000) {
+            if (Math.abs(amountUSD - price) < 1) {
               console.log(`✅ Auto-correcting productId from "${productId}" to "${pid}"`);
               productId = pid;
               
-              // Update productName
               const productNames: Record<string, string> = {
                 'indicator-pro-mt4': 'Multi-Indicator Pro Pack (MT4)',
                 'ea-full-mt4': 'EA ThebenchmarkTrader Full Version (MT4)',
@@ -107,14 +94,12 @@ export async function POST(request: NextRequest) {
                 'ea-pro-source-mt5': 'EA ThebenchmarkTrader Pro + Source Code (MT5)',
               };
               productName = productNames[pid] || productName;
-              
-              // Set correct amount
-              amountVND = price;
+              amountUSD = price;
               break;
             }
           }
         } else {
-          console.warn(`⚠️ Unknown productId: ${productId} - using Stripe amount: ${amountVND.toLocaleString('vi-VN')}đ`);
+          console.warn(`⚠️ Unknown productId: ${productId} - using Stripe amount: $${amountUSD.toFixed(2)}`);
         }
       }
 
@@ -127,7 +112,7 @@ export async function POST(request: NextRequest) {
         customerEmail: session.customer_email,
         customerName: session.metadata?.customerName || 'Unknown Customer',
         customerPhone: session.metadata?.customerPhone || '',
-        amount: Math.round(amountVND * 100), // Convert VND to cents for storage
+        amount: Math.round(amountUSD * 100), // USD cents
         paymentMethod: "stripe",
         createdAt: new Date(),
         paidAt: new Date(),
@@ -334,12 +319,12 @@ export async function POST(request: NextRequest) {
             };
 
             const commissionRate = commissionRates[session.metadata?.productId as keyof typeof commissionRates] || 0.30;
-            const commissionAmount = Math.round(amountVND * 100 * commissionRate);
+            const commissionAmount = Math.round(amountUSD * 100 * commissionRate);
 
             console.log('💰 Commission calculation:', {
               productId: session.metadata?.productId,
               commissionRate,
-              amount: amountVND * 100,
+              amount: amountUSD * 100,
               commissionAmount
             });
 
@@ -486,7 +471,7 @@ export async function POST(request: NextRequest) {
                     <p><strong>Mã đơn hàng:</strong> ${session.id}</p>
                     <p><strong>Sản phẩm:</strong> ${productName}</p>
                     <p><strong>Phương thức:</strong> Stripe</p>
-                    <p><strong>Số tiền:</strong> ${amountVND.toLocaleString("vi-VN")}₫</p>
+                    <p><strong>Số tiền:</strong> $${amountUSD.toFixed(2)}</p>
                   </div>
                   
                   <div style="text-align: center; margin: 30px 0;">

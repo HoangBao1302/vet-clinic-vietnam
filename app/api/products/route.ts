@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { dbConnect } from "@/lib/mongodb";
 import Product from "@/lib/models/Product";
+import { PRODUCT_PRICES_USD } from "@/config/productPrices";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -12,6 +13,18 @@ export async function GET() {
     const products = await Product.find({ status: "active" })
       .sort({ category: 1, platform: 1, price: 1 })
       .lean();
+
+    for (const product of products) {
+      const usdPrice = PRODUCT_PRICES_USD[product.id];
+      if (usdPrice != null && product.price >= 10000) {
+        await Product.updateOne(
+          { id: product.id },
+          { $set: { price: usdPrice, currency: "USD" } }
+        );
+        product.price = usdPrice;
+        product.currency = "USD";
+      }
+    }
 
     return NextResponse.json({
       success: true,
@@ -25,3 +38,4 @@ export async function GET() {
     );
   }
 }
+

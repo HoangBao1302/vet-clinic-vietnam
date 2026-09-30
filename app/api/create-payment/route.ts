@@ -34,12 +34,12 @@ export async function POST(request: NextRequest) {
           line_items: [
             {
               price_data: {
-                currency: "vnd",
+                currency: "usd",
                 product_data: {
                   name: productName,
                   description: `Product ID: ${productId}`,
                 },
-                unit_amount: amount,
+                unit_amount: Math.round(Number(amount) * 100),
               },
               quantity: 1,
             },

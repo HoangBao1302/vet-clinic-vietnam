@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useAuth } from "@/lib/authContext";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 import { PAYMENT_METHODS, isPaymentMethodEnabled, type PaymentMethodType } from "@/config/paymentMethods";
+import { formatUsd } from "@/config/productPrices";
 import { IProduct } from "@/types/product";
 
 interface DownloadItem {
@@ -103,7 +104,7 @@ const fallbackProducts: DownloadItem[] = [
     type: "indicator",
     free: false,
     requiresPayment: true,
-    price: 1990000,
+    price: 3,
     downloadUrl: "/downloads/files/Indicator-Pro-Pack-MT4.zip",
     platform: "MT4"
   },
@@ -116,7 +117,7 @@ const fallbackProducts: DownloadItem[] = [
     type: "ea",
     free: false,
     requiresPayment: true,
-    price: 7900000,
+    price: 329,
     downloadUrl: "/downloads/files/ThebenchmarkTrader-Full-MT4.ex4",
     platform: "MT4"
   },
@@ -129,7 +130,7 @@ const fallbackProducts: DownloadItem[] = [
     type: "ea",
     free: false,
     requiresPayment: true,
-    price: 14900000,
+    price: 621,
     downloadUrl: "/downloads/files/ThebenchmarkTrader-Pro-Source-MT4.zip",
     platform: "MT4"
   },
@@ -143,7 +144,7 @@ const fallbackProducts: DownloadItem[] = [
     type: "indicator",
     free: false,
     requiresPayment: true,
-    price: 1990000,
+    price: 3,
     downloadUrl: "/downloads/files/Indicator-Pro-Pack-MT5.zip",
     platform: "MT5"
   },
@@ -156,7 +157,7 @@ const fallbackProducts: DownloadItem[] = [
     type: "ea",
     free: false,
     requiresPayment: true,
-    price: 7900000,
+    price: 329,
     downloadUrl: "/downloads/files/ThebenchmarkTrader-Full-MT5.ex5",
     platform: "MT5"
   },
@@ -169,7 +170,7 @@ const fallbackProducts: DownloadItem[] = [
     type: "ea",
     free: false,
     requiresPayment: true,
-    price: 14900000,
+    price: 621,
     downloadUrl: "/downloads/files/ThebenchmarkTrader-Pro-Source-MT5.zip",
     platform: "MT5"
   }
@@ -433,14 +434,10 @@ export default function DownloadsPage() {
 
         <div className="mb-4 p-4 bg-purple-50 rounded-lg">
           <div className="text-3xl font-bold text-purple-600 mb-1">
-            {item.price?.toLocaleString("vi-VN")}đ
+            {formatUsd(item.price || 0)}
           </div>
           <div className="text-xs text-gray-600">
             {t('downloads.paidSection.oneTimePurchase')}
-          </div>
-          <div className="text-xs text-blue-600 mt-1">
-            PayPal: ${((item.price || 0) / 24000).toFixed(2)} USD
-            <span className="text-orange-600 ml-1">(Sandbox)</span>
           </div>
         </div>
 

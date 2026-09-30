@@ -261,12 +261,12 @@ export default function OrdersDashboard() {
   }
 
   const expectedPrices: Record<string, number> = {
-    'ea-pro-source-mt4': 14900000,
-    'ea-pro-source-mt5': 14900000,
-    'ea-full-mt4': 7900000,
-    'ea-full-mt5': 7900000,
-    'indicator-pro-mt4': 1990000,
-    'indicator-pro-mt5': 1990000,
+    'ea-pro-source-mt4': 621,
+    'ea-pro-source-mt5': 621,
+    'ea-full-mt4': 329,
+    'ea-full-mt5': 329,
+    'indicator-pro-mt4': 3,
+    'indicator-pro-mt5': 3,
   };
 
   const isOrderValid = (order: Order) => {
