@@ -7,7 +7,7 @@
 
 export const PAYMENT_METHODS = {
   stripe: {
-    enabled: false, // Đặt false để tắt Stripe
+    enabled: true,
     label: 'Mua qua Stripe (Card)',
     labelEn: 'Buy with Stripe (Card)',
     color: 'blue',
