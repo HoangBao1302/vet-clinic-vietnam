@@ -21,7 +21,7 @@ interface DownloadFile {
 const availableFiles: DownloadFile[] = [
   {
     id: 'ea-demo-1',
-    name: 'EA Forex ThebenchmarkTrader Demo',
+    name: 'ThebenchmarkTrader Analytics Software Demo',
     type: 'ea-demo',
     description: 'Phiên bản demo với các tính năng cơ bản, giới hạn thời gian 30 ngày',
     fileSize: '2.5 MB',

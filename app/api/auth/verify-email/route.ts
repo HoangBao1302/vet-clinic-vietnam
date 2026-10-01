@@ -131,7 +131,7 @@ export async function GET(request: NextRequest) {
     // Send welcome email AFTER verification (async, don't wait)
     sendEmail({
       to: updatedUser.email,
-      subject: '🎉 Chào mừng đến với EA Forex ThebenchmarkTrader!',
+      subject: '🎉 Chào mừng đến với ThebenchmarkTrader Analytics Software!',
       html: getWelcomeEmail(updatedUser.username),
     }).then((welcomeResult) => {
       if (welcomeResult.success) {

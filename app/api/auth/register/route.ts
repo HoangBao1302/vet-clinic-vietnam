@@ -145,7 +145,7 @@ export async function POST(request: NextRequest) {
     try {
       const emailResult = await sendEmail({
         to: user.email,
-        subject: '✅ Xác thực email của bạn - EA Forex ThebenchmarkTrader',
+        subject: '✅ Xác thực email của bạn - ThebenchmarkTrader Analytics Software',
         html: getEmailVerificationEmail(verifyUrl, user.username),
       });
 

@@ -88,7 +88,7 @@ export default function ChatWidget() {
         }, 1000);
       } else if (reply.action === "live-results") {
         setTimeout(() => {
-          window.location.href = "/live-results";
+          window.location.href = "/#proof";
         }, 2000);
       } else if (reply.action === "pricing") {
         setTimeout(() => {

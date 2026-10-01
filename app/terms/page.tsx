@@ -35,7 +35,7 @@ export default function TermsOfService() {
             <p className="text-blue-100 mt-2">
               {isEn
                 ? "Terms and conditions for using Thebenchmarktrader LLC products and services"
-                : "Các điều khoản và điều kiện sử dụng dịch vụ EA ThebenchmarkTrader"}
+                : "Các điều khoản và điều kiện sử dụng ThebenchmarkTrader Analytics Software"}
             </p>
           </div>
         </section>
@@ -52,8 +52,8 @@ export default function TermsOfService() {
                     </h3>
                     <p className="text-yellow-700 text-sm mt-1">
                       {isEn
-                        ? "Using an Expert Advisor and other automated trading tools involves high risk. Please read these terms carefully before agreeing."
-                        : "Việc sử dụng EA (Expert Advisor) và các công cụ giao dịch tự động có rủi ro cao. Vui lòng đọc kỹ các điều khoản trước khi đồng ý."}
+                        ? "Using algorithmic analysis software and chart statistics tools involves market risk. Please read these terms carefully before agreeing."
+                        : "Việc sử dụng phần mềm phân tích thuật toán và bộ công cụ thống kê biểu đồ có rủi ro thị trường. Vui lòng đọc kỹ các điều khoản trước khi đồng ý."}
                     </p>
                   </div>
                 </div>
@@ -65,16 +65,16 @@ export default function TermsOfService() {
                 </h2>
                 <div className="mb-6">
                   <p className="text-gray-700 mb-3">
-                    <strong>&quot;EA&quot;</strong>{" "}
+                    <strong>&quot;Software&quot;</strong>{" "}
                     {isEn
-                      ? "- Expert Advisor, automated trading software designed for MetaTrader 4/5."
-                      : "- Expert Advisor, phần mềm giao dịch tự động được thiết kế cho MetaTrader 4/5."}
+                      ? "- ThebenchmarkTrader Analytics Software, an algorithmic analysis and chart statistics toolkit for MetaTrader 4/5."
+                      : "- ThebenchmarkTrader Analytics Software, phần mềm phân tích thuật toán và bộ công cụ thống kê biểu đồ cho MetaTrader 4/5."}
                   </p>
                   <p className="text-gray-700 mb-3">
                     <strong>{isEn ? '"Services"' : '"Dịch vụ"'}</strong>{" "}
                     {isEn
-                      ? "- Includes EA, indicators, signals, and market analysis tools."
-                      : "- Bao gồm EA, indicators, signals, và các công cụ phân tích thị trường."}
+                      ? "- Includes analytics software, indicators, and chart statistics tools."
+                      : "- Bao gồm phần mềm phân tích, indicators, và bộ công cụ thống kê biểu đồ."}
                   </p>
                   <p className="text-gray-700 mb-3">
                     <strong>{isEn ? '"User"' : '"Người dùng"'}</strong>{" "}
@@ -109,7 +109,7 @@ export default function TermsOfService() {
                     </h3>
                     <ul className="text-red-700 text-sm space-y-1">
                       <li>• {isEn ? "Forex and crypto trading is high risk and can result in total loss of capital." : "Giao dịch forex và crypto có rủi ro cao, có thể dẫn đến mất toàn bộ vốn đầu tư"}</li>
-                      <li>• {isEn ? "The EA does not guarantee profit and may cause losses." : "EA không đảm bảo lợi nhuận và có thể gây thua lỗ"}</li>
+                      <li>• {isEn ? "The software does not guarantee profit and may be used in high-risk markets." : "Phần mềm không đảm bảo lợi nhuận và có thể được dùng trên thị trường rủi ro cao"}</li>
                       <li>• {isEn ? "Past performance does not guarantee future results." : "Quá khứ không đảm bảo kết quả tương lai"}</li>
                       <li>• {isEn ? "Only invest money you can afford to lose." : "Chỉ đầu tư số tiền bạn có thể chấp nhận mất"}</li>
                     </ul>
@@ -145,17 +145,17 @@ export default function TermsOfService() {
                     {isEn ? "5.1 Permissions" : "5.1 Quyền Hạn"}
                   </h3>
                   <ul className="text-gray-700 mb-4 space-y-1">
-                    <li>• {isEn ? "Use the EA for personal trading" : "Sử dụng EA cho giao dịch cá nhân"}</li>
+                    <li>• {isEn ? "Use the software for personal analysis on MetaTrader" : "Sử dụng phần mềm cho phân tích cá nhân trên MetaTrader"}</li>
                     <li>• {isEn ? "Receive technical support within the service scope" : "Nhận hỗ trợ kỹ thuật trong phạm vi dịch vụ"}</li>
                     <li>• {isEn ? "Join the community and receive signals" : "Tham gia cộng đồng và nhận signals"}</li>
-                    <li>• {isEn ? "Receive EA updates when available" : "Cập nhật EA khi có phiên bản mới"}</li>
+                    <li>• {isEn ? "Receive software updates when available" : "Cập nhật phần mềm khi có phiên bản mới"}</li>
                   </ul>
                   <h3 className="text-lg font-semibold text-gray-800 mb-2">
                     {isEn ? "5.2 Restrictions" : "5.2 Hạn Chế"}
                   </h3>
                   <ul className="text-gray-700 mb-4 space-y-1">
                     <li>• {isEn ? "Do not share your account with others" : "Không được chia sẻ tài khoản với người khác"}</li>
-                    <li>• {isEn ? "Do not distribute the EA to third parties" : "Không được phân phối EA cho bên thứ ba"}</li>
+                    <li>• {isEn ? "Do not distribute the software to third parties" : "Không được phân phối phần mềm cho bên thứ ba"}</li>
                     <li>• {isEn ? "Do not use it for unauthorized commercial purposes" : "Không được sử dụng cho mục đích thương mại không được phép"}</li>
                     <li>• {isEn ? "Do not reverse engineer or decompile" : "Không được reverse engineer hoặc decompile"}</li>
                   </ul>
@@ -173,8 +173,8 @@ export default function TermsOfService() {
                   <p className="text-gray-700 mb-3">
                     <strong>{isEn ? "Refund policy:" : "Chính sách hoàn tiền:"}</strong>{" "}
                     {isEn
-                      ? "Refunds within 7 days if the EA does not work due to a technical fault on our side."
-                      : "Hoàn tiền trong vòng 7 ngày nếu EA không hoạt động do lỗi kỹ thuật từ phía chúng tôi."}
+                      ? "Refunds within 7 days if the software does not work due to a technical fault on our side."
+                      : "Hoàn tiền trong vòng 7 ngày nếu phần mềm không hoạt động do lỗi kỹ thuật từ phía chúng tôi."}
                   </p>
                   <p className="text-gray-700 mb-3">
                     {isEn
@@ -194,8 +194,8 @@ export default function TermsOfService() {
                   </p>
                   <p className="text-gray-700 mb-3">
                     {isEn
-                      ? "Support includes EA installation, technical issues, and usage guidance."
-                      : "Hỗ trợ bao gồm: cài đặt EA, giải quyết lỗi kỹ thuật, hướng dẫn sử dụng."}
+                      ? "Support includes software installation, technical issues, and usage guidance."
+                      : "Hỗ trợ bao gồm: cài đặt phần mềm, giải quyết lỗi kỹ thuật, hướng dẫn sử dụng."}
                   </p>
                   <p className="text-gray-700 mb-3">
                     {isEn
@@ -220,8 +220,8 @@ export default function TermsOfService() {
                   </p>
                   <p className="text-gray-700 mb-3">
                     {isEn
-                      ? "After termination, you must stop using the EA and remove it from your systems."
-                      : "Sau khi chấm dứt, bạn không được sử dụng EA và phải xóa khỏi hệ thống."}
+                      ? "After termination, you must stop using the software and remove it from your systems."
+                      : "Sau khi chấm dứt, bạn không được sử dụng phần mềm và phải xóa khỏi hệ thống."}
                   </p>
                 </div>
 
@@ -236,8 +236,8 @@ export default function TermsOfService() {
                   </p>
                   <p className="text-gray-700 mb-3">
                     {isEn
-                      ? "We are not liable for any financial loss from using the EA."
-                      : "Chúng tôi không chịu trách nhiệm cho bất kỳ tổn thất tài chính nào do sử dụng EA."}
+                      ? "We are not liable for any financial loss from using the software."
+                      : "Chúng tôi không chịu trách nhiệm cho bất kỳ tổn thất tài chính nào do sử dụng phần mềm."}
                   </p>
                   <p className="text-gray-700 mb-3">
                     {isEn

@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
             </div>
             
             <div style="text-align: center; padding: 20px; color: #6b7280; font-size: 14px;">
-              <p>EA Forex ThebenchmarkTrader<br>© 2025 All rights reserved</p>
+              <p>ThebenchmarkTrader Analytics Software<br>© 2025 All rights reserved</p>
             </div>
           </div>
         `,

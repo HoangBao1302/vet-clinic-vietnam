@@ -7,10 +7,10 @@ import { LocaleProvider } from "@/lib/i18n/LocaleContext";
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://ThebenchmarkTrader.com'),
-  title: "EA Forex ThebenchmarkTrader — Giao dịch tự động tối ưu rủi ro",
-  description: "EA Forex đa chiến lược (trend + range), quản trị rủi ro, báo cáo minh bạch. Dùng thử demo hoặc mua bản đầy đủ.",
-  keywords: "EA Forex, robot forex, expert advisor, MT4®, MT5®, copy trading",
-  authors: [{ name: "EA Forex ThebenchmarkTrader" }],
+  title: "ThebenchmarkTrader Analytics Software — Algorithmic Trading Toolkit for MetaTrader",
+  description: "Phần mềm phân tích thuật toán và bộ công cụ thống kê biểu đồ cho MetaTrader. Historical simulation, quản trị rủi ro toán học, tối ưu danh mục.",
+  keywords: "ThebenchmarkTrader Analytics Software, Algorithmic Trading Toolkit, MetaTrader, MT4®, MT5®, chart statistics, historical simulation",
+  authors: [{ name: "ThebenchmarkTrader Analytics Software" }],
   icons: {
     icon: [
       { url: '/favicon.svg', sizes: 'any', type: 'image/svg+xml' },
@@ -23,8 +23,8 @@ export const metadata: Metadata = {
     shortcut: '/favicon.svg'
   },
   openGraph: {
-    title: "EA Forex ThebenchmarkTrader — Giao dịch tự động tối ưu rủi ro",
-    description: "EA Forex đa chiến lược (trend + range), quản trị rủi ro, báo cáo minh bạch. Dùng thử demo hoặc mua bản đầy đủ.",
+    title: "ThebenchmarkTrader Analytics Software — Algorithmic Trading Toolkit for MetaTrader",
+    description: "Phần mềm phân tích thuật toán và bộ công cụ thống kê biểu đồ cho MetaTrader. Historical simulation, quản trị rủi ro toán học, tối ưu danh mục.",
     type: "website",
     locale: "vi_VN",
     images: [
@@ -32,14 +32,14 @@ export const metadata: Metadata = {
         url: "/og.jpg",
         width: 1200,
         height: 630,
-        alt: "EA Forex ThebenchmarkTrader",
+        alt: "ThebenchmarkTrader Analytics Software",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "EA Forex ThebenchmarkTrader — Giao dịch tự động tối ưu rủi ro",
-    description: "EA Forex đa chiến lược (trend + range), quản trị rủi ro, báo cáo minh bạch. Dùng thử demo hoặc mua bản đầy đủ.",
+    title: "ThebenchmarkTrader Analytics Software — Algorithmic Trading Toolkit for MetaTrader",
+    description: "Phần mềm phân tích thuật toán và bộ công cụ thống kê biểu đồ cho MetaTrader. Historical simulation, quản trị rủi ro toán học, tối ưu danh mục.",
     images: ["/og.jpg"],
   },
   robots: {

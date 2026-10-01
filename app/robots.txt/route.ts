@@ -15,6 +15,7 @@ Crawl-delay: 1
 # Disallow admin areas (if any in future)
 Disallow: /admin/
 Disallow: /api/
+Disallow: /live-results
 
 # Allow important pages
 Allow: /

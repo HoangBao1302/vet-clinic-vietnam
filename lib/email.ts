@@ -41,7 +41,7 @@ export async function sendEmail({ to, subject, html }: SendEmailOptions) {
     const startTime = Date.now();
     
     const info = await transporter.sendMail({
-      from: `"EA Forex ThebenchmarkTrader" <${process.env.SMTP_FROM || 'support@thebenchmarktrader.com'}>`,
+      from: `"ThebenchmarkTrader Analytics Software" <${process.env.SMTP_FROM || 'support@thebenchmarktrader.com'}>`,
       to,
       subject,
       html,
@@ -98,7 +98,7 @@ export function getResetPasswordEmail(resetUrl: string, username: string) {
           <p>Nếu bạn không yêu cầu reset mật khẩu, vui lòng bỏ qua email này.</p>
         </div>
         <div class="footer">
-          <p>&copy; 2024 EA Forex ThebenchmarkTrader. All rights reserved.</p>
+          <p>&copy; 2024 ThebenchmarkTrader Analytics Software. All rights reserved.</p>
         </div>
       </div>
     </body>
@@ -123,7 +123,7 @@ export function getWelcomeEmail(username: string) {
     <body>
       <div class="container">
         <div class="header">
-          <h1>🎉 Chào Mừng Đến Với EA Forex ThebenchmarkTrader!</h1>
+          <h1>🎉 Chào Mừng Đến Với ThebenchmarkTrader Analytics Software!</h1>
         </div>
         <div class="content">
           <p>Xin chào <strong>${username}</strong>,</p>
@@ -142,7 +142,7 @@ export function getWelcomeEmail(username: string) {
           <p>Nếu bạn có bất kỳ câu hỏi nào, đừng ngần ngại liên hệ với chúng tôi!</p>
         </div>
         <div class="footer">
-          <p>&copy; 2024 EA Forex ThebenchmarkTrader. All rights reserved.</p>
+          <p>&copy; 2024 ThebenchmarkTrader Analytics Software. All rights reserved.</p>
           <p>Email này được gửi từ hệ thống tự động. Vui lòng không reply.</p>
         </div>
       </div>
@@ -197,7 +197,7 @@ export function getEmailVerificationEmail(verifyUrl: string, username: string) {
           <p>Nếu bạn không đăng ký tài khoản này, vui lòng bỏ qua email này.</p>
         </div>
         <div class="footer">
-          <p>&copy; 2025 EA Forex ThebenchmarkTrader. All rights reserved.</p>
+          <p>&copy; 2025 ThebenchmarkTrader Analytics Software. All rights reserved.</p>
         </div>
       </div>
     </body>
@@ -257,7 +257,7 @@ export function getAffiliateApprovalEmail(username: string, affiliateCode: strin
           <p><strong>Lưu ý:</strong> Hoa hồng sẽ được thanh toán vào cuối mỗi tháng qua chuyển khoản ngân hàng.</p>
         </div>
         <div class="footer">
-          <p>&copy; 2024 EA Forex ThebenchmarkTrader. All rights reserved.</p>
+          <p>&copy; 2024 ThebenchmarkTrader Analytics Software. All rights reserved.</p>
         </div>
       </div>
     </body>
@@ -306,7 +306,7 @@ export function getAffiliateRejectionEmail(username: string, reason?: string) {
           <p>Nếu có thắc mắc, vui lòng liên hệ support@thebenchmarktrader.com</p>
         </div>
         <div class="footer">
-          <p>&copy; 2024 EA Forex ThebenchmarkTrader. All rights reserved.</p>
+          <p>&copy; 2024 ThebenchmarkTrader Analytics Software. All rights reserved.</p>
         </div>
       </div>
     </body>
@@ -365,10 +365,10 @@ export function getMembershipUpgradeEmail(username: string) {
             <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'https://ThebenchmarkTrader.com'}/profile" class="button">Khám Phá Ngay</a>
           </center>
 
-          <p>Cảm ơn bạn đã tin tưởng EA Forex ThebenchmarkTrader!</p>
+          <p>Cảm ơn bạn đã tin tưởng ThebenchmarkTrader Analytics Software!</p>
         </div>
         <div class="footer">
-          <p>&copy; 2024 EA Forex ThebenchmarkTrader. All rights reserved.</p>
+          <p>&copy; 2024 ThebenchmarkTrader Analytics Software. All rights reserved.</p>
         </div>
       </div>
     </body>

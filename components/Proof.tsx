@@ -1,42 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import Link from "next/link";
 import { TrendingUp, Shield, Target, Youtube, PlayCircle } from "lucide-react";
 import { useLocale } from "@/lib/i18n/LocaleContext";
-import { tradingAccounts as fallbackAccounts, type TradingAccount } from "@/data/tradingAccounts";
-import { withMetaQuotesMark } from "@/lib/trademarks";
-
-function sortActiveAccounts(accounts: TradingAccount[]) {
-  return [...accounts]
-    .filter((account) => account.active !== false)
-    .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
-}
 
 export default function Proof() {
   const { t } = useLocale();
-  const [verifiedAccounts, setVerifiedAccounts] = useState<TradingAccount[]>(
-    sortActiveAccounts(fallbackAccounts)
-  );
-
-  useEffect(() => {
-    const fetchAccounts = async () => {
-      try {
-        const response = await fetch("/api/trading-accounts");
-        if (!response.ok) return;
-
-        const data = await response.json();
-        const accounts = (data.accounts || []) as TradingAccount[];
-        if (accounts.length > 0) {
-          setVerifiedAccounts(sortActiveAccounts(accounts));
-        }
-      } catch (error) {
-        console.error("Error fetching trading accounts:", error);
-      }
-    };
-
-    fetchAccounts();
-  }, []);
 
   const stats = [
     {
@@ -101,40 +69,6 @@ export default function Proof() {
               );
             })}
           </div>
-        </div>
-
-        <div className="text-center mb-12">
-          <h3 className="text-3xl font-bold text-gray-800 mb-4">
-            {t("proof.testimonialsTitle")}
-          </h3>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            {t("proof.testimonialsSubtitle")}{" "}
-            <Link href="/live-results" className="text-blue-600 font-semibold hover:text-blue-700">
-              {t("proof.verifiedCta")}
-            </Link>
-          </p>
-        </div>
-
-        <div className="flex flex-wrap justify-center gap-4">
-          {verifiedAccounts.map((account) => {
-            const href = account.links?.profile || "/live-results";
-            const isExternal = href.startsWith("http");
-            return (
-              <a
-                key={account.id}
-                href={href}
-                target={isExternal ? "_blank" : undefined}
-                rel={isExternal ? "noopener noreferrer" : undefined}
-                className="bg-white px-6 py-4 rounded-xl shadow hover:shadow-md transition min-w-[180px] text-center"
-              >
-                <div className="text-2xl font-bold text-green-600">{account.stats?.gain}</div>
-                <div className="text-sm text-gray-500 mt-1">{account.accountName}</div>
-                <div className="text-xs text-gray-400 mt-1">
-                  {withMetaQuotesMark(account.platform)} — {t("proof.verifiedBadge")}
-                </div>
-              </a>
-            );
-          })}
         </div>
 
         <div className="text-center mt-12">

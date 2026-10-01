@@ -365,12 +365,12 @@ function BankTransferContent() {
                   {/* Broker Information */}
                   <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                     <h3 className="text-sm font-semibold text-blue-800 mb-3">
-                      📊 Thông tin Broker
+                      📊 License Activation Details
                     </h3>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                       <div>
                         <label className="block text-xs font-medium text-gray-700 mb-1">
-                          Broker
+                          Preferred Data Feed Platform (Optional)
                         </label>
                         <input
                           type="text"
@@ -378,13 +378,13 @@ function BankTransferContent() {
                           value={formData.broker}
                           onChange={handleInputChange}
                           className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                          placeholder="Ví dụ: Tickmill"
+                          placeholder="e.g. MetaTrader, Tickmill"
                         />
                       </div>
                       
                       <div>
                         <label className="block text-xs font-medium text-gray-700 mb-1">
-                          Account ID
+                          MetaTrader Terminal Client ID (For license activation)
                         </label>
                         <input
                           type="text"
@@ -392,13 +392,13 @@ function BankTransferContent() {
                           value={formData.accountId}
                           onChange={handleInputChange}
                           className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                          placeholder="Ví dụ: 123456"
+                          placeholder="e.g. 123456"
                         />
                       </div>
                       
                       <div>
                         <label className="block text-xs font-medium text-gray-700 mb-1">
-                          Server
+                          Connection Environment / Terminal Server
                         </label>
                         <input
                           type="text"
@@ -406,12 +406,12 @@ function BankTransferContent() {
                           value={formData.server}
                           onChange={handleInputChange}
                           className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                          placeholder="Ví dụ: Tickmill-Live8"
+                          placeholder="e.g. ICMarkets-Demo01"
                         />
                       </div>
                     </div>
                     <p className="text-xs text-blue-700 mt-2">
-                      💡 Vui lòng điền thông tin broker để chúng tôi hỗ trợ tốt hơn
+                      Optional — used to activate your software license on MetaTrader.
                     </p>
                   </div>
 

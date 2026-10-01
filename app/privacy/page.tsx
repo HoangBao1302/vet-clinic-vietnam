@@ -79,7 +79,7 @@ export default function PrivacyPolicy() {
                   </h3>
                   <ul className="text-gray-700 mb-4 space-y-1">
                     <li>• {isEn ? "Purchase and payment history" : "Lịch sử mua hàng và thanh toán"}</li>
-                    <li>• {isEn ? "EA and indicator usage information" : "Thông tin sử dụng EA và indicators"}</li>
+                    <li>• {isEn ? "Software and indicator usage information" : "Thông tin sử dụng phần mềm phân tích và indicators"}</li>
                     <li>• {isEn ? "Trading performance data (if you share it)" : "Dữ liệu hiệu suất giao dịch (nếu bạn chia sẻ)"}</li>
                     <li>• {isEn ? "Website access and activity logs" : "Logs truy cập và hoạt động trên website"}</li>
                   </ul>
@@ -95,7 +95,7 @@ export default function PrivacyPolicy() {
                         {isEn ? "Core Services" : "Dịch Vụ Chính"}
                       </h3>
                       <ul className="text-blue-700 text-sm space-y-1">
-                        <li>• {isEn ? "Provide EA and indicators" : "Cung cấp EA và indicators"}</li>
+                        <li>• {isEn ? "Provide analytics software and indicators" : "Cung cấp phần mềm phân tích và indicators"}</li>
                         <li>• {isEn ? "Technical support" : "Hỗ trợ kỹ thuật"}</li>
                         <li>• {isEn ? "Payment processing" : "Xử lý thanh toán"}</li>
                         <li>• {isEn ? "Send important notices" : "Gửi thông báo quan trọng"}</li>
@@ -108,7 +108,7 @@ export default function PrivacyPolicy() {
                       <ul className="text-green-700 text-sm space-y-1">
                         <li>• {isEn ? "Performance analysis" : "Phân tích hiệu suất"}</li>
                         <li>• {isEn ? "New feature development" : "Phát triển tính năng mới"}</li>
-                        <li>• {isEn ? "EA optimization" : "Tối ưu hóa EA"}</li>
+                        <li>• {isEn ? "Software optimization" : "Tối ưu hóa phần mềm phân tích"}</li>
                         <li>• {isEn ? "Market research" : "Nghiên cứu thị trường"}</li>
                       </ul>
                     </div>

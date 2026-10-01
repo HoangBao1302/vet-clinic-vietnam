@@ -9,36 +9,36 @@
     "profile": "Profile",
     "myAccount": "My Account",
     "viewDashboard": "View Dashboard",
-    "buyNow": "Buy Now",
+    "buyNow": "Get License",
     "learnMore": "Learn More",
     "contactUs": "Contact Us",
-    "getDemo": "Get Demo",
+    "getDemo": "Get Trial",
     "download": "Download",
-    "tryDemo": "Try Demo"
+    "tryDemo": "Try Software"
   },
   "nav": {
     "home": "Home",
     "about": "About",
     "pricing": "Pricing",
     "blog": "Blog",
-    "liveResults": "Live Results",
+    "liveResults": "Historical Analysis",
     "partners": "Partners",
     "referral": "Referral",
     "affiliate": "Affiliate",
     "affiliateMarketing": "Affiliate Marketing",
     "overview": "Overview",
-    "sellEALabel": "Sell EA",
+    "sellEALabel": "Sell Software",
     "copySocialLabel": "Copy Social",
     "coursesLabel": "Sell Courses",
     "downloads": "Downloads",
     "features": "Features",
-    "aboutEA": "About EA",
+    "aboutEA": "About the Software",
     "contact": "Contact",
     "myAccount": "My Account",
     "adminDashboard": "Admin Dashboard",
     "affiliateOverview": "📊 Overview",
     "affiliateOverviewDesc": "About affiliate program",
-    "sellEA": "💰 Sell EA",
+    "sellEA": "💰 Sell Software",
     "sellEADesc": "Highest commission",
     "copySocial": "👥 Copy Social",
     "copySocialDesc": "Passive income",
@@ -48,7 +48,7 @@
   "newsletter": {
     "premium": "Premium Newsletter",
     "heroTitle": "Premium Newsletter",
-    "heroDescription": "Get exclusive market analysis, trading signals and latest EA updates every week",
+    "heroDescription": "Get exclusive market analysis and algorithmic analytics software updates every week",
     "sidebarDescription": "Get market analysis and trading signals weekly",
     "footerDescription": "Get exclusive market analysis every week",
     "emailPlaceholder": "Enter your email",
@@ -70,15 +70,15 @@
     }
   },
   "hero": {
-    "title": "EA Forex ThebenchmarkTrader",
-    "subtitle": "Automate Trading, Control Risk, Optimize Profit",
-    "description": "Professional Forex EA with automated trading algorithm, smart risk management and outstanding win rate",
+    "title": "ThebenchmarkTrader Analytics Software",
+    "subtitle": "Automate chart analysis, control risk with mathematics, and optimize portfolio management",
+    "description": "Algorithmic Trading Toolkit for MetaTrader — algorithmic analysis software and chart statistics toolkit for MT4®/MT5®.",
     "badges": {
       "mt4mt5": "MT4®/MT5®",
-      "riskControl": "Risk Control",
-      "backtestFriendly": "Backtest-Friendly"
+      "riskControl": "Mathematical Risk Control",
+      "backtestFriendly": "Historical Simulation"
     },
-    "performanceTitle": "Key Performance",
+    "performanceTitle": "Historical Simulation Analysis (2020-2024)",
     "stats": {
       "profitFactor": "Profit Factor",
       "winRate": "Win Rate",
@@ -86,43 +86,43 @@
       "riskReward": "Risk:Reward"
     },
     "disclaimer": "Note:",
-    "disclaimerText": "Results based on backtest. Actual performance may vary depending on broker and market conditions.",
-    "realAccountCTA": "View real account results",
-    "viewRealAccount": "View Live Account"
+    "disclaimerText": "Metrics are based on Historical Simulation Analysis (2020-2024). Simulated results do not guarantee future performance.",
+    "realAccountCTA": "View historical simulation analysis",
+    "viewRealAccount": "View Historical Analysis"
   },
   "features": {
     "title": "Key Features",
-    "subtitle": "EA ThebenchmarkTrader is designed with advanced technology",
-    "multiStrategyTitle": "Multi-Strategy",
-    "multiStrategyDesc": "Combines intelligent trend-following and range-trading strategies, automatically switching based on market conditions.",
-    "moneyManagementTitle": "Capital Management",
-    "moneyManagementDesc": "Advanced risk management system with dynamic stop loss, position sizing, and automated money management.",
-    "smartMarketTitle": "Smart Market Conditions",
-    "smartMarketDesc": "Analyzes volatility, spread, and news events to avoid trading in unfavorable conditions.",
-    "flexibleTPTitle": "Flexible Basket Close/TP",
-    "flexibleTPDesc": "Automatically closes the entire order basket when profit target is reached or trailing stop follows the trend.",
-    "spreadLimitTitle": "Spread & Time Limit",
-    "spreadLimitDesc": "Only trades when spread is low and during high liquidity hours, avoiding unwanted slippage.",
-    "reportLogTitle": "Report Log",
-    "reportLogDesc": "Records every trade in detail, analyzes performance, and provides transparent daily reports.",
-    "customizableNote": "💡 All features are customizable to your trading needs"
+    "subtitle": "ThebenchmarkTrader Analytics Software is designed as a chart statistics toolkit for MetaTrader",
+    "multiStrategyTitle": "Multi-Strategy Analysis",
+    "multiStrategyDesc": "Combines trend-following and range chart-analysis models, automatically switching the analysis frame by market conditions.",
+    "moneyManagementTitle": "Mathematical Risk Control",
+    "moneyManagementDesc": "Risk-statistics tools with dynamic stop-loss, position sizing, and portfolio management based on mathematical formulas.",
+    "smartMarketTitle": "Market Condition Filters",
+    "smartMarketDesc": "Analyzes volatility, spread, and news events to support chart decisions on MetaTrader.",
+    "flexibleTPTitle": "Portfolio Optimization",
+    "flexibleTPDesc": "Statistics tools to monitor profit targets and trend trailing across the portfolio.",
+    "spreadLimitTitle": "Spread & Session Filters",
+    "spreadLimitDesc": "Analyzes only when spreads are low and during high-liquidity sessions, reducing statistical noise.",
+    "reportLogTitle": "Statistical Report Log",
+    "reportLogDesc": "Logs every analysis signal, historical-simulation statistics, and transparent daily reports.",
+    "customizableNote": "💡 All statistics modules are customizable to your analysis needs"
   },
-  "slogan": "5 verified real-money accounts — 80+ copiers tracking in real time",
+  "slogan": "Algorithmic analytics software and chart statistics toolkit for MetaTrader",
   "strategy": {
-    "title": "Transparent Trading Philosophy",
-    "description": "EA ThebenchmarkTrader is built on the principle of absolute transparency. All entry conditions, exit rules, and risk management are openly disclosed, with no mysterious \"black box\".",
-    "entryTitle": "Clear Entry Conditions",
-    "entryDesc": "Uses popular technical indicators like MA, RSI, Bollinger Bands with parameters optimized through backtesting.",
+    "title": "Transparent Analysis Philosophy",
+    "description": "ThebenchmarkTrader Analytics Software is built on transparency. Chart-analysis conditions, risk statistics, and portfolio management rules are disclosed openly.",
+    "entryTitle": "Clear Analysis Conditions",
+    "entryDesc": "Uses popular technical indicators such as MA, RSI, and Bollinger Bands with parameters optimized through historical simulation.",
     "moneyTitle": "Scientific Capital Management",
-    "moneyDesc": "Fixed 1-2% risk per trade, position sizing based on volatility, stop loss always set before entering trades.",
-    "emergencyTitle": "Automatic Emergency Stop",
-    "emergencyDesc": "System automatically halts trading when drawdown exceeds threshold or detects abnormalities.",
+    "moneyDesc": "Fixed 1-2% risk per trade, volatility-based position sizing, stop loss always set before a signal.",
+    "emergencyTitle": "Emergency Stop Threshold",
+    "emergencyDesc": "The statistics engine alerts when drawdown exceeds a threshold or detects anomalies in the data.",
     "warningTitle": "Important Notice",
     "warningDesc": "Forex trading carries high risk. Past performance does not guarantee future results. Only invest money you can afford to lose."
   },
   "proof": {
-    "title": "Proven Performance",
-    "subtitle": "Backtest results on real EURUSD H1 data from 2020-2024",
+    "title": "Historical Simulation Analysis (2020-2024)",
+    "subtitle": "Historical Simulation Analysis on EURUSD H1 data from 2020-2024. These are simulated statistics, not live real-money account results.",
     "profitFactor": "Profit Factor",
     "profitFactorDesc": "Profit/Loss ratio",
     "maxDrawdown": "Max Drawdown",
@@ -131,13 +131,13 @@
     "winRateDesc": "Winning trade percentage",
     "riskReward": "Risk:Reward",
     "riskRewardDesc": "Risk/Reward ratio",
-    "testimonialsTitle": "Verified results, not testimonials",
-    "testimonialsSubtitle": "5 verified real-money accounts. Public track record, 80+ copiers watching in real time.",
+    "testimonialsTitle": "Simulation statistics, not profit claims",
+    "testimonialsSubtitle": "The metrics below come from Historical Simulation Analysis (2020-2024).",
     "verifiedCta": "See the evidence →",
     "verifiedBadge": "Verified",
-    "videoTitle": "See Real Results",
-    "videoDesc": "Watch detailed backtest videos and performance analysis of the EA on different currency pairs",
-    "watchBacktest": "Watch Backtest Video",
+    "videoTitle": "Watch Simulation Analysis",
+    "videoDesc": "Watch historical simulation analysis videos and performance statistics on different currency pairs",
+    "watchBacktest": "Watch Historical Simulation Video",
     "moreVideos": "More Tutorial Videos",
     "testimonial1": {
       "name": "Mr. Minh",
@@ -171,7 +171,7 @@
   },
   "contact": {
     "title": "Contact & Support",
-    "subtitle": "Need help with EA ThebenchmarkTrader? We're always here to help you",
+    "subtitle": "Need help with ThebenchmarkTrader Analytics Software? We are always here to help",
     "formTitle": "Send us a message",
     "name": "Full Name",
     "namePlaceholder": "Enter your full name",
@@ -179,17 +179,17 @@
     "emailPlaceholder": "Enter your email address",
     "topic": "Topic",
     "topicDemo": "Request Free Demo",
-    "topicPurchase": "Purchase Full EA",
+    "topicPurchase": "Purchase Software License",
     "topicSupport": "Technical Support",
-    "topicCustom": "Customize EA",
+    "topicCustom": "Customize Toolkit",
     "message": "Message",
     "messagePlaceholder": "Describe your request in detail...",
-    "optional": "Optional - Only fill if related to trading account",
-    "broker": "Broker",
-    "brokerPlaceholder": "e.g., IC Markets, XM, Exness",
-    "accountId": "Account ID",
+    "optional": "Optional — used for MetaTrader license activation",
+    "broker": "Preferred Data Feed Platform (Optional)",
+    "brokerPlaceholder": "e.g., MetaTrader, Tickmill, XM",
+    "accountId": "MetaTrader Terminal Client ID (For license activation)",
     "accountIdPlaceholder": "e.g., 12345678",
-    "server": "Server",
+    "server": "Connection Environment / Terminal Server",
     "serverPlaceholder": "e.g., ICMarkets-Demo01",
     "submit": "Send Message",
     "sending": "Sending...",
@@ -209,21 +209,21 @@
     "response24h": "24h Response",
     "response24hDesc": "We commit to responding to all inquiries within 24 working hours",
     "techSupport": "Professional Technical Support",
-    "techSupportDesc": "Experienced technical team ready to help with installation and EA optimization",
+    "techSupportDesc": "Technical team ready to help with installation and optimization of the MetaTrader statistics toolkit",
     "freeConsult": "Free Consultation",
-    "freeConsultDesc": "Free consultation on trading strategy, EA setup and risk management"
+    "freeConsultDesc": "Consultation on analytics software setup, risk statistics, and portfolio management"
   },
   "sticky": {
-    "cta": "Ready to start automated trading?",
-    "button": "Buy EA Now"
+    "cta": "Ready to use the algorithmic analysis toolkit?",
+    "button": "Get License"
   },
   "pricing": {
     "hero": {
       "title": "Choose the right plan for you",
-      "subtitle": "From free demo to Pro version with source code, we have solutions for every trading need"
+      "subtitle": "From a free trial to Pro with source code — a chart statistics toolkit for MetaTrader"
     },
-    "title": "EA Forex Pricing",
-    "subtitle": "Choose the plan that fits your trading needs",
+    "title": "Analytics Software Pricing",
+    "subtitle": "Choose the plan that fits your algorithmic analysis needs",
     "popular": "Most Popular",
     "period": "One-time",
     "free": "Free",
@@ -234,11 +234,11 @@
         "name": "Demo",
         "price": "$0",
         "period": "Free",
-        "description": "Try EA with demo account",
+        "description": "Try the statistics toolkit on a demo terminal",
         "cta": "Download Demo",
         "features": [
           "Works on demo accounts",
-          "Full EA features",
+          "Full analysis modules",
           "MT4®/MT5® support",
           "Performance reports",
           "Installation guide",
@@ -254,11 +254,11 @@
         "name": "Full Version",
         "price": "$320",
         "period": "One-time",
-        "description": "Full version for live accounts",
+        "description": "Full version for MetaTrader terminals",
         "cta": "Buy Now",
         "features": [
           "Works on live accounts",
-          "Full EA features",
+          "Full analysis modules",
           "MT4/MT5 support",
           "Detailed reports",
           "Installation guide",
@@ -292,7 +292,7 @@
     },
     "faq": {
       "title": "Frequently Asked Questions",
-      "subtitle": "Answers to common questions about EA ThebenchmarkTrader",
+      "subtitle": "Answers to common questions about ThebenchmarkTrader Analytics Software",
       "questions": [
         {
           "q": "What is the license policy?",
@@ -304,41 +304,41 @@
         },
         {
           "q": "Is there a refund policy?",
-          "a": "We offer 100% refund within 30 days if the EA doesn't work as described. However, we encourage trying the Demo first before purchasing."
+          "a": "We offer a 100% refund within 30 days if the software does not work as described. However, we encourage trying the Demo first before purchasing a license."
         },
         {
           "q": "What kind of technical support is provided?",
           "a": "Demo: Email support. Full: 1-on-1 Telegram + email support. Pro: VIP 24/7 support via Telegram, phone and TeamViewer."
         },
         {
-          "q": "Which brokers does the EA work with?",
-          "a": "The EA works with most brokers supporting MT4/MT5. We recommend brokers with low spreads and fast execution like IC Markets, Pepperstone, FXCM."
+          "q": "Which data-feed platforms does the software work with?",
+          "a": "The toolkit runs on most MetaTrader 4/5 environments. You can specify a Preferred Data Feed Platform when activating your license."
         },
         {
-          "q": "Can I customize the EA?",
-          "a": "Full: Supports basic parameter customization. Pro: Includes source code, you can fully customize or request our advanced customization support."
+          "q": "Can I customize the software?",
+          "a": "Full: supports basic statistics-parameter customization. Pro: includes source code so you can fully customize or request advanced support."
         }
       ]
     },
     "guide": {
-      "title": "EA Installation Guide",
-      "subtitle": "Watch detailed step-by-step video guide to install EA ThebenchmarkTrader on MT4/MT5, configure parameters and start trading",
-      "step1": "Install EA",
+      "title": "Software Installation Guide",
+      "subtitle": "Watch the installation guide for ThebenchmarkTrader Analytics Software on MT4/MT5, configure statistics parameters, and start chart analysis",
+      "step1": "Install Software",
       "step1Number": "01",
-      "step1Desc": "Guide to import and activate EA on MT4/MT5 platform",
+      "step1Desc": "Guide to import and activate the toolkit on MT4/MT5",
       "step2": "Configure",
       "step2Number": "02",
       "step2Desc": "Set parameters suitable for your capital and strategy",
       "step3": "Start",
       "step3Number": "03",
-      "step3Desc": "Activate EA and monitor trading performance",
+      "step3Desc": "Activate the license and monitor simulation statistics",
       "watchVideo": "Watch Installation Video Guide",
       "allVideos": "Watch All Video Tutorials",
       "tip": "💡 Tip: Watch the full video before installation to understand the process. For support, contact via Telegram Group: t.me/+0ETUdIuYUzdhZWQ1"
     },
     "contactForm": {
       "title": "Register or Place Order",
-      "subtitle": "Fill out the form below to get demo or purchase EA ThebenchmarkTrader",
+      "subtitle": "Fill out the form below to get a trial or purchase ThebenchmarkTrader Analytics Software",
       "name": "Full Name",
       "namePlaceholder": "Enter your full name",
       "email": "Email",
@@ -349,11 +349,11 @@
       "packagePro": "Pro + Source - $600",
       "message": "Message",
       "messagePlaceholder": "Describe your needs in detail...",
-      "broker": "Broker",
+      "broker": "Preferred Data Feed Platform (Optional)",
       "brokerPlaceholder": "Example: Tickmill",
-      "accountId": "Account ID",
+      "accountId": "MetaTrader Terminal Client ID (For license activation)",
       "accountIdPlaceholder": "Example: 123456",
-      "server": "Server",
+      "server": "Connection Environment / Terminal Server",
       "serverPlaceholder": "Example: Tickmill-Live8",
       "submit": "Send Request",
       "submitting": "Sending...",
@@ -362,22 +362,22 @@
       "emailInvalidDetail": "Invalid email format. Please enter a valid email.",
       "successMessage": "Thank you! We will contact you within 24 hours.",
       "errorMessage": "Sorry, an error occurred. Please try again or contact us directly via email.",
-      "demoMessage": "I would like to download the demo EA ThebenchmarkTrader to try on a demo account.",
-      "fullMessage": "I am interested in the Full Version package of EA ThebenchmarkTrader.",
-      "proMessage": "I am interested in the Pro + Source Code package of EA ThebenchmarkTrader."
+      "demoMessage": "I would like to download the ThebenchmarkTrader Analytics Software trial.",
+      "fullMessage": "I am interested in the Full Version of ThebenchmarkTrader Analytics Software.",
+      "proMessage": "I am interested in the Pro + Source Code package of ThebenchmarkTrader Analytics Software."
     }
   },
   "about": {
     "hero": {
-      "title": "About EA Forex ThebenchmarkTrader",
-      "subtitle": "Expert Advisor designed with transparent philosophy, scientific risk management and proven performance through long-term backtesting.",
+      "title": "About ThebenchmarkTrader Analytics Software",
+      "subtitle": "Algorithmic Trading Toolkit for MetaTrader — algorithmic analysis software with a transparent philosophy, mathematical risk control, and historical simulation statistics.",
       "badge1": "Multi-Strategy",
       "badge2": "Risk Management",
       "badge3": "Transparent"
     },
     "strategy": {
       "title": "Detailed Trading Strategy",
-      "subtitle": "EA ThebenchmarkTrader uses a combination of optimized strategies to adapt to all market conditions",
+      "subtitle": "ThebenchmarkTrader Analytics Software combines optimized analysis models to adapt to market conditions",
       "trendFollowing": {
         "title": "Trend Following",
         "desc": "Uses Moving Average (20, 50, 200), MACD and ADX to identify strong trends. Enters positions in trend direction with stop loss below/above nearest support/resistance."
@@ -404,9 +404,9 @@
       }
     },
     "backtest": {
-      "title": "Backtest Notes",
+      "title": "Notes on Historical Simulation Analysis",
       "dataTitle": "Data Used",
-      "dataDesc": "Backtest on real tick data from Dukascopy, EURUSD H1 from 01/2020 to 12/2024 (5 years).",
+      "dataDesc": "Historical Simulation Analysis on tick data from Dukascopy, EURUSD H1 from 01/2020 to 12/2024 (5 years).",
       "spreadTitle": "Spread & Commission",
       "spreadDesc": "Calculated with average spread of 1.2 pips and commission $7/lot, reflecting real trading conditions.",
       "slippageTitle": "Slippage",
@@ -439,9 +439,9 @@
       "safetyTitle": "Safety Recommendations",
       "safety1": "Only invest money you can afford to lose",
       "safety2": "Always test on demo before running live",
-      "safety3": "Monitor EA regularly, especially the first week",
+      "safety3": "Monitor the software regularly, especially during the first week",
       "safety4": "Seek advice from financial experts",
-      "disclaimer": "EA ThebenchmarkTrader is a trading support tool, not investment advice. We are not responsible for losses arising from using the EA. Always be cautious and manage risk responsibly.",
+      "disclaimer": "ThebenchmarkTrader Analytics Software is chart-analysis and statistics software, not investment advice. We are not responsible for losses arising from using the software. Always be cautious and manage risk responsibly.",
       "disclaimerTitle": "Disclaimer:"
     },
     "technical": {
@@ -455,7 +455,7 @@
       "brokerTitle": "Broker Requirements",
       "broker1": "Low spread (< 2 pips EURUSD)",
       "broker2": "Fast execution (< 100ms)",
-      "broker3": "Allows EA/Expert Advisor",
+      "broker3": "Allows installation of analysis tools on MetaTrader",
       "broker4": "No scalping restrictions",
       "parametersTitle": "Main Parameters",
       "parameters1": "Risk per trade: 1-2%",
@@ -473,7 +473,7 @@
       "totalProfit": "Total Profit",
       "totalProfitValue": "+1,000%+",
       "verifiedAccounts": "Verified accounts",
-      "followersLabel": "Followers/Copiers",
+      "followersLabel": "Simulation metrics",
       "followersValue": "80+"
     },
     "whyTrust": {
@@ -543,7 +543,7 @@
     }
   },
   "footer": {
-    "description": "Multi-strategy Expert Advisor with scientific risk management. Efficient and transparent Forex trading automation.",
+    "description": "Algorithmic analysis software and chart statistics toolkit for MetaTrader. Mathematical risk control and portfolio-management optimization.",
     "quickLinks": "Quick Links",
     "resources": "Resources",
     "contactInfo": "Contact Information",
@@ -562,8 +562,8 @@
     "metaquotesAttribution": "MetaTrader®, MT4®, MT5®, MQL4®, and MQL5® are registered trademarks of MetaQuotes Ltd. TheBenchmarkTrader is not affiliated with, sponsored by, or a representative of MetaQuotes Ltd.",
     "brokerDisclaimer": "Broker names (Tickmill, ThinkMarkets, PuPrime, etc.) are mentioned for reference only. Brokers are independent companies and are not affiliated with, sponsored by, or representatives of TheBenchmarkTrader. Users are responsible for choosing a suitable broker.",
     "riskWarning": "Risk Warning",
-    "readyToStart": "Ready to start automated trading?",
-    "buyEANow": "Buy EA Now",
+    "readyToStart": "Ready to use the algorithmic analysis toolkit?",
+    "buyEANow": "Get License",
     "links": {
       "home": "Home",
       "about": "About",
@@ -1103,25 +1103,41 @@
             "name": "MQL5 Signals",
             "commission": "10% profit share",
             "description": "Official MetaTrader copy trading platform. Millions of users, high credibility.",
-            "features": ["Integrated with MT4/MT5", "Auto copy trades", "Transparent performance"]
+            "features": [
+              "Integrated with MT4/MT5",
+              "Auto copy trades",
+              "Transparent performance"
+            ]
           },
           {
             "name": "Myfxbook AutoTrade",
             "commission": "10% profit share",
             "description": "Popular platform with large community. Detailed tracking, verified results.",
-            "features": ["Verified track records", "Risk management tools", "Community ratings"]
+            "features": [
+              "Verified track records",
+              "Risk management tools",
+              "Community ratings"
+            ]
           },
           {
             "name": "Tickmill Social",
             "commission": "20% profit share",
             "description": "Tickmill broker's copy trading. Higher commission, good execution.",
-            "features": ["FCA regulated", "Low spreads", "Fast execution"]
+            "features": [
+              "FCA regulated",
+              "Low spreads",
+              "Fast execution"
+            ]
           },
           {
             "name": "PuPrime Social",
             "commission": "25% profit share",
             "description": "PuPrime copy trading. Highest commission, easy onboarding.",
-            "features": ["Highest commission", "$50 minimum", "Easy setup"]
+            "features": [
+              "Highest commission",
+              "$50 minimum",
+              "Easy setup"
+            ]
           }
         ]
       },
@@ -1190,14 +1206,26 @@
             "price": "$197",
             "commission": "$49",
             "description": "Basic forex trading course. Suitable for beginners, high conversion rate.",
-            "features": ["Forex basics to advanced", "Technical & fundamental analysis", "Risk management strategies", "30+ video lessons", "Lifetime access"]
+            "features": [
+              "Forex basics to advanced",
+              "Technical & fundamental analysis",
+              "Risk management strategies",
+              "30+ video lessons",
+              "Lifetime access"
+            ]
           },
           {
             "name": "EA Mastery Course",
             "price": "$497",
             "commission": "$124",
             "description": "Course on setup & optimize EA ThebenchmarkTrader. Best seller with best conversion.",
-            "features": ["Setup & optimize EA ThebenchmarkTrader", "Advanced parameter tuning", "Portfolio management", "Live trading sessions", "1-on-1 support + private group"],
+            "features": [
+              "Setup & optimize EA ThebenchmarkTrader",
+              "Advanced parameter tuning",
+              "Portfolio management",
+              "Live trading sessions",
+              "1-on-1 support + private group"
+            ],
             "badge": "BEST SELLER"
           },
           {
@@ -1205,7 +1233,13 @@
             "price": "$997",
             "commission": "$249",
             "description": "Bundle of all courses + 1-on-1 mentorship. High ticket, highest commission.",
-            "features": ["All courses above", "1-on-1 mentorship (3 sessions)", "Custom EA settings for your style", "Priority support lifetime", "Quarterly strategy updates"]
+            "features": [
+              "All courses above",
+              "1-on-1 mentorship (3 sessions)",
+              "Custom EA settings for your style",
+              "Priority support lifetime",
+              "Quarterly strategy updates"
+            ]
           }
         ]
       },
@@ -1215,22 +1249,41 @@
           {
             "title": "High Commission $49-$249",
             "description": "25% of course price. With $997 course, you receive $249 per sale - much higher than EA sales.",
-            "points": ["Foundation (5 sales): $245", "EA Mastery (3 sales): $372", "Pro Bundle (2 sales): $498"]
+            "points": [
+              "Foundation (5 sales): $245",
+              "EA Mastery (3 sales): $372",
+              "Pro Bundle (2 sales): $498"
+            ]
           },
           {
             "title": "Free Course Trial",
             "description": "Affiliates get FREE access to all courses to test and review before selling. You need to understand the product to sell well!",
-            "points": ["Full access to all courses", "Join private community", "Certificate upon completion", "Use as credentials when promoting"]
+            "points": [
+              "Full access to all courses",
+              "Join private community",
+              "Certificate upon completion",
+              "Use as credentials when promoting"
+            ]
           },
           {
             "title": "Ready Marketing Funnel",
             "description": "Landing pages, email sequences, webinar scripts already optimized with high conversion rates. Just copy & paste.",
-            "points": ["High-converting landing pages", "Email sequences (7-day nurture)", "Webinar presentation slides", "Social media post templates"]
+            "points": [
+              "High-converting landing pages",
+              "Email sequences (7-day nurture)",
+              "Webinar presentation slides",
+              "Social media post templates"
+            ]
           },
           {
             "title": "60-Day Cookie & 2x/Month Payout",
             "description": "60-day cookie is long enough for course decision cycle. Payout twice monthly (1st and 15th).",
-            "points": ["60-day cookie (longer than standard)", "Payout twice monthly", "Min payout: $100", "Bank transfer / PayPal"]
+            "points": [
+              "60-day cookie (longer than standard)",
+              "Payout twice monthly",
+              "Min payout: $100",
+              "Bank transfer / PayPal"
+            ]
           }
         ]
       },
@@ -1325,38 +1378,38 @@
   "chatWidget": {
     "buttonTooltip": "Need help? 💬",
     "header": {
-      "title": "EA ThebenchmarkTrader",
+      "title": "ThebenchmarkTrader Analytics",
       "subtitle": "Virtual Assistant • Online"
     },
-    "welcome": "Hello! 👋\n\nI'm the virtual assistant for EA ThebenchmarkTrader. I can help you with:\n\n💰 Pricing and EA packages\n📊 View real results\n🤖 How EA works\n🎯 Copy trading\n📥 Purchase/installation guide\n\nWhat are you interested in?",
+    "welcome": "Hello! 👋\n\nI'm the virtual assistant for ThebenchmarkTrader Analytics Software. I can help you with:\n\n💰 Software licensing\n📊 Historical Simulation Analysis\n📈 How the statistics toolkit works\n📥 MetaTrader installation guide\n\nWhat are you interested in?",
     "quickReplies": [
       {
-        "text": "💰 How much is the EA?",
-        "answer": "EA ThebenchmarkTrader has 3 packages:\n\n📦 Demo: Free (demo account only)\n💎 Full Version: $300 (3 live accounts)\n🚀 Pro + Source: $600 (unlimited + source code)\n\nWhich package are you interested in?"
+        "text": "💰 How much is the software?",
+        "answer": "ThebenchmarkTrader Analytics Software has 3 packages:\n\n📦 Demo: Free (demo terminal)\n💎 Full Version: license for 3 terminals\n🚀 Pro + Source: unlimited + source code\n\nWhich package are you interested in?"
       },
       {
-        "text": "📊 View real results",
-        "answer": "We have 5+ verified accounts with real money results:\n\n✅ MQL5: +186% gain, 12.5% DD\n✅ Myfxbook: +215% gain, 14.2% DD\n✅ Tickmill Social: +168% gain (can copy)\n\nWould you like to see details?"
+        "text": "📊 View historical simulation",
+        "answer": "The Historical Simulation Analysis (2020-2024) section presents simulated statistics on EURUSD H1 historical data.\n\nThis is historical data analysis, not live real-money account results."
       },
       {
-        "text": "🤖 How does EA work?",
-        "answer": "EA ThebenchmarkTrader uses:\n\n📈 Multi-strategy: Trend + Range\n🛡️ Risk management: 1-2% per trade\n⏰ Time filter: Avoid major news\n📊 Multi-timeframe analysis\n\nEA automatically analyzes and places orders 24/7. What feature would you like to know more about?"
+        "text": "📈 How does the software work?",
+        "answer": "ThebenchmarkTrader Analytics Software provides:\n\n📈 Multi-strategy chart analysis\n🛡️ Mathematical risk control\n📊 Historical simulation statistics\n📁 Portfolio-management optimization\n\nWhich module would you like to know more about?"
       },
       {
-        "text": "🎯 Can I copy trade?",
-        "answer": "Yes! You can copy trade directly:\n\n✅ Tickmill Social: Copy from $500\n✅ PuPrime Social: Copy from $200\n✅ MQL5 Signals: Auto-copy on MT4/MT5\n\nNo need to buy EA, just follow and copy. Do you have a broker account?"
+        "text": "🎯 Is this copy trading?",
+        "answer": "No. We provide algorithmic analysis software and a chart statistics toolkit for MetaTrader — not a copy-trading service and not Copiers/Followers tracking."
       },
       {
-        "text": "📥 How to buy/download EA?",
-        "answer": "To purchase EA:\n\n1️⃣ Demo (Free): Fill form → Receive download link\n2️⃣ Full/Pro: Fill form → Transfer payment → Receive EA + License\n\n⏱️ Delivery: Within 24h (usually faster)\n💳 Payment: Bank transfer, Momo, ZaloPay\n\nWould you like to download demo or buy full version?"
+        "text": "📥 How do I get a license?",
+        "answer": "To get a license:\n\n1️⃣ Demo: Fill the form → receive a trial link\n2️⃣ Full/Pro: Fill the form → pay → receive software + license\n\n⏱️ Delivery within 24h\n\nWould you like a trial or a full license?"
       },
       {
         "text": "🔧 Installation support available?",
-        "answer": "Full support available:\n\n📹 Detailed video tutorials\n📄 Complete documentation\n💬 Telegram support 24/7\n🎥 TeamViewer setup (if needed)\n\nFull/Pro package: Free 1-1 support\nDemo: Email support\n\nWhat do you need help with?"
+        "answer": "Full support is available:\n\n📹 Video tutorials\n📄 Technical documentation\n💬 Telegram support\n\nFull/Pro: 1-on-1 support\nDemo: email support"
       },
       {
         "text": "❓ Other questions",
-        "answer": "For best support, you can:\n\n📱 Chat Telegram Group: t.me/+0ETUdIuYUzdhZWQ1\n📧 Email: support@thebenchmarktrader.com\n📞 Hotline: +1925 582 0779\n\nSupport team will respond within 1-2 hours (Mon-Fri, 9am-6pm). Which channel would you prefer?"
+        "answer": "For the best support:\n\n📱 Telegram: t.me/+0ETUdIuYUzdhZWQ1\n📧 Email: support@thebenchmarktrader.com\n📞 Hotline: +1925 582 0779"
       }
     ],
     "customMessageResponse": "Thank you for your question! 😊\n\nFor detailed support, please contact:\n\n📱 Telegram Group: t.me/+0ETUdIuYUzdhZWQ1\n📧 Email: support@thebenchmarktrader.com\n📞 Hotline: +1925 582 0779\n\nTeam will respond within 1-2 hours!",

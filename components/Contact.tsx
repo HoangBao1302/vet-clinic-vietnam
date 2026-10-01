@@ -156,9 +156,9 @@ export default function ContactForm({
               aria-label="Nhu cầu"
             >
               <option value="demo">Tải Demo miễn phí</option>
-              <option value="purchase">Mua EA đầy đủ</option>
+              <option value="purchase">Mua bản quyền phần mềm</option>
               <option value="support">Hỗ trợ kỹ thuật</option>
-              <option value="custom">Tùy chỉnh EA</option>
+              <option value="custom">Tùy chỉnh bộ công cụ</option>
             </select>
           </label>
 

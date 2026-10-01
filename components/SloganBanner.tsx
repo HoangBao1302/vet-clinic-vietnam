@@ -22,7 +22,7 @@ export default function SloganBanner() {
           <div className="relative h-20 md:h-24 lg:h-28 mb-8">
             <Image
               src="/Slogan_1920_300.svg"
-              alt="EA Forex ThebenchmarkTrader Slogan"
+              alt="ThebenchmarkTrader Analytics Software"
               fill
               style={{ objectFit: "contain" }}
               className="drop-shadow-lg"

@@ -9,36 +9,36 @@
     "profile": "Tài khoản",
     "myAccount": "Tài Khoản",
     "viewDashboard": "Xem Dashboard",
-    "buyNow": "Mua ngay",
+    "buyNow": "Nhận bản quyền",
     "learnMore": "Tìm hiểu thêm",
     "contactUs": "Liên hệ",
-    "getDemo": "Tải Demo",
+    "getDemo": "Tải bản dùng thử",
     "download": "Tải xuống",
-    "tryDemo": "Dùng Thử Demo"
+    "tryDemo": "Dùng thử phần mềm"
   },
   "nav": {
     "home": "Trang chủ",
     "about": "Giới thiệu",
     "pricing": "Bảng giá",
     "blog": "Blog",
-    "liveResults": "Kết quả Live",
+    "liveResults": "Phân tích lịch sử",
     "partners": "Đối tác",
     "referral": "Giới thiệu",
     "affiliate": "Affiliate",
     "affiliateMarketing": "Tiếp Thị Liên Kết",
     "overview": "Tổng Quan",
-    "sellEALabel": "Bán EA",
+    "sellEALabel": "Bán phần mềm",
     "copySocialLabel": "Copy Social",
     "coursesLabel": "Bán Khóa Học",
     "downloads": "Tải xuống",
     "features": "Tính năng",
-    "aboutEA": "Về EA",
+    "aboutEA": "Về phần mềm",
     "contact": "Liên hệ",
     "myAccount": "Tài Khoản",
     "adminDashboard": "Admin Dashboard",
     "affiliateOverview": "📊 Tổng Quan",
     "affiliateOverviewDesc": "Về chương trình affiliate",
-    "sellEA": "💰 Bán EA",
+    "sellEA": "💰 Bán phần mềm",
     "sellEADesc": "Hoa hồng cao nhất",
     "copySocial": "👥 Copy Social",
     "copySocialDesc": "Thu nhập thụ động",
@@ -48,7 +48,7 @@
   "newsletter": {
     "premium": "Newsletter Premium",
     "heroTitle": "Newsletter Premium",
-    "heroDescription": "Nhận phân tích thị trường độc quyền, tín hiệu trading và cập nhật EA mới nhất mỗi tuần",
+    "heroDescription": "Nhận phân tích thị trường độc quyền và cập nhật phần mềm phân tích thuật toán mỗi tuần",
     "sidebarDescription": "Nhận phân tích thị trường và tín hiệu trading hàng tuần",
     "footerDescription": "Nhận phân tích thị trường độc quyền mỗi tuần",
     "emailPlaceholder": "Nhập email của bạn",
@@ -70,15 +70,15 @@
     }
   },
   "hero": {
-    "title": "EA Forex ThebenchmarkTrader",
-    "subtitle": "Tự động hóa giao dịch, kiểm soát rủi ro, tối ưu lợi nhuận",
-    "description": "EA Forex chuyên nghiệp với thuật toán giao dịch tự động, quản lý rủi ro thông minh và tỷ lệ thắng vượt trội",
+    "title": "ThebenchmarkTrader Analytics Software",
+    "subtitle": "Tự động hóa phân tích biểu đồ, kiểm soát rủi ro bằng toán học và tối ưu hóa quản lý danh mục",
+    "description": "Algorithmic Trading Toolkit for MetaTrader — phần mềm phân tích thuật toán và bộ công cụ thống kê biểu đồ cho MT4®/MT5®.",
     "badges": {
       "mt4mt5": "MT4®/MT5®",
-      "riskControl": "Risk Control",
-      "backtestFriendly": "Backtest-Friendly"
+      "riskControl": "Kiểm soát rủi ro toán học",
+      "backtestFriendly": "Mô phỏng lịch sử"
     },
-    "performanceTitle": "Hiệu Suất Chính",
+    "performanceTitle": "Thống kê hiệu suất mô phỏng lịch sử (2020-2024)",
     "stats": {
       "profitFactor": "Profit Factor",
       "winRate": "Win Rate",
@@ -86,43 +86,43 @@
       "riskReward": "Risk:Reward"
     },
     "disclaimer": "Lưu ý:",
-    "disclaimerText": "Kết quả dựa trên backtest. Hiệu suất thực tế có thể khác biệt tùy broker và điều kiện thị trường.",
-    "realAccountCTA": "Xem kết quả tài khoản thật",
-    "viewRealAccount": "Xem Tài Khoản Thực"
+    "disclaimerText": "Các chỉ số dựa trên Historical Simulation Analysis (2020-2024). Kết quả mô phỏng không đảm bảo hiệu suất tương lai.",
+    "realAccountCTA": "Xem thống kê mô phỏng lịch sử",
+    "viewRealAccount": "Xem phân tích lịch sử"
   },
   "features": {
     "title": "Tính năng nổi bật",
-    "subtitle": "EA ThebenchmarkTrader được thiết kế với công nghệ tiên tiến",
-    "multiStrategyTitle": "Đa chiến lược",
-    "multiStrategyDesc": "Kết hợp chiến lược trend-following và range-trading thông minh, tự động chuyển đổi theo điều kiện thị trường.",
-    "moneyManagementTitle": "Quản trị vốn",
-    "moneyManagementDesc": "Hệ thống quản lý rủi ro tiên tiến với stop loss động, position sizing và money management tự động.",
-    "smartMarketTitle": "Điều kiện thị trường thông minh",
-    "smartMarketDesc": "Phân tích volatility, spread, và news events để tránh giao dịch trong điều kiện bất lợi.",
-    "flexibleTPTitle": "Đóng rổ/TP linh hoạt",
-    "flexibleTPDesc": "Tự động đóng toàn bộ rổ lệnh khi đạt profit target hoặc trailing stop theo xu hướng.",
-    "spreadLimitTitle": "Giới hạn spread & time",
-    "spreadLimitDesc": "Chỉ giao dịch khi spread thấp và trong khung giờ thanh khoản cao, tránh slippage không mong muốn.",
-    "reportLogTitle": "Báo cáo nhật ký",
-    "reportLogDesc": "Ghi lại chi tiết mọi giao dịch, phân tích hiệu suất và cung cấp báo cáo minh bạch hàng ngày.",
-    "customizableNote": "💡 Tất cả tính năng đều có thể tùy chỉnh theo nhu cầu giao dịch của bạn"
+    "subtitle": "ThebenchmarkTrader Analytics Software được thiết kế như bộ công cụ thống kê biểu đồ cho MetaTrader",
+    "multiStrategyTitle": "Phân tích đa chiến lược",
+    "multiStrategyDesc": "Kết hợp mô hình phân tích trend-following và range trên biểu đồ, tự động chuyển khung phân tích theo điều kiện thị trường.",
+    "moneyManagementTitle": "Quản trị rủi ro toán học",
+    "moneyManagementDesc": "Công cụ thống kê rủi ro với stop loss động, position sizing và quản lý danh mục dựa trên công thức toán học.",
+    "smartMarketTitle": "Bộ lọc điều kiện thị trường",
+    "smartMarketDesc": "Phân tích volatility, spread và sự kiện tin tức để hỗ trợ quyết định trên biểu đồ MetaTrader.",
+    "flexibleTPTitle": "Tối ưu hóa quản lý danh mục",
+    "flexibleTPDesc": "Công cụ thống kê giúp theo dõi mục tiêu lợi nhuận và trailing theo xu hướng trên toàn bộ danh mục.",
+    "spreadLimitTitle": "Giới hạn spread & phiên giao dịch",
+    "spreadLimitDesc": "Chỉ phân tích khi spread thấp và trong khung giờ thanh khoản cao, giảm nhiễu thống kê.",
+    "reportLogTitle": "Nhật ký thống kê",
+    "reportLogDesc": "Ghi lại chi tiết mọi tín hiệu phân tích, thống kê hiệu suất mô phỏng và cung cấp báo cáo minh bạch.",
+    "customizableNote": "💡 Tất cả mô-đun thống kê đều có thể tùy chỉnh theo nhu cầu phân tích của bạn"
   },
-  "slogan": "5 tài khoản Real Money đã Verified — 80+ copiers theo dõi real-time",
+  "slogan": "Phần mềm phân tích thuật toán và bộ công cụ thống kê biểu đồ cho MetaTrader",
   "strategy": {
-    "title": "Triết lý giao dịch minh bạch",
-    "description": "EA ThebenchmarkTrader được xây dựng trên nguyên tắc minh bạch tuyệt đối. Mọi điều kiện vào lệnh, ra lệnh và quản trị rủi ro đều được công khai, không có \"hộp đen\" bí ẩn.",
-    "entryTitle": "Điều kiện vào lệnh rõ ràng",
-    "entryDesc": "Sử dụng các chỉ báo kỹ thuật phổ biến như MA, RSI, Bollinger Bands với tham số được tối ưu qua backtest.",
+    "title": "Triết lý phân tích minh bạch",
+    "description": "ThebenchmarkTrader Analytics Software được xây dựng trên nguyên tắc minh bạch. Mọi điều kiện phân tích biểu đồ, thống kê rủi ro và quản lý danh mục đều được công khai.",
+    "entryTitle": "Điều kiện phân tích rõ ràng",
+    "entryDesc": "Sử dụng các chỉ báo kỹ thuật phổ biến như MA, RSI, Bollinger Bands với tham số được tối ưu qua mô phỏng lịch sử.",
     "moneyTitle": "Quản trị vốn khoa học",
-    "moneyDesc": "Risk per trade cố định 1-2%, position sizing theo volatility, stop loss luôn được đặt trước khi vào lệnh.",
-    "emergencyTitle": "Stop khẩn cấp tự động",
-    "emergencyDesc": "Hệ thống tự động dừng giao dịch khi drawdown vượt ngưỡng cho phép hoặc phát hiện bất thường.",
+    "moneyDesc": "Risk per trade cố định 1-2%, position sizing theo volatility, stop loss luôn được đặt trước khi có tín hiệu.",
+    "emergencyTitle": "Ngưỡng dừng khẩn cấp",
+    "emergencyDesc": "Hệ thống thống kê cảnh báo khi drawdown vượt ngưỡng hoặc phát hiện bất thường trên dữ liệu.",
     "warningTitle": "Lưu ý quan trọng",
     "warningDesc": "Giao dịch Forex có rủi ro cao. Kết quả trong quá khứ không đảm bảo kết quả tương lai. Hãy chỉ đầu tư số tiền bạn có thể chấp nhận mất."
   },
   "proof": {
-    "title": "Hiệu suất được chứng minh",
-    "subtitle": "Kết quả backtest trên dữ liệu thực tế EURUSD H1 từ 2020-2024",
+    "title": "Thống kê hiệu suất mô phỏng lịch sử (2020-2024)",
+    "subtitle": "Historical Simulation Analysis trên dữ liệu EURUSD H1 từ 2020-2024. Đây là thống kê mô phỏng lịch sử, không phải kết quả tài khoản real money.",
     "profitFactor": "Profit Factor",
     "profitFactorDesc": "Tỷ lệ lợi nhuận/lỗ",
     "maxDrawdown": "Max Drawdown",
@@ -131,13 +131,13 @@
     "winRateDesc": "Tỷ lệ lệnh thắng",
     "riskReward": "Risk:Reward",
     "riskRewardDesc": "Tỷ lệ rủi ro/lợi nhuận",
-    "testimonialsTitle": "Kết quả Verified, không lời nói",
-    "testimonialsSubtitle": "5 tài khoản Real Money đã Verified. Track record công khai, 80+ copiers đang theo dõi real-time.",
+    "testimonialsTitle": "Thống kê mô phỏng, không lời khẳng định lợi nhuận",
+    "testimonialsSubtitle": "Các chỉ số dưới đây đến từ Historical Simulation Analysis (2020-2024).",
     "verifiedCta": "Xem bằng chứng →",
     "verifiedBadge": "Verified",
-    "videoTitle": "Xem Kết Quả Thực Tế",
-    "videoDesc": "Xem video backtest chi tiết và phân tích hiệu suất EA trên các cặp tiền tệ khác nhau",
-    "watchBacktest": "Xem Video Backtest",
+    "videoTitle": "Xem phân tích mô phỏng",
+    "videoDesc": "Xem video phân tích mô phỏng lịch sử và thống kê hiệu suất trên các cặp tiền tệ khác nhau",
+    "watchBacktest": "Xem video mô phỏng lịch sử",
     "moreVideos": "Video Hướng Dẫn Khác",
     "testimonial1": {
       "name": "Anh Minh",
@@ -171,7 +171,7 @@
   },
   "contact": {
     "title": "Liên hệ & Hỗ trợ",
-    "subtitle": "Cần hỗ trợ về EA ThebenchmarkTrader? Chúng tôi luôn sẵn sàng giúp đỡ bạn",
+    "subtitle": "Cần hỗ trợ về ThebenchmarkTrader Analytics Software? Chúng tôi luôn sẵn sàng giúp đỡ bạn",
     "formTitle": "Gửi tin nhắn cho chúng tôi",
     "name": "Họ và Tên",
     "namePlaceholder": "Nhập họ và tên của bạn",
@@ -179,17 +179,17 @@
     "emailPlaceholder": "Nhập địa chỉ email của bạn",
     "topic": "Nhu cầu",
     "topicDemo": "Tải Demo miễn phí",
-    "topicPurchase": "Mua EA đầy đủ",
+    "topicPurchase": "Mua bản quyền phần mềm",
     "topicSupport": "Hỗ trợ kỹ thuật",
-    "topicCustom": "Tùy chỉnh EA",
+    "topicCustom": "Tùy chỉnh bộ công cụ",
     "message": "Tin nhắn",
     "messagePlaceholder": "Mô tả chi tiết yêu cầu của bạn...",
-    "optional": "Tùy chọn - Chỉ điền nếu liên quan đến tài khoản trading",
-    "broker": "Broker",
-    "brokerPlaceholder": "VD: IC Markets, XM, Exness",
-    "accountId": "Account ID",
+    "optional": "Tùy chọn — dùng để kích hoạt bản quyền trên MetaTrader",
+    "broker": "Preferred Data Feed Platform (Optional)",
+    "brokerPlaceholder": "VD: MetaTrader, Tickmill, XM",
+    "accountId": "MetaTrader Terminal Client ID (For license activation)",
     "accountIdPlaceholder": "VD: 12345678",
-    "server": "Server",
+    "server": "Connection Environment / Terminal Server",
     "serverPlaceholder": "VD: ICMarkets-Demo01",
     "submit": "Gửi tin nhắn",
     "sending": "Đang gửi...",
@@ -209,21 +209,21 @@
     "response24h": "Phản hồi trong 24h",
     "response24hDesc": "Chúng tôi cam kết phản hồi mọi câu hỏi trong vòng 24 giờ làm việc",
     "techSupport": "Hỗ trợ kỹ thuật chuyên nghiệp",
-    "techSupportDesc": "Đội ngũ kỹ thuật có kinh nghiệm sẵn sàng hỗ trợ cài đặt, tối ưu EA",
+    "techSupportDesc": "Đội ngũ kỹ thuật sẵn sàng hỗ trợ cài đặt và tối ưu bộ công cụ thống kê trên MetaTrader",
     "freeConsult": "Tư vấn miễn phí",
-    "freeConsultDesc": "Tư vấn chiến lược giao dịch, setup EA và quản lý rủi ro hoàn toàn miễn phí"
+    "freeConsultDesc": "Tư vấn thiết lập phần mềm phân tích, thống kê rủi ro và quản lý danh mục"
   },
   "sticky": {
-    "cta": "Sẵn sàng bắt đầu giao dịch tự động?",
-    "button": "Mua EA ngay"
+    "cta": "Sẵn sàng dùng bộ công cụ phân tích thuật toán?",
+    "button": "Nhận bản quyền"
   },
   "pricing": {
     "hero": {
       "title": "Chọn gói phù hợp với bạn",
-      "subtitle": "Từ bản demo miễn phí đến phiên bản Pro với source code, chúng tôi có giải pháp cho mọi nhu cầu giao dịch"
+      "subtitle": "Từ bản dùng thử đến phiên bản Pro với source code — bộ công cụ thống kê biểu đồ cho MetaTrader"
     },
-    "title": "Bảng Giá EA Forex",
-    "subtitle": "Chọn gói phù hợp với nhu cầu giao dịch của bạn",
+    "title": "Bảng giá phần mềm phân tích",
+    "subtitle": "Chọn gói phù hợp với nhu cầu phân tích thuật toán của bạn",
     "popular": "Phổ biến nhất",
     "period": "Một lần",
     "free": "Miễn phí",
@@ -234,11 +234,11 @@
         "name": "Demo",
         "price": "0đ",
         "period": "Miễn phí",
-        "description": "Dùng thử EA với tài khoản demo",
+        "description": "Dùng thử bộ công cụ thống kê trên tài khoản demo",
         "cta": "Tải Demo",
         "features": [
           "Chạy trên tài khoản demo",
-          "Đầy đủ tính năng EA",
+          "Đầy đủ mô-đun phân tích",
           "Hỗ trợ MT4®/MT5®",
           "Báo cáo hiệu suất",
           "Hướng dẫn cài đặt",
@@ -254,11 +254,11 @@
         "name": "Full Version",
         "price": "7.900.000đ",
         "period": "Một lần",
-        "description": "Phiên bản đầy đủ cho tài khoản thực",
+        "description": "Phiên bản đầy đủ cho terminal MetaTrader",
         "cta": "Mua ngay",
         "features": [
           "Chạy trên tài khoản thực",
-          "Đầy đủ tính năng EA",
+          "Đầy đủ mô-đun phân tích",
           "Hỗ trợ MT4/MT5",
           "Báo cáo chi tiết",
           "Hướng dẫn cài đặt",
@@ -292,7 +292,7 @@
     },
     "faq": {
       "title": "Câu hỏi thường gặp",
-      "subtitle": "Giải đáp những thắc mắc phổ biến về EA ThebenchmarkTrader",
+      "subtitle": "Giải đáp những thắc mắc phổ biến về ThebenchmarkTrader Analytics Software",
       "questions": [
         {
           "q": "Chính sách license như thế nào?",
@@ -304,41 +304,41 @@
         },
         {
           "q": "Có chính sách hoàn tiền không?",
-          "a": "Chúng tôi có chính sách hoàn tiền 100% trong 30 ngày nếu EA không hoạt động đúng như mô tả. Tuy nhiên, chúng tôi khuyến khích dùng thử Demo trước khi mua."
+          "a": "Chúng tôi có chính sách hoàn tiền 100% trong 30 ngày nếu phần mềm không hoạt động đúng như mô tả. Tuy nhiên, chúng tôi khuyến khích dùng thử Demo trước khi mua bản quyền."
         },
         {
           "q": "Hỗ trợ kỹ thuật như thế nào?",
           "a": "Gói Demo: Hỗ trợ email. Gói Full: Hỗ trợ 1-1 qua Telegram + email. Gói Pro: Hỗ trợ VIP 24/7 qua Telegram, phone và TeamViewer."
         },
         {
-          "q": "EA hoạt động trên broker nào?",
-          "a": "EA hoạt động trên hầu hết các broker hỗ trợ MT4/MT5. Chúng tôi khuyến nghị các broker có spread thấp và execution nhanh như IC Markets, Pepperstone, FXCM."
+          "q": "Phần mềm hoạt động trên nền tảng dữ liệu nào?",
+          "a": "Bộ công cụ chạy trên hầu hết các môi trường MetaTrader 4/5. Bạn có thể chọn Preferred Data Feed Platform khi kích hoạt bản quyền."
         },
         {
-          "q": "Tôi có thể tùy chỉnh EA không?",
-          "a": "Gói Full: Hỗ trợ tùy chỉnh tham số cơ bản. Gói Pro: Có source code, bạn có thể tùy chỉnh hoàn toàn hoặc nhờ chúng tôi hỗ trợ tùy chỉnh cao cấp."
+          "q": "Tôi có thể tùy chỉnh phần mềm không?",
+          "a": "Gói Full: hỗ trợ tùy chỉnh tham số thống kê cơ bản. Gói Pro: có source code, bạn có thể tùy chỉnh hoàn toàn hoặc nhờ chúng tôi hỗ trợ."
         }
       ]
     },
     "guide": {
-      "title": "Hướng Dẫn Cài Đặt EA",
-      "subtitle": "Xem video hướng dẫn chi tiết từng bước cài đặt EA ThebenchmarkTrader trên MT4/MT5, cấu hình tham số và bắt đầu giao dịch",
-      "step1": "Cài Đặt EA",
+      "title": "Hướng dẫn cài đặt phần mềm",
+      "subtitle": "Xem video hướng dẫn cài đặt ThebenchmarkTrader Analytics Software trên MT4/MT5, cấu hình tham số thống kê và bắt đầu phân tích biểu đồ",
+      "step1": "Cài đặt phần mềm",
       "step1Number": "01",
-      "step1Desc": "Hướng dẫn import và kích hoạt EA trên nền tảng MT4/MT5",
+      "step1Desc": "Hướng dẫn import và kích hoạt bộ công cụ trên nền tảng MT4/MT5",
       "step2": "Cấu Hình",
       "step2Number": "02",
       "step2Desc": "Thiết lập tham số phù hợp với mức vốn và chiến lược của bạn",
       "step3": "Bắt Đầu",
       "step3Number": "03",
-      "step3Desc": "Kích hoạt EA và theo dõi hiệu suất giao dịch",
+      "step3Desc": "Kích hoạt bản quyền và theo dõi thống kê mô phỏng",
       "watchVideo": "Xem Video Hướng Dẫn Cài Đặt",
       "allVideos": "Xem Tất Cả Video Tutorial",
       "tip": "💡 Tip: Xem hết video trước khi cài đặt để hiểu rõ quy trình. Nếu cần hỗ trợ, liên hệ qua Telegram Group: t.me/+0ETUdIuYUzdhZWQ1"
     },
     "contactForm": {
       "title": "Đăng ký hoặc đặt mua",
-      "subtitle": "Điền form dưới đây để nhận demo hoặc đặt mua EA ThebenchmarkTrader",
+      "subtitle": "Điền form dưới đây để nhận bản dùng thử hoặc đặt mua ThebenchmarkTrader Analytics Software",
       "name": "Họ và Tên",
       "namePlaceholder": "Nhập họ và tên của bạn",
       "email": "Email",
@@ -349,11 +349,11 @@
       "packagePro": "Pro + Source - 14.9tr",
       "message": "Tin nhắn",
       "messagePlaceholder": "Mô tả chi tiết nhu cầu của bạn...",
-      "broker": "Broker",
+      "broker": "Preferred Data Feed Platform (Optional)",
       "brokerPlaceholder": "Ví dụ: Tickmill",
-      "accountId": "Account ID",
+      "accountId": "MetaTrader Terminal Client ID (For license activation)",
       "accountIdPlaceholder": "Ví dụ: 123456",
-      "server": "Server",
+      "server": "Connection Environment / Terminal Server",
       "serverPlaceholder": "Ví dụ: Tickmill-Live8",
       "submit": "Gửi yêu cầu",
       "submitting": "Đang gửi...",
@@ -362,22 +362,22 @@
       "emailInvalidDetail": "Email không đúng định dạng. Vui lòng nhập email hợp lệ.",
       "successMessage": "Cảm ơn bạn! Chúng tôi sẽ liên hệ với bạn trong vòng 24 giờ.",
       "errorMessage": "Xin lỗi, đã xảy ra lỗi. Vui lòng thử lại hoặc liên hệ trực tiếp qua email.",
-      "demoMessage": "Tôi muốn tải demo EA ThebenchmarkTrader để dùng thử trên tài khoản demo.",
-      "fullMessage": "Tôi quan tâm đến gói Full Version EA ThebenchmarkTrader.",
-      "proMessage": "Tôi quan tâm đến gói Pro + Source Code EA ThebenchmarkTrader."
+      "demoMessage": "Tôi muốn tải bản dùng thử ThebenchmarkTrader Analytics Software.",
+      "fullMessage": "Tôi quan tâm đến gói Full Version của ThebenchmarkTrader Analytics Software.",
+      "proMessage": "Tôi quan tâm đến gói Pro + Source Code của ThebenchmarkTrader Analytics Software."
     }
   },
   "about": {
     "hero": {
-      "title": "Về EA Forex ThebenchmarkTrader",
-      "subtitle": "Expert Advisor được thiết kế với triết lý minh bạch, quản trị rủi ro khoa học và hiệu suất được chứng minh qua backtest dài hạn.",
+      "title": "Về ThebenchmarkTrader Analytics Software",
+      "subtitle": "Algorithmic Trading Toolkit for MetaTrader — phần mềm phân tích thuật toán với triết lý minh bạch, quản trị rủi ro toán học và thống kê mô phỏng lịch sử.",
       "badge1": "Đa chiến lược",
       "badge2": "Quản trị rủi ro",
       "badge3": "Minh bạch"
     },
     "strategy": {
       "title": "Chiến lược giao dịch chi tiết",
-      "subtitle": "EA ThebenchmarkTrader sử dụng kết hợp nhiều chiến lược được tối ưu hóa để thích ứng với mọi điều kiện thị trường",
+      "subtitle": "ThebenchmarkTrader Analytics Software kết hợp nhiều mô hình phân tích được tối ưu để thích ứng với điều kiện thị trường",
       "trendFollowing": {
         "title": "Trend Following",
         "desc": "Sử dụng Moving Average (20, 50, 200), MACD và ADX để xác định xu hướng mạnh. Vào lệnh theo hướng trend với stop loss dưới/trên support/resistance gần nhất."
@@ -404,9 +404,9 @@
       }
     },
     "backtest": {
-      "title": "Lưu ý về Backtest",
+      "title": "Lưu ý về Historical Simulation Analysis",
       "dataTitle": "Dữ liệu sử dụng",
-      "dataDesc": "Backtest trên dữ liệu tick thực tế từ Dukascopy, EURUSD H1 từ 01/2020 đến 12/2024 (5 năm).",
+      "dataDesc": "Historical Simulation Analysis trên dữ liệu tick từ Dukascopy, EURUSD H1 từ 01/2020 đến 12/2024 (5 năm).",
       "spreadTitle": "Spread & Commission",
       "spreadDesc": "Tính toán với spread trung bình 1.2 pips và commission $7/lot, phản ánh điều kiện giao dịch thực tế.",
       "slippageTitle": "Slippage",
@@ -439,9 +439,9 @@
       "safetyTitle": "Khuyến nghị an toàn",
       "safety1": "Chỉ đầu tư số tiền bạn có thể chấp nhận mất",
       "safety2": "Luôn test trên demo trước khi chạy live",
-      "safety3": "Theo dõi EA thường xuyên, đặc biệt tuần đầu",
+      "safety3": "Theo dõi phần mềm thường xuyên, đặc biệt tuần đầu",
       "safety4": "Tham khảo ý kiến chuyên gia tài chính",
-      "disclaimer": "EA ThebenchmarkTrader là công cụ hỗ trợ giao dịch, không phải lời khuyên đầu tư. Chúng tôi không chịu trách nhiệm về tổn thất phát sinh từ việc sử dụng EA. Hãy luôn thận trọng và quản lý rủi ro hợp lý.",
+      "disclaimer": "ThebenchmarkTrader Analytics Software là phần mềm phân tích và thống kê biểu đồ, không phải lời khuyên đầu tư. Chúng tôi không chịu trách nhiệm về tổn thất phát sinh từ việc sử dụng phần mềm. Hãy luôn thận trọng và quản lý rủi ro hợp lý.",
       "disclaimerTitle": "Tuyên bố miễn trừ trách nhiệm:"
     },
     "technical": {
@@ -455,7 +455,7 @@
       "brokerTitle": "Yêu cầu broker",
       "broker1": "Spread thấp (< 2 pips EURUSD)",
       "broker2": "Execution nhanh (< 100ms)",
-      "broker3": "Cho phép EA/Expert Advisor",
+      "broker3": "Cho phép cài đặt công cụ phân tích trên MetaTrader",
       "broker4": "Không cấm scalping",
       "parametersTitle": "Tham số chính",
       "parameters1": "Risk per trade: 1-2%",
@@ -473,7 +473,7 @@
       "totalProfit": "Tổng lợi nhuận",
       "totalProfitValue": "+1,000%+",
       "verifiedAccounts": "Verified accounts",
-      "followersLabel": "Followers/Copiers",
+      "followersLabel": "Chỉ số mô phỏng",
       "followersValue": "80+"
     },
     "whyTrust": {
@@ -543,7 +543,7 @@
     }
   },
   "footer": {
-    "description": "Expert Advisor đa chiến lược với quản trị rủi ro khoa học. Tự động hóa giao dịch Forex hiệu quả và minh bạch.",
+    "description": "Phần mềm phân tích thuật toán và bộ công cụ thống kê biểu đồ cho MetaTrader. Kiểm soát rủi ro bằng toán học, tối ưu hóa quản lý danh mục.",
     "quickLinks": "Liên Kết Nhanh",
     "resources": "Tài Nguyên",
     "contactInfo": "Thông Tin Liên Hệ",
@@ -558,12 +558,12 @@
     "companyName": "Thebenchmarktrader LLC",
     "address": "Địa Chỉ",
     "addressValue": "117 S Lexington St Ste 100, Harrisonville, MO 64701",
-    "copyright": "© {year} EA Forex ThebenchmarkTrader. Bảo lưu mọi quyền.",
+    "copyright": "© {year} Thebenchmarktrader LLC. Bảo lưu mọi quyền.",
     "metaquotesAttribution": "MetaTrader®, MT4®, MT5®, MQL4®, và MQL5® là nhãn hiệu đã đăng ký của MetaQuotes Ltd. TheBenchmarkTrader không liên kết, được bảo trợ, hoặc đại diện cho MetaQuotes Ltd.",
     "brokerDisclaimer": "Tên broker (Tickmill, ThinkMarkets, PuPrime, v.v.) được nhắc đến chỉ nhằm mục đích tham khảo. Các broker là công ty độc lập và không liên kết, được bảo trợ, hoặc đại diện cho TheBenchmarkTrader. Người dùng tự chịu trách nhiệm chọn broker phù hợp.",
     "riskWarning": "Cảnh Báo Rủi Ro",
-    "readyToStart": "Sẵn sàng bắt đầu giao dịch tự động?",
-    "buyEANow": "Mua EA Ngay",
+    "readyToStart": "Sẵn sàng dùng bộ công cụ phân tích thuật toán?",
+    "buyEANow": "Nhận bản quyền",
     "links": {
       "home": "Trang Chủ",
       "about": "Giới Thiệu",
@@ -1103,25 +1103,41 @@
             "name": "MQL5 Signals",
             "commission": "10% profit share",
             "description": "Platform copy trading chính thức của MetaTrader. Hàng triệu users, uy tín cao.",
-            "features": ["Integrated với MT4/MT5", "Auto copy trades", "Transparent performance"]
+            "features": [
+              "Integrated với MT4/MT5",
+              "Auto copy trades",
+              "Transparent performance"
+            ]
           },
           {
             "name": "Myfxbook AutoTrade",
             "commission": "10% profit share",
             "description": "Platform phổ biến với community lớn. Tracking chi tiết, verified results.",
-            "features": ["Verified track records", "Risk management tools", "Community ratings"]
+            "features": [
+              "Verified track records",
+              "Risk management tools",
+              "Community ratings"
+            ]
           },
           {
             "name": "Tickmill Social",
             "commission": "20% profit share",
             "description": "Copy trading của broker Tickmill. Commission cao hơn, execution tốt.",
-            "features": ["FCA regulated", "Low spreads", "Fast execution"]
+            "features": [
+              "FCA regulated",
+              "Low spreads",
+              "Fast execution"
+            ]
           },
           {
             "name": "PuPrime Social",
             "commission": "25% profit share",
             "description": "Copy trading của PuPrime. Commission cao nhất, dễ onboard.",
-            "features": ["Highest commission", "$50 minimum", "Easy setup"]
+            "features": [
+              "Highest commission",
+              "$50 minimum",
+              "Easy setup"
+            ]
           }
         ]
       },
@@ -1190,14 +1206,26 @@
             "price": "$197",
             "commission": "$49",
             "description": "Khóa học cơ bản về forex trading. Phù hợp cho beginner, conversion rate cao.",
-            "features": ["Forex basics đến advanced", "Technical & fundamental analysis", "Risk management strategies", "30+ video lessons", "Lifetime access"]
+            "features": [
+              "Forex basics đến advanced",
+              "Technical & fundamental analysis",
+              "Risk management strategies",
+              "30+ video lessons",
+              "Lifetime access"
+            ]
           },
           {
             "name": "EA Mastery Course",
             "price": "$497",
             "commission": "$124",
             "description": "Khóa học setup & optimize EA ThebenchmarkTrader. Best seller với conversion tốt nhất.",
-            "features": ["Setup & optimize EA Thebenchmark Trader", "Advanced parameter tuning", "Portfolio management", "Live trading sessions", "1-on-1 support + private group"],
+            "features": [
+              "Setup & optimize EA Thebenchmark Trader",
+              "Advanced parameter tuning",
+              "Portfolio management",
+              "Live trading sessions",
+              "1-on-1 support + private group"
+            ],
             "badge": "BEST SELLER"
           },
           {
@@ -1205,7 +1233,13 @@
             "price": "$997",
             "commission": "$249",
             "description": "Bundle tất cả khóa học + 1-on-1 mentorship. High ticket, commission cao nhất.",
-            "features": ["All courses above", "1-on-1 mentorship (3 sessions)", "Custom EA settings for your style", "Priority support lifetime", "Quarterly strategy updates"]
+            "features": [
+              "All courses above",
+              "1-on-1 mentorship (3 sessions)",
+              "Custom EA settings for your style",
+              "Priority support lifetime",
+              "Quarterly strategy updates"
+            ]
           }
         ]
       },
@@ -1215,22 +1249,41 @@
           {
             "title": "Commission Cao $49-$249",
             "description": "25% của giá khóa học. Với khóa $997, bạn nhận $249 mỗi sale - cao hơn nhiều so với bán EA.",
-            "points": ["Foundation (5 sales): $245", "EA Mastery (3 sales): $372", "Pro Bundle (2 sales): $498"]
+            "points": [
+              "Foundation (5 sales): $245",
+              "EA Mastery (3 sales): $372",
+              "Pro Bundle (2 sales): $498"
+            ]
           },
           {
             "title": "Tặng Trial Khóa Học",
             "description": "Affiliate được FREE access toàn bộ khóa học để test và review trước khi bán. Bạn cần hiểu sản phẩm để bán tốt!",
-            "points": ["Full access tất cả courses", "Join private community", "Certificate sau khi hoàn thành", "Dùng làm credential khi promote"]
+            "points": [
+              "Full access tất cả courses",
+              "Join private community",
+              "Certificate sau khi hoàn thành",
+              "Dùng làm credential khi promote"
+            ]
           },
           {
             "title": "Marketing Funnel Có Sẵn",
             "description": "Landing pages, email sequences, webinar scripts đã được optimize với conversion rate cao. Chỉ việc copy & paste.",
-            "points": ["High-converting landing pages", "Email sequences (7-day nurture)", "Webinar presentation slides", "Social media post templates"]
+            "points": [
+              "High-converting landing pages",
+              "Email sequences (7-day nurture)",
+              "Webinar presentation slides",
+              "Social media post templates"
+            ]
           },
           {
             "title": "Cookie 60 Ngày & Payout 2x/tháng",
             "description": "Cookie 60 ngày đủ dài cho decision cycle của khóa học. Chi trả 2 lần/tháng (ngày 1 và 15).",
-            "points": ["Cookie 60 ngày (dài hơn standard)", "Payout 2 lần/tháng", "Min payout: $100", "Bank transfer / PayPal"]
+            "points": [
+              "Cookie 60 ngày (dài hơn standard)",
+              "Payout 2 lần/tháng",
+              "Min payout: $100",
+              "Bank transfer / PayPal"
+            ]
           }
         ]
       },
@@ -1325,38 +1378,38 @@
   "chatWidget": {
     "buttonTooltip": "Cần hỗ trợ? 💬",
     "header": {
-      "title": "EA ThebenchmarkTrader",
+      "title": "ThebenchmarkTrader Analytics",
       "subtitle": "Trợ lý ảo • Online"
     },
-    "welcome": "Xin chào! 👋\n\nTôi là trợ lý ảo của EA ThebenchmarkTrader. Tôi có thể giúp bạn:\n\n💰 Thông tin giá và gói EA\n📊 Xem kết quả thực tế\n🤖 Cách EA hoạt động\n🎯 Copy trading\n📥 Hướng dẫn mua/cài đặt\n\nBạn quan tâm điều gì?",
+    "welcome": "Xin chào! 👋\n\nTôi là trợ lý ảo của ThebenchmarkTrader Analytics Software. Tôi có thể giúp bạn:\n\n💰 Thông tin bản quyền phần mềm\n📊 Historical Simulation Analysis\n📈 Cách bộ công cụ thống kê hoạt động\n📥 Hướng dẫn cài đặt trên MetaTrader\n\nBạn quan tâm điều gì?",
     "quickReplies": [
       {
-        "text": "💰 Giá EA bao nhiêu?",
-        "answer": "EA ThebenchmarkTrader có 3 gói:\n\n📦 Demo: Miễn phí (chỉ demo account)\n💎 Full Version: 7.900.000đ (3 tài khoản live)\n🚀 Pro + Source: 14.900.000đ (unlimited + source code)\n\nBạn quan tâm gói nào ạ?"
+        "text": "💰 Giá phần mềm bao nhiêu?",
+        "answer": "ThebenchmarkTrader Analytics Software có 3 gói:\n\n📦 Demo: Miễn phí (terminal demo)\n💎 Full Version: bản quyền 3 terminal\n🚀 Pro + Source: unlimited + source code\n\nBạn quan tâm gói nào?"
       },
       {
-        "text": "📊 Xem kết quả thực tế",
-        "answer": "Chúng tôi có 5+ tài khoản verified với kết quả real money:\n\n✅ MQL5: +186% gain, 12.5% DD\n✅ Myfxbook: +215% gain, 14.2% DD\n✅ Tickmill Social: +168% gain (có thể copy)\n\nBạn muốn xem chi tiết không?"
+        "text": "📊 Xem thống kê mô phỏng lịch sử",
+        "answer": "Phần Historical Simulation Analysis (2020-2024) trình bày thống kê mô phỏng trên dữ liệu lịch sử EURUSD H1.\n\nĐây là phân tích dữ liệu lịch sử, không phải kết quả tài khoản real money."
       },
       {
-        "text": "🤖 EA hoạt động như thế nào?",
-        "answer": "EA ThebenchmarkTrader sử dụng:\n\n📈 Đa chiến lược: Trend + Range\n🛡️ Quản trị rủi ro: 1-2% per trade\n⏰ Time filter: Tránh news quan trọng\n📊 Multi-timeframe analysis\n\nEA tự động phân tích và đặt lệnh 24/7. Bạn muốn biết thêm về tính năng nào?"
+        "text": "📈 Phần mềm hoạt động thế nào?",
+        "answer": "ThebenchmarkTrader Analytics Software cung cấp:\n\n📈 Phân tích đa chiến lược trên biểu đồ\n🛡️ Kiểm soát rủi ro bằng toán học\n📊 Thống kê mô phỏng lịch sử\n📁 Tối ưu hóa quản lý danh mục\n\nBạn muốn biết thêm về mô-đun nào?"
       },
       {
-        "text": "🎯 Copy trading có được không?",
-        "answer": "Có! Bạn có thể copy trading trực tiếp:\n\n✅ Tickmill Social: Copy từ $500\n✅ PuPrime Social: Copy từ $200\n✅ MQL5 Signals: Auto-copy trên MT4/MT5\n\nKhông cần mua EA, chỉ cần follow và copy. Bạn có tài khoản broker nào chưa?"
+        "text": "🎯 Đây có phải copy trading không?",
+        "answer": "Không. Chúng tôi cung cấp phần mềm phân tích thuật toán và bộ công cụ thống kê biểu đồ cho MetaTrader — không phải dịch vụ copy trading hay theo dõi Copiers/Followers."
       },
       {
-        "text": "📥 Làm sao để mua/tải EA?",
-        "answer": "Để mua EA:\n\n1️⃣ Demo (Free): Điền form → Nhận link tải\n2️⃣ Full/Pro: Điền form → Chuyển khoản → Nhận EA + License\n\n⏱️ Delivery: Trong 24h (thường nhanh hơn)\n💳 Thanh toán: Bank transfer, Momo, ZaloPay\n\nBạn muốn tải demo hay mua full version?"
+        "text": "📥 Làm sao để nhận bản quyền?",
+        "answer": "Để nhận bản quyền:\n\n1️⃣ Demo: Điền form → nhận link dùng thử\n2️⃣ Full/Pro: Điền form → thanh toán → nhận phần mềm + license\n\n⏱️ Giao trong 24h\n\nBạn muốn dùng thử hay mua bản quyền?"
       },
       {
         "text": "🔧 Hỗ trợ cài đặt có không?",
-        "answer": "Có đầy đủ hỗ trợ:\n\n📹 Video hướng dẫn chi tiết\n📄 Documentation đầy đủ\n💬 Telegram support 24/7\n🎥 TeamViewer setup (nếu cần)\n\nGói Full/Pro: Free support 1-1\nDemo: Email support\n\nBạn cần hỗ trợ phần nào?"
+        "answer": "Có đầy đủ hỗ trợ:\n\n📹 Video hướng dẫn\n📄 Tài liệu kỹ thuật\n💬 Telegram support\n\nGói Full/Pro: hỗ trợ 1-1\nDemo: hỗ trợ email"
       },
       {
         "text": "❓ Câu hỏi khác",
-        "answer": "Để được hỗ trợ tốt nhất, bạn có thể:\n\n📱 Chat Telegram Group: t.me/+0ETUdIuYUzdhZWQ1\n📧 Email: support@thebenchmarktrader.com\n📞 Hotline: +1925 582 0779\n\nTeam support sẽ trả lời trong vòng 1-2 giờ (T2-T6, 9h-18h). Bạn muốn liên hệ qua kênh nào?"
+        "answer": "Để được hỗ trợ tốt nhất:\n\n📱 Telegram: t.me/+0ETUdIuYUzdhZWQ1\n📧 Email: support@thebenchmarktrader.com\n📞 Hotline: +1925 582 0779"
       }
     ],
     "customMessageResponse": "Cảm ơn câu hỏi của bạn! 😊\n\nĐể được hỗ trợ chi tiết hơn, vui lòng liên hệ:\n\n📱 Telegram Group: t.me/+0ETUdIuYUzdhZWQ1\n📧 Email: support@thebenchmarktrader.com\n📞 Hotline: +1925 582 0779\n\nTeam sẽ trả lời trong 1-2 giờ!",

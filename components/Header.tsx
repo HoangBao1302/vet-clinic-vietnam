@@ -143,7 +143,7 @@ export default function Header() {
           <Link href="/" className="flex items-center hover:opacity-80 transition-opacity">
             <Image 
               src="/BenchHeaderLogo.svg" 
-              alt="EA Forex ThebenchmarkTrader" 
+              alt="ThebenchmarkTrader Analytics Software" 
               width={200} 
               height={60}
               className="h-10 sm:h-12 md:h-14 w-auto"
@@ -184,12 +184,6 @@ export default function Header() {
               className="text-gray-700 hover:text-primary-600 transition-colors font-medium whitespace-nowrap"
             >
               {t('nav.aboutEA')}
-            </Link>
-            <Link
-              href="/live-results"
-              className="text-gray-700 hover:text-primary-600 transition-colors font-medium whitespace-nowrap"
-            >
-              {t('nav.liveResults')}
             </Link>
             <Link
               href="/blog"
@@ -413,13 +407,6 @@ export default function Header() {
                 onClick={() => setIsMenuOpen(false)}
               >
                 {t('nav.aboutEA')}
-              </Link>
-              <Link
-                href="/live-results"
-                className="text-left text-gray-700 hover:text-primary-600 transition-colors font-medium"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {t('nav.liveResults')}
               </Link>
               <Link
                 href="/blog"

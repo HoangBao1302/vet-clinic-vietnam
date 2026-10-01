@@ -144,7 +144,7 @@ export default function CopySocialPage() {
                   <li>✓ {locale === 'vi' ? 'Subscription $30-100/tháng' : 'Subscription $30-100/month'}</li>
                 </ul>
                 <Link
-                  href="/live-results"
+                  href="/#proof"
                   className="text-blue-600 font-semibold hover:underline inline-flex items-center gap-1"
                 >
                   {locale === 'vi' ? 'Xem tài khoản MQL5' : 'View MQL5 account'}
@@ -171,7 +171,7 @@ export default function CopySocialPage() {
                   <li>✓ {locale === 'vi' ? 'Setup 1 lần, sync forever' : 'Setup once, sync forever'}</li>
                 </ul>
                 <Link
-                  href="/live-results"
+                  href="/#proof"
                   className="text-green-600 font-semibold hover:underline inline-flex items-center gap-1"
                 >
                   {locale === 'vi' ? 'Xem tài khoản Myfxbook' : 'View Myfxbook account'}
@@ -198,7 +198,7 @@ export default function CopySocialPage() {
                   <li>✓ Profit share 20%</li>
                 </ul>
                 <Link
-                  href="/live-results"
+                  href="/#proof"
                   className="text-orange-600 font-semibold hover:underline inline-flex items-center gap-1"
                 >
                   {locale === 'vi' ? 'Xem Tickmill Social' : 'View Tickmill Social'}
@@ -225,7 +225,7 @@ export default function CopySocialPage() {
                   <li>✓ Profit share 25%</li>
                 </ul>
                 <Link
-                  href="/live-results"
+                  href="/#proof"
                   className="text-purple-600 font-semibold hover:underline inline-flex items-center gap-1"
                 >
                   {locale === 'vi' ? 'Xem PuPrime Social' : 'View PuPrime Social'}

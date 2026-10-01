@@ -136,18 +136,18 @@ export async function POST(request: NextRequest) {
     // Chuẩn hoá topic
     const topicMap: Record<string, string> = {
       demo: "Tải Demo miễn phí",
-      purchase: "Mua EA đầy đủ",
-      support: "Hỗ trợ kỹ thuật",
-      custom: "Tùy chỉnh EA",
+      purchase: "Purchase software license",
+      support: "Technical support",
+      custom: "Customize toolkit",
     };
     const topicText = topicMap[topic] || topic;
 
     // Email HTML (đã escape)
-    const subject = `[EA ThebenchmarkTrader] ${topicText} - ${escapeHtml(name)}`;
+    const subject = `[ThebenchmarkTrader Analytics] ${topicText} - ${escapeHtml(name)}`;
     const html = `
       <div style="font-family:Arial,Helvetica,sans-serif;max-width:640px;margin:0 auto;line-height:1.6">
         <h2 style="color:#1e40af;border-bottom:2px solid #1e40af;padding-bottom:8px;margin:0 0 12px">
-          Yêu cầu mới từ website EA ThebenchmarkTrader
+          Yêu cầu mới từ website ThebenchmarkTrader Analytics Software
         </h2>
         <p><b>IP:</b> ${escapeHtml(ip)}</p>
         <div style="background:#f8fafc;padding:16px;border-radius:8px;margin:16px 0">
@@ -158,10 +158,10 @@ export async function POST(request: NextRequest) {
         ${
           broker || accountId || server
             ? `<div style="background:#e0f2fe;padding:16px;border-radius:8px;margin:16px 0;border-left:4px solid #0284c7">
-                <p style="font-weight:bold;margin-bottom:8px">📊 Thông tin Broker:</p>
-                ${broker ? `<p><b>Broker:</b> ${escapeHtml(broker)}</p>` : ''}
-                ${accountId ? `<p><b>Account ID:</b> ${escapeHtml(accountId)}</p>` : ''}
-                ${server ? `<p><b>Server:</b> ${escapeHtml(server)}</p>` : ''}
+                <p style="font-weight:bold;margin-bottom:8px">📊 License Activation:</p>
+                ${broker ? `<p><b>Preferred Data Feed Platform:</b> ${escapeHtml(broker)}</p>` : ''}
+                ${accountId ? `<p><b>MetaTrader Terminal Client ID:</b> ${escapeHtml(accountId)}</p>` : ''}
+                ${server ? `<p><b>Connection Environment / Terminal Server:</b> ${escapeHtml(server)}</p>` : ''}
               </div>`
             : ""
         }

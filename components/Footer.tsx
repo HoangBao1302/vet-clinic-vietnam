@@ -99,11 +99,6 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/live-results" className="text-gray-300 hover:text-white transition-colors">
-                  {t('nav.liveResults')}
-                </Link>
-              </li>
-              <li>
                 <Link href="/blog" className="text-gray-300 hover:text-white transition-colors">
                   {t('nav.blog')}
                 </Link>
@@ -217,7 +212,7 @@ export default function Footer() {
               <Link href="/terms" className="text-gray-300 hover:text-white text-sm transition-colors">
                 {t('footer.links.terms')}
               </Link>
-              <Link href="/live-results#risk-warning" className="text-gray-300 hover:text-white text-sm transition-colors">
+              <Link href="/terms" className="text-gray-300 hover:text-white text-sm transition-colors">
                 {t('footer.riskWarning')}
               </Link>
             </div>
