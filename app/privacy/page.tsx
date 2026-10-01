@@ -312,7 +312,7 @@ export default function PrivacyPolicy() {
                   </p>
                   <div className="bg-gray-50 p-4 rounded-lg">
                     <p className="text-gray-700 mb-2"><strong>{isEn ? "Company:" : "Công ty:"}</strong> Thebenchmarktrader LLC</p>
-                    <p className="text-gray-700 mb-2"><strong>{isEn ? "Address:" : "Địa chỉ:"}</strong> 177 S Lexington St Ste 100, Harrisonville, MO 64701</p>
+                    <p className="text-gray-700 mb-2"><strong>{isEn ? "Address:" : "Địa chỉ:"}</strong> 117 S Lexington St Ste 100, Harrisonville, MO 64701</p>
                     <p className="text-gray-700 mb-2"><strong>Email:</strong> privacy@thebenchmarktrader.com</p>
                     <p className="text-gray-700 mb-2"><strong>Hotline:</strong> +1925 582 0779</p>
                     <p className="text-gray-700 mb-2"><strong>Telegram:</strong> @thebenchmarktrader</p>

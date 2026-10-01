@@ -84,7 +84,7 @@ export default function TermsOfService() {
                   </p>
                   <p className="text-gray-700 mb-3">
                     <strong>{isEn ? '"Company"' : '"Công ty"'}</strong>{" "}
-                    - Thebenchmarktrader LLC, 177 S Lexington St Ste 100, Harrisonville, MO 64701.
+                    - Thebenchmarktrader LLC, 117 S Lexington St Ste 100, Harrisonville, MO 64701.
                   </p>
                 </div>
 
@@ -267,7 +267,7 @@ export default function TermsOfService() {
                 </h2>
                 <div className="mb-6">
                   <p className="text-gray-700 mb-3"><strong>{isEn ? "Company:" : "Công ty:"}</strong> Thebenchmarktrader LLC</p>
-                  <p className="text-gray-700 mb-3"><strong>{isEn ? "Address:" : "Địa chỉ:"}</strong> 177 S Lexington St Ste 100, Harrisonville, MO 64701</p>
+                  <p className="text-gray-700 mb-3"><strong>{isEn ? "Address:" : "Địa chỉ:"}</strong> 117 S Lexington St Ste 100, Harrisonville, MO 64701</p>
                   <p className="text-gray-700 mb-3"><strong>Email:</strong> support@thebenchmarktrader.com</p>
                   <p className="text-gray-700 mb-3"><strong>Hotline:</strong> +1925 582 0779</p>
                   <p className="text-gray-700 mb-3"><strong>Telegram:</strong> @thebenchmarktrader</p>

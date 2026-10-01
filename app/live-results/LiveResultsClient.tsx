@@ -376,7 +376,7 @@ export default function LiveResultsClient({ initialAccounts }: { initialAccounts
                   </p>
                   {locale === "en" && (
                     <p>
-                      <strong>Operator:</strong> Thebenchmarktrader LLC, 177 S Lexington St Ste 100, Harrisonville, MO 64701
+                      <strong>Operator:</strong> Thebenchmarktrader LLC, 117 S Lexington St Ste 100, Harrisonville, MO 64701
                     </p>
                   )}
                 </div>
