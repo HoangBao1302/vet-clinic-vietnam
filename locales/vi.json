@@ -118,7 +118,7 @@
     "emergencyTitle": "Ngưỡng dừng khẩn cấp",
     "emergencyDesc": "Hệ thống thống kê cảnh báo khi drawdown vượt ngưỡng hoặc phát hiện bất thường trên dữ liệu.",
     "warningTitle": "Lưu ý quan trọng",
-    "warningDesc": "Giao dịch Forex có rủi ro cao. Kết quả trong quá khứ không đảm bảo kết quả tương lai. Hãy chỉ đầu tư số tiền bạn có thể chấp nhận mất."
+    "warningDesc": "Phân tích dữ liệu tài chính có rủi ro cao. Kết quả mô phỏng trong quá khứ không đảm bảo kết quả tương lai. Hãy chỉ dùng số vốn bạn có thể chấp nhận mất."
   },
   "proof": {
     "title": "Thống kê hiệu suất mô phỏng lịch sử (2020-2024)",
@@ -165,7 +165,7 @@
     "drawdown": "DD",
     "days": "Days",
     "viewAccount": "Xem Tài Khoản",
-    "disclaimer": "Lưu ý: Hiệu suất quá khứ không đảm bảo kết quả tương lai. Giao dịch Forex có rủi ro cao.",
+    "disclaimer": "Lưu ý: Kết quả mô phỏng trong quá khứ không đảm bảo kết quả tương lai. Phân tích dữ liệu tài chính có rủi ro cao.",
     "seeAllAccounts": "Xem Tất Cả Tài Khoản",
     "videoGuide": "Video Hướng Dẫn Copy Trade"
   },
@@ -430,7 +430,7 @@
     },
     "riskWarning": {
       "title": "Cảnh báo rủi ro quan trọng",
-      "subtitle": "Giao dịch Forex và CFD có rủi ro cao và có thể không phù hợp với tất cả nhà đầu tư.",
+      "subtitle": "Phân tích dữ liệu tài chính có rủi ro cao và có thể không phù hợp với tất cả nhà đầu tư.",
       "financialTitle": "Rủi ro tài chính",
       "financial1": "Bạn có thể mất toàn bộ số vốn đầu tư",
       "financial2": "Kết quả trong quá khứ không đảm bảo kết quả tương lai",

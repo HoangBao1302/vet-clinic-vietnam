@@ -118,7 +118,7 @@
     "emergencyTitle": "Emergency Stop Threshold",
     "emergencyDesc": "The statistics engine alerts when drawdown exceeds a threshold or detects anomalies in the data.",
     "warningTitle": "Important Notice",
-    "warningDesc": "Forex trading carries high risk. Past performance does not guarantee future results. Only invest money you can afford to lose."
+    "warningDesc": "Financial data analysis carries high risk. Simulated past results do not guarantee future outcomes. Only use capital you can afford to lose."
   },
   "proof": {
     "title": "Historical Simulation Analysis (2020-2024)",
@@ -165,7 +165,7 @@
     "drawdown": "DD",
     "days": "Days",
     "viewAccount": "View Account",
-    "disclaimer": "Note: Past performance does not guarantee future results. Forex trading carries high risk.",
+    "disclaimer": "Note: Simulated past results do not guarantee future outcomes. Financial data analysis carries high risk.",
     "seeAllAccounts": "See All Accounts",
     "videoGuide": "Copy Trade Video Guide"
   },
@@ -430,7 +430,7 @@
     },
     "riskWarning": {
       "title": "Important Risk Warning",
-      "subtitle": "Forex and CFD trading carries high risk and may not be suitable for all investors.",
+      "subtitle": "Financial data analysis carries high risk and may not be suitable for all investors.",
       "financialTitle": "Financial Risks",
       "financial1": "You may lose your entire investment capital",
       "financial2": "Past performance does not guarantee future results",
