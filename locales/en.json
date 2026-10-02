@@ -651,7 +651,7 @@
       "download": "Download",
       "downloadFree": "Free Download",
       "buyStripe": "Buy with Stripe (Card)",
-      "buyPaypal": "Buy with PayPal (Sandbox)",
+      "buyPaypal": "Pay with PayPal",
       "buyBank": "Bank Transfer"
     },
     "pdfSection": {
@@ -696,7 +696,7 @@
       "badge": "Premium Products",
       "title": "Professional EA & Indicators",
       "description": "Pro tools with verified results. One-time purchase, lifetime use. Updates and VIP support included.",
-      "paymentMethods": "Payment: Stripe, PayPal, Bank Transfer",
+      "paymentMethods": "Payment: PayPal",
       "oneTimePurchase": "One-time purchase, lifetime use",
       "mt4Title": "MT4 Products",
       "mt5Title": "MT5 Products",

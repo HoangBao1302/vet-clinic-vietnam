@@ -651,7 +651,7 @@
       "download": "Tải Xuống",
       "downloadFree": "Tải Miễn Phí",
       "buyStripe": "Mua qua Stripe (Card)",
-      "buyPaypal": "Mua qua PayPal (Sandbox)",
+      "buyPaypal": "Thanh toán PayPal",
       "buyBank": "Chuyển khoản Ngân hàng"
     },
     "pdfSection": {
@@ -696,7 +696,7 @@
       "badge": "Sản Phẩm Premium",
       "title": "EA & Indicators Chuyên Nghiệp",
       "description": "Công cụ pro với verified results. Mua 1 lần, dùng trọn đời. Hỗ trợ cập nhật và VIP support.",
-      "paymentMethods": "Thanh toán: Stripe, PayPal, Chuyển khoản",
+      "paymentMethods": "Thanh toán: PayPal",
       "oneTimePurchase": "Mua 1 lần, dùng trọn đời",
       "mt4Title": "Sản Phẩm MT4",
       "mt5Title": "Sản Phẩm MT5",

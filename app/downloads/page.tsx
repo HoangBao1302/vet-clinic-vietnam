@@ -404,7 +404,7 @@ export default function DownloadsPage() {
       : item.description;
 
     return (
-      <div key={item.id} className="bg-white border-2 border-purple-200 rounded-xl p-6 hover:border-purple-500 hover:shadow-2xl transition-all">
+      <div key={item.id} className="bg-white border-2 border-purple-200 rounded-xl p-5 sm:p-6 hover:border-purple-500 hover:shadow-2xl transition-all flex flex-col h-full">
         <div className="flex items-start justify-between mb-4">
           <div className="p-3 bg-purple-100 rounded-lg">
             <Lock className="text-purple-600" size={24} />
@@ -432,75 +432,72 @@ export default function DownloadsPage() {
           <span>{item.size}</span>
         </div>
 
-        <div className="mb-4 p-4 bg-purple-50 rounded-lg">
-          <div className="text-3xl font-bold text-purple-600 mb-1">
-            {formatUsd(item.price || 0)}
-          </div>
-          <div className="text-xs text-gray-600">
-            {t('downloads.paidSection.oneTimePurchase')}
-          </div>
-        </div>
+        <div className="mt-auto">
+          <div className="rounded-xl bg-purple-50 p-4 mb-4">
+            <div className="mb-3">
+              <div className="text-2xl sm:text-3xl font-bold text-purple-600 leading-none">
+                {formatUsd(item.price || 0)}
+              </div>
+              <div className="text-xs text-gray-600 mt-1">
+                {t('downloads.paidSection.oneTimePurchase')}
+              </div>
+            </div>
 
-        {/* Purchase Buttons */}
-        <div className="space-y-2 mb-4">
-          {/* PayPal Button */}
-          <button
-            onClick={() => isPaymentMethodEnabled('paypal') && handlePurchase(item, "paypal")}
-            disabled={!isPaymentMethodEnabled('paypal')}
-            className={`w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-semibold transition-colors ${
-              isPaymentMethodEnabled('paypal')
-                ? 'bg-yellow-500 text-white hover:bg-yellow-600 cursor-pointer'
-                : 'bg-gray-300 text-gray-500 cursor-not-allowed opacity-60'
-            }`}
-            title={!isPaymentMethodEnabled('paypal') ? (locale === 'en' ? PAYMENT_METHODS.paypal.disabledMessageEn : PAYMENT_METHODS.paypal.disabledMessage) : ''}
-          >
-            <CreditCard size={18} />
-            <span>{t('downloads.buttons.buyPaypal')}</span>
-            {!isPaymentMethodEnabled('paypal') && (
-              <span className="text-xs ml-2">({locale === 'en' ? PAYMENT_METHODS.paypal.disabledMessageEn : PAYMENT_METHODS.paypal.disabledMessage})</span>
-            )}
-          </button>
+            <div className="flex flex-col gap-2">
+              {isPaymentMethodEnabled('paypal') && (
+                <button
+                  onClick={() => handlePurchase(item, "paypal")}
+                  className="w-full min-h-12 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-[#FFC439] text-[#003087] font-bold hover:bg-[#f5b82e] transition-colors shadow-sm"
+                >
+                  <svg viewBox="0 0 24 24" className="h-5 w-5 shrink-0" aria-hidden="true">
+                    <path fill="#003087" d="M7.2 21H4.7c-.4 0-.7-.3-.8-.7L2 3.7C1.9 3.3 2.2 3 2.6 3h7.3c2.5 0 4.3.5 5.3 1.6.9 1 1.2 2.4.9 4.1-.7 3.6-3.1 5.4-7.1 5.4H7.4l-.8 5.2c-.1.4-.4.7-.8.7z"/>
+                    <path fill="#009CDE" d="M19.2 7.2c0 .2 0 .4-.1.6-.9 4.5-3.8 6.2-8.4 6.2H8.6l-1 6.3c-.1.4-.4.7-.8.7H4.4l.3-2h1.4c.4 0 .8-.3.8-.8l1.2-7.6.1-.4c0-.4.4-.7.8-.7h2.2c3.3 0 5.8-.7 6.8-4.1.1-.3.2-.6.2-.9 1.1.7 1.6 1.8 1.6 3.7z"/>
+                  </svg>
+                  <span className="whitespace-nowrap">{t('downloads.buttons.buyPaypal')}</span>
+                </button>
+              )}
 
-          {isPaymentMethodEnabled('bank') && (
-          <button
-            onClick={() => handlePurchase(item, "bank")}
-            className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-semibold transition-colors bg-green-600 text-white hover:bg-green-700 cursor-pointer"
-          >
-            <CreditCard size={18} />
-            <span>{t('downloads.buttons.buyBank')}</span>
-          </button>
-          )}
-        </div>
-
-        {/* Or Verify Order */}
-        <div className="pt-4 border-t border-gray-200">
-          <p className="text-xs text-gray-600 mb-2 text-center">
-            {t('downloads.verification.alreadyPaid')}
-          </p>
-          <div className="flex gap-2">
-            <input
-              type="text"
-              placeholder={t('downloads.verification.orderCode')}
-              value={verifyingOrder === item.id ? orderCode : ""}
-              onChange={(e) => setOrderCode(e.target.value)}
-              onFocus={() => setVerifyingOrder(item.id)}
-              className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-            />
-            <button
-              onClick={() => handleVerifyOrder(item.id)}
-              disabled={verifyingOrder === item.id && orderCode.trim() === ""}
-              className="px-4 py-2 bg-gray-800 text-white rounded text-sm font-medium hover:bg-gray-900 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {t('downloads.verification.verify')}
-            </button>
+              {isPaymentMethodEnabled('bank') && (
+                <button
+                  onClick={() => handlePurchase(item, "bank")}
+                  className="w-full min-h-12 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-green-600 text-white font-semibold hover:bg-green-700 transition-colors"
+                >
+                  <CreditCard size={18} />
+                  <span className="whitespace-nowrap">{t('downloads.buttons.buyBank')}</span>
+                </button>
+              )}
+            </div>
           </div>
-          {verifyingOrder === item.id && verifyMessage && (
-            <p className={`text-xs mt-2 ${
-              verifyMessage.includes("✅") ? "text-green-600" : "text-red-600"
-            }`}>
-              {verifyMessage}
+
+          <div className="pt-4 border-t border-gray-200">
+            <p className="text-xs text-gray-600 mb-2 text-center">
+              {t('downloads.verification.alreadyPaid')}
             </p>
-          )}
+            <div className="flex flex-col sm:flex-row gap-2">
+              <input
+                type="text"
+                placeholder={t('downloads.verification.orderCode')}
+                value={verifyingOrder === item.id ? orderCode : ""}
+                onChange={(e) => setOrderCode(e.target.value)}
+                onFocus={() => setVerifyingOrder(item.id)}
+                className="w-full sm:flex-1 min-h-11 px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              />
+              <button
+                onClick={() => handleVerifyOrder(item.id)}
+                disabled={verifyingOrder === item.id && orderCode.trim() === ""}
+                className="w-full sm:w-auto min-h-11 px-4 py-2.5 bg-gray-800 text-white rounded-lg text-sm font-medium hover:bg-gray-900 disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
+              >
+                {t('downloads.verification.verify')}
+              </button>
+            </div>
+            {verifyingOrder === item.id && verifyMessage && (
+              <p className={`text-xs mt-2 ${
+                verifyMessage.includes("✅") ? "text-green-600" : "text-red-600"
+              }`}>
+                {verifyMessage}
+              </p>
+            )}
+          </div>
         </div>
       </div>
     );
@@ -690,7 +687,7 @@ export default function DownloadsPage() {
                   <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">
                     {t('downloads.paidSection.mt4Title')}
                   </h3>
-                  <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6 max-w-6xl mx-auto items-stretch">
                     {paidItems.filter(item => item.platform === "MT4").map(renderPaidProductCard)}
                   </div>
                 </div>
@@ -700,7 +697,7 @@ export default function DownloadsPage() {
                   <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">
                     {t('downloads.paidSection.mt5Title')}
                   </h3>
-                  <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6 max-w-6xl mx-auto items-stretch">
                     {paidItems.filter(item => item.platform === "MT5").map(renderPaidProductCard)}
                   </div>
                 </div>
