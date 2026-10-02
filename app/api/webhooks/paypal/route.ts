@@ -16,7 +16,10 @@ export async function POST(request: NextRequest) {
     const eventType = body.event_type;
     
     if (eventType === "CHECKOUT.ORDER.APPROVED" || eventType === "PAYMENT.CAPTURE.COMPLETED") {
-      const orderId = body.resource?.id || body.resource?.supplementary_data?.related_ids?.order_id;
+      const orderId =
+        eventType === "PAYMENT.CAPTURE.COMPLETED"
+          ? body.resource?.supplementary_data?.related_ids?.order_id || body.resource?.id
+          : body.resource?.id || body.resource?.supplementary_data?.related_ids?.order_id;
       const payerEmail = body.resource?.payer?.email_address || body.resource?.payer?.email;
       const payerName = body.resource?.payer?.name;
       

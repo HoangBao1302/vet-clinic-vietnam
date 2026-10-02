@@ -14,21 +14,15 @@ function SuccessContent() {
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
   const sessionId = searchParams.get("session_id");
-  const orderId = searchParams.get("order") || searchParams.get("token") || searchParams.get("PayerID");
-  const paymentMethod = searchParams.get("payment_method") || "stripe";
+  const paypalToken =
+    searchParams.get("token") ||
+    searchParams.get("order") ||
+    (typeof window !== "undefined" ? localStorage.getItem("paypalOrderId") : null);
+  const paymentMethod = searchParams.get("payment_method") || (sessionId ? "stripe" : "paypal");
 
   useEffect(() => {
     const verifyPayment = async () => {
-      // Debug: log all search params
-      const allParams: { [key: string]: string | null } = {};
-      searchParams.forEach((value, key) => {
-        allParams[key] = value;
-      });
-      console.log("All search params:", allParams);
-      console.log("Payment verification:", { sessionId, orderId, paymentMethod });
-      
       if (sessionId && paymentMethod === "stripe") {
-        // Fetch order info from Stripe session
         try {
           const res = await fetch(`/api/get-order?session_id=${sessionId}`);
           const data = await res.json();
@@ -36,50 +30,52 @@ function SuccessContent() {
         } catch (err) {
           console.error("Stripe verification error:", err);
         }
-      } else if (orderId) {
-        // For PayPal, save order and send email
-        console.log("PayPal order approved:", orderId);
-        
-        // Get customer info from AuthContext, URL params, or fallback
-        // Try to get user info from localStorage first to avoid auth context issues
-        let userEmail = user?.email;
-        let userName = user?.username;
-        
-        if (!userEmail || !userName) {
-          try {
-            const storedUser = localStorage.getItem('user');
-            if (storedUser) {
-              const parsedUser = JSON.parse(storedUser);
-              userEmail = userEmail || parsedUser.email;
-              userName = userName || parsedUser.username;
-            }
-          } catch (error) {
-            console.warn('Error parsing stored user:', error);
-          }
-        }
-        
-        // NOTE: Order saving and email sending are now handled by PayPal webhook
-        // No need to manually save order here - webhook already did it
-        console.log("PayPal order will be processed by webhook automatically")
-        
-        setOrderInfo({
-          orderId: orderId,
-          status: "paid",
-          paymentMethod: "paypal",
-        });
-      } else if (sessionId || orderId) {
-        // Fallback for direct order ID
-        setOrderInfo({
-          orderId: orderId || sessionId,
-          status: "paid",
-          paymentMethod: paymentMethod,
-        });
+        setLoading(false);
+        return;
       }
+
+      if (paypalToken) {
+        try {
+          const storedUser = localStorage.getItem("user");
+          const parsedUser = storedUser ? JSON.parse(storedUser) : null;
+          const res = await fetch("/api/paypal/capture-order", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              orderId: paypalToken,
+              customerInfo: {
+                email: searchParams.get("email") || user?.email || parsedUser?.email || "",
+                name: searchParams.get("name") || user?.username || parsedUser?.username || "",
+                phone: searchParams.get("phone") || "",
+              },
+            }),
+          });
+          const data = await res.json();
+          setOrderInfo({
+            orderId: paypalToken,
+            status: data.success ? "paid" : "pending",
+            paymentMethod: "paypal",
+            productName: data.productName,
+            error: data.success ? undefined : data.error,
+          });
+        } catch (error) {
+          console.error("PayPal capture error:", error);
+          setOrderInfo({
+            orderId: paypalToken,
+            status: "pending",
+            paymentMethod: "paypal",
+            error: "Không xác nhận được thanh toán PayPal. Vui lòng liên hệ support kèm mã đơn.",
+          });
+        }
+        setLoading(false);
+        return;
+      }
+
       setLoading(false);
     };
 
     verifyPayment();
-  }, [sessionId, orderId, paymentMethod, searchParams]);
+  }, [sessionId, paypalToken, paymentMethod, searchParams, user]);
 
   if (loading) {
     return (
@@ -122,7 +118,7 @@ function SuccessContent() {
               <div className="text-sm text-gray-600 mb-2">Mã đơn hàng:</div>
               <div className="bg-white border border-blue-200 rounded-lg p-4 mb-3">
                 <div className="text-sm font-mono text-blue-600 break-all leading-relaxed">
-                  {orderInfo?.orderId || sessionId || orderId || "Loading..."}
+                  {orderInfo?.orderId || sessionId || paypalToken || "Loading..."}
                 </div>
               </div>
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
@@ -159,8 +155,11 @@ function SuccessContent() {
 
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              {orderInfo?.error && (
+                <p className="text-sm text-red-600 mb-4">{orderInfo.error}</p>
+              )}
               <Link
-                href="/downloads"
+                href={`/downloads${orderInfo?.orderId ? `?order=${encodeURIComponent(orderInfo.orderId)}` : ""}`}
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-blue-600 text-white rounded-lg font-bold text-lg hover:bg-blue-700 transition-colors"
               >
                 <Download size={24} />

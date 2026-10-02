@@ -188,6 +188,18 @@ export default function DownloadsPage() {
 
   // Fetch products and handle auth check
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const orderFromUrl = params.get("order");
+      const productFromUrl = params.get("productId");
+      if (orderFromUrl) {
+        setOrderCode(orderFromUrl);
+        if (productFromUrl) {
+          setVerifyingOrder(productFromUrl);
+        }
+      }
+    }
+
     // Fetch products from MongoDB
     fetchProducts();
     

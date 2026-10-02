@@ -1,11 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getPayPalAccessToken, getPayPalApiBase, isPayPalConfigured } from "@/lib/paypal";
+import {
+  getPayPalAccessToken,
+  getPayPalApiBase,
+  isPayPalConfigured,
+} from "@/lib/paypal";
+import { fulfillPaidPayPalOrder, parsePayPalCustomId } from "@/lib/paypalFulfill";
+
+async function fetchPayPalOrder(orderId: string, accessToken: string) {
+  const response = await fetch(`${getPayPalApiBase()}/v2/checkout/orders/${orderId}`, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    },
+  });
+  return response.json();
+}
 
 export async function POST(request: NextRequest) {
   try {
     const { orderId, productId, productName, amount, customerInfo } = await request.json();
 
-    // Validate input
     if (!orderId) {
       return NextResponse.json(
         { success: false, error: "Missing order ID" },
@@ -13,7 +27,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check if PayPal is configured
     if (!isPayPalConfigured()) {
       return NextResponse.json(
         { success: false, error: "PayPal not configured" },
@@ -29,7 +42,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const response = await fetch(
+    const captureResponse = await fetch(
       `${getPayPalApiBase()}/v2/checkout/orders/${orderId}/capture`,
       {
         method: "POST",
@@ -42,115 +55,70 @@ export async function POST(request: NextRequest) {
       }
     );
 
-    const captureData = await response.json();
+    let paypalOrder = await captureResponse.json();
 
-    if (!response.ok) {
-      console.error("PayPal capture failed:", captureData);
-      return NextResponse.json(
-        { success: false, error: `PayPal capture error: ${captureData.message || "Unknown error"}` },
-        { status: 500 }
-      );
+    if (!captureResponse.ok) {
+      const issue = paypalOrder?.details?.[0]?.issue;
+      if (issue === "ORDER_ALREADY_CAPTURED" || paypalOrder?.name === "UNPROCESSABLE_ENTITY") {
+        paypalOrder = await fetchPayPalOrder(orderId, accessToken);
+      } else {
+        console.error("PayPal capture failed:", paypalOrder);
+        return NextResponse.json(
+          { success: false, error: paypalOrder.message || "PayPal capture error" },
+          { status: 500 }
+        );
+      }
     }
 
-    // Check if payment was successful
-    if (captureData.status === "COMPLETED") {
-      // Log the successful payment
-      console.log("PayPal payment successful:", orderId);
-
-      // Create order record
-      const order = {
-        orderId: orderId,
-        productId: productId || captureData.purchase_units[0]?.reference_id,
-        status: "paid",
-        customerEmail: customerInfo?.email || captureData.payer?.email_address,
-        customerName: customerInfo?.name || `${captureData.payer?.name?.given_name || ''} ${captureData.payer?.name?.surname || ''}`.trim(),
-        customerPhone: customerInfo?.phone || captureData.payer?.phone?.phone_number?.national_number,
-        amount: parseFloat(captureData.purchase_units[0]?.payments?.captures[0]?.amount?.value || "0") * 100, // Convert to cents
-        createdAt: new Date().toISOString(),
-        paidAt: new Date().toISOString(),
-        paymentMethod: "paypal",
-      };
-
-      console.log("Order details:", order);
-
-      // Send email notification using Nodemailer
-      const customerEmail = order.customerEmail;
-      if (customerEmail) {
-        try {
-          const { sendEmail } = await import("@/lib/email");
-          
-          await sendEmail({
-            to: customerEmail,
-            subject: "✅ Thanh toán thành công - Download EA ThebenchmarkTrader",
-            html: `
-              <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px 20px; text-align: center;">
-                  <h1 style="margin: 0; font-size: 32px;">🎉 Thanh toán thành công!</h1>
-                </div>
-                
-                <div style="padding: 40px 20px; background: #f8f9fa;">
-                  <h2 style="color: #333;">Cảm ơn bạn đã mua hàng!</h2>
-                  
-                  <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0;">
-                    <p><strong>Mã đơn hàng:</strong> ${orderId}</p>
-                    <p><strong>Sản phẩm:</strong> ${productName || "EA ThebenchmarkTrader"}</p>
-                    <p><strong>Số tiền:</strong> ${(order.amount / 100).toLocaleString("vi-VN")}đ</p>
-                    <p><strong>Phương thức:</strong> PayPal</p>
-                  </div>
-                  
-                  <div style="text-align: center; margin: 30px 0;">
-                    <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'https://ThebenchmarkTrader.com'}/downloads?order=${orderId}" 
-                       style="display: inline-block; padding: 15px 40px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 18px;">
-                      Tải xuống ngay
-                    </a>
-                  </div>
-                  
-                  <div style="background: #e0f2fe; padding: 20px; border-radius: 8px; margin: 20px 0;">
-                    <h3 style="color: #1e40af; margin-top: 0;">📋 Hướng dẫn cài đặt:</h3>
-                    <ol style="color: #1e3a8a; margin: 10px 0; padding-left: 20px;">
-                      <li>Giải nén file (nếu là .zip)</li>
-                      <li>Copy file .ex4 vào thư mục MT4/MQL4/Experts</li>
-                      <li>Restart MetaTrader</li>
-                      <li>Drag EA lên chart và configure</li>
-                    </ol>
-                  </div>
-                  
-                  <h3>Cần hỗ trợ?</h3>
-                  <ul style="list-style: none; padding: 0;">
-                    <li>📧 Email: support@thebenchmarktrader.com</li>
-                    <li>📱 Telegram Group: t.me/+0ETUdIuYUzdhZWQ1</li>
-                    <li>📞 Hotline: +1925 582 0779</li>
-                  </ul>
-                </div>
-                
-                <div style="text-align: center; padding: 20px; color: #6b7280; font-size: 14px;">
-                  <p>EA Forex ThebenchmarkTrader<br>© 2025 All rights reserved</p>
-                </div>
-              </div>
-            `,
-          });
-        } catch (emailError) {
-          console.error("Error sending email:", emailError);
-          // Continue even if email fails
-        }
-      }
-
-      return NextResponse.json({
-        success: true,
-        orderId: orderId,
-        status: "completed",
-        message: "Payment captured successfully",
-      });
-    } else {
+    if (paypalOrder.status !== "COMPLETED") {
       return NextResponse.json(
         { success: false, error: "Payment not completed" },
         { status: 400 }
       );
     }
-  } catch (error: any) {
+
+    const unit = paypalOrder.purchase_units?.[0];
+    const custom = parsePayPalCustomId(unit?.custom_id);
+    const resolvedProductId = productId || unit?.reference_id || custom.productId;
+    const capturedValue = parseFloat(
+      unit?.payments?.captures?.[0]?.amount?.value || unit?.amount?.value || amount || "0"
+    );
+    const email =
+      customerInfo?.email || custom.email || paypalOrder.payer?.email_address;
+
+    if (!resolvedProductId || !email) {
+      return NextResponse.json(
+        { success: false, error: "Missing product or customer email after capture" },
+        { status: 400 }
+      );
+    }
+
+    const fulfillment = await fulfillPaidPayPalOrder({
+      orderId,
+      productId: resolvedProductId,
+      customerEmail: email,
+      customerName: customerInfo?.name || custom.name || `${paypalOrder.payer?.name?.given_name || ""} ${paypalOrder.payer?.name?.surname || ""}`.trim(),
+      customerPhone: customerInfo?.phone || custom.phone || "",
+      amountUsd: capturedValue,
+      broker: customerInfo?.broker || custom.broker,
+      accountId: customerInfo?.accountId || custom.accountId,
+      server: customerInfo?.server || custom.server,
+    });
+
+    return NextResponse.json({
+      success: true,
+      orderId,
+      status: "completed",
+      paymentMethod: "paypal",
+      productId: fulfillment.productId,
+      productName: fulfillment.productName,
+      emailed: fulfillment.emailed,
+    });
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : "PayPal capture error";
     console.error("PayPal capture error:", error);
     return NextResponse.json(
-      { success: false, error: error.message },
+      { success: false, error: message },
       { status: 500 }
     );
   }
