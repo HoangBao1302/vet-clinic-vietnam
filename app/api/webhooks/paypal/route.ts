@@ -4,6 +4,7 @@ import AffiliateClick from "@/lib/models/AffiliateClick";
 import User from "@/lib/models/User";
 import Order from "@/lib/models/Order";
 import { PRODUCT_PRICES_USD } from "@/config/productPrices";
+import { fulfillPaidPayPalOrder } from "@/lib/paypalFulfill";
 
 // Force rebuild: 2024-10-29 21:15 - Fix PayPal webhook deployment issue
 export async function POST(request: NextRequest) {
@@ -700,113 +701,28 @@ export async function POST(request: NextRequest) {
         
         // CRITICAL: Use shouldSendEmail flag set during DB operation
         // This prevents duplicate emails from multiple webhook events
-        if (emailRecipient && shouldSendEmail) {
+        if (emailRecipient && shouldSendEmail && productId && orderId) {
           try {
-            const { sendEmail } = await import("@/lib/email");
-            
             console.log('📧 Sending email notification:', {
               to: emailRecipient,
               orderId,
               productId,
               reason: wasOrderCreated ? 'New order' : 'Order updated with correct data'
             });
-            
-            // Get product name for email with MT4/MT5 distinction
-            const productNames: Record<string, string> = {
-              // MT4 Products
-              'indicator-pro-mt4': 'Multi-Indicator Pro Pack (MT4)',
-              'ea-full-mt4': 'EA ThebenchmarkTrader Full Version (MT4)',
-              'ea-pro-source-mt4': 'EA ThebenchmarkTrader Pro + Source Code (MT4)',
-              // MT5 Products
-              'indicator-pro-mt5': 'Multi-Indicator Pro Pack (MT5)',
-              'ea-full-mt5': 'EA ThebenchmarkTrader Full Version (MT5)',
-              'ea-pro-source-mt5': 'EA ThebenchmarkTrader Pro + Source Code (MT5)',
-              // Legacy products
-              'ea-full': 'EA ThebenchmarkTrader Full Version',
-              'ea-pro-source': 'EA Pro + Source Code',
-              'indicator-pro': 'Multi-Indicator Pro Pack',
-              'course': 'Khóa học Forex Trading',
-              'social-copy': 'Copy Social Trading',
-            };
-            const productName = productNames[productId] || 'EA ThebenchmarkTrader';
-            
-            console.log('📧 Sending email to:', emailRecipient, '(real customer email)');
-            
-            await sendEmail({
-              to: emailRecipient,
-              subject: "✅ Thanh toán thành công - Download EA ThebenchmarkTrader",
-              html: `
-                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-                  <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px 20px; text-align: center;">
-                    <h1 style="margin: 0; font-size: 32px;">🎉 Thanh toán thành công!</h1>
-                  </div>
-                  
-                  <div style="padding: 40px 20px; background: #f8f9fa;">
-                    <h2 style="color: #333;">Cảm ơn bạn đã mua hàng!</h2>
-                    
-                    <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0;">
-                      <p><strong>Mã đơn hàng:</strong> ${orderId}</p>
-                      <p><strong>Sản phẩm:</strong> ${productName}</p>
-                      <p><strong>Phương thức:</strong> PayPal</p>
-                      ${amountVND > 0 ? `<p><strong>Số tiền:</strong> ${amountVND.toLocaleString('vi-VN')}₫ (≈ $${amountUSD.toFixed(2)} USD)</p>` : ''}
-                    </div>
-                    
-                    <div style="text-align: center; margin: 30px 0;">
-                      <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'https://ThebenchmarkTrader.com'}/downloads?order=${orderId}&productId=${productId}" 
-                         style="display: inline-block; padding: 15px 40px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 18px;">
-                        Tải xuống ngay
-                      </a>
-                    </div>
-                    
-                    <div style="background: #e0f2fe; padding: 20px; border-radius: 8px; margin: 20px 0;">
-                      <h3 style="color: #1e40af; margin-top: 0;">📋 Hướng dẫn cài đặt:</h3>
-                      ${productId.includes('mt5') ? `
-                        <ol style="color: #1e3a8a; margin: 10px 0; padding-left: 20px;">
-                          <li>Giải nén file (nếu là .zip)</li>
-                          <li>Copy file .ex5 vào thư mục MT5/MQL5/Experts</li>
-                          <li>Restart MetaTrader 5</li>
-                          <li>Drag EA lên chart và configure</li>
-                        </ol>
-                        <p style="color: #059669; font-weight: bold;">📱 Phiên bản MT5 - Dành cho MetaTrader 5</p>
-                      ` : `
-                        <ol style="color: #1e3a8a; margin: 10px 0; padding-left: 20px;">
-                          <li>Giải nén file (nếu là .zip)</li>
-                          <li>Copy file .ex4 vào thư mục MT4/MQL4/Experts</li>
-                          <li>Restart MetaTrader 4</li>
-                          <li>Drag EA lên chart và configure</li>
-                        </ol>
-                        <p style="color: #059669; font-weight: bold;">📱 Phiên bản MT4 - Dành cho MetaTrader 4</p>
-                      `}
-                    </div>
-                    
-                    <h3>Cần hỗ trợ?</h3>
-                    <ul style="list-style: none; padding: 0;">
-                      <li>📧 Email: support@thebenchmarktrader.com</li>
-                      <li>📱 Telegram Group: t.me/+0ETUdIuYUzdhZWQ1</li>
-                      <li>📞 Hotline: +1925 582 0779</li>
-                    </ul>
-                  </div>
-                  
-                  <div style="text-align: center; padding: 20px; color: #6b7280; font-size: 14px;">
-                    <p>EA Forex ThebenchmarkTrader<br>© 2025 All rights reserved</p>
-                  </div>
-                </div>
-              `,
+
+            const fulfillment = await fulfillPaidPayPalOrder({
+              orderId,
+              productId,
+              customerEmail: emailRecipient,
+              customerName: finalCustomerName,
+              customerPhone: finalCustomerPhone,
+              amountUsd: amountUSD,
+              broker,
+              accountId,
+              server,
             });
-            
-            console.log("✅ Email sent successfully to:", emailRecipient);
-            
-            // CRITICAL: Mark email as sent to prevent duplicates
-            try {
-              await connectDB();
-              await Order.updateOne(
-                { orderId: orderId },
-                { $set: { emailSent: true } }
-              );
-              console.log("✅ Order marked as emailSent = true");
-            } catch (updateError) {
-              console.error("❌ Failed to update emailSent flag:", updateError);
-            }
+
+            console.log("✅ PayPal fulfillment result:", fulfillment);
           } catch (emailError) {
             console.error("❌ Error sending email:", emailError);
           }

@@ -52,14 +52,15 @@ export async function fulfillPaidPayPalOrder(input: FulfillInput) {
   const siteUrl = getPayPalSiteUrl();
   const downloadPath = getPayPalDownloadUrl(input.productId);
   const downloadsPage = `${siteUrl}/downloads?order=${encodeURIComponent(input.orderId)}&productId=${encodeURIComponent(input.productId)}`;
+  const isMt5 = input.productId.toLowerCase().includes("mt5");
 
-  await sendEmail({
+  const emailResult = await sendEmail({
     to: input.customerEmail,
-    subject: "✅ Thanh toán thành công - Download ThebenchmarkTrader",
+    subject: "✅ Thanh toán thành công - Download EA ThebenchmarkTrader",
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px 20px; text-align: center;">
-          <h1 style="margin: 0; font-size: 32px;">Thanh toán thành công!</h1>
+          <h1 style="margin: 0; font-size: 32px;">🎉 Thanh toán thành công!</h1>
         </div>
         <div style="padding: 40px 20px; background: #f8f9fa;">
           <h2 style="color: #333;">Cảm ơn bạn đã mua hàng!</h2>
@@ -77,20 +78,44 @@ export async function fulfillPaidPayPalOrder(input: FulfillInput) {
             </a>
           </div>
           ${downloadPath ? `<p style="font-size: 13px; color: #6b7280;">Link trực tiếp (cần đăng nhập): <a href="${siteUrl}${downloadPath}">${siteUrl}${downloadPath}</a></p>` : ""}
+          <div style="background: #e0f2fe; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <h3 style="color: #1e40af; margin-top: 0;">📋 Hướng dẫn cài đặt:</h3>
+            ${isMt5 ? `
+              <ol style="color: #1e3a8a; margin: 10px 0; padding-left: 20px;">
+                <li>Giải nén file (nếu là .zip)</li>
+                <li>Copy file .ex5 vào thư mục MT5/MQL5/Experts hoặc Indicators</li>
+                <li>Restart MetaTrader 5</li>
+                <li>Kéo sản phẩm lên chart và cấu hình</li>
+              </ol>
+              <p style="color: #059669; font-weight: bold;">Phiên bản MT5 - Dành cho MetaTrader 5</p>
+            ` : `
+              <ol style="color: #1e3a8a; margin: 10px 0; padding-left: 20px;">
+                <li>Giải nén file (nếu là .zip)</li>
+                <li>Copy file .ex4 vào thư mục MT4/MQL4/Experts hoặc Indicators</li>
+                <li>Restart MetaTrader 4</li>
+                <li>Kéo sản phẩm lên chart và cấu hình</li>
+              </ol>
+              <p style="color: #059669; font-weight: bold;">Phiên bản MT4 - Dành cho MetaTrader 4</p>
+            `}
+          </div>
           <h3>Cần hỗ trợ?</h3>
           <ul style="list-style: none; padding: 0;">
-            <li>Email: support@thebenchmarktrader.com</li>
-            <li>Telegram: t.me/+0ETUdIuYUzdhZWQ1</li>
-            <li>Hotline: +1925 582 0779</li>
+            <li>📧 Email: support@thebenchmarktrader.com</li>
+            <li>📱 Telegram: t.me/+0ETUdIuYUzdhZWQ1</li>
+            <li>📞 Hotline: +1925 582 0779</li>
           </ul>
         </div>
       </div>
     `,
   });
 
-  await Order.updateOne({ orderId: input.orderId }, { $set: { emailSent: true } });
+  if (emailResult.success) {
+    await Order.updateOne({ orderId: input.orderId }, { $set: { emailSent: true } });
+    return { saved: true, emailed: true, productName, productId: input.productId };
+  }
 
-  return { saved: true, emailed: true, productName, productId: input.productId };
+  console.error("PayPal order saved but email failed:", emailResult.error);
+  return { saved: true, emailed: false, productName, productId: input.productId };
 }
 
 export function parsePayPalCustomId(customId?: string) {

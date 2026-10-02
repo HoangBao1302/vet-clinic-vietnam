@@ -18,6 +18,9 @@ function SuccessContent() {
     searchParams.get("token") ||
     searchParams.get("order") ||
     (typeof window !== "undefined" ? localStorage.getItem("paypalOrderId") : null);
+  const paypalProductId =
+    searchParams.get("productId") ||
+    (typeof window !== "undefined" ? localStorage.getItem("paypalProductId") : null);
   const paymentMethod = searchParams.get("payment_method") || (sessionId ? "stripe" : "paypal");
 
   useEffect(() => {
@@ -43,6 +46,7 @@ function SuccessContent() {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               orderId: paypalToken,
+              productId: paypalProductId,
               customerInfo: {
                 email: searchParams.get("email") || user?.email || parsedUser?.email || "",
                 name: searchParams.get("name") || user?.username || parsedUser?.username || "",
@@ -55,7 +59,9 @@ function SuccessContent() {
             orderId: paypalToken,
             status: data.success ? "paid" : "pending",
             paymentMethod: "paypal",
+            productId: data.productId || paypalProductId,
             productName: data.productName,
+            emailed: data.emailed,
             error: data.success ? undefined : data.error,
           });
         } catch (error) {
@@ -75,7 +81,7 @@ function SuccessContent() {
     };
 
     verifyPayment();
-  }, [sessionId, paypalToken, paymentMethod, searchParams, user]);
+  }, [sessionId, paypalToken, paypalProductId, paymentMethod, searchParams, user]);
 
   if (loading) {
     return (
@@ -140,7 +146,11 @@ function SuccessContent() {
               <ol className="space-y-3 text-gray-700">
                 <li className="flex items-start gap-3">
                   <span className="flex-shrink-0 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">1</span>
-                  <span>Kiểm tra email để nhận link download trực tiếp</span>
+                  <span>
+                    {orderInfo?.emailed
+                      ? "Đã gửi email kèm mã đơn và nút tải xuống. Kiểm tra hộp thư (và Spam)."
+                      : "Kiểm tra email để nhận link download trực tiếp. Nếu chưa thấy, dùng mã đơn hàng bên trên."}
+                  </span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="flex-shrink-0 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">2</span>
@@ -159,7 +169,7 @@ function SuccessContent() {
                 <p className="text-sm text-red-600 mb-4">{orderInfo.error}</p>
               )}
               <Link
-                href={`/downloads${orderInfo?.orderId ? `?order=${encodeURIComponent(orderInfo.orderId)}` : ""}`}
+                href={`/downloads${orderInfo?.orderId ? `?order=${encodeURIComponent(orderInfo.orderId)}${orderInfo?.productId ? `&productId=${encodeURIComponent(orderInfo.productId)}` : ""}` : ""}`}
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-blue-600 text-white rounded-lg font-bold text-lg hover:bg-blue-700 transition-colors"
               >
                 <Download size={24} />

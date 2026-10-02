@@ -71,7 +71,7 @@ export async function POST(request: NextRequest) {
         brand_name: "ThebenchmarkTrader",
         landing_page: "NO_PREFERENCE",
         user_action: "PAY_NOW",
-        return_url: `${siteUrl}/downloads/success?payment_method=paypal&email=${encodeURIComponent(customerInfo.email)}&name=${encodeURIComponent(customerInfo.name)}&phone=${encodeURIComponent(customerInfo.phone || "")}`,
+        return_url: `${siteUrl}/downloads/success?payment_method=paypal&email=${encodeURIComponent(customerInfo.email)}&name=${encodeURIComponent(customerInfo.name)}&phone=${encodeURIComponent(customerInfo.phone || "")}&productId=${encodeURIComponent(productId)}`,
         cancel_url: `${siteUrl}/downloads?cancelled=true`,
       },
       payer: {

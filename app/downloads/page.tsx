@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -185,6 +185,8 @@ export default function DownloadsPage() {
   const [verifyMessage, setVerifyMessage] = useState("");
   const [products, setProducts] = useState<IProduct[]>([]);
   const [loadingProducts, setLoadingProducts] = useState(true);
+  const [urlOrderCode, setUrlOrderCode] = useState("");
+  const autoVerifiedRef = useRef(false);
 
   // Fetch products and handle auth check
   useEffect(() => {
@@ -194,6 +196,7 @@ export default function DownloadsPage() {
       const productFromUrl = params.get("productId");
       if (orderFromUrl) {
         setOrderCode(orderFromUrl);
+        setUrlOrderCode(orderFromUrl);
         if (productFromUrl) {
           setVerifyingOrder(productFromUrl);
         }
@@ -344,8 +347,9 @@ export default function DownloadsPage() {
     }
   };
 
-  const handleVerifyOrder = async (itemId: string) => {
-    if (!orderCode.trim()) {
+  const handleVerifyOrder = async (itemId: string, orderIdOverride?: string) => {
+    const codeToVerify = (orderIdOverride || orderCode).trim();
+    if (!codeToVerify) {
       setVerifyMessage(t('downloads.verification.enterCode'));
       return;
     }
@@ -360,7 +364,7 @@ export default function DownloadsPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          orderId: orderCode,
+          orderId: codeToVerify,
           productId: itemId,
           strictMatch: true // Enable strict matching to prevent wrong product downloads
         }),
@@ -386,7 +390,7 @@ export default function DownloadsPage() {
         
         // If product mismatch, show which product the order is for
         if (result.actualProductId && result.requestedProductId) {
-          const actualProduct = downloads.find(d => d.id === result.actualProductId);
+          const actualProduct = allDownloads.find(d => d.id === result.actualProductId);
           if (actualProduct) {
             const productName = locale === 'en' ? actualProduct.name.replace(' (MT4)', '').replace(' (MT5)', '') : actualProduct.name;
             errorMsg += ` ${t('downloads.verification.wrongProduct')}: ${productName}`;
@@ -405,6 +409,29 @@ export default function DownloadsPage() {
       }, 5000); // Increased timeout to read error message
     }
   };
+
+  useEffect(() => {
+    if (
+      autoVerifiedRef.current ||
+      !isAuthenticated ||
+      loadingProducts ||
+      typeof window === "undefined"
+    ) {
+      return;
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    const orderFromUrl = params.get("order");
+    const productFromUrl = params.get("productId");
+    if (!orderFromUrl || !productFromUrl) {
+      return;
+    }
+
+    autoVerifiedRef.current = true;
+    setOrderCode(orderFromUrl);
+    setVerifyingOrder(productFromUrl);
+    void handleVerifyOrder(productFromUrl, orderFromUrl);
+  }, [isAuthenticated, loadingProducts]);
 
   // Helper function to render paid product card
   const renderPaidProductCard = (item: DownloadItem) => {
@@ -685,6 +712,13 @@ export default function DownloadsPage() {
                   {t('downloads.paidSection.paymentMethods')}
                 </span>
               </div>
+              {urlOrderCode && (
+                <div className="mt-6 max-w-2xl mx-auto bg-blue-50 border border-blue-200 rounded-xl p-4 text-left">
+                  <p className="text-sm text-blue-800 font-medium mb-1">Mã đơn hàng từ email / thanh toán:</p>
+                  <p className="font-mono text-sm text-blue-700 break-all">{urlOrderCode}</p>
+                  <p className="text-xs text-blue-600 mt-2">Dán mã này vào đúng sản phẩm đã mua rồi bấm Xác Nhận.</p>
+                </div>
+              )}
             </div>
 
             {loadingProducts ? (

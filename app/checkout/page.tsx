@@ -86,6 +86,7 @@ function CheckoutContent() {
         // For PayPal, store orderId in localStorage for success page
         if (paymentMethod === "paypal" && result.orderId) {
           localStorage.setItem("paypalOrderId", result.orderId);
+          localStorage.setItem("paypalProductId", itemId);
         }
         
         // Redirect to payment gateway
