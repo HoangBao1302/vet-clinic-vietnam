@@ -443,24 +443,6 @@ export default function DownloadsPage() {
 
         {/* Purchase Buttons */}
         <div className="space-y-2 mb-4">
-          {/* Stripe Button */}
-          <button
-            onClick={() => isPaymentMethodEnabled('stripe') && handlePurchase(item, "stripe")}
-            disabled={!isPaymentMethodEnabled('stripe')}
-            className={`w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-semibold transition-colors ${
-              isPaymentMethodEnabled('stripe')
-                ? 'bg-blue-600 text-white hover:bg-blue-700 cursor-pointer'
-                : 'bg-gray-300 text-gray-500 cursor-not-allowed opacity-60'
-            }`}
-            title={!isPaymentMethodEnabled('stripe') ? (locale === 'en' ? PAYMENT_METHODS.stripe.disabledMessageEn : PAYMENT_METHODS.stripe.disabledMessage) : ''}
-          >
-            <CreditCard size={18} />
-            <span>{t('downloads.buttons.buyStripe')}</span>
-            {!isPaymentMethodEnabled('stripe') && (
-              <span className="text-xs ml-2">({locale === 'en' ? PAYMENT_METHODS.stripe.disabledMessageEn : PAYMENT_METHODS.stripe.disabledMessage})</span>
-            )}
-          </button>
-
           {/* PayPal Button */}
           <button
             onClick={() => isPaymentMethodEnabled('paypal') && handlePurchase(item, "paypal")}
@@ -479,23 +461,15 @@ export default function DownloadsPage() {
             )}
           </button>
 
-          {/* Bank Transfer Button */}
+          {isPaymentMethodEnabled('bank') && (
           <button
-            onClick={() => isPaymentMethodEnabled('bank') && handlePurchase(item, "bank")}
-            disabled={!isPaymentMethodEnabled('bank')}
-            className={`w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-semibold transition-colors ${
-              isPaymentMethodEnabled('bank')
-                ? 'bg-green-600 text-white hover:bg-green-700 cursor-pointer'
-                : 'bg-gray-300 text-gray-500 cursor-not-allowed opacity-60'
-            }`}
-            title={!isPaymentMethodEnabled('bank') ? (locale === 'en' ? PAYMENT_METHODS.bank.disabledMessageEn : PAYMENT_METHODS.bank.disabledMessage) : ''}
+            onClick={() => handlePurchase(item, "bank")}
+            className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-semibold transition-colors bg-green-600 text-white hover:bg-green-700 cursor-pointer"
           >
             <CreditCard size={18} />
             <span>{t('downloads.buttons.buyBank')}</span>
-            {!isPaymentMethodEnabled('bank') && (
-              <span className="text-xs ml-2">({locale === 'en' ? PAYMENT_METHODS.bank.disabledMessageEn : PAYMENT_METHODS.bank.disabledMessage})</span>
-            )}
           </button>
+          )}
         </div>
 
         {/* Or Verify Order */}

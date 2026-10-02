@@ -7,7 +7,7 @@
 
 export const PAYMENT_METHODS = {
   stripe: {
-    enabled: true,
+    enabled: false,
     label: 'Mua qua Stripe (Card)',
     labelEn: 'Buy with Stripe (Card)',
     color: 'blue',
@@ -16,8 +16,8 @@ export const PAYMENT_METHODS = {
   },
   paypal: {
     enabled: true, // Đặt false để tắt PayPal
-    label: 'Mua qua PayPal (Sandbox)',
-    labelEn: 'Buy with PayPal (Sandbox)',
+    label: 'Mua qua PayPal',
+    labelEn: 'Buy with PayPal',
     color: 'yellow',
     disabledMessage: 'Tạm thời không khả dụng',
     disabledMessageEn: 'Temporarily unavailable'

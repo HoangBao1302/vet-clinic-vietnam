@@ -163,7 +163,7 @@ export default function PrivacyPolicy() {
                     <ul className="text-yellow-700 text-sm space-y-1">
                       <li>• {isEn ? "When required by law" : "Có yêu cầu từ cơ quan pháp luật"}</li>
                       <li>• {isEn ? "To protect our lawful rights" : "Để bảo vệ quyền lợi hợp pháp của chúng tôi"}</li>
-                      <li>• {isEn ? "With payment processors (Stripe, PayPal)" : "Với nhà cung cấp dịch vụ thanh toán (Stripe, PayPal)"}</li>
+                      <li>• {isEn ? "With payment processors (PayPal)" : "Với nhà cung cấp dịch vụ thanh toán (PayPal)"}</li>
                       <li>• {isEn ? "When you give clear consent" : "Khi bạn đồng ý rõ ràng"}</li>
                     </ul>
                   </div>

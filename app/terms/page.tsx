@@ -167,8 +167,8 @@ export default function TermsOfService() {
                 <div className="mb-6">
                   <p className="text-gray-700 mb-3">
                     {isEn
-                      ? "All payments are made before services are delivered. We accept Stripe, PayPal, and bank transfer."
-                      : "Tất cả thanh toán được thực hiện trước khi cung cấp dịch vụ. Chúng tôi chấp nhận thanh toán qua Stripe, PayPal, và chuyển khoản ngân hàng."}
+                      ? "All payments are made before services are delivered. We accept PayPal."
+                      : "Tất cả thanh toán được thực hiện trước khi cung cấp dịch vụ. Chúng tôi chấp nhận thanh toán qua PayPal."}
                   </p>
                   <p className="text-gray-700 mb-3">
                     <strong>{isEn ? "Refund policy:" : "Chính sách hoàn tiền:"}</strong>{" "}

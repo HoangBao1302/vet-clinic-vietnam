@@ -15,71 +15,13 @@ export async function POST(request: NextRequest) {
     }
 
     if (method === "stripe") {
-      // Check if Stripe is configured
-      if (!process.env.STRIPE_SECRET_KEY) {
-        return NextResponse.json(
-          { success: false, error: "Stripe not configured" },
-          { status: 503 }
-        );
-      }
-      
-      try {
-        const Stripe = (await import("stripe")).default;
-        const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-          apiVersion: "2024-12-18.acacia" as any,
-        });
+      return NextResponse.json(
+        { success: false, error: "Stripe is unavailable. Please pay with PayPal." },
+        { status: 503 }
+      );
+    }
 
-        const session = await stripe.checkout.sessions.create({
-          payment_method_types: ["card"],
-          line_items: [
-            {
-              price_data: {
-                currency: "usd",
-                product_data: {
-                  name: productName,
-                  description: `Product ID: ${productId}`,
-                },
-                unit_amount: Math.round(Number(amount) * 100),
-              },
-              quantity: 1,
-            },
-          ],
-          mode: "payment",
-          success_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://thebenchmarktrader.com'}/downloads/success?session_id={CHECKOUT_SESSION_ID}`,
-          cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://thebenchmarktrader.com'}/downloads?cancelled=true`,
-          customer_email: customerInfo.email,
-          metadata: {
-            productId,
-            productName,  // IMPORTANT: Add productName for webhook processing
-            customerName: customerInfo.name,
-            customerPhone: customerInfo.phone,
-            affiliateCode: affiliateCode || '',
-            // Broker information
-            broker: customerInfo.broker || '',
-            accountId: customerInfo.accountId || '',
-            server: customerInfo.server || '',
-            // Enhanced tracking metadata
-            sessionId: customerInfo.sessionId || '',
-            ipAddress: customerInfo.ipAddress || '',
-            fingerprint: customerInfo.fingerprint || '',
-            trackingMethod: 'enhanced',
-            timestamp: new Date().toISOString()
-          },
-        });
-
-        return NextResponse.json({
-          success: true,
-          paymentUrl: session.url,
-          sessionId: session.id,
-        });
-      } catch (stripeError: any) {
-        console.error("Stripe error:", stripeError);
-        return NextResponse.json(
-          { success: false, error: `Stripe error: ${stripeError.message}` },
-          { status: 500 }
-        );
-      }
-    } else if (method === "paypal") {
+    if (method === "paypal") {
       // Check if PayPal is configured
       if (!process.env.PAYPAL_CLIENT_ID || !process.env.PAYPAL_CLIENT_SECRET) {
         return NextResponse.json(

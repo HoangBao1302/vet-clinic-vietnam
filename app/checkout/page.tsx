@@ -16,7 +16,7 @@ function CheckoutContent() {
   const itemId = searchParams.get("item") || "";
   const itemName = searchParams.get("name") || "";
   const itemPrice = parseInt(searchParams.get("price") || "0");
-  const paymentMethod = searchParams.get("method") as "stripe" | "paypal" || "stripe";
+  const paymentMethod = "paypal" as const;
   const affiliateCode = searchParams.get("affiliate") || "";
 
   const [formData, setFormData] = useState({
@@ -147,7 +147,6 @@ function CheckoutContent() {
                   {paymentMethod === "paypal" && (
                     <div className="text-sm text-gray-600 mt-1 text-right">
                       {formatUsd(itemPrice)}
-                      <span className="text-orange-600 ml-1">(Sandbox)</span>
                     </div>
                   )}
                 </div>
@@ -249,7 +248,7 @@ function CheckoutContent() {
                   </p>
                   {formData.email.includes('business.example.com') && (
                     <p className="text-xs text-orange-600 mt-1 font-medium">
-                      ⚠️ PayPal sandbox có thể không chấp nhận business email. Hãy dùng email cá nhân hoặc thử Stripe.
+                      ⚠️ PayPal có thể không chấp nhận email doanh nghiệp mẫu. Hãy dùng email cá nhân.
                     </p>
                   )}
                 </div>
@@ -340,7 +339,7 @@ function CheckoutContent() {
                   ) : (
                     <>
                       <Lock size={20} />
-                      <span>Thanh toán {itemPrice.toLocaleString("vi-VN")}đ</span>
+                      <span>Thanh toán {formatUsd(itemPrice)}</span>
                     </>
                   )}
                 </button>
