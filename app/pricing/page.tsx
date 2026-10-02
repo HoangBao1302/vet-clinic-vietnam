@@ -7,9 +7,21 @@ import StickyCallToAction from "@/components/StickyCallToAction";
 import { Check, Download, ShoppingCart, Star, ChevronDown, ChevronUp, Send, Youtube, PlayCircle, Video, AlertCircle } from "lucide-react";
 import HoneypotField from "@/components/HoneypotField";
 import { useLocale } from "@/lib/i18n/LocaleContext";
+import { useAuth } from "@/lib/authContext";
+import { formatUsd, PRODUCT_PRICES_USD } from "@/config/productPrices";
+
+function goToDownloads(hash: string, isAuthenticated: boolean) {
+  const dest = `/downloads#${hash}`;
+  if (isAuthenticated) {
+    window.location.href = dest;
+    return;
+  }
+  window.location.href = `/login?redirect=${encodeURIComponent(dest)}`;
+}
 
 export default function PricingPage() {
   const { t } = useLocale();
+  const { isAuthenticated } = useAuth();
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   
   // Generate pricing plans from translations with safety checks
@@ -17,7 +29,7 @@ export default function PricingPage() {
     {
       id: "demo",
       name: t('pricing.plans.demo.name'),
-      price: t('pricing.plans.demo.price'),
+      price: formatUsd(0),
       period: t('pricing.plans.demo.period'),
       description: t('pricing.plans.demo.description'),
       features: Array.isArray(t('pricing.plans.demo.features')) ? t('pricing.plans.demo.features') : [],
@@ -29,7 +41,7 @@ export default function PricingPage() {
     {
       id: "full",
       name: t('pricing.plans.full.name'),
-      price: t('pricing.plans.full.price'),
+      price: formatUsd(PRODUCT_PRICES_USD["ea-full-mt4"]),
       period: t('pricing.plans.full.period'),
       description: t('pricing.plans.full.description'),
       features: Array.isArray(t('pricing.plans.full.features')) ? t('pricing.plans.full.features') : [],
@@ -41,7 +53,7 @@ export default function PricingPage() {
     {
       id: "pro",
       name: t('pricing.plans.pro.name'),
-      price: t('pricing.plans.pro.price'),
+      price: formatUsd(PRODUCT_PRICES_USD["ea-pro-source-mt4"]),
       period: t('pricing.plans.pro.period'),
       description: t('pricing.plans.pro.description'),
       features: Array.isArray(t('pricing.plans.pro.features')) ? t('pricing.plans.pro.features') : [],
@@ -106,37 +118,41 @@ export default function PricingPage() {
   };
 
   const handlePlanClick = (planId: string) => {
-    // Reset submit message khi click button mới
-    setSubmitMessage("");
-    
-    // Mapping plan ID to form topic
-    const topicMap: { [key: string]: string } = {
-      'demo': 'demo',
-      'full': 'purchase', 
-      'pro': 'custom'
-    };
-    
-    const topic = topicMap[planId];
-    if (topic) {
-      // Set form data trước
-      setFormData(prev => ({ 
-        ...prev, 
-        topic,
-        message: planId === 'demo' 
-          ? t('pricing.contactForm.demoMessage')
-          : planId === 'full'
-          ? t('pricing.contactForm.fullMessage')
-          : t('pricing.contactForm.proMessage')
-      }));
-      
-      // Scroll xuống form sau một chút để user thấy được update
-      setTimeout(() => {
-        const contactForm = document.getElementById('contact-form');
-        if (contactForm) {
-          contactForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      }, 100);
+    if (planId === "demo") {
+      goToDownloads("free", isAuthenticated);
+      return;
     }
+    if (planId === "full") {
+      goToDownloads("paid", isAuthenticated);
+      return;
+    }
+    if (planId === "pro") {
+      goToDownloads("paid", isAuthenticated);
+      return;
+    }
+  };
+
+  const handleContactClick = (planId: string) => {
+    setSubmitMessage("");
+    const topicMap: { [key: string]: string } = {
+      demo: "demo",
+      full: "purchase",
+      pro: "custom",
+    };
+    const topic = topicMap[planId] || "custom";
+    setFormData((prev) => ({
+      ...prev,
+      topic,
+      message:
+        planId === "demo"
+          ? t("pricing.contactForm.demoMessage")
+          : planId === "full"
+          ? t("pricing.contactForm.fullMessage")
+          : t("pricing.contactForm.proMessage"),
+    }));
+    setTimeout(() => {
+      document.getElementById("contact-form")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 100);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -212,13 +228,13 @@ export default function PricingPage() {
         {/* Pricing Cards */}
         <section className="py-20 bg-white">
           <div className="container-custom">
-            <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <div className="grid md:grid-cols-3 gap-6 lg:gap-8 max-w-6xl mx-auto items-stretch">
               {pricingPlans.map((plan) => (
                 <div 
                   key={plan.id}
                   id={plan.id}
-                  className={`relative bg-white border-2 ${plan.color} rounded-2xl p-8 shadow-lg ${
-                    plan.popular ? 'transform scale-105' : ''
+                  className={`relative flex flex-col h-full bg-white border-2 ${plan.color} rounded-2xl p-6 md:p-8 shadow-lg ${
+                    plan.popular ? 'md:z-10 ring-2 ring-blue-200' : ''
                   }`}
                 >
                   {plan.popular && (
@@ -230,14 +246,14 @@ export default function PricingPage() {
                     </div>
                   )}
 
-                  <div className="text-center mb-8">
+                  <div className="text-center mb-6 min-h-[8.5rem]">
                     <h3 className="text-2xl font-bold text-gray-800 mb-2">{plan.name}</h3>
                     <div className="text-4xl font-bold text-gray-800 mb-2">{plan.price}</div>
-                    <div className="text-gray-600 mb-4">{plan.period}</div>
-                    <p className="text-gray-600">{plan.description}</p>
+                    <div className="text-gray-600 mb-3">{plan.period}</div>
+                    <p className="text-gray-600 text-sm leading-snug">{plan.description}</p>
                   </div>
 
-                  <div className="space-y-4 mb-8">
+                  <div className="space-y-3 flex-1 mb-6">
                     <h4 className="font-semibold text-gray-800">{t('pricing.features')}:</h4>
                     {plan.features.map((feature, index) => (
                       <div key={index} className="flex items-start space-x-3">
@@ -248,7 +264,7 @@ export default function PricingPage() {
 
                     {plan.limitations.length > 0 && (
                       <>
-                        <h4 className="font-semibold text-gray-800 mt-6">{t('pricing.limitations')}:</h4>
+                        <h4 className="font-semibold text-gray-800 mt-5">{t('pricing.limitations')}:</h4>
                         {plan.limitations.map((limitation, index) => (
                           <div key={index} className="flex items-start space-x-3">
                             <div className="w-4 h-4 mt-1 flex-shrink-0 border border-gray-300 rounded-full"></div>
@@ -259,37 +275,41 @@ export default function PricingPage() {
                     )}
                   </div>
 
-                  {isClient ? (
+                  <div className="mt-auto pt-4 border-t border-gray-100">
                     <button 
+                      type="button"
                       onClick={() => handlePlanClick(plan.id)}
-                      className={`w-full py-3 px-6 rounded-lg font-semibold transition-colors ${
+                      className={`w-full min-h-12 inline-flex items-center justify-center py-3 px-6 rounded-lg font-semibold transition-colors ${
                         plan.popular 
                           ? 'bg-blue-600 text-white hover:bg-blue-700' 
                           : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
                       }`}
                     >
-                      {plan.id === 'demo' && <Download size={18} className="inline mr-2" />}
-                      {plan.id === 'full' && <ShoppingCart size={18} className="inline mr-2" />}
-                      {plan.id === 'pro' && <Send size={18} className="inline mr-2" />}
+                      {plan.id === 'demo' && <Download size={18} className="mr-2 shrink-0" />}
+                      {plan.id !== 'demo' && <ShoppingCart size={18} className="mr-2 shrink-0" />}
                       {plan.cta}
                     </button>
-                  ) : (
-                    <div 
-                      className={`w-full py-3 px-6 rounded-lg font-semibold transition-colors ${
-                        plan.popular 
-                          ? 'bg-blue-600 text-white' 
-                          : 'bg-gray-100 text-gray-800'
-                      }`}
-                    >
-                      {plan.id === 'demo' && <Download size={18} className="inline mr-2" />}
-                      {plan.id === 'full' && <ShoppingCart size={18} className="inline mr-2" />}
-                      {plan.id === 'pro' && <Send size={18} className="inline mr-2" />}
-                      {plan.cta}
+                    <p className="text-xs text-gray-500 text-center mt-3 min-h-[2.5rem] leading-relaxed">
+                      {plan.id === "demo" ? t("pricing.demoHint") : t("pricing.buyHint")}
+                    </p>
+                    <div className="min-h-8 flex items-center justify-center">
+                      {plan.id === "pro" ? (
+                        <button
+                          type="button"
+                          onClick={() => handleContactClick("pro")}
+                          className="text-sm text-purple-700 hover:text-purple-900 font-medium"
+                        >
+                          {t("pricing.contactInstead")}
+                        </button>
+                      ) : null}
                     </div>
-                  )}
+                  </div>
                 </div>
               ))}
             </div>
+            <p className="text-center text-sm text-gray-600 mt-10 max-w-2xl mx-auto">
+              {t("pricing.indicatorNote").replace("{price}", formatUsd(PRODUCT_PRICES_USD["indicator-pro-mt4"]))}
+            </p>
           </div>
         </section>
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/lib/authContext";
@@ -32,6 +32,16 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [loginHref, setLoginHref] = useState("/login");
+  const [redirectAfterAuth, setRedirectAfterAuth] = useState("");
+
+  useEffect(() => {
+    const redirect = new URLSearchParams(window.location.search).get("redirect") || "";
+    if (redirect.startsWith("/") && !redirect.startsWith("//")) {
+      setRedirectAfterAuth(redirect);
+      setLoginHref(`/login?redirect=${encodeURIComponent(redirect)}`);
+    }
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -150,7 +160,10 @@ export default function RegisterPage() {
         setRecaptchaToken(null);
         // DO NOT login - redirect to login page after 5 seconds
         setTimeout(() => {
-          router.push("/login?message=verify-email-required");
+          const next = redirectAfterAuth
+            ? `/login?message=verify-email-required&redirect=${encodeURIComponent(redirectAfterAuth)}`
+            : "/login?message=verify-email-required";
+          router.push(next);
         }, 5000);
       } else {
         // Only login if verification not required (should not happen in normal flow)
@@ -159,7 +172,7 @@ export default function RegisterPage() {
         }
         setSuccess(t('auth.register.registerSuccess'));
         setTimeout(() => {
-          router.push("/");
+          router.push(redirectAfterAuth || "/");
         }, 2000);
       }
     } catch (err: any) {
@@ -362,7 +375,7 @@ export default function RegisterPage() {
               <p className="text-gray-600">
                 {t('auth.register.haveAccount')}{" "}
                 <Link
-                  href="/login"
+                  href={loginHref}
                   className="text-blue-600 hover:text-blue-700 font-semibold"
                 >
                   {t('auth.register.loginNow')}

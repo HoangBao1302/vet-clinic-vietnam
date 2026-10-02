@@ -229,6 +229,10 @@
     "free": "Free",
     "features": "Features",
     "limitations": "Limitations",
+    "buyHint": "Sign in or create an account. Checkout is on the Downloads page (PayPal).",
+    "demoHint": "Sign in or create an account to download the Demo from Downloads.",
+    "contactInstead": "Or contact us for advice",
+    "indicatorNote": "Multi-Indicator Pro Pack: {price} — buy on the Downloads page (MT4/MT5).",
     "plans": {
       "demo": {
         "name": "Demo",
@@ -252,7 +256,7 @@
       },
       "full": {
         "name": "Full Version",
-        "price": "$320",
+        "price": "$329",
         "period": "One-time",
         "description": "Full version for live accounts",
         "cta": "Buy Now",
@@ -273,10 +277,10 @@
       },
       "pro": {
         "name": "Pro + Source",
-        "price": "$600",
+        "price": "$621",
         "period": "One-time",
         "description": "Pro version with source code",
-        "cta": "Contact Us",
+        "cta": "Buy Now",
         "features": [
           "All Full features",
           "Full source code",
@@ -345,8 +349,8 @@
       "emailPlaceholder": "Enter your email address",
       "package": "Package of Interest",
       "packageDemo": "Demo - Free",
-      "packageFull": "Full Version - $320",
-      "packagePro": "Pro + Source - $600",
+      "packageFull": "Full Version - $329",
+      "packagePro": "Pro + Source - $621",
       "message": "Message",
       "messagePlaceholder": "Describe your needs in detail...",
       "broker": "Broker",
@@ -602,7 +606,8 @@
       "and": "and",
       "privacy": "Privacy Policy",
       "loginFailed": "Login failed",
-      "loginSuccess": "Login successful!"
+      "loginSuccess": "Login successful!",
+      "purchaseRedirectHint": "After you sign in, you will go to Downloads to download or pay."
     },
     "register": {
       "title": "Register",
@@ -1332,7 +1337,7 @@
     "quickReplies": [
       {
         "text": "💰 How much is the EA?",
-        "answer": "EA ThebenchmarkTrader has 3 packages:\n\n📦 Demo: Free (demo account only)\n💎 Full Version: $300 (3 live accounts)\n🚀 Pro + Source: $600 (unlimited + source code)\n\nWhich package are you interested in?"
+        "answer": "EA ThebenchmarkTrader has 3 packages:\n\n📦 Demo: Free (demo account only)\n💎 Full Version: $329 (3 live accounts)\n🚀 Pro + Source: $621 (unlimited + source code)\n\nWhich package are you interested in?"
       },
       {
         "text": "📊 View real results",

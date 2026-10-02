@@ -1,7 +1,17 @@
 # ✅ PayPal Go Live Checklist
 
+## ⚠️ Chỉ dùng tài khoản THEBENCHMARKTRADER LLC
+
+Không dùng app Developer **DANG BAO TONG** (tài khoản cũ). App đó và ví LLC là hai account khác nhau:
+
+- Thanh toán Live hiện tại tạo trên app DANG BAO TONG → không hiện trong Activity LLC
+- Client ID/Secret trên Vercel phải lấy từ app Live **mới**, tạo khi đã login đúng PayPal **THEBENCHMARKTRADER LLC**
+- Webhook cũng phải tạo trên app LLC đó, URL: `https://thebenchmarktrader.com/api/webhooks/paypal`
+- Sau khi đổi key: Redeploy Vercel. Không cần dán Webhook ID vào env
+- App DANG BAO TONG: tắt / xóa webhook, không dùng key cũ
+
 ## 🎯 Mục Tiêu
-Chuyển PayPal từ Sandbox (Test) sang Live (Production) để nhận thanh toán thật.
+Nhận thanh toán thật vào ví **THEBENCHMARKTRADER LLC**, brand checkout là ThebenchmarkTrader.
 
 ---
 
@@ -14,13 +24,14 @@ Chuyển PayPal từ Sandbox (Test) sang Live (Production) để nhận thanh to
 - [ ] Đã hoàn tất KYC (xác minh danh tính)
 - [ ] Tài khoản không bị giới hạn
 
-### 2. PayPal Developer Dashboard
-- [ ] Đăng nhập https://developer.paypal.com/
-- [ ] Chuyển sang tab **"Live"** (không phải Sandbox)
-- [ ] Tạo app mới: "ThebenchmarkTrader Production"
-- [ ] Lấy **Live Client ID** (bắt đầu bằng `A`)
-- [ ] Lấy **Live Secret** (bắt đầu bằng `E`)
-- [ ] Bật tính năng: Accept payments, Checkout, Transaction Search
+### 2. PayPal Developer Dashboard (login bằng LLC)
+- [ ] Logout hết session PayPal cũ
+- [ ] Đăng nhập https://www.paypal.com bằng **THEBENCHMARKTRADER LLC**
+- [ ] Mở https://developer.paypal.com/ — góc trên phải phải hiện LLC, không phải DANG BAO TONG
+- [ ] Tab **"Live"** (không phải Sandbox)
+- [ ] Create App: **ThebenchmarkTrader**
+- [ ] Lấy **Live Client ID** và **Live Secret** của app này (không copy từ app DANG BAO TONG)
+- [ ] Bật: Accept payments, Checkout, Transaction Search → Save
 
 ### 3. Webhook Configuration
 - [ ] Tạo webhook endpoint: `https://thebenchmarktrader.com/api/webhooks/paypal`

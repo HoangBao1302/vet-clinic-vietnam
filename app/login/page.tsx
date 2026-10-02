@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/lib/authContext";
@@ -22,6 +22,16 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [registerHref, setRegisterHref] = useState("/register");
+  const [hasPurchaseRedirect, setHasPurchaseRedirect] = useState(false);
+
+  useEffect(() => {
+    const redirect = new URLSearchParams(window.location.search).get("redirect") || "";
+    if (redirect.startsWith("/") && !redirect.startsWith("//")) {
+      setRegisterHref(`/register?redirect=${encodeURIComponent(redirect)}`);
+      setHasPurchaseRedirect(redirect.includes("/downloads"));
+    }
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -56,9 +66,14 @@ export default function LoginPage() {
 
       setSuccess(t('auth.login.loginSuccess'));
       
-      // Redirect based on role
+      const params = new URLSearchParams(window.location.search);
+      const redirect = params.get("redirect") || "";
+      const safeRedirect = redirect.startsWith("/") && !redirect.startsWith("//") ? redirect : "";
+
       setTimeout(() => {
-        if (data.user.role === "admin") {
+        if (safeRedirect) {
+          router.push(safeRedirect);
+        } else if (data.user.role === "admin") {
           router.push("/admin");
         } else {
           router.push("/");
@@ -89,6 +104,11 @@ export default function LoginPage() {
               <p className="text-gray-600">
                 {t('auth.login.subtitle')}
               </p>
+              {hasPurchaseRedirect && (
+                <p className="text-sm text-blue-700 mt-3">
+                  {t('auth.login.purchaseRedirectHint')}
+                </p>
+              )}
             </div>
 
             {/* Error Message */}
@@ -172,7 +192,7 @@ export default function LoginPage() {
               <p className="text-gray-600">
                 {t('auth.login.noAccount')}{" "}
                 <Link
-                  href="/register"
+                  href={registerHref}
                   className="text-blue-600 hover:text-blue-700 font-semibold"
                 >
                   {t('auth.login.registerNow')}

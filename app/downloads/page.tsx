@@ -630,7 +630,7 @@ export default function DownloadsPage() {
         </section>
 
         {/* Section 2: Free Indicators & EA */}
-        <section className="py-20 bg-gray-50">
+        <section id="free" className="py-20 bg-gray-50">
           <div className="container-custom">
             <div className="text-center mb-12">
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-100 text-green-800 rounded-full mb-4">
@@ -693,7 +693,7 @@ export default function DownloadsPage() {
         </section>
 
         {/* Section 3: Paid Products */}
-        <section className="py-20 bg-white">
+        <section id="paid" className="py-20 bg-white">
           <div className="container-custom">
             <div className="text-center mb-12">
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-purple-100 text-purple-800 rounded-full mb-4">

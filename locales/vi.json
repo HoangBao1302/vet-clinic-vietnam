@@ -229,6 +229,10 @@
     "free": "Miễn phí",
     "features": "Tính năng",
     "limitations": "Giới hạn",
+    "buyHint": "Cần đăng nhập hoặc tạo tài khoản. Thanh toán trên trang Downloads (PayPal).",
+    "demoHint": "Cần đăng nhập hoặc tạo tài khoản để tải Demo trên trang Downloads.",
+    "contactInstead": "Hoặc liên hệ tư vấn",
+    "indicatorNote": "Multi-Indicator Pro Pack: {price} — mua trên trang Downloads (MT4/MT5).",
     "plans": {
       "demo": {
         "name": "Demo",
@@ -252,7 +256,7 @@
       },
       "full": {
         "name": "Full Version",
-        "price": "7.900.000đ",
+        "price": "$329",
         "period": "Một lần",
         "description": "Phiên bản đầy đủ cho tài khoản thực",
         "cta": "Mua ngay",
@@ -273,10 +277,10 @@
       },
       "pro": {
         "name": "Pro + Source",
-        "price": "14.900.000đ",
+        "price": "$621",
         "period": "Một lần",
         "description": "Phiên bản Pro với source code",
-        "cta": "Liên hệ",
+        "cta": "Mua ngay",
         "features": [
           "Tất cả tính năng Full",
           "Source code đầy đủ",
@@ -345,8 +349,8 @@
       "emailPlaceholder": "Nhập địa chỉ email của bạn",
       "package": "Gói quan tâm",
       "packageDemo": "Demo - Miễn phí",
-      "packageFull": "Full Version - 7.9tr",
-      "packagePro": "Pro + Source - 14.9tr",
+      "packageFull": "Full Version - $329",
+      "packagePro": "Pro + Source - $621",
       "message": "Tin nhắn",
       "messagePlaceholder": "Mô tả chi tiết nhu cầu của bạn...",
       "broker": "Broker",
@@ -602,7 +606,8 @@
       "and": "và",
       "privacy": "Chính sách bảo mật",
       "loginFailed": "Đăng nhập thất bại",
-      "loginSuccess": "Đăng nhập thành công!"
+      "loginSuccess": "Đăng nhập thành công!",
+      "purchaseRedirectHint": "Sau khi đăng nhập, bạn sẽ được chuyển tới trang Downloads để tải hoặc thanh toán."
     },
     "register": {
       "title": "Đăng Ký",
@@ -1332,7 +1337,7 @@
     "quickReplies": [
       {
         "text": "💰 Giá EA bao nhiêu?",
-        "answer": "EA ThebenchmarkTrader có 3 gói:\n\n📦 Demo: Miễn phí (chỉ demo account)\n💎 Full Version: 7.900.000đ (3 tài khoản live)\n🚀 Pro + Source: 14.900.000đ (unlimited + source code)\n\nBạn quan tâm gói nào ạ?"
+        "answer": "EA ThebenchmarkTrader có 3 gói:\n\n📦 Demo: Miễn phí (chỉ demo account)\n💎 Full Version: $329 (3 tài khoản live)\n🚀 Pro + Source: $621 (unlimited + source code)\n\nBạn quan tâm gói nào ạ?"
       },
       {
         "text": "📊 Xem kết quả thực tế",
