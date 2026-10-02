@@ -83,8 +83,10 @@ export async function POST(request: NextRequest) {
     const capturedValue = parseFloat(
       unit?.payments?.captures?.[0]?.amount?.value || unit?.amount?.value || amount || "0"
     );
-    const email =
-      customerInfo?.email || custom.email || paypalOrder.payer?.email_address;
+    const payerEmail = paypalOrder.payer?.email_address || "";
+    const payerName = `${paypalOrder.payer?.name?.given_name || ""} ${paypalOrder.payer?.name?.surname || ""}`.trim();
+    // Checkout form / PayPal payer win. URL or logged-in admin email must not override the buyer.
+    const email = custom.email || payerEmail || customerInfo?.email;
 
     if (!resolvedProductId || !email) {
       return NextResponse.json(
@@ -97,8 +99,8 @@ export async function POST(request: NextRequest) {
       orderId,
       productId: resolvedProductId,
       customerEmail: email,
-      customerName: customerInfo?.name || custom.name || `${paypalOrder.payer?.name?.given_name || ""} ${paypalOrder.payer?.name?.surname || ""}`.trim(),
-      customerPhone: customerInfo?.phone || custom.phone || "",
+      customerName: custom.name || payerName || customerInfo?.name,
+      customerPhone: custom.phone || customerInfo?.phone || "",
       amountUsd: capturedValue,
       broker: customerInfo?.broker || custom.broker,
       accountId: customerInfo?.accountId || custom.accountId,

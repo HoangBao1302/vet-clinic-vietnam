@@ -6,13 +6,11 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { CheckCircle, Download, Mail, ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { useAuth } from "@/lib/authContext";
 
 function SuccessContent() {
   const searchParams = useSearchParams();
   const [orderInfo, setOrderInfo] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const { user } = useAuth();
   const sessionId = searchParams.get("session_id");
   const paypalToken =
     searchParams.get("token") ||
@@ -39,8 +37,6 @@ function SuccessContent() {
 
       if (paypalToken) {
         try {
-          const storedUser = localStorage.getItem("user");
-          const parsedUser = storedUser ? JSON.parse(storedUser) : null;
           const res = await fetch("/api/paypal/capture-order", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -48,8 +44,8 @@ function SuccessContent() {
               orderId: paypalToken,
               productId: paypalProductId,
               customerInfo: {
-                email: searchParams.get("email") || user?.email || parsedUser?.email || "",
-                name: searchParams.get("name") || user?.username || parsedUser?.username || "",
+                email: searchParams.get("email") || "",
+                name: searchParams.get("name") || "",
                 phone: searchParams.get("phone") || "",
               },
             }),
@@ -81,7 +77,7 @@ function SuccessContent() {
     };
 
     verifyPayment();
-  }, [sessionId, paypalToken, paypalProductId, paymentMethod, searchParams, user]);
+  }, [sessionId, paypalToken, paypalProductId, paymentMethod, searchParams]);
 
   if (loading) {
     return (
