@@ -1,10 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
+import {
+  getPayPalAccessToken,
+  getPayPalApiBase,
+  getPayPalSiteUrl,
+  isPayPalConfigured,
+  isPayPalLive,
+  sanitizePayPalPhone,
+} from "@/lib/paypal";
 
 export async function POST(request: NextRequest) {
   try {
     const { productId, productName, amount, customerInfo, affiliateCode } = await request.json();
 
-    // Validate input
     if (!productId || !productName || !amount || !customerInfo) {
       return NextResponse.json(
         { success: false, error: "Missing required fields" },
@@ -12,12 +19,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check if PayPal is configured
-    if (!process.env.PAYPAL_CLIENT_ID || !process.env.PAYPAL_CLIENT_SECRET) {
+    if (!isPayPalConfigured()) {
       console.error("PayPal not configured on server:", {
         hasClientId: !!process.env.PAYPAL_CLIENT_ID,
         hasClientSecret: !!process.env.PAYPAL_CLIENT_SECRET,
-        mode: process.env.PAYPAL_MODE
+        mode: isPayPalLive() ? "live" : "sandbox",
       });
       return NextResponse.json(
         { success: false, error: "PayPal payment is temporarily unavailable. Please contact support." },
@@ -27,28 +33,28 @@ export async function POST(request: NextRequest) {
 
     const accessToken = await getPayPalAccessToken();
     if (!accessToken) {
-      console.error("Failed to get PayPal access token - check credentials and mode");
+      console.error("Failed to get PayPal access token - check live credentials and PAYPAL_MODE");
       return NextResponse.json(
         { success: false, error: "PayPal authentication failed. Please check your PayPal configuration." },
         { status: 500 }
       );
     }
 
-    // Create PayPal order
-    // Store customer info in custom_id for webhook retrieval
-    // Format: productId|affiliateCode|customerEmail|customerName|customerPhone|broker|accountId|server
     const customIdData = [
       productId,
-      affiliateCode || '',
+      affiliateCode || "",
       customerInfo.email,
       customerInfo.name,
-      customerInfo.phone || '',
-      customerInfo.broker || '',
-      customerInfo.accountId || '',
-      customerInfo.server || ''
-    ].join('|');
-    
-    const orderData: any = {
+      customerInfo.phone || "",
+      customerInfo.broker || "",
+      customerInfo.accountId || "",
+      customerInfo.server || "",
+    ].join("|").slice(0, 127);
+
+    const siteUrl = getPayPalSiteUrl();
+    const phone = sanitizePayPalPhone(customerInfo.phone);
+
+    const orderData: Record<string, unknown> = {
       intent: "CAPTURE",
       purchase_units: [
         {
@@ -57,7 +63,7 @@ export async function POST(request: NextRequest) {
             currency_code: "USD",
             value: Number(amount).toFixed(2),
           },
-          description: productName,
+          description: String(productName).slice(0, 127),
           custom_id: customIdData,
         },
       ],
@@ -65,36 +71,36 @@ export async function POST(request: NextRequest) {
         brand_name: "ThebenchmarkTrader",
         landing_page: "NO_PREFERENCE",
         user_action: "PAY_NOW",
-        return_url: `${process.env.NEXT_PUBLIC_SITE_URL}/downloads/success?payment_method=paypal&email=${encodeURIComponent(customerInfo.email)}&name=${encodeURIComponent(customerInfo.name)}&phone=${encodeURIComponent(customerInfo.phone)}`,
-        cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/downloads?cancelled=true`,
+        return_url: `${siteUrl}/downloads/success?payment_method=paypal&email=${encodeURIComponent(customerInfo.email)}&name=${encodeURIComponent(customerInfo.name)}&phone=${encodeURIComponent(customerInfo.phone || "")}`,
+        cancel_url: `${siteUrl}/downloads?cancelled=true`,
+      },
+      payer: {
+        name: {
+          given_name: String(customerInfo.name || "Customer").slice(0, 140),
+        },
+        email_address: customerInfo.email,
+        ...(phone
+          ? {
+              phone: {
+                phone_type: "MOBILE",
+                phone_number: {
+                  national_number: phone,
+                },
+              },
+            }
+          : {}),
       },
     };
 
-    // Add payer info for both live and sandbox modes
-    orderData.payer = {
-      name: {
-        given_name: customerInfo.name,
+    const response = await fetch(`${getPayPalApiBase()}/v2/checkout/orders`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+        "PayPal-Request-Id": `${productId}-${Date.now()}`,
       },
-      email_address: customerInfo.email,
-      phone: {
-        phone_number: {
-          national_number: customerInfo.phone,
-        },
-      },
-    };
-
-    const response = await fetch(
-      `https://api-m.${process.env.PAYPAL_MODE === 'live' ? '' : 'sandbox.'}paypal.com/v2/checkout/orders`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-          "PayPal-Request-Id": `${productId}-${Date.now()}`,
-        },
-        body: JSON.stringify(orderData),
-      }
-    );
+      body: JSON.stringify(orderData),
+    });
 
     const order = await response.json();
 
@@ -102,14 +108,13 @@ export async function POST(request: NextRequest) {
       console.error("PayPal order creation failed:", {
         status: response.status,
         statusText: response.statusText,
-        order: order,
-        mode: process.env.PAYPAL_MODE,
-        baseUrl: `https://api-m.${process.env.PAYPAL_MODE === 'live' ? '' : 'sandbox.'}paypal.com`
+        order,
+        mode: isPayPalLive() ? "live" : "sandbox",
+        baseUrl: getPayPalApiBase(),
       });
-      
-      // Better error messages for common issues
+
       let errorMessage = "PayPal payment is temporarily unavailable. Please contact support.";
-      
+
       if (response.status === 400) {
         if (order.message?.includes("business validation")) {
           errorMessage = "PayPal không chấp nhận email này. Vui lòng dùng email cá nhân.";
@@ -119,93 +124,28 @@ export async function POST(request: NextRequest) {
           errorMessage = "Thông tin thanh toán không đúng. Vui lòng thử lại hoặc liên hệ hỗ trợ.";
         }
       } else if (response.status === 401) {
-        errorMessage = "PayPal credentials không hợp lệ. Vui lòng liên hệ hỗ trợ.";
+        errorMessage = "PayPal credentials không hợp lệ. Kiểm tra Client ID/Secret Live trên Vercel.";
       } else if (response.status === 403) {
         errorMessage = "PayPal không cho phép thanh toán này. Vui lòng liên hệ hỗ trợ.";
       }
-      
+
       return NextResponse.json(
         { success: false, error: errorMessage },
         { status: 500 }
       );
     }
 
-    // Store order data in metadata for webhook processing
-    const orderId = order.id;
-    
     return NextResponse.json({
       success: true,
-      orderId: orderId,
-      approvalUrl: order.links.find((link: any) => link.rel === "approve")?.href,
+      orderId: order.id,
+      approvalUrl: order.links.find((link: { rel: string; href: string }) => link.rel === "approve")?.href,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : "PayPal error";
     console.error("PayPal order creation error:", error);
     return NextResponse.json(
-      { success: false, error: error.message },
+      { success: false, error: message },
       { status: 500 }
     );
-  }
-}
-
-async function getPayPalAccessToken(): Promise<string | null> {
-  try {
-    // Check if environment variables are set
-    if (!process.env.PAYPAL_CLIENT_ID || !process.env.PAYPAL_CLIENT_SECRET) {
-      console.error("PayPal credentials not configured:", {
-        hasClientId: !!process.env.PAYPAL_CLIENT_ID,
-        hasClientSecret: !!process.env.PAYPAL_CLIENT_SECRET,
-        mode: process.env.PAYPAL_MODE
-      });
-      return null;
-    }
-
-    const auth = Buffer.from(
-      `${process.env.PAYPAL_CLIENT_ID}:${process.env.PAYPAL_CLIENT_SECRET}`
-    ).toString("base64");
-
-    const baseUrl = process.env.PAYPAL_MODE === 'live' 
-      ? 'https://api-m.paypal.com' 
-      : 'https://api-m.sandbox.paypal.com';
-
-    console.log("PayPal auth request:", {
-      baseUrl,
-      mode: process.env.PAYPAL_MODE,
-      clientIdLength: process.env.PAYPAL_CLIENT_ID?.length,
-      clientIdPrefix: process.env.PAYPAL_CLIENT_ID?.substring(0, 10) + "...",
-      isLiveMode: process.env.PAYPAL_MODE === 'live'
-    });
-
-    const response = await fetch(`${baseUrl}/v1/oauth2/token`, {
-      method: "POST",
-      headers: {
-        Authorization: `Basic ${auth}`,
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: "grant_type=client_credentials",
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      console.error("PayPal auth failed:", {
-        status: response.status,
-        statusText: response.statusText,
-        data: data,
-        baseUrl,
-        mode: process.env.PAYPAL_MODE,
-        clientIdPrefix: process.env.PAYPAL_CLIENT_ID?.substring(0, 10) + "..."
-      });
-      return null;
-    }
-
-    console.log("PayPal auth successful:", {
-      mode: process.env.PAYPAL_MODE,
-      baseUrl,
-      tokenLength: data.access_token?.length
-    });
-    return data.access_token;
-  } catch (error) {
-    console.error("PayPal access token error:", error);
-    return null;
   }
 }

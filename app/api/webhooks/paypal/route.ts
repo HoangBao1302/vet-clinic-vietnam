@@ -306,7 +306,7 @@ export async function POST(request: NextRequest) {
           email: finalCustomerEmail,
           name: finalCustomerName,
           phone: finalCustomerPhone,
-          source: realCustomerEmail ? 'custom_id (real customer)' : 'PayPal payer (sandbox)'
+          source: realCustomerEmail ? 'custom_id (real customer)' : 'PayPal payer email'
         });
         
         const orderData = {

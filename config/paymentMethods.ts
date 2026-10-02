@@ -15,7 +15,7 @@ export const PAYMENT_METHODS = {
     disabledMessageEn: 'Temporarily unavailable'
   },
   paypal: {
-    enabled: true, // Đặt false để tắt PayPal
+    enabled: true, // Live PayPal — set PAYPAL_MODE=live + Live Client ID/Secret on Vercel
     label: 'Mua qua PayPal',
     labelEn: 'Buy with PayPal',
     color: 'yellow',

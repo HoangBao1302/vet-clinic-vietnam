@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getPayPalSiteUrl, isPayPalConfigured } from "@/lib/paypal";
 
 // Note: Install dependencies first: npm install stripe @paypal/checkout-server-sdk
 
@@ -23,7 +24,7 @@ export async function POST(request: NextRequest) {
 
     if (method === "paypal") {
       // Check if PayPal is configured
-      if (!process.env.PAYPAL_CLIENT_ID || !process.env.PAYPAL_CLIENT_SECRET) {
+      if (!isPayPalConfigured()) {
         return NextResponse.json(
           { success: false, error: "PayPal not configured" },
           { status: 503 }
@@ -31,8 +32,7 @@ export async function POST(request: NextRequest) {
       }
 
       try {
-        // Create PayPal order
-        const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/paypal/create-order`, {
+        const response = await fetch(`${getPayPalSiteUrl()}/api/paypal/create-order`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
