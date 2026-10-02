@@ -7,6 +7,8 @@ import {
   isPayPalLive,
   sanitizePayPalPhone,
 } from "@/lib/paypal";
+import connectDB from "@/lib/mongodb";
+import Order from "@/lib/models/Order";
 
 export async function POST(request: NextRequest) {
   try {
@@ -133,6 +135,34 @@ export async function POST(request: NextRequest) {
         { success: false, error: errorMessage },
         { status: 500 }
       );
+    }
+
+    try {
+      await connectDB();
+      await Order.findOneAndUpdate(
+        { orderId: order.id },
+        {
+          $setOnInsert: {
+            orderId: order.id,
+            productId,
+            productName,
+            status: "pending",
+            customerEmail: customerInfo.email,
+            customerName: customerInfo.name || "Customer",
+            customerPhone: customerInfo.phone || "",
+            amount: Math.round(Number(amount) * 100),
+            paymentMethod: "paypal",
+            createdAt: new Date(),
+            emailSent: false,
+            broker: customerInfo.broker || "",
+            accountId: customerInfo.accountId || "",
+            server: customerInfo.server || "",
+          },
+        },
+        { upsert: true }
+      );
+    } catch (saveError) {
+      console.error("Failed to save pending PayPal order:", saveError);
     }
 
     return NextResponse.json({

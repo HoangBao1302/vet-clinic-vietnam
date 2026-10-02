@@ -42,6 +42,21 @@ export async function fulfillPaidPayPalOrder(input: FulfillInput) {
       accountId: input.accountId || "",
       server: input.server || "",
     });
+  } else if (existing.status !== "paid") {
+    await Order.updateOne(
+      { orderId: input.orderId },
+      {
+        $set: {
+          status: "paid",
+          paidAt: new Date(),
+          productId: input.productId,
+          productName,
+          customerEmail: input.customerEmail || existing.customerEmail,
+          customerName: input.customerName || existing.customerName,
+          amount: amountCents,
+        },
+      }
+    );
   }
 
   const current = existing || (await Order.findOne({ orderId: input.orderId }));
