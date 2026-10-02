@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/lib/authContext";
 import { useLocale } from "@/lib/i18n/LocaleContext";
@@ -10,7 +9,6 @@ import Footer from "@/components/Footer";
 import { LogIn, Mail, Lock, AlertCircle, CheckCircle } from "lucide-react";
 
 export default function LoginPage() {
-  const router = useRouter();
   const { login } = useAuth();
   const { t } = useLocale();
   
@@ -72,11 +70,11 @@ export default function LoginPage() {
 
       setTimeout(() => {
         if (safeRedirect) {
-          router.push(safeRedirect);
+          window.location.assign(safeRedirect);
         } else if (data.user.role === "admin") {
-          router.push("/admin");
+          window.location.assign("/admin");
         } else {
-          router.push("/");
+          window.location.assign("/");
         }
       }, 1000);
     } catch (err: any) {

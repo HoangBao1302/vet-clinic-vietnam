@@ -172,7 +172,7 @@ export default function RegisterPage() {
         }
         setSuccess(t('auth.register.registerSuccess'));
         setTimeout(() => {
-          router.push(redirectAfterAuth || "/");
+          window.location.assign(redirectAfterAuth || "/");
         }, 2000);
       }
     } catch (err: any) {

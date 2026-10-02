@@ -177,7 +177,7 @@ const fallbackProducts: DownloadItem[] = [
 ];
 
 export default function DownloadsPage() {
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, isLoading } = useAuth();
   const { t, locale } = useLocale();
   const router = useRouter();
   const [verifyingOrder, setVerifyingOrder] = useState<string | null>(null);
@@ -188,61 +188,12 @@ export default function DownloadsPage() {
   const [urlOrderCode, setUrlOrderCode] = useState("");
   const autoVerifiedRef = useRef(false);
 
-  // Fetch products and handle auth check
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const params = new URLSearchParams(window.location.search);
-      const orderFromUrl = params.get("order");
-      const productFromUrl = params.get("productId");
-      if (orderFromUrl) {
-        setOrderCode(orderFromUrl);
-        setUrlOrderCode(orderFromUrl);
-        if (productFromUrl) {
-          setVerifyingOrder(productFromUrl);
-        }
-      }
-    }
-
-    // Fetch products from MongoDB
-    fetchProducts();
-    
-    // Auth check - only redirect if definitely not authenticated
-    const checkAuth = () => {
-      const token = localStorage.getItem('token');
-      const user = localStorage.getItem('user');
-      
-      console.log('Downloads auth check:', { 
-        hasToken: !!token, 
-        hasUser: !!user, 
-        isAuthenticated,
-        contextReady: typeof isAuthenticated !== 'undefined'
-      });
-      
-      // If we have auth data in localStorage, wait longer for context to initialize
-      if (token && user && !isAuthenticated) {
-        console.log('Auth data exists, waiting for context...');
-        return; // Don't redirect, let context handle it
-      }
-      
-      // Only redirect if we have NO auth data AND context is ready and says not authenticated
-      if (!token && !user && isAuthenticated === false) {
-        console.log('No auth data found and context confirmed not authenticated, redirecting to login');
-        router.push('/login?redirect=/downloads');
-      }
-    };
-    
-    // Check after a longer delay to allow context to fully initialize
-    const timeoutId = setTimeout(checkAuth, 2000); // Increased delay
-    
-    return () => clearTimeout(timeoutId);
-  }, []); // Only run once on mount
-
   const fetchProducts = async () => {
     try {
       const response = await fetch('/api/products');
       if (response.ok) {
         const data = await response.json();
-        setProducts(data.products || []);
+        setProducts(Array.isArray(data.products) ? data.products : []);
       }
     } catch (error) {
       console.error('Error fetching products:', error);
@@ -253,7 +204,8 @@ export default function DownloadsPage() {
 
   // Map MongoDB Products to DownloadItem format
   const mapProductToDownloadItem = (product: IProduct): DownloadItem => {
-    const isFree = product.price === 0 || product.id.includes('demo') || product.id.includes('free');
+    const productId = product?.id || "";
+    const isFree = product.price === 0 || productId.includes('demo') || productId.includes('free');
     const typeMap: { [key: string]: "pdf" | "indicator" | "ea" } = {
       'indicator': 'indicator',
       'ea-full': 'ea',
@@ -261,7 +213,7 @@ export default function DownloadsPage() {
     };
 
     return {
-      id: product.id,
+      id: productId || String(product._id || ""),
       name: product.name,
       description: product.description,
       version: product.version || "v1.0",
@@ -277,7 +229,7 @@ export default function DownloadsPage() {
 
   // Combine PDF guides (static) + Products from MongoDB (or fallback if empty)
   const productItems = products.length > 0 
-    ? products.map(mapProductToDownloadItem)
+    ? products.filter((p) => p && (p.id || p._id)).map(mapProductToDownloadItem)
     : fallbackProducts;
     
   const allDownloads: DownloadItem[] = [
@@ -289,34 +241,6 @@ export default function DownloadsPage() {
   const pdfGuidesFiltered = allDownloads.filter(d => d.type === "pdf");
   const freeItems = allDownloads.filter(d => d.type !== "pdf" && d.free);
   const paidItems = allDownloads.filter(d => !d.free && d.requiresPayment);
-
-  // Show loading if not authenticated yet, but only if we have auth data
-  const hasAuthData = typeof window !== 'undefined' ? (localStorage.getItem('token') || localStorage.getItem('user')) : false;
-  
-  // If we have auth data but context is not ready, show loading
-  if (!isAuthenticated && hasAuthData) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">{t('downloads.auth.checking')}</p>
-          <p className="text-xs text-gray-500 mt-2">{t('downloads.auth.refreshHint')}</p>
-        </div>
-      </div>
-    );
-  }
-  
-  // If no auth data and context confirmed not authenticated, show redirect message
-  if (!isAuthenticated && !hasAuthData) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">{t('downloads.auth.redirecting')}</p>
-        </div>
-      </div>
-    );
-  }
 
   const handleFreeDownload = (item: DownloadItem) => {
     // Check if user is authenticated
@@ -432,6 +356,54 @@ export default function DownloadsPage() {
     setVerifyingOrder(productFromUrl);
     void handleVerifyOrder(productFromUrl, orderFromUrl);
   }, [isAuthenticated, loadingProducts]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const params = new URLSearchParams(window.location.search);
+    const orderFromUrl = params.get("order");
+    const productFromUrl = params.get("productId");
+    if (orderFromUrl) {
+      setOrderCode(orderFromUrl);
+      setUrlOrderCode(orderFromUrl);
+      if (productFromUrl) {
+        setVerifyingOrder(productFromUrl);
+      }
+    }
+
+    void fetchProducts();
+  }, []);
+
+  useEffect(() => {
+    if (isLoading || isAuthenticated) return;
+    const hash = typeof window !== "undefined" ? window.location.hash : "";
+    const search = typeof window !== "undefined" ? window.location.search : "";
+    const dest = `/downloads${search}${hash}`;
+    window.location.assign(`/login?redirect=${encodeURIComponent(dest)}`);
+  }, [isLoading, isAuthenticated]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">{t('downloads.auth.checking')}</p>
+          <p className="text-xs text-gray-500 mt-2">{t('downloads.auth.refreshHint')}</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">{t('downloads.auth.redirecting')}</p>
+        </div>
+      </div>
+    );
+  }
 
   // Helper function to render paid product card
   const renderPaidProductCard = (item: DownloadItem) => {
