@@ -83,7 +83,22 @@ function CheckoutContent() {
             customerInfo: formData,
           }),
         });
-        const result = await response.json();
+        const payload = await response.text();
+        let result: {
+          success?: boolean;
+          error?: string;
+          orderId?: string;
+          pay_address?: string;
+          pay_amount?: string | number;
+          pay_currency?: string;
+        };
+        try {
+          result = payload ? JSON.parse(payload) : {};
+        } catch {
+          setError("Không tạo được thanh toán Crypto. Vui lòng thử lại sau khi trang cập nhật xong.");
+          setLoading(false);
+          return;
+        }
         if (result.success && result.pay_address) {
           setCryptoPayment({
             orderId: result.orderId,

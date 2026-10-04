@@ -63,10 +63,18 @@ export async function nowPaymentsRequest<T>(path: string, init?: RequestInit): P
     },
   });
 
-  const data = await response.json();
+  const text = await response.text();
+  let data: Record<string, unknown> = {};
+  try {
+    data = text ? (JSON.parse(text) as Record<string, unknown>) : {};
+  } catch {
+    console.error("NOWPayments non-JSON response:", response.status, text.slice(0, 200));
+    throw new Error(`NOWPayments error ${response.status}`);
+  }
+
   if (!response.ok) {
-    const message = data?.message || data?.error || `NOWPayments error ${response.status}`;
-    throw new Error(message);
+    const message = data.message || data.error || `NOWPayments error ${response.status}`;
+    throw new Error(String(message));
   }
   return data as T;
 }
@@ -82,72 +90,37 @@ export type NowPayment = {
   order_description?: string;
 };
 
-type MinAmountResponse = {
-  min_amount?: number | string;
-  fiat_equivalent?: number | string;
-};
-
-type EstimateResponse = {
-  estimated_amount?: number | string;
-};
-
 type ChargePlan = {
   priceAmount: number;
   payCurrency: string;
   payAmount?: number;
 };
 
-function toNumber(value: unknown) {
-  const parsed = Number(value);
-  return Number.isFinite(parsed) ? parsed : NaN;
-}
-
-function roundCrypto(value: number) {
-  return Math.ceil(value * 1e6) / 1e6;
-}
-
 function roundUsd(value: number) {
   return Math.ceil(value * 100) / 100;
 }
 
-async function getNowPaymentsMinAmount(payCurrency: string) {
-  return nowPaymentsRequest<MinAmountResponse>(
-    `/min-amount?currency_from=usd&currency_to=${encodeURIComponent(payCurrency)}&fiat_equivalent=usd`
-  );
+function isRetryableNowPaymentsError(message: string) {
+  return /less than minimal|minimum|not available|disabled|not enabled|currency/i.test(message);
 }
 
-async function getNowPaymentsEstimate(amountUsd: number, payCurrency: string) {
-  return nowPaymentsRequest<EstimateResponse>(
-    `/estimate?amount=${encodeURIComponent(String(amountUsd))}&currency_from=usd&currency_to=${encodeURIComponent(payCurrency)}`
-  );
-}
+function buildChargePlans(priceUsd: number): ChargePlan[] {
+  const plans: ChargePlan[] = [
+    { priceAmount: priceUsd, payCurrency: NOWPAYMENTS_PAY_CURRENCY },
+  ];
 
-async function buildUsdtPlan(priceUsd: number): Promise<ChargePlan | null> {
-  const min = await getNowPaymentsMinAmount(NOWPAYMENTS_PAY_CURRENCY);
-  const estimate = await getNowPaymentsEstimate(priceUsd, NOWPAYMENTS_PAY_CURRENCY);
-  const estimatedPay = toNumber(estimate.estimated_amount);
-  const minPay = toNumber(min.min_amount);
-  const minFiat = toNumber(min.fiat_equivalent);
-
-  const neededPay = roundCrypto(
-    Math.max(
-      Number.isFinite(estimatedPay) ? estimatedPay : priceUsd,
-      Number.isFinite(minPay) ? minPay : 0,
-      priceUsd
-    )
-  );
-
-  const neededFiat = Number.isFinite(minFiat) ? minFiat : neededPay;
-  // $3 → 2.995 USDT is only an FX rounding gap; do not jump to NOWPayments' ~$9 USDT floor.
-  if (neededFiat > priceUsd + 1) {
-    return null;
+  if (priceUsd < 15) {
+    const buffered = roundUsd(Math.max(priceUsd, 3) + 0.25);
+    plans.push({
+      priceAmount: buffered,
+      payCurrency: NOWPAYMENTS_PAY_CURRENCY,
+      payAmount: buffered,
+    });
+    plans.push({ priceAmount: priceUsd, payCurrency: NOWPAYMENTS_FALLBACK_CURRENCY });
+    plans.push({ priceAmount: priceUsd, payCurrency: "ltc" });
   }
 
-  return {
-    priceAmount: roundUsd(Math.max(priceUsd, neededFiat) + 0.05),
-    payCurrency: NOWPAYMENTS_PAY_CURRENCY,
-    payAmount: neededPay,
-  };
+  return plans;
 }
 
 async function createPaymentWithPlan(
@@ -177,23 +150,9 @@ export async function createNowPaymentsDeposit(input: {
   description: string;
   priceUsd: number;
 }): Promise<NowPayment> {
-  const plans: ChargePlan[] = [];
-
-  try {
-    const usdtPlan = await buildUsdtPlan(input.priceUsd);
-    if (usdtPlan) plans.push(usdtPlan);
-  } catch (error) {
-    console.error("NOWPayments USDT min/estimate failed:", error);
-  }
-
-  plans.push({ priceAmount: input.priceUsd, payCurrency: NOWPAYMENTS_FALLBACK_CURRENCY });
-  plans.push({
-    priceAmount: roundUsd(input.priceUsd + 0.1),
-    payCurrency: NOWPAYMENTS_PAY_CURRENCY,
-    payAmount: roundCrypto(input.priceUsd + 0.1),
-  });
-
+  const plans = buildChargePlans(input.priceUsd);
   let lastError: Error | null = null;
+
   for (const plan of plans) {
     try {
       const payment = await createPaymentWithPlan(input, plan);
@@ -203,7 +162,8 @@ export async function createNowPaymentsDeposit(input: {
       };
     } catch (error) {
       lastError = error instanceof Error ? error : new Error("Cannot create crypto payment");
-      if (!/less than minimal|minimum/i.test(lastError.message)) {
+      console.error("NOWPayments create payment failed:", plan.payCurrency, lastError.message);
+      if (!isRetryableNowPaymentsError(lastError.message)) {
         throw lastError;
       }
     }
