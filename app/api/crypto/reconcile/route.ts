@@ -14,14 +14,35 @@ export async function GET() {
       paymentMethod: "crypto",
       status: { $ne: "paid" },
       createdAt: { $gte: since },
-      cryptoPaymentId: { $exists: true, $ne: "" },
-    }).limit(50);
+    }).limit(80);
+
+    let listedPayments: NowPayment[] = [];
+    try {
+      const listed = await nowPaymentsRequest<{ data?: NowPayment[] } | NowPayment[]>("/payment/?limit=20&page=0&sortBy=created_at&orderBy=desc");
+      listedPayments = Array.isArray(listed) ? listed : listed.data || [];
+    } catch (error) {
+      console.error("NOWPayments payment list failed:", error);
+    }
 
     const fulfilled: string[] = [];
     const skipped: Array<{ orderId: string; status?: string; reason: string }> = [];
     for (const order of pending) {
       try {
-        const payment = await nowPaymentsRequest<NowPayment>(`/payment/${order.cryptoPaymentId}`);
+        let payment: NowPayment | undefined;
+        if (order.cryptoPaymentId) {
+          try {
+            payment = await nowPaymentsRequest<NowPayment>(`/payment/${order.cryptoPaymentId}`);
+          } catch {
+            payment = undefined;
+          }
+        }
+        if (!payment) {
+          payment = listedPayments.find((item) => String(item.order_id || "") === order.orderId);
+        }
+        if (!payment) {
+          skipped.push({ orderId: order.orderId, reason: "Payment not found" });
+          continue;
+        }
         const expectedUsd = (order.amount || 0) / 100;
         if (!shouldFulfillCryptoPayment(payment, expectedUsd)) {
           skipped.push({
