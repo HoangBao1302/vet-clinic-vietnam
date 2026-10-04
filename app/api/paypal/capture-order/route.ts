@@ -58,15 +58,20 @@ export async function POST(request: NextRequest) {
     let paypalOrder = await captureResponse.json();
 
     if (!captureResponse.ok) {
-      const issue = paypalOrder?.details?.[0]?.issue;
-      if (issue === "ORDER_ALREADY_CAPTURED" || paypalOrder?.name === "UNPROCESSABLE_ENTITY") {
-        paypalOrder = await fetchPayPalOrder(orderId, accessToken);
+      const fetched = await fetchPayPalOrder(orderId, accessToken);
+      if (fetched?.status === "COMPLETED") {
+        paypalOrder = fetched;
       } else {
-        console.error("PayPal capture failed:", paypalOrder);
-        return NextResponse.json(
-          { success: false, error: paypalOrder.message || "PayPal capture error" },
-          { status: 500 }
-        );
+        const issue = paypalOrder?.details?.[0]?.issue;
+        if (issue === "ORDER_ALREADY_CAPTURED" || paypalOrder?.name === "UNPROCESSABLE_ENTITY") {
+          paypalOrder = fetched;
+        } else {
+          console.error("PayPal capture failed:", paypalOrder);
+          return NextResponse.json(
+            { success: false, error: paypalOrder.message || "PayPal capture error" },
+            { status: 500 }
+          );
+        }
       }
     }
 

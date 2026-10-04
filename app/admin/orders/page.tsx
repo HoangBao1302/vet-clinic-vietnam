@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { formatUsd } from '@/config/productPrices';
 
 interface Order {
   _id: string;
@@ -21,6 +22,7 @@ interface Order {
   server?: string;
   transferProof?: string;
   transferProofApproved?: boolean;
+  emailSent?: boolean;
 }
 
 interface OrderStats {
@@ -269,11 +271,18 @@ export default function OrdersDashboard() {
     'indicator-pro-mt5': 3,
   };
 
+  const isUsdCents = (amount: number) => amount > 0 && amount <= 100000;
+
   const isOrderValid = (order: Order) => {
     const expectedPrice = expectedPrices[order.productId];
     if (!expectedPrice) return false;
     const actualPrice = order.amount / 100;
     return Math.abs(actualPrice - expectedPrice) < 1000;
+  };
+
+  const formatOrderAmount = (amount: number) => {
+    if (isUsdCents(amount)) return formatUsd(amount / 100);
+    return `${(amount / 100).toLocaleString('vi-VN')}đ`;
   };
 
   const filteredOrders = stats.recentOrders.filter(order => {
@@ -466,11 +475,18 @@ export default function OrdersDashboard() {
                   return (
                     <tr key={order._id} className={!valid ? 'bg-red-50' : ''}>
                       <td className="px-4 py-3">
-                        {valid ? (
-                          <span className="text-green-600 text-xl">✅</span>
-                        ) : (
-                          <span className="text-red-600 text-xl">❌</span>
-                        )}
+                        <div className="flex flex-col gap-1">
+                          <span className={`inline-flex w-fit px-2 py-0.5 rounded text-xs font-semibold ${
+                            order.status === 'paid'
+                              ? 'bg-green-100 text-green-800'
+                              : 'bg-yellow-100 text-yellow-800'
+                          }`}>
+                            {order.status === 'paid' ? 'Đã thanh toán' : 'Chưa thanh toán'}
+                          </span>
+                          {!valid && (
+                            <span className="text-red-600 text-xs">Giá lệch</span>
+                          )}
+                        </div>
                       </td>
                       <td className="px-4 py-3">
                         <div className="text-sm font-mono text-gray-900">{order.orderId}</div>
@@ -497,7 +513,7 @@ export default function OrdersDashboard() {
                       </td>
                       <td className="px-4 py-3">
                         <div className={`text-sm font-semibold ${!valid ? 'text-red-600' : 'text-gray-900'}`}>
-                          {actualPrice.toLocaleString('vi-VN')}đ
+                          {formatOrderAmount(order.amount)}
                         </div>
                       </td>
                       <td className="px-4 py-3">

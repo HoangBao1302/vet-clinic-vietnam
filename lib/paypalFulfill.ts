@@ -15,6 +15,7 @@ type FulfillInput = {
   broker?: string;
   accountId?: string;
   server?: string;
+  skipEmail?: boolean;
 };
 
 export async function fulfillPaidPayPalOrder(input: FulfillInput) {
@@ -23,44 +24,35 @@ export async function fulfillPaidPayPalOrder(input: FulfillInput) {
 
   await connectDB();
 
-  const existing = await Order.findOne({ orderId: input.orderId });
-  if (!existing) {
-    await Order.create({
-      orderId: input.orderId,
-      productId: input.productId,
-      productName,
-      status: "paid",
-      customerEmail: input.customerEmail,
-      customerName: input.customerName || "Customer",
-      customerPhone: input.customerPhone || "",
-      amount: amountCents,
-      paymentMethod: "paypal",
-      createdAt: new Date(),
-      paidAt: new Date(),
-      emailSent: false,
-      broker: input.broker || "",
-      accountId: input.accountId || "",
-      server: input.server || "",
-    });
-  } else if (existing.status !== "paid") {
-    await Order.updateOne(
-      { orderId: input.orderId },
-      {
-        $set: {
-          status: "paid",
-          paidAt: new Date(),
-          productId: input.productId,
-          productName,
-          customerEmail: input.customerEmail || existing.customerEmail,
-          customerName: input.customerName || existing.customerName,
-          amount: amountCents,
-        },
-      }
-    );
-  }
-
-  const current = existing || (await Order.findOne({ orderId: input.orderId }));
-  if (current?.emailSent) {
+  const current = await Order.findOneAndUpdate(
+    { orderId: input.orderId },
+    {
+      $set: {
+        productId: input.productId,
+        productName,
+        status: "paid",
+        customerEmail: input.customerEmail,
+        customerName: input.customerName || "Customer",
+        customerPhone: input.customerPhone || "",
+        amount: amountCents,
+        paymentMethod: "paypal",
+        paidAt: new Date(),
+        broker: input.broker || "",
+        accountId: input.accountId || "",
+        server: input.server || "",
+      },
+      $setOnInsert: {
+        orderId: input.orderId,
+        createdAt: new Date(),
+        emailSent: false,
+      },
+    },
+    { upsert: true, new: true }
+  );
+  if (current?.emailSent || input.skipEmail) {
+    if (input.skipEmail && !current?.emailSent) {
+      await Order.updateOne({ orderId: input.orderId }, { $set: { emailSent: true } });
+    }
     return { saved: true, emailed: false, productName, productId: input.productId };
   }
 
