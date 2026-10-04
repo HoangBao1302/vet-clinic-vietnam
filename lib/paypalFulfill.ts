@@ -17,6 +17,7 @@ type FulfillInput = {
   server?: string;
   skipEmail?: boolean;
   paymentMethod?: "paypal" | "crypto";
+  cryptoPaymentId?: string;
 };
 
 export async function fulfillPaidPayPalOrder(input: FulfillInput) {
@@ -41,6 +42,7 @@ export async function fulfillPaidPayPalOrder(input: FulfillInput) {
         broker: input.broker || "",
         accountId: input.accountId || "",
         server: input.server || "",
+        ...(input.cryptoPaymentId ? { cryptoPaymentId: input.cryptoPaymentId } : {}),
       },
       $setOnInsert: {
         orderId: input.orderId,

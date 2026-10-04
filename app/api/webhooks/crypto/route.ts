@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import connectDB from "@/lib/mongodb";
-import Order from "@/lib/models/Order";
-import { fulfillPaidPayPalOrder } from "@/lib/paypalFulfill";
-import { shouldFulfillCryptoPayment, verifyNowPaymentsSignature } from "@/lib/nowpayments";
+import { fulfillCryptoNowPayment } from "@/lib/cryptoReconcile";
+import { shouldFulfillCryptoPayment, verifyNowPaymentsSignature, type NowPayment } from "@/lib/nowpayments";
 
 export async function POST(request: NextRequest) {
   try {
@@ -14,42 +12,24 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: "Invalid signature" }, { status: 401 });
     }
 
-    const paymentStatus = String(body.payment_status || "");
-    const orderId = String(body.order_id || "").trim();
-    const paymentId = body.payment_id ? String(body.payment_id) : "";
-
-    console.log("NOWPayments IPN received:", { orderId, paymentId, paymentStatus });
-
-    if (!orderId) {
-      return NextResponse.json({ success: true, message: "Webhook received" });
-    }
-
-    await connectDB();
-    const order = await Order.findOne({ orderId });
-    if (!order) {
-      console.error("NOWPayments IPN order not found:", orderId);
-      return NextResponse.json({ success: false, error: "Order not found" }, { status: 404 });
-    }
-
-    const expectedUsd = (order.amount || 0) / 100;
-    if (!shouldFulfillCryptoPayment(body, expectedUsd)) {
-      return NextResponse.json({ success: true, message: "Webhook received" });
-    }
-
-    await fulfillPaidPayPalOrder({
-      orderId,
-      productId: order.productId,
-      customerEmail: order.customerEmail,
-      customerName: order.customerName,
-      customerPhone: order.customerPhone,
-      amountUsd: (order.amount || 0) / 100,
-      broker: order.broker,
-      accountId: order.accountId,
-      server: order.server,
-      paymentMethod: "crypto",
+    const payment = body as NowPayment;
+    const expectedUsd = Number(payment.price_amount || payment.pay_amount || 16);
+    console.log("NOWPayments IPN received:", {
+      orderId: payment.order_id,
+      paymentId: payment.payment_id,
+      paymentStatus: payment.payment_status,
     });
 
-    return NextResponse.json({ success: true, message: "Order processed" });
+    if (!shouldFulfillCryptoPayment(payment, expectedUsd || 16)) {
+      return NextResponse.json({ success: true, message: "Webhook received" });
+    }
+
+    const result = await fulfillCryptoNowPayment(payment);
+    if (!result.fulfilled) {
+      return NextResponse.json({ success: true, message: result.skipped || "Webhook received" });
+    }
+
+    return NextResponse.json({ success: true, message: "Order processed", orderId: result.fulfilled });
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : "Crypto webhook error";
     console.error("NOWPayments webhook error:", error);
