@@ -8,14 +8,22 @@ type CryptoPaymentModalProps = {
   productId: string;
   payAddress: string;
   payAmount: string | number;
+  payCurrency?: string;
   onClose: () => void;
 };
+
+function cryptoLabel(payCurrency?: string) {
+  const code = (payCurrency || "usdttrc20").toLowerCase();
+  if (code === "trx") return { title: "Thanh toán TRX (Tron)", ticker: "TRX", network: "Chỉ chuyển đúng mạng Tron (TRX)" };
+  return { title: "Thanh toán USDT (TRC20)", ticker: "USDT", network: "Chỉ chuyển đúng mạng Tron TRC20" };
+}
 
 export default function CryptoPaymentModal({
   orderId,
   productId,
   payAddress,
   payAmount,
+  payCurrency,
   onClose,
 }: CryptoPaymentModalProps) {
   const [copied, setCopied] = useState<"address" | "amount" | "">("");
@@ -56,6 +64,7 @@ export default function CryptoPaymentModal({
   }, [orderId, productId]);
 
   const amountText = String(payAmount);
+  const coin = cryptoLabel(payCurrency);
   const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(`${payAddress}?amount=${amountText}`)}`;
 
   return (
@@ -75,13 +84,13 @@ export default function CryptoPaymentModal({
             ₮
           </div>
           <div>
-            <h3 className="text-lg font-bold text-gray-900">Thanh toán USDT (TRC20)</h3>
-            <p className="text-xs text-gray-500">Chỉ chuyển đúng mạng Tron TRC20</p>
+            <h3 className="text-lg font-bold text-gray-900">{coin.title}</h3>
+            <p className="text-xs text-gray-500">{coin.network}</p>
           </div>
         </div>
 
         <div className="mb-4 flex justify-center">
-          <img src={qrSrc} alt="USDT TRC20 QR" width={220} height={220} className="rounded-lg border" />
+          <img src={qrSrc} alt={`${coin.ticker} QR`} width={220} height={220} className="rounded-lg border" />
         </div>
 
         <label className="mb-1 block text-xs font-semibold text-gray-600">Địa chỉ ví</label>
@@ -98,10 +107,10 @@ export default function CryptoPaymentModal({
           </button>
         </div>
 
-        <label className="mb-1 block text-xs font-semibold text-gray-600">Số USDT cần chuyển</label>
+        <label className="mb-1 block text-xs font-semibold text-gray-600">Số {coin.ticker} cần chuyển</label>
         <div className="mb-5 flex items-center gap-2">
           <code className="flex-1 rounded-lg bg-amber-50 px-3 py-2 text-sm font-bold text-amber-800">
-            {amountText} USDT
+            {amountText} {coin.ticker}
           </code>
           <button
             type="button"

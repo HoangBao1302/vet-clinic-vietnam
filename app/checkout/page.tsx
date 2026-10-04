@@ -27,6 +27,7 @@ function CheckoutContent() {
     orderId: string;
     pay_address: string;
     pay_amount: string | number;
+    pay_currency: string;
   } | null>(null);
 
   const [formData, setFormData] = useState({
@@ -88,6 +89,7 @@ function CheckoutContent() {
             orderId: result.orderId,
             pay_address: result.pay_address,
             pay_amount: result.pay_amount,
+            pay_currency: result.pay_currency || "usdttrc20",
           });
         } else {
           setError(result.error || "Không thể tạo thanh toán Crypto. Vui lòng thử lại.");
@@ -432,6 +434,7 @@ function CheckoutContent() {
           productId={itemId}
           payAddress={cryptoPayment.pay_address}
           payAmount={cryptoPayment.pay_amount}
+          payCurrency={cryptoPayment.pay_currency}
           onClose={() => setCryptoPayment(null)}
         />
       )}

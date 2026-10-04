@@ -6,10 +6,9 @@ import { PRODUCT_PRICES_USD } from "@/config/productPrices";
 import { getPayPalProductName } from "@/lib/paypalProducts";
 import {
   isNowPaymentsConfigured,
-  getNowPaymentsIpnUrl,
-  nowPaymentsRequest,
+  createNowPaymentsDeposit,
+  toCryptoCheckoutError,
   NOWPAYMENTS_PAY_CURRENCY,
-  type NowPayment,
 } from "@/lib/nowpayments";
 
 export async function POST(request: NextRequest) {
@@ -60,16 +59,10 @@ export async function POST(request: NextRequest) {
       server: customerInfo.server || "",
     });
 
-    const payment = await nowPaymentsRequest<NowPayment>("/payment", {
-      method: "POST",
-      body: JSON.stringify({
-        price_amount: expectedUsd,
-        price_currency: "usd",
-        pay_currency: NOWPAYMENTS_PAY_CURRENCY,
-        order_id: orderId,
-        order_description: description,
-        ipn_callback_url: getNowPaymentsIpnUrl(),
-      }),
+    const payment = await createNowPaymentsDeposit({
+      orderId,
+      description,
+      priceUsd: expectedUsd,
     });
 
     if (!payment.pay_address || !payment.payment_id || payment.pay_amount == null) {
@@ -96,6 +89,6 @@ export async function POST(request: NextRequest) {
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : "Cannot create crypto payment";
     console.error("Crypto create-order error:", error);
-    return NextResponse.json({ success: false, error: message }, { status: 500 });
+    return NextResponse.json({ success: false, error: toCryptoCheckoutError(message) }, { status: 500 });
   }
 }
