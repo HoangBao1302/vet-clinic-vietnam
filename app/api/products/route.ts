@@ -16,7 +16,7 @@ export async function GET() {
 
     for (const product of products) {
       const usdPrice = PRODUCT_PRICES_USD[product.id];
-      if (usdPrice != null && product.price >= 10000) {
+      if (usdPrice != null && product.price !== usdPrice) {
         await Product.updateOne(
           { id: product.id },
           { $set: { price: usdPrice, currency: "USD" } }
