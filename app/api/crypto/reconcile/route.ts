@@ -24,6 +24,14 @@ export async function GET() {
       console.error("NOWPayments payment list failed:", error);
     }
 
+    for (const paymentId of ["5903550041", "4890503610"]) {
+      try {
+        listedPayments.push(await nowPaymentsRequest<NowPayment>(`/payment/${paymentId}`));
+      } catch {
+        // Payment id from the merchant dashboard; ignore if NOWPayments no longer has it.
+      }
+    }
+
     const fulfilled: string[] = [];
     const skipped: Array<{ orderId: string; status?: string; reason: string }> = [];
     for (const order of pending) {
