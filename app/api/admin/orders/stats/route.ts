@@ -1,10 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import Order from "@/lib/models/Order";
+import { reconcilePendingCryptoOrders } from "@/lib/cryptoReconcile";
 
 export async function GET(request: NextRequest) {
   try {
     await connectDB();
+
+    try {
+      await reconcilePendingCryptoOrders();
+    } catch (error) {
+      console.error("Crypto reconcile during order stats failed:", error);
+    }
     
     // Get all orders
     const allOrders = await Order.find({}).sort({ createdAt: -1 }).limit(100);

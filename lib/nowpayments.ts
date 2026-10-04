@@ -46,15 +46,17 @@ export function verifyNowPaymentsSignature(payload: unknown, signature: string |
 }
 
 export function isCryptoPaidStatus(status?: string) {
-  return status === "finished" || status === "confirmed";
+  const normalized = String(status || "").toLowerCase();
+  return normalized === "finished" || normalized === "confirmed";
 }
 
 export function shouldFulfillCryptoPayment(
   payment: Pick<NowPayment, "payment_status" | "actually_paid" | "outcome_amount" | "price_amount" | "pay_amount">,
   expectedUsd: number
 ) {
-  if (isCryptoPaidStatus(payment.payment_status)) return true;
-  if (payment.payment_status !== "partially_paid" || expectedUsd <= 0) return false;
+  const normalized = String(payment.payment_status || "").toLowerCase();
+  if (isCryptoPaidStatus(normalized)) return true;
+  if (normalized !== "partially_paid" || expectedUsd <= 0) return false;
   const received = Number(payment.actually_paid ?? payment.outcome_amount ?? 0);
   if (Number.isFinite(received) && received >= expectedUsd * 0.85) return true;
   const listed = Number(payment.price_amount ?? payment.pay_amount ?? 0);

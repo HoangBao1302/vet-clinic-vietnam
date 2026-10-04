@@ -350,7 +350,7 @@ export default function OrdersDashboard() {
           <div className="bg-white rounded-lg shadow-xl p-6">
             <div className="text-gray-500 text-sm font-semibold mb-2">Doanh thu</div>
             <div className="text-2xl font-bold text-purple-600">
-              {(stats.totalRevenue / 100).toLocaleString('vi-VN')}đ
+              {formatUsd(stats.totalRevenue / 100)}
             </div>
           </div>
         </div>
