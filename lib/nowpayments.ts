@@ -49,6 +49,16 @@ export function isCryptoPaidStatus(status?: string) {
   return status === "finished" || status === "confirmed";
 }
 
+export function shouldFulfillCryptoPayment(
+  payment: Pick<NowPayment, "payment_status" | "actually_paid" | "outcome_amount">,
+  expectedUsd: number
+) {
+  if (isCryptoPaidStatus(payment.payment_status)) return true;
+  if (payment.payment_status !== "partially_paid") return false;
+  const received = Number(payment.actually_paid ?? payment.outcome_amount ?? 0);
+  return Number.isFinite(received) && expectedUsd > 0 && received >= expectedUsd * 0.85;
+}
+
 export async function nowPaymentsRequest<T>(path: string, init?: RequestInit): Promise<T> {
   const apiKey = process.env.NOWPAYMENTS_API_KEY;
   if (!apiKey) {
@@ -95,6 +105,8 @@ export type NowPayment = {
   order_description?: string;
   invoice_id?: string | number;
   invoice_url?: string;
+  actually_paid?: number | string;
+  outcome_amount?: number | string;
 };
 
 type NowInvoice = {
@@ -115,7 +127,7 @@ async function createDirectUsdtPayment(input: {
       price_amount: input.priceUsd,
       price_currency: "usd",
       pay_currency: NOWPAYMENTS_PAY_CURRENCY,
-      pay_amount: input.priceUsd,
+      is_fee_paid_by_user: true,
       order_id: input.orderId,
       order_description: input.description,
       ipn_callback_url: getNowPaymentsIpnUrl(),
@@ -140,6 +152,7 @@ async function createNowPaymentsInvoice(input: {
     body: JSON.stringify({
       price_amount: input.priceUsd,
       price_currency: "usd",
+      is_fee_paid_by_user: true,
       order_id: input.orderId,
       order_description: input.description,
       ipn_callback_url: getNowPaymentsIpnUrl(),
@@ -175,7 +188,7 @@ export async function createNowPaymentsDeposit(input: {
       body: JSON.stringify({
         iid: invoice.id,
         pay_currency: NOWPAYMENTS_PAY_CURRENCY,
-        pay_amount: input.priceUsd,
+        is_fee_paid_by_user: true,
       }),
     });
     if (locked.pay_address && locked.pay_amount != null) {

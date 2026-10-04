@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import Order from "@/lib/models/Order";
 import { fulfillPaidPayPalOrder } from "@/lib/paypalFulfill";
-import { isCryptoPaidStatus, verifyNowPaymentsSignature } from "@/lib/nowpayments";
+import { shouldFulfillCryptoPayment, verifyNowPaymentsSignature } from "@/lib/nowpayments";
 
 export async function POST(request: NextRequest) {
   try {
@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
 
     console.log("NOWPayments IPN received:", { orderId, paymentId, paymentStatus });
 
-    if (!orderId || !isCryptoPaidStatus(paymentStatus)) {
+    if (!orderId) {
       return NextResponse.json({ success: true, message: "Webhook received" });
     }
 
@@ -29,6 +29,11 @@ export async function POST(request: NextRequest) {
     if (!order) {
       console.error("NOWPayments IPN order not found:", orderId);
       return NextResponse.json({ success: false, error: "Order not found" }, { status: 404 });
+    }
+
+    const expectedUsd = (order.amount || 0) / 100;
+    if (!shouldFulfillCryptoPayment(body, expectedUsd)) {
+      return NextResponse.json({ success: true, message: "Webhook received" });
     }
 
     await fulfillPaidPayPalOrder({

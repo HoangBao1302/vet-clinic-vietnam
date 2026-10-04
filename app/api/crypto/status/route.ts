@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import Order from "@/lib/models/Order";
 import { fulfillPaidPayPalOrder } from "@/lib/paypalFulfill";
-import { isCryptoPaidStatus, nowPaymentsRequest, type NowPayment } from "@/lib/nowpayments";
+import { nowPaymentsRequest, shouldFulfillCryptoPayment, type NowPayment } from "@/lib/nowpayments";
 
 export async function GET(request: NextRequest) {
   const orderId = request.nextUrl.searchParams.get("orderId")?.trim();
@@ -35,7 +35,7 @@ export async function GET(request: NextRequest) {
         } catch {
           payment = await nowPaymentsRequest<NowPayment>(`/invoice/${order.cryptoPaymentId}`);
         }
-        if (isCryptoPaidStatus(payment.payment_status)) {
+        if (shouldFulfillCryptoPayment(payment, (order.amount || 0) / 100)) {
           await fulfillPaidPayPalOrder({
             orderId,
             productId: order.productId,
