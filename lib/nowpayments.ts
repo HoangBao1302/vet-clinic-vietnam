@@ -61,7 +61,8 @@ export function shouldFulfillCryptoPayment(
   if (isCryptoPaidStatus(normalized)) return true;
   if (normalized !== "partially_paid" || expectedUsd <= 0) return false;
   const received = Number(payment.actually_paid ?? payment.outcome_amount ?? 0);
-  return Number.isFinite(received) && received > 0 && received + BINANCE_TRC20_FEE_USDT >= expectedUsd;
+  if (!Number.isFinite(received) || received <= 0) return false;
+  return received + BINANCE_TRC20_FEE_USDT >= expectedUsd;
 }
 
 export async function nowPaymentsRequest<T>(path: string, init?: RequestInit): Promise<T> {

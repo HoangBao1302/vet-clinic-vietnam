@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import Order from "@/lib/models/Order";
-import { fulfillCryptoNowPayment } from "@/lib/cryptoReconcile";
+import { fulfillCryptoNowPayment } from "@/lib/cryptoFulfill";
 import { nowPaymentsRequest, type NowPayment } from "@/lib/nowpayments";
 
 export async function GET(request: NextRequest) {

@@ -1,29 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import Order from "@/lib/models/Order";
-import { reconcilePendingCryptoOrders } from "@/lib/cryptoReconcile";
 
 export async function GET(request: NextRequest) {
   try {
     await connectDB();
 
-    try {
-      await reconcilePendingCryptoOrders();
-    } catch (error) {
-      console.error("Crypto reconcile during order stats failed:", error);
-    }
-    
-    // Get all orders
     const allOrders = await Order.find({}).sort({ createdAt: -1 }).limit(100);
     
-    // Calculate stats
     const total = allOrders.length;
     const paid = allOrders.filter(o => o.status === 'paid').length;
     const pending = allOrders.filter(o => o.status === 'pending').length;
     
-    // Calculate total revenue
     const totalRevenue = allOrders
-      .filter(o => o.status === 'paid')
+      .filter((o) => o.status === "paid" && o.amount > 0 && o.amount <= 100000)
       .reduce((sum, o) => sum + (o.amount || 0), 0);
     
     // Group by product
