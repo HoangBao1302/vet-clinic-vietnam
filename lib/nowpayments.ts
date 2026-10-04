@@ -63,13 +63,17 @@ export async function nowPaymentsRequest<T>(path: string, init?: RequestInit): P
     },
   });
 
+  if (response.status === 429) {
+    throw new Error("NOWPAYMENTS_RATE_LIMIT");
+  }
+
   const text = await response.text();
   let data: Record<string, unknown> = {};
   try {
     data = text ? (JSON.parse(text) as Record<string, unknown>) : {};
   } catch {
     console.error("NOWPayments non-JSON response:", response.status, text.slice(0, 200));
-    throw new Error(`NOWPayments error ${response.status}`);
+    throw new Error(response.status === 429 ? "NOWPAYMENTS_RATE_LIMIT" : `NOWPayments error ${response.status}`);
   }
 
   if (!response.ok) {
@@ -100,27 +104,20 @@ function roundUsd(value: number) {
   return Math.ceil(value * 100) / 100;
 }
 
-function isRetryableNowPaymentsError(message: string) {
-  return /less than minimal|minimum|not available|disabled|not enabled|currency/i.test(message);
+function isBelowMinimumError(message: string) {
+  return /less than minimal|minimum/i.test(message);
 }
 
 function buildChargePlans(priceUsd: number): ChargePlan[] {
-  const plans: ChargePlan[] = [
-    { priceAmount: priceUsd, payCurrency: NOWPAYMENTS_PAY_CURRENCY },
-  ];
-
-  if (priceUsd < 15) {
-    const buffered = roundUsd(Math.max(priceUsd, 3) + 0.25);
-    plans.push({
-      priceAmount: buffered,
-      payCurrency: NOWPAYMENTS_PAY_CURRENCY,
-      payAmount: buffered,
-    });
-    plans.push({ priceAmount: priceUsd, payCurrency: NOWPAYMENTS_FALLBACK_CURRENCY });
-    plans.push({ priceAmount: priceUsd, payCurrency: "ltc" });
+  if (priceUsd < 10) {
+    const buffered = roundUsd(priceUsd + 0.5);
+    return [
+      { priceAmount: buffered, payCurrency: NOWPAYMENTS_PAY_CURRENCY, payAmount: buffered },
+      { priceAmount: priceUsd, payCurrency: NOWPAYMENTS_FALLBACK_CURRENCY },
+    ];
   }
 
-  return plans;
+  return [{ priceAmount: priceUsd, payCurrency: NOWPAYMENTS_PAY_CURRENCY }];
 }
 
 async function createPaymentWithPlan(
@@ -153,7 +150,8 @@ export async function createNowPaymentsDeposit(input: {
   const plans = buildChargePlans(input.priceUsd);
   let lastError: Error | null = null;
 
-  for (const plan of plans) {
+  for (let index = 0; index < plans.length; index += 1) {
+    const plan = plans[index];
     try {
       const payment = await createPaymentWithPlan(input, plan);
       return {
@@ -163,8 +161,11 @@ export async function createNowPaymentsDeposit(input: {
     } catch (error) {
       lastError = error instanceof Error ? error : new Error("Cannot create crypto payment");
       console.error("NOWPayments create payment failed:", plan.payCurrency, lastError.message);
-      if (!isRetryableNowPaymentsError(lastError.message)) {
+      if (lastError.message === "NOWPAYMENTS_RATE_LIMIT" || !isBelowMinimumError(lastError.message)) {
         throw lastError;
+      }
+      if (index < plans.length - 1) {
+        await new Promise((resolve) => setTimeout(resolve, 1200));
       }
     }
   }
@@ -173,6 +174,9 @@ export async function createNowPaymentsDeposit(input: {
 }
 
 export function toCryptoCheckoutError(message: string) {
+  if (/429|RATE_LIMIT/i.test(message)) {
+    return "NOWPayments đang giới hạn số lần gọi (429). Đợi khoảng 2 phút rồi bấm thanh toán lại. Không cần nạp tiền vào ví NOWPayments.";
+  }
   if (/less than minimal|minimum/i.test(message)) {
     return "Số tiền quy đổi thấp hơn mức tối thiểu của NOWPayments. Vui lòng thử lại hoặc thanh toán bằng PayPal.";
   }
