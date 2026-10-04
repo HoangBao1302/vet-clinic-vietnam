@@ -91,6 +91,7 @@ function CheckoutContent() {
           pay_address?: string;
           pay_amount?: string | number;
           pay_currency?: string;
+          invoice_url?: string;
         };
         try {
           result = payload ? JSON.parse(payload) : {};
@@ -106,6 +107,9 @@ function CheckoutContent() {
             pay_amount: result.pay_amount,
             pay_currency: result.pay_currency || "usdttrc20",
           });
+        } else if (result.success && result.invoice_url) {
+          window.location.href = result.invoice_url;
+          return;
         } else {
           setError(result.error || "Không thể tạo thanh toán Crypto. Vui lòng thử lại.");
         }

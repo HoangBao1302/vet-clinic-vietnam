@@ -63,18 +63,19 @@ export async function POST(request: NextRequest) {
       orderId,
       description,
       priceUsd: expectedUsd,
+      productId,
     });
 
-    if (!payment.pay_address || !payment.payment_id || payment.pay_amount == null) {
+    if (!payment.invoice_url && (!payment.pay_address || payment.pay_amount == null || payment.payment_id == null)) {
       return NextResponse.json(
-        { success: false, error: "NOWPayments did not return a deposit address" },
+        { success: false, error: "NOWPayments did not return payment details" },
         { status: 502 }
       );
     }
 
     await Order.updateOne(
       { orderId },
-      { $set: { cryptoPaymentId: String(payment.payment_id) } }
+      { $set: { cryptoPaymentId: String(payment.payment_id || payment.invoice_id || "") } }
     );
 
     return NextResponse.json({
@@ -84,6 +85,7 @@ export async function POST(request: NextRequest) {
       pay_address: payment.pay_address,
       pay_amount: payment.pay_amount,
       pay_currency: payment.pay_currency || NOWPAYMENTS_PAY_CURRENCY,
+      invoice_url: payment.invoice_url,
       payment_status: payment.payment_status || "waiting",
     });
   } catch (error: unknown) {

@@ -3,7 +3,6 @@ import { getPayPalSiteUrl } from "@/lib/paypal";
 
 export const NOWPAYMENTS_API_BASE = "https://api.nowpayments.io/v1";
 export const NOWPAYMENTS_PAY_CURRENCY = "usdttrc20";
-export const NOWPAYMENTS_FALLBACK_CURRENCY = "trx";
 
 export function isNowPaymentsConfigured() {
   return Boolean(process.env.NOWPAYMENTS_API_KEY);
@@ -92,53 +91,62 @@ export type NowPayment = {
   price_amount?: number | string;
   order_id?: string;
   order_description?: string;
+  invoice_id?: string | number;
+  invoice_url?: string;
 };
 
-type ChargePlan = {
-  priceAmount: number;
-  payCurrency: string;
-  payAmount?: number;
+type NowInvoice = {
+  id?: string | number;
+  invoice_url?: string;
+  token_id?: string;
+  order_id?: string;
 };
-
-function roundUsd(value: number) {
-  return Math.ceil(value * 100) / 100;
-}
 
 function isBelowMinimumError(message: string) {
   return /less than minimal|minimum/i.test(message);
 }
 
-function buildChargePlans(priceUsd: number): ChargePlan[] {
-  if (priceUsd < 10) {
-    const buffered = roundUsd(priceUsd + 0.5);
-    return [
-      { priceAmount: buffered, payCurrency: NOWPAYMENTS_PAY_CURRENCY, payAmount: buffered },
-      { priceAmount: priceUsd, payCurrency: NOWPAYMENTS_FALLBACK_CURRENCY },
-    ];
-  }
-
-  return [{ priceAmount: priceUsd, payCurrency: NOWPAYMENTS_PAY_CURRENCY }];
-}
-
-async function createPaymentWithPlan(
-  input: { orderId: string; description: string },
-  plan: ChargePlan
-) {
-  const body: Record<string, unknown> = {
-    price_amount: plan.priceAmount,
-    price_currency: "usd",
-    pay_currency: plan.payCurrency,
-    order_id: input.orderId,
-    order_description: input.description,
-    ipn_callback_url: getNowPaymentsIpnUrl(),
-  };
-  if (plan.payAmount != null) {
-    body.pay_amount = plan.payAmount;
-  }
-
+async function createDirectUsdtPayment(input: {
+  orderId: string;
+  description: string;
+  priceUsd: number;
+}) {
   return nowPaymentsRequest<NowPayment>("/payment", {
     method: "POST",
-    body: JSON.stringify(body),
+    body: JSON.stringify({
+      price_amount: input.priceUsd,
+      price_currency: "usd",
+      pay_currency: NOWPAYMENTS_PAY_CURRENCY,
+      order_id: input.orderId,
+      order_description: input.description,
+      ipn_callback_url: getNowPaymentsIpnUrl(),
+    }),
+  });
+}
+
+async function createNowPaymentsInvoice(input: {
+  orderId: string;
+  description: string;
+  priceUsd: number;
+  productId?: string;
+}) {
+  const siteUrl = getPayPalSiteUrl();
+  const success = new URL(`${siteUrl}/downloads/success`);
+  success.searchParams.set("payment_method", "crypto");
+  success.searchParams.set("order", input.orderId);
+  if (input.productId) success.searchParams.set("productId", input.productId);
+
+  return nowPaymentsRequest<NowInvoice>("/invoice", {
+    method: "POST",
+    body: JSON.stringify({
+      price_amount: input.priceUsd,
+      price_currency: "usd",
+      order_id: input.orderId,
+      order_description: input.description,
+      ipn_callback_url: getNowPaymentsIpnUrl(),
+      success_url: success.toString(),
+      cancel_url: `${siteUrl}/downloads`,
+    }),
   });
 }
 
@@ -146,31 +154,36 @@ export async function createNowPaymentsDeposit(input: {
   orderId: string;
   description: string;
   priceUsd: number;
+  productId?: string;
 }): Promise<NowPayment> {
-  const plans = buildChargePlans(input.priceUsd);
-  let lastError: Error | null = null;
-
-  for (let index = 0; index < plans.length; index += 1) {
-    const plan = plans[index];
+  // Forced USDT TRC20 rejects ~$3 because NOWPayments min is often ~$9. Invoice lets the customer pick a valid coin.
+  if (input.priceUsd >= 15) {
     try {
-      const payment = await createPaymentWithPlan(input, plan);
+      const payment = await createDirectUsdtPayment(input);
       return {
         ...payment,
-        pay_currency: payment.pay_currency || plan.payCurrency,
+        pay_currency: payment.pay_currency || NOWPAYMENTS_PAY_CURRENCY,
       };
     } catch (error) {
-      lastError = error instanceof Error ? error : new Error("Cannot create crypto payment");
-      console.error("NOWPayments create payment failed:", plan.payCurrency, lastError.message);
-      if (lastError.message === "NOWPAYMENTS_RATE_LIMIT" || !isBelowMinimumError(lastError.message)) {
-        throw lastError;
-      }
-      if (index < plans.length - 1) {
-        await new Promise((resolve) => setTimeout(resolve, 1200));
+      const message = error instanceof Error ? error.message : "";
+      if (message === "NOWPAYMENTS_RATE_LIMIT" || !isBelowMinimumError(message)) {
+        throw error;
       }
     }
   }
 
-  throw lastError || new Error("Cannot create crypto payment");
+  const invoice = await createNowPaymentsInvoice(input);
+  if (!invoice.invoice_url || invoice.id == null) {
+    throw new Error("NOWPayments did not return an invoice");
+  }
+
+  return {
+    payment_id: invoice.id,
+    invoice_id: invoice.id,
+    invoice_url: invoice.invoice_url,
+    payment_status: "waiting",
+    order_id: input.orderId,
+  };
 }
 
 export function toCryptoCheckoutError(message: string) {

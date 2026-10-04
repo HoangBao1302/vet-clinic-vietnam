@@ -29,7 +29,12 @@ export async function GET(request: NextRequest) {
 
     if (order.cryptoPaymentId) {
       try {
-        const payment = await nowPaymentsRequest<NowPayment>(`/payment/${order.cryptoPaymentId}`);
+        let payment: NowPayment | null = null;
+        try {
+          payment = await nowPaymentsRequest<NowPayment>(`/payment/${order.cryptoPaymentId}`);
+        } catch {
+          payment = await nowPaymentsRequest<NowPayment>(`/invoice/${order.cryptoPaymentId}`);
+        }
         if (isCryptoPaidStatus(payment.payment_status)) {
           await fulfillPaidPayPalOrder({
             orderId,
