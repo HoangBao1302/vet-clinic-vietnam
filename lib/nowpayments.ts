@@ -129,7 +129,7 @@ async function createDirectUsdtPayment(input: {
       price_amount: input.priceUsd,
       price_currency: "usd",
       pay_currency: NOWPAYMENTS_PAY_CURRENCY,
-      is_fee_paid_by_user: true,
+      pay_amount: input.priceUsd,
       order_id: input.orderId,
       order_description: input.description,
       ipn_callback_url: getNowPaymentsIpnUrl(),
@@ -154,7 +154,6 @@ async function createNowPaymentsInvoice(input: {
     body: JSON.stringify({
       price_amount: input.priceUsd,
       price_currency: "usd",
-      is_fee_paid_by_user: true,
       order_id: input.orderId,
       order_description: input.description,
       ipn_callback_url: getNowPaymentsIpnUrl(),
@@ -190,7 +189,6 @@ export async function createNowPaymentsDeposit(input: {
       body: JSON.stringify({
         iid: invoice.id,
         pay_currency: NOWPAYMENTS_PAY_CURRENCY,
-        is_fee_paid_by_user: true,
       }),
     });
     if (locked.pay_address && locked.pay_amount != null) {
@@ -220,8 +218,8 @@ export function toCryptoCheckoutError(message: string) {
   if (/429|RATE_LIMIT/i.test(message)) {
     return "NOWPayments đang giới hạn số lần gọi (429). Đợi khoảng 2 phút rồi bấm thanh toán lại. Không cần nạp tiền vào ví NOWPayments.";
   }
-  if (/less than minimal|minimum/i.test(message)) {
-    return "Số tiền quy đổi thấp hơn mức tối thiểu của NOWPayments. Vui lòng thử lại hoặc thanh toán bằng PayPal.";
+  if (/less than minimal|minimum|amountTo is too small/i.test(message)) {
+    return "Số tiền thấp hơn mức tối thiểu của NOWPayments. Vui lòng thử lại hoặc thanh toán bằng PayPal.";
   }
   return message;
 }

@@ -107,7 +107,7 @@ export default function CryptoPaymentModal({
           </button>
         </div>
 
-        <label className="mb-1 block text-xs font-semibold text-gray-600">Số {coin.ticker} cần chuyển (đã gồm phí mạng)</label>
+        <label className="mb-1 block text-xs font-semibold text-gray-600">Số {coin.ticker} cần chuyển</label>
         <div className="mb-4 flex items-center gap-2">
           <code className="flex-1 rounded-lg bg-amber-50 px-3 py-2 text-sm font-bold text-amber-800">
             {amountText} {coin.ticker}
@@ -121,7 +121,7 @@ export default function CryptoPaymentModal({
           </button>
         </div>
         <p className="mb-5 text-xs text-amber-800">
-          Quét QR chỉ chứa địa chỉ ví. Chuyển đúng số trên (gói + phí NOWPayments) mạng TRC20.
+          Quét QR chỉ chứa địa chỉ ví. Chuyển đúng số trên, đúng mạng TRC20.
         </p>
 
         <div className="flex items-start gap-2 rounded-lg bg-blue-50 px-3 py-3 text-sm text-blue-800">
