@@ -34,8 +34,34 @@ export async function reconcilePendingCryptoOrders() {
 
   const fulfilled: string[] = [];
   const skipped: Array<{ orderId: string; status?: string; reason: string }> = [];
+  const listedOrderIds = listedPayments
+    .map((item) => String(item.order_id || ""))
+    .filter(Boolean);
+
+  for (const payment of listedPayments) {
+    const listedOrderId = String(payment.order_id || "").trim();
+    if (!listedOrderId) continue;
+    const listedOrder = await Order.findOne({ orderId: listedOrderId, status: { $ne: "paid" } });
+    if (!listedOrder) continue;
+    const expectedUsd = (listedOrder.amount || 0) / 100;
+    if (!shouldFulfillCryptoPayment(payment, expectedUsd)) continue;
+    await fulfillPaidPayPalOrder({
+      orderId: listedOrder.orderId,
+      productId: listedOrder.productId,
+      customerEmail: listedOrder.customerEmail,
+      customerName: listedOrder.customerName,
+      customerPhone: listedOrder.customerPhone,
+      amountUsd: expectedUsd,
+      broker: listedOrder.broker,
+      accountId: listedOrder.accountId,
+      server: listedOrder.server,
+      paymentMethod: "crypto",
+    });
+    fulfilled.push(listedOrder.orderId);
+  }
 
   for (const order of pending) {
+    if (fulfilled.includes(order.orderId)) continue;
     try {
       let payment: NowPayment | undefined;
       if (order.cryptoPaymentId) {
@@ -84,5 +110,5 @@ export async function reconcilePendingCryptoOrders() {
     }
   }
 
-  return { checked: pending.length, fulfilled, skipped };
+  return { checked: pending.length, fulfilled: [...new Set(fulfilled)], skipped, listedOrderIds };
 }
