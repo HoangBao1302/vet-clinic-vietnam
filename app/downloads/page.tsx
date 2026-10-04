@@ -104,7 +104,7 @@ const fallbackProducts: DownloadItem[] = [
     type: "indicator",
     free: false,
     requiresPayment: true,
-    price: 3,
+    price: 10,
     downloadUrl: "/downloads/files/Indicator-Pro-Pack-MT4.zip",
     platform: "MT4"
   },
@@ -144,7 +144,7 @@ const fallbackProducts: DownloadItem[] = [
     type: "indicator",
     free: false,
     requiresPayment: true,
-    price: 3,
+    price: 10,
     downloadUrl: "/downloads/files/Indicator-Pro-Pack-MT5.zip",
     platform: "MT5"
   },
