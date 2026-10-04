@@ -3,6 +3,8 @@ import { getPayPalSiteUrl } from "@/lib/paypal";
 
 export const NOWPAYMENTS_API_BASE = "https://api.nowpayments.io/v1";
 export const NOWPAYMENTS_PAY_CURRENCY = "usdttrc20";
+/** Stay on-site with USDT TRC20 QR at or above this USD price (NOWPayments USDT min is ~$10 after FX). */
+export const NOWPAYMENTS_USDT_ON_SITE_MIN_USD = 16;
 
 export function isNowPaymentsConfigured() {
   return Boolean(process.env.NOWPAYMENTS_API_KEY);
@@ -102,10 +104,6 @@ type NowInvoice = {
   order_id?: string;
 };
 
-function isBelowMinimumError(message: string) {
-  return /less than minimal|minimum/i.test(message);
-}
-
 async function createDirectUsdtPayment(input: {
   orderId: string;
   description: string;
@@ -117,6 +115,7 @@ async function createDirectUsdtPayment(input: {
       price_amount: input.priceUsd,
       price_currency: "usd",
       pay_currency: NOWPAYMENTS_PAY_CURRENCY,
+      pay_amount: input.priceUsd,
       order_id: input.orderId,
       order_description: input.description,
       ipn_callback_url: getNowPaymentsIpnUrl(),
@@ -156,25 +155,41 @@ export async function createNowPaymentsDeposit(input: {
   priceUsd: number;
   productId?: string;
 }): Promise<NowPayment> {
-  // Forced USDT TRC20 rejects ~$3 because NOWPayments min is often ~$9. Invoice lets the customer pick a valid coin.
-  if (input.priceUsd >= 15) {
-    try {
-      const payment = await createDirectUsdtPayment(input);
-      return {
-        ...payment,
-        pay_currency: payment.pay_currency || NOWPAYMENTS_PAY_CURRENCY,
-      };
-    } catch (error) {
-      const message = error instanceof Error ? error.message : "";
-      if (message === "NOWPAYMENTS_RATE_LIMIT" || !isBelowMinimumError(message)) {
-        throw error;
-      }
-    }
+  if (input.priceUsd >= NOWPAYMENTS_USDT_ON_SITE_MIN_USD) {
+    const payment = await createDirectUsdtPayment(input);
+    return {
+      ...payment,
+      pay_amount: payment.pay_amount ?? input.priceUsd,
+      pay_currency: payment.pay_currency || NOWPAYMENTS_PAY_CURRENCY,
+    };
   }
 
   const invoice = await createNowPaymentsInvoice(input);
   if (!invoice.invoice_url || invoice.id == null) {
     throw new Error("NOWPayments did not return an invoice");
+  }
+
+  try {
+    const locked = await nowPaymentsRequest<NowPayment>("/invoice-payment", {
+      method: "POST",
+      body: JSON.stringify({
+        iid: invoice.id,
+        pay_currency: NOWPAYMENTS_PAY_CURRENCY,
+        pay_amount: input.priceUsd,
+      }),
+    });
+    if (locked.pay_address && locked.pay_amount != null) {
+      return {
+        ...locked,
+        invoice_id: invoice.id,
+        pay_amount: locked.pay_amount ?? input.priceUsd,
+        pay_currency: locked.pay_currency || NOWPAYMENTS_PAY_CURRENCY,
+      };
+    }
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "";
+    if (message === "NOWPAYMENTS_RATE_LIMIT") throw error;
+    console.error("NOWPayments invoice-payment lock failed:", message);
   }
 
   return {

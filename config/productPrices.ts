@@ -1,6 +1,6 @@
 export const PRODUCT_PRICES_USD: Record<string, number> = {
-  "indicator-pro-mt4": 10,
-  "indicator-pro-mt5": 10,
+  "indicator-pro-mt4": 16,
+  "indicator-pro-mt5": 16,
   "ea-full-mt4": 329,
   "ea-full-mt5": 329,
   "ea-pro-source-mt4": 621,

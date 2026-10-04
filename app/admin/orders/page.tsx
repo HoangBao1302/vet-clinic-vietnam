@@ -267,8 +267,8 @@ export default function OrdersDashboard() {
     'ea-pro-source-mt5': 621,
     'ea-full-mt4': 329,
     'ea-full-mt5': 329,
-    'indicator-pro-mt4': 10,
-    'indicator-pro-mt5': 10,
+    'indicator-pro-mt4': 16,
+    'indicator-pro-mt5': 16,
   };
 
   const isUsdCents = (amount: number) => amount > 0 && amount <= 100000;

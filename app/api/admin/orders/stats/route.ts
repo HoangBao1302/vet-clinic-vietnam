@@ -37,8 +37,8 @@ export async function GET(request: NextRequest) {
       'ea-pro-source-mt5': 621,
       'ea-full-mt4': 329,
       'ea-full-mt5': 329,
-      'indicator-pro-mt4': 10,
-      'indicator-pro-mt5': 10,
+      'indicator-pro-mt4': 16,
+      'indicator-pro-mt5': 16,
     };
     
     const invalidOrders = allOrders.filter(order => {
