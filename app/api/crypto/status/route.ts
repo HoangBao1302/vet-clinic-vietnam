@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import Order from "@/lib/models/Order";
-import { fulfillPaidPayPalOrder } from "@/lib/paypalFulfill";
-import { nowPaymentsRequest, shouldFulfillCryptoPayment, type NowPayment } from "@/lib/nowpayments";
+import { fulfillCryptoNowPayment } from "@/lib/cryptoReconcile";
+import { nowPaymentsRequest, type NowPayment } from "@/lib/nowpayments";
 
 export async function GET(request: NextRequest) {
   const orderId = request.nextUrl.searchParams.get("orderId")?.trim();
@@ -27,44 +27,39 @@ export async function GET(request: NextRequest) {
       });
     }
 
+    let payment: NowPayment | undefined;
     if (order.cryptoPaymentId) {
       try {
-        let payment: NowPayment | null = null;
+        payment = await nowPaymentsRequest<NowPayment>(`/payment/${order.cryptoPaymentId}`);
+      } catch {
         try {
-          payment = await nowPaymentsRequest<NowPayment>(`/payment/${order.cryptoPaymentId}`);
-        } catch {
           payment = await nowPaymentsRequest<NowPayment>(`/invoice/${order.cryptoPaymentId}`);
+        } catch {
+          payment = undefined;
         }
-        if (shouldFulfillCryptoPayment(payment, (order.amount || 0) / 100)) {
-          await fulfillPaidPayPalOrder({
-            orderId,
-            productId: order.productId,
-            customerEmail: order.customerEmail,
-            customerName: order.customerName,
-            customerPhone: order.customerPhone,
-            amountUsd: (order.amount || 0) / 100,
-            broker: order.broker,
-            accountId: order.accountId,
-            server: order.server,
-            paymentMethod: "crypto",
-          });
-          return NextResponse.json({
-            success: true,
-            paid: true,
-            status: payment.payment_status,
-            orderId,
-            productId: order.productId,
-          });
-        }
+      }
+    }
+
+    if (payment) {
+      const result = await fulfillCryptoNowPayment({
+        ...payment,
+        order_id: payment.order_id || orderId,
+      });
+      if (result.fulfilled) {
         return NextResponse.json({
           success: true,
-          paid: false,
-          status: payment.payment_status || order.status,
-          orderId,
+          paid: true,
+          status: payment.payment_status || "paid",
+          orderId: result.fulfilled,
+          productId: order.productId,
         });
-      } catch (error) {
-        console.error("NOWPayments status lookup failed:", error);
       }
+      return NextResponse.json({
+        success: true,
+        paid: false,
+        status: payment.payment_status || order.status,
+        orderId,
+      });
     }
 
     return NextResponse.json({

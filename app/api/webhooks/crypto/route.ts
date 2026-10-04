@@ -1,19 +1,35 @@
 import { NextRequest, NextResponse } from "next/server";
 import { fulfillCryptoNowPayment } from "@/lib/cryptoReconcile";
-import { shouldFulfillCryptoPayment, verifyNowPaymentsSignature, type NowPayment } from "@/lib/nowpayments";
+import {
+  nowPaymentsRequest,
+  shouldFulfillCryptoPayment,
+  verifyNowPaymentsSignature,
+  type NowPayment,
+} from "@/lib/nowpayments";
 
 export async function POST(request: NextRequest) {
   try {
     const signature = request.headers.get("x-nowpayments-sig");
-    const body = await request.json();
+    const body = (await request.json()) as NowPayment;
+    const paymentId = String(body.payment_id || "").trim();
 
-    if (!verifyNowPaymentsSignature(body, signature)) {
+    let payment = body;
+    let fromApi = false;
+    if (paymentId) {
+      try {
+        payment = { ...body, ...(await nowPaymentsRequest<NowPayment>(`/payment/${paymentId}`)) };
+        fromApi = true;
+      } catch (error) {
+        console.error("NOWPayments IPN lookup failed:", error);
+      }
+    }
+
+    if (!fromApi && !verifyNowPaymentsSignature(body, signature)) {
       console.error("NOWPayments IPN signature mismatch");
       return NextResponse.json({ success: false, error: "Invalid signature" }, { status: 401 });
     }
 
-    const payment = body as NowPayment;
-    const expectedUsd = Number(payment.price_amount || payment.pay_amount || 16);
+    const expectedUsd = Number(payment.price_amount || payment.pay_amount || 0);
     console.log("NOWPayments IPN received:", {
       orderId: payment.order_id,
       paymentId: payment.payment_id,

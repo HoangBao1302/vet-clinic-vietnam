@@ -45,6 +45,9 @@ export function verifyNowPaymentsSignature(payload: unknown, signature: string |
   return crypto.timingSafeEqual(left, right);
 }
 
+/** Binance USDT TRC20 withdraw fee is ~1.5; allow a little slack. */
+export const BINANCE_TRC20_FEE_USDT = 2;
+
 export function isCryptoPaidStatus(status?: string) {
   const normalized = String(status || "").toLowerCase();
   return normalized === "finished" || normalized === "confirmed";
@@ -58,9 +61,7 @@ export function shouldFulfillCryptoPayment(
   if (isCryptoPaidStatus(normalized)) return true;
   if (normalized !== "partially_paid" || expectedUsd <= 0) return false;
   const received = Number(payment.actually_paid ?? payment.outcome_amount ?? 0);
-  if (Number.isFinite(received) && received >= expectedUsd * 0.85) return true;
-  const listed = Number(payment.price_amount ?? payment.pay_amount ?? 0);
-  return Number.isFinite(listed) && listed >= expectedUsd * 0.95;
+  return Number.isFinite(received) && received > 0 && received + BINANCE_TRC20_FEE_USDT >= expectedUsd;
 }
 
 export async function nowPaymentsRequest<T>(path: string, init?: RequestInit): Promise<T> {
