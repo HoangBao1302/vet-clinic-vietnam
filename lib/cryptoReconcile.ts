@@ -41,23 +41,42 @@ export async function reconcilePendingCryptoOrders() {
   for (const payment of listedPayments) {
     const listedOrderId = String(payment.order_id || "").trim();
     if (!listedOrderId) continue;
-    const listedOrder = await Order.findOne({ orderId: listedOrderId, status: { $ne: "paid" } });
-    if (!listedOrder) continue;
-    const expectedUsd = (listedOrder.amount || 0) / 100;
-    if (!shouldFulfillCryptoPayment(payment, expectedUsd)) continue;
+    let listedOrder = await Order.findOne({ orderId: listedOrderId });
+    if (!listedOrder) {
+      listedOrder = await Order.findOne({
+        paymentMethod: "crypto",
+        status: { $ne: "paid" },
+        amount: { $in: [16, 1600] },
+      }).sort({ createdAt: -1 });
+    }
+    const expectedUsd =
+      listedOrder?.amount
+        ? listedOrder.amount / 100
+        : Number(payment.price_amount || 0);
+    if (!shouldFulfillCryptoPayment(payment, expectedUsd || 16)) continue;
+    if (listedOrder?.status === "paid") continue;
+
+    const description = String(payment.order_description || "").toLowerCase();
+    const inferredProductId = description.includes("mt5")
+      ? "indicator-pro-mt5"
+      : description.includes("mt4")
+        ? "indicator-pro-mt4"
+        : listedOrder?.productId || "indicator-pro-mt5";
+    const targetOrderId = listedOrder?.orderId || listedOrderId;
+
     await fulfillPaidPayPalOrder({
-      orderId: listedOrder.orderId,
-      productId: listedOrder.productId,
-      customerEmail: listedOrder.customerEmail,
-      customerName: listedOrder.customerName,
-      customerPhone: listedOrder.customerPhone,
-      amountUsd: expectedUsd,
-      broker: listedOrder.broker,
-      accountId: listedOrder.accountId,
-      server: listedOrder.server,
+      orderId: targetOrderId,
+      productId: inferredProductId,
+      customerEmail: listedOrder?.customerEmail || "",
+      customerName: listedOrder?.customerName || "Customer",
+      customerPhone: listedOrder?.customerPhone || "",
+      amountUsd: expectedUsd || 16,
+      broker: listedOrder?.broker,
+      accountId: listedOrder?.accountId,
+      server: listedOrder?.server,
       paymentMethod: "crypto",
     });
-    fulfilled.push(listedOrder.orderId);
+    fulfilled.push(targetOrderId);
   }
 
   for (const order of pending) {
