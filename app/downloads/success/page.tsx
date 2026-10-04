@@ -23,6 +23,18 @@ function SuccessContent() {
 
   useEffect(() => {
     const verifyPayment = async () => {
+      if (paymentMethod === "crypto") {
+        setOrderInfo({
+          orderId: searchParams.get("order") || "",
+          status: "paid",
+          paymentMethod: "crypto",
+          productId: searchParams.get("productId") || "",
+          emailed: true,
+        });
+        setLoading(false);
+        return;
+      }
+
       if (sessionId && paymentMethod === "stripe") {
         try {
           const res = await fetch(`/api/get-order?session_id=${sessionId}`);
@@ -125,7 +137,7 @@ function SuccessContent() {
               </div>
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                 <p className="text-sm text-gray-500">
-                  Phương thức: <span className="font-bold text-gray-700">{orderInfo?.paymentMethod === "stripe" ? "Stripe" : "PayPal"}</span>
+                  Phương thức: <span className="font-bold text-gray-700">{orderInfo?.paymentMethod === "crypto" ? "Crypto (USDT TRC20)" : orderInfo?.paymentMethod === "stripe" ? "Stripe" : "PayPal"}</span>
                 </p>
                 <p className="text-xs text-gray-400">
                   Lưu mã này để tải lại sau

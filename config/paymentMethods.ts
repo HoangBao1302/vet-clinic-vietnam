@@ -29,6 +29,14 @@ export const PAYMENT_METHODS = {
     color: 'green',
     disabledMessage: 'Tạm thời không khả dụng',
     disabledMessageEn: 'Temporarily unavailable'
+  },
+  crypto: {
+    enabled: true,
+    label: 'Thanh toán Crypto (USDT TRC20)',
+    labelEn: 'Pay with Crypto (USDT TRC20)',
+    color: 'orange',
+    disabledMessage: 'Tạm thời không khả dụng',
+    disabledMessageEn: 'Temporarily unavailable'
   }
 } as const;
 

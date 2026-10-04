@@ -657,7 +657,8 @@
       "downloadFree": "Tải Miễn Phí",
       "buyStripe": "Mua qua Stripe (Card)",
       "buyPaypal": "Thanh toán PayPal",
-      "buyBank": "Chuyển khoản Ngân hàng"
+      "buyBank": "Chuyển khoản Ngân hàng",
+      "buyCrypto": "Thanh toán Crypto (USDT)"
     },
     "pdfSection": {
       "badge": "Tài liệu Hướng Dẫn",

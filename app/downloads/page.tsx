@@ -255,7 +255,7 @@ export default function DownloadsPage() {
     }
   };
 
-  const handlePurchase = (item: DownloadItem, method: "stripe" | "paypal" | "bank") => {
+  const handlePurchase = (item: DownloadItem, method: "stripe" | "paypal" | "bank" | "crypto") => {
     // Redirect to payment page with item info
     const params = new URLSearchParams({
       item: item.id,
@@ -475,6 +475,16 @@ export default function DownloadsPage() {
                 >
                   <CreditCard size={18} />
                   <span className="whitespace-nowrap">{t('downloads.buttons.buyBank')}</span>
+                </button>
+              )}
+
+              {isPaymentMethodEnabled('crypto') && (
+                <button
+                  onClick={() => handlePurchase(item, "crypto")}
+                  className="w-full min-h-12 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition-colors"
+                >
+                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white text-xs font-bold text-emerald-700">₮</span>
+                  <span className="whitespace-nowrap">{t('downloads.buttons.buyCrypto')}</span>
                 </button>
               )}
             </div>

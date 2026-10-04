@@ -7,6 +7,8 @@ import Footer from "@/components/Footer";
 import { CreditCard, Lock, CheckCircle, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { formatUsd } from "@/config/productPrices";
+import { isPaymentMethodEnabled } from "@/config/paymentMethods";
+import CryptoPaymentModal from "@/components/CryptoPaymentModal";
 
 function CheckoutContent() {
   const searchParams = useSearchParams();
@@ -16,8 +18,16 @@ function CheckoutContent() {
   const itemId = searchParams.get("item") || "";
   const itemName = searchParams.get("name") || "";
   const itemPrice = parseInt(searchParams.get("price") || "0");
-  const paymentMethod = "paypal" as const;
+  const requestedMethod = searchParams.get("method") === "crypto" ? "crypto" : "paypal";
   const affiliateCode = searchParams.get("affiliate") || "";
+  const [paymentMethod, setPaymentMethod] = useState<"paypal" | "crypto">(
+    requestedMethod === "crypto" && isPaymentMethodEnabled("crypto") ? "crypto" : "paypal"
+  );
+  const [cryptoPayment, setCryptoPayment] = useState<{
+    orderId: string;
+    pay_address: string;
+    pay_amount: string | number;
+  } | null>(null);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -61,7 +71,31 @@ function CheckoutContent() {
         }
       }
 
-      // Create order and get payment URL
+      if (paymentMethod === "crypto") {
+        const response = await fetch("/api/crypto/create-order", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            productId: itemId,
+            productName: itemName,
+            amount: itemPrice,
+            customerInfo: formData,
+          }),
+        });
+        const result = await response.json();
+        if (result.success && result.pay_address) {
+          setCryptoPayment({
+            orderId: result.orderId,
+            pay_address: result.pay_address,
+            pay_amount: result.pay_amount,
+          });
+        } else {
+          setError(result.error || "Không thể tạo thanh toán Crypto. Vui lòng thử lại.");
+        }
+        setLoading(false);
+        return;
+      }
+
       const response = await fetch("/api/create-payment", {
         method: "POST",
         headers: {
@@ -71,25 +105,22 @@ function CheckoutContent() {
           productId: itemId,
           productName: itemName,
           amount: itemPrice,
-          method: paymentMethod,
+          method: "paypal",
           customerInfo: {
             ...formData,
             ...enhancedTrackingData
           },
-          affiliateCode: affiliateCode // Add affiliate tracking
+          affiliateCode: affiliateCode
         }),
       });
 
       const result = await response.json();
 
       if (result.success && result.paymentUrl) {
-        // For PayPal, store orderId in localStorage for success page
-        if (paymentMethod === "paypal" && result.orderId) {
+        if (result.orderId) {
           localStorage.setItem("paypalOrderId", result.orderId);
           localStorage.setItem("paypalProductId", itemId);
         }
-        
-        // Redirect to payment gateway
         window.location.href = result.paymentUrl;
       } else {
         setError(result.error || "Không thể tạo thanh toán. Vui lòng thử lại.");
@@ -153,23 +184,56 @@ function CheckoutContent() {
                 </div>
               </div>
 
-              {/* Payment Method */}
+              <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
+                <h2 className="text-lg font-bold text-gray-800 mb-4">Phương thức thanh toán</h2>
+                <div className="space-y-3">
+                  {isPaymentMethodEnabled("paypal") && (
+                    <label className={`flex cursor-pointer items-center gap-3 rounded-xl border-2 p-4 ${paymentMethod === "paypal" ? "border-[#FFC439] bg-[#FFF8E1]" : "border-gray-200"}`}>
+                      <input
+                        type="radio"
+                        name="paymentMethod"
+                        checked={paymentMethod === "paypal"}
+                        onChange={() => setPaymentMethod("paypal")}
+                        className="h-4 w-4"
+                      />
+                      <CreditCard className="text-[#003087]" size={22} />
+                      <div>
+                        <div className="font-bold text-gray-800">PayPal / Credit Card</div>
+                        <div className="text-sm text-gray-600">PayPal Balance • Card • Bank</div>
+                      </div>
+                    </label>
+                  )}
+                  {isPaymentMethodEnabled("crypto") && (
+                    <label className={`flex cursor-pointer items-center gap-3 rounded-xl border-2 p-4 ${paymentMethod === "crypto" ? "border-emerald-500 bg-emerald-50" : "border-gray-200"}`}>
+                      <input
+                        type="radio"
+                        name="paymentMethod"
+                        checked={paymentMethod === "crypto"}
+                        onChange={() => setPaymentMethod("crypto")}
+                        className="h-4 w-4"
+                      />
+                      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-600 text-sm font-bold text-white">₮</span>
+                      <div>
+                        <div className="font-bold text-gray-800">Crypto (USDT - TRC20)</div>
+                        <div className="text-sm text-gray-600">Chuyển USDT mạng Tron, xác thực qua NOWPayments</div>
+                      </div>
+                    </label>
+                  )}
+                </div>
+              </div>
+
               <div className="bg-blue-50 rounded-xl p-6">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="p-2 bg-blue-100 rounded-lg">
-                    {paymentMethod === "stripe" ? (
-                      <CreditCard className="text-blue-600" size={24} />
-                    ) : (
-                      <CreditCard className="text-yellow-600" size={24} />
-                    )}
+                    <CreditCard className={paymentMethod === "crypto" ? "text-emerald-600" : "text-yellow-600"} size={24} />
                   </div>
                   <div>
                     <div className="font-bold text-gray-800">
-                      {paymentMethod === "stripe" ? "Stripe" : "PayPal"}
+                      {paymentMethod === "crypto" ? "USDT TRC20" : "PayPal"}
                     </div>
                     <div className="text-sm text-gray-600">
-                      {paymentMethod === "stripe" 
-                        ? "Card • Apple Pay • Google Pay" 
+                      {paymentMethod === "crypto"
+                        ? "Quét QR hoặc copy địa chỉ ví để chuyển đúng số USDT"
                         : "PayPal Balance • Card • Bank"}
                     </div>
                   </div>
@@ -340,7 +404,11 @@ function CheckoutContent() {
                   ) : (
                     <>
                       <Lock size={20} />
-                      <span>Thanh toán {formatUsd(itemPrice)}</span>
+                      <span>
+                        {paymentMethod === "crypto"
+                          ? `Thanh toán bằng Crypto ${formatUsd(itemPrice)}`
+                          : `Thanh toán ${formatUsd(itemPrice)}`}
+                      </span>
                     </>
                   )}
                 </button>
@@ -358,6 +426,15 @@ function CheckoutContent() {
       </main>
 
       <Footer />
+      {cryptoPayment && (
+        <CryptoPaymentModal
+          orderId={cryptoPayment.orderId}
+          productId={itemId}
+          payAddress={cryptoPayment.pay_address}
+          payAmount={cryptoPayment.pay_amount}
+          onClose={() => setCryptoPayment(null)}
+        />
+      )}
     </div>
   );
 }

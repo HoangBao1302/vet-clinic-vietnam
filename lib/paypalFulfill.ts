@@ -16,6 +16,7 @@ type FulfillInput = {
   accountId?: string;
   server?: string;
   skipEmail?: boolean;
+  paymentMethod?: "paypal" | "crypto";
 };
 
 export async function fulfillPaidPayPalOrder(input: FulfillInput) {
@@ -35,7 +36,7 @@ export async function fulfillPaidPayPalOrder(input: FulfillInput) {
         customerName: input.customerName || "Customer",
         customerPhone: input.customerPhone || "",
         amount: amountCents,
-        paymentMethod: "paypal",
+        paymentMethod: input.paymentMethod || "paypal",
         paidAt: new Date(),
         broker: input.broker || "",
         accountId: input.accountId || "",
@@ -74,7 +75,7 @@ export async function fulfillPaidPayPalOrder(input: FulfillInput) {
           <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0;">
             <p><strong>Mã đơn hàng:</strong> ${input.orderId}</p>
             <p><strong>Sản phẩm:</strong> ${productName}</p>
-            <p><strong>Phương thức:</strong> PayPal</p>
+            <p><strong>Phương thức:</strong> ${input.paymentMethod === "crypto" ? "Crypto (USDT TRC20)" : "PayPal"}</p>
             <p><strong>Số tiền:</strong> ${formatUsd(input.amountUsd)}</p>
           </div>
           <p style="color: #374151;">Dùng <strong>mã đơn hàng</strong> ở trên tại trang Downloads để tải file. Hoặc bấm nút bên dưới.</p>

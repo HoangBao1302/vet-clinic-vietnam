@@ -21,6 +21,7 @@ export interface IOrder extends Document {
   approvedBy?: string;
   approvedAt?: Date;
   rejectionReason?: string;
+  cryptoPaymentId?: string;
 }
 
 const OrderSchema: Schema = new Schema({
@@ -109,6 +110,10 @@ const OrderSchema: Schema = new Schema({
     required: false
   },
   rejectionReason: {
+    type: String,
+    required: false
+  },
+  cryptoPaymentId: {
     type: String,
     required: false
   }
