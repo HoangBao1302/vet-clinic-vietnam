@@ -1,13 +1,13 @@
 export const PAYPAL_PRODUCT_NAMES: Record<string, string> = {
-  "indicator-pro-mt4": "Multi-Indicator Pro Pack (MT4)",
-  "ea-full-mt4": "EA ThebenchmarkTrader Full Version (MT4)",
-  "ea-pro-source-mt4": "EA ThebenchmarkTrader Pro + Source Code (MT4)",
-  "indicator-pro-mt5": "Multi-Indicator Pro Pack (MT5)",
-  "ea-full-mt5": "EA ThebenchmarkTrader Full Version (MT5)",
-  "ea-pro-source-mt5": "EA ThebenchmarkTrader Pro + Source Code (MT5)",
-  "indicator-pro": "Multi-Indicator Pro Pack",
-  "ea-full": "EA ThebenchmarkTrader Full Version",
-  "ea-pro-source": "EA ThebenchmarkTrader Pro + Source Code",
+  "indicator-pro-mt4": "Benchmark Trader - Multi-Indicator Pro Pack (MT4 Software License)",
+  "ea-full-mt4": "Benchmark Trader - Full Analytics Pack (MT4 Software License)",
+  "ea-pro-source-mt4": "Benchmark Trader - Pro Analytics Source Pack (MT4 Software License)",
+  "indicator-pro-mt5": "Benchmark Trader - Multi-Indicator Pro Pack (MT5 Software License)",
+  "ea-full-mt5": "Benchmark Trader - Full Analytics Pack (MT5 Software License)",
+  "ea-pro-source-mt5": "Benchmark Trader - Pro Analytics Source Pack (MT5 Software License)",
+  "indicator-pro": "Benchmark Trader - Multi-Indicator Pro Pack (Software License)",
+  "ea-full": "Benchmark Trader - Full Analytics Pack (Software License)",
+  "ea-pro-source": "Benchmark Trader - Pro Analytics Source Pack (Software License)",
 };
 
 export const PAYPAL_PRODUCT_DOWNLOADS: Record<string, string> = {

@@ -12,6 +12,7 @@ import { useLocale } from "@/lib/i18n/LocaleContext";
 import { PAYMENT_METHODS, isPaymentMethodEnabled, type PaymentMethodType } from "@/config/paymentMethods";
 import { formatUsd } from "@/config/productPrices";
 import { IProduct } from "@/types/product";
+import { PAYPAL_PRODUCT_NAMES } from "@/lib/paypalProducts";
 
 interface DownloadItem {
   id: string;
@@ -97,7 +98,7 @@ const fallbackProducts: DownloadItem[] = [
   // Paid MT4 Products
   {
     id: "indicator-pro-mt4",
-    name: "Multi-Indicator Pro Pack (MT4)",
+    name: "Benchmark Trader - Multi-Indicator Pro Pack (MT4 Software License)",
     description: "Bộ 10 indicators chuyên nghiệp: SR, Trend, Momentum, Volume, Fibonacci auto và nhiều hơn.",
     version: "v5.0 Pro",
     size: "2.8 MB",
@@ -110,7 +111,7 @@ const fallbackProducts: DownloadItem[] = [
   },
   {
     id: "ea-full-mt4",
-    name: "EA ThebenchmarkTrader Full Version (MT4)",
+    name: "Benchmark Trader - Full Analytics Pack (MT4 Software License)",
     description: "Phiên bản đầy đủ cho tài khoản thực. License 3 tài khoản, cập nhật miễn phí 1 năm.",
     version: "v2.0 Full",
     size: "680 KB",
@@ -123,7 +124,7 @@ const fallbackProducts: DownloadItem[] = [
   },
   {
     id: "ea-pro-source-mt4",
-    name: "EA ThebenchmarkTrader Pro + Source Code (MT4)",
+    name: "Benchmark Trader - Pro Analytics Source Pack (MT4 Software License)",
     description: "Phiên bản Pro với source code đầy đủ. Unlimited accounts, cập nhật trọn đời, hỗ trợ VIP.",
     version: "v2.0 Pro",
     size: "197 KB",
@@ -137,7 +138,7 @@ const fallbackProducts: DownloadItem[] = [
   // Paid MT5 Products
   {
     id: "indicator-pro-mt5",
-    name: "Multi-Indicator Pro Pack (MT5)",
+    name: "Benchmark Trader - Multi-Indicator Pro Pack (MT5 Software License)",
     description: "Bộ 10 indicators chuyên nghiệp: SR, Trend, Momentum, Volume, Fibonacci auto và nhiều hơn.",
     version: "v5.0 Pro",
     size: "2.8 MB",
@@ -150,7 +151,7 @@ const fallbackProducts: DownloadItem[] = [
   },
   {
     id: "ea-full-mt5",
-    name: "EA ThebenchmarkTrader Full Version (MT5)",
+    name: "Benchmark Trader - Full Analytics Pack (MT5 Software License)",
     description: "Phiên bản đầy đủ cho tài khoản thực. License 3 tài khoản, cập nhật miễn phí 1 năm.",
     version: "v2.0 Full",
     size: "680 KB",
@@ -163,7 +164,7 @@ const fallbackProducts: DownloadItem[] = [
   },
   {
     id: "ea-pro-source-mt5",
-    name: "EA ThebenchmarkTrader Pro + Source Code (MT5)",
+    name: "Benchmark Trader - Pro Analytics Source Pack (MT5 Software License)",
     description: "Phiên bản Pro với source code đầy đủ. Unlimited accounts, cập nhật trọn đời, hỗ trợ VIP.",
     version: "v2.0 Pro",
     size: "197 KB",
@@ -214,7 +215,7 @@ export default function DownloadsPage() {
 
     return {
       id: productId || String(product._id || ""),
-      name: product.name,
+      name: PAYPAL_PRODUCT_NAMES[productId] || product.name,
       description: product.description,
       version: product.version || "v1.0",
       size: product.size || "N/A",

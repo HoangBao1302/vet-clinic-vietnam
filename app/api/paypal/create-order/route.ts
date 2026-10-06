@@ -10,6 +10,7 @@ import {
 import connectDB from "@/lib/mongodb";
 import Order from "@/lib/models/Order";
 import { detectCustomerCountry } from "@/lib/customerLocale";
+import { getPayPalProductName } from "@/lib/paypalProducts";
 
 export async function POST(request: NextRequest) {
   try {
@@ -56,6 +57,7 @@ export async function POST(request: NextRequest) {
 
     const siteUrl = getPayPalSiteUrl();
     const phone = sanitizePayPalPhone(customerInfo.phone);
+    const invoiceName = getPayPalProductName(productId).slice(0, 127);
 
     const orderData: Record<string, unknown> = {
       intent: "CAPTURE",
@@ -66,7 +68,7 @@ export async function POST(request: NextRequest) {
             currency_code: "USD",
             value: Number(amount).toFixed(2),
           },
-          description: String(productName).slice(0, 127),
+          description: invoiceName,
           custom_id: customIdData,
         },
       ],
@@ -150,7 +152,7 @@ export async function POST(request: NextRequest) {
           $setOnInsert: {
             orderId: order.id,
             productId,
-            productName,
+            productName: invoiceName,
             status: "pending",
             customerEmail: customerInfo.email,
             customerName: customerInfo.name || "Customer",

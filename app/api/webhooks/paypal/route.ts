@@ -710,9 +710,15 @@ export async function POST(request: NextRequest) {
               reason: wasOrderCreated ? 'New order' : 'Order updated with correct data'
             });
 
+            const paypalCaptureId = String(
+              body.resource?.purchase_units?.[0]?.payments?.captures?.[0]?.id ||
+              (String(body.event_type || "").includes("CAPTURE") ? body.resource?.id : "") ||
+              ""
+            );
             const fulfillment = await fulfillPaidPayPalOrder({
               orderId,
               productId,
+              paypalCaptureId,
               customerEmail: emailRecipient,
               customerName: finalCustomerName,
               customerPhone: finalCustomerPhone,

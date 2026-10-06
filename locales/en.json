@@ -70,9 +70,9 @@
     }
   },
   "hero": {
-    "title": "EA Forex ThebenchmarkTrader",
-    "subtitle": "Automate Trading, Control Risk, Optimize Profit",
-    "description": "Professional Forex EA with automated trading algorithm, smart risk management and outstanding win rate",
+    "title": "ThebenchmarkTrader",
+    "subtitle": "Multi-strategy analytical software with scientific risk management. Efficient and transparent trading data automation.",
+    "description": "Multi-strategy analytical software with scientific risk management. Efficient and transparent trading data automation.",
     "badges": {
       "mt4mt5": "MT4®/MT5®",
       "riskControl": "Risk Control",
@@ -91,34 +91,34 @@
     "viewRealAccount": "View Live Account"
   },
   "features": {
-    "title": "Key Features",
-    "subtitle": "EA ThebenchmarkTrader is designed with advanced technology",
-    "multiStrategyTitle": "Multi-Strategy",
-    "multiStrategyDesc": "Combines intelligent trend-following and range-trading strategies, automatically switching based on market conditions.",
-    "moneyManagementTitle": "Capital Management",
-    "moneyManagementDesc": "Advanced risk management system with dynamic stop loss, position sizing, and automated money management.",
-    "smartMarketTitle": "Smart Market Conditions",
-    "smartMarketDesc": "Analyzes volatility, spread, and news events to avoid trading in unfavorable conditions.",
-    "flexibleTPTitle": "Flexible Basket Close/TP",
-    "flexibleTPDesc": "Automatically closes the entire order basket when profit target is reached or trailing stop follows the trend.",
-    "spreadLimitTitle": "Spread & Time Limit",
-    "spreadLimitDesc": "Only trades when spread is low and during high liquidity hours, avoiding unwanted slippage.",
-    "reportLogTitle": "Report Log",
-    "reportLogDesc": "Records every trade in detail, analyzes performance, and provides transparent daily reports.",
-    "customizableNote": "💡 All features are customizable to your trading needs"
+    "title": "Analytical Software Utilities",
+    "subtitle": "Computational software tools for trading data analysis",
+    "multiStrategyTitle": "Mathematical Data Modeling (Trend/Range)",
+    "multiStrategyDesc": "Applies mathematical data models for trend and range conditions, and switches the calculation set as incoming market data changes.",
+    "moneyManagementTitle": "Calculation Efficiency",
+    "moneyManagementDesc": "Parameter controls for size, stop distance, and script execution limits. Built for data optimization, not performance promises.",
+    "smartMarketTitle": "Charting Data Filters",
+    "smartMarketDesc": "An analytical software utility that filters volatility, spread, and scheduled data so script execution skips unfavorable inputs.",
+    "flexibleTPTitle": "Automated Data Execution",
+    "flexibleTPDesc": "Script execution applies a calculated exit rule when a data target or trailing parameter is reached.",
+    "spreadLimitTitle": "Execution Window Filters",
+    "spreadLimitDesc": "Runs script execution only when spread data is inside the selected limits and during the chosen time window.",
+    "reportLogTitle": "Signal Logging & Synchronization Utility",
+    "reportLogDesc": "Logs each script execution event and keeps a transparent calculation record for review.",
+    "customizableNote": "All parameters can be adjusted for your data analysis setup."
   },
-  "slogan": "5 verified real-money accounts — 80+ copiers tracking in real time",
+  "slogan": "Signal Logging & Synchronization Utility — logged calculations available for review",
   "strategy": {
-    "title": "Transparent Trading Philosophy",
-    "description": "EA ThebenchmarkTrader is built on the principle of absolute transparency. All entry conditions, exit rules, and risk management are openly disclosed, with no mysterious \"black box\".",
-    "entryTitle": "Clear Entry Conditions",
-    "entryDesc": "Uses popular technical indicators like MA, RSI, Bollinger Bands with parameters optimized through backtesting.",
-    "moneyTitle": "Scientific Capital Management",
-    "moneyDesc": "Fixed 1-2% risk per trade, position sizing based on volatility, stop loss always set before entering trades.",
-    "emergencyTitle": "Automatic Emergency Stop",
-    "emergencyDesc": "System automatically halts trading when drawdown exceeds threshold or detects abnormalities.",
+    "title": "Transparent data analysis",
+    "description": "ThebenchmarkTrader provides computational tools for trading data analysis. Indicator settings, filters, and risk parameters are disclosed for review.",
+    "entryTitle": "Charting Plugin Inputs",
+    "entryDesc": "Uses MA, RSI, and Bollinger Bands as charting plugin inputs, with parameters prepared through historical data tests.",
+    "moneyTitle": "Data Optimization",
+    "moneyDesc": "Fixed calculation limits per script run, size scaled by volatility data, and a stop parameter set before execution.",
+    "emergencyTitle": "Script Execution Halt",
+    "emergencyDesc": "Automated data execution pauses when a drawdown parameter is exceeded or the data feed looks abnormal.",
     "warningTitle": "Important Notice",
-    "warningDesc": "Forex trading carries high risk. Past performance does not guarantee future results. Only invest money you can afford to lose."
+    "warningDesc": "This analytical software utility does not promise results. Past calculations are not future outcomes."
   },
   "proof": {
     "title": "Proven Performance",
@@ -214,8 +214,8 @@
     "freeConsultDesc": "Free consultation on trading strategy, EA setup and risk management"
   },
   "sticky": {
-    "cta": "Ready to start automated trading?",
-    "button": "Buy EA Now"
+    "cta": "Ready to use the analytical software?",
+    "button": "Get the software"
   },
   "pricing": {
     "hero": {
@@ -547,7 +547,7 @@
     }
   },
   "footer": {
-    "description": "Multi-strategy Expert Advisor with scientific risk management. Efficient and transparent Forex trading automation.",
+    "description": "Multi-strategy analytical software with scientific risk management. Efficient and transparent trading data automation.",
     "quickLinks": "Quick Links",
     "resources": "Resources",
     "contactInfo": "Contact Information",
@@ -565,7 +565,7 @@
     "copyright": "© {year} Thebenchmarktrader LLC. All rights reserved.",
     "metaquotesAttribution": "MetaTrader®, MT4®, MT5®, MQL4®, and MQL5® are registered trademarks of MetaQuotes Ltd. TheBenchmarkTrader is not affiliated with, sponsored by, or a representative of MetaQuotes Ltd.",
     "brokerDisclaimer": "Broker names (Tickmill, ThinkMarkets, PuPrime, etc.) are mentioned for reference only. Brokers are independent companies and are not affiliated with, sponsored by, or representatives of TheBenchmarkTrader. Users are responsible for choosing a suitable broker.",
-    "riskWarning": "Risk Warning",
+    "riskWarning": "Risk Disclaimer",
     "readyToStart": "Ready to start automated trading?",
     "buyEANow": "Buy EA Now",
     "links": {
@@ -582,7 +582,7 @@
       "terms": "Terms",
       "termsOfService": "Terms of Service",
       "refundPolicy": "Refund Policy",
-      "privacy": "Privacy",
+      "privacy": "Privacy Policy",
       "affiliate": "Affiliate Program",
       "youtubeChannel": "YouTube Channel",
       "videoBacktest": "Backtest Videos",

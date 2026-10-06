@@ -24,6 +24,10 @@ export interface IOrder extends Document {
   cryptoPaymentId?: string;
   /** ISO country from the shopper's IP at checkout. VN keeps the Vietnamese receipt. */
   customerCountry?: string;
+  /** PayPal capture id. This is the transaction_id required by the tracking API. */
+  paypalCaptureId?: string;
+  paypalTrackingSent?: boolean;
+  paypalTrackingSentAt?: Date;
 }
 
 const OrderSchema: Schema = new Schema({
@@ -121,6 +125,19 @@ const OrderSchema: Schema = new Schema({
   },
   customerCountry: {
     type: String,
+    required: false
+  },
+  paypalCaptureId: {
+    type: String,
+    required: false
+  },
+  paypalTrackingSent: {
+    type: Boolean,
+    required: false,
+    default: false
+  },
+  paypalTrackingSentAt: {
+    type: Date,
     required: false
   }
 });

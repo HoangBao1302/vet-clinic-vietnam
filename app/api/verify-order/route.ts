@@ -133,6 +133,13 @@ export async function POST(request: NextRequest) {
           );
         }
         
+        if (order.paymentMethod === "paypal") {
+          const { reportDownloadDeliveredToPayPal } = await import("@/lib/paypalDigitalDelivery");
+          await reportDownloadDeliveredToPayPal(order.orderId).catch((error) => {
+            console.error("PayPal digital delivery error:", error);
+          });
+        }
+
         return NextResponse.json({
           verified: true,
           orderId: orderId,
@@ -241,6 +248,13 @@ export async function POST(request: NextRequest) {
           
           if (item) {
             console.log(`✅ Found product with ID: ${testProductId}`);
+            const captureId = String(orderData.purchase_units?.[0]?.payments?.captures?.[0]?.id || "");
+            if (captureId) {
+              const { reportDownloadDeliveredToPayPal } = await import("@/lib/paypalDigitalDelivery");
+              await reportDownloadDeliveredToPayPal(orderId, captureId).catch((error) => {
+                console.error("PayPal digital delivery error:", error);
+              });
+            }
             return NextResponse.json({
               verified: true,
               orderId: orderId,

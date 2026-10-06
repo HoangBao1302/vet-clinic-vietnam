@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import { CreditCard, Lock, CheckCircle, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { formatUsd } from "@/config/productPrices";
+import { PAYPAL_PRODUCT_NAMES } from "@/lib/paypalProducts";
 import { isPaymentMethodEnabled } from "@/config/paymentMethods";
 import CryptoPaymentModal from "@/components/CryptoPaymentModal";
 
@@ -16,7 +17,7 @@ function CheckoutContent() {
   const [error, setError] = useState("");
   
   const itemId = searchParams.get("item") || "";
-  const itemName = searchParams.get("name") || "";
+  const itemName = PAYPAL_PRODUCT_NAMES[itemId] || searchParams.get("name") || "";
   const itemPrice = parseInt(searchParams.get("price") || "0");
   const requestedMethod = searchParams.get("method") === "crypto" ? "crypto" : "paypal";
   const affiliateCode = searchParams.get("affiliate") || "";

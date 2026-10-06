@@ -15,7 +15,7 @@ export default function Strategy() {
           <div className="relative">
             <Image
               src="/vet-images/2.png"
-              alt="Trading strategy analysis"
+              alt="Mathematical data modeling chart"
               width={600}
               height={400}
               className="rounded-xl shadow-lg"

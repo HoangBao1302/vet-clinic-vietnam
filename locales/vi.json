@@ -70,9 +70,9 @@
     }
   },
   "hero": {
-    "title": "EA Forex ThebenchmarkTrader",
-    "subtitle": "Tự động hóa giao dịch, kiểm soát rủi ro, tối ưu lợi nhuận",
-    "description": "EA Forex chuyên nghiệp với thuật toán giao dịch tự động, quản lý rủi ro thông minh và tỷ lệ thắng vượt trội",
+    "title": "ThebenchmarkTrader",
+    "subtitle": "Multi-strategy analytical software with scientific risk management. Efficient and transparent trading data automation.",
+    "description": "Multi-strategy analytical software with scientific risk management. Efficient and transparent trading data automation.",
     "badges": {
       "mt4mt5": "MT4®/MT5®",
       "riskControl": "Risk Control",
@@ -91,34 +91,34 @@
     "viewRealAccount": "Xem Tài Khoản Thực"
   },
   "features": {
-    "title": "Tính năng nổi bật",
-    "subtitle": "EA ThebenchmarkTrader được thiết kế với công nghệ tiên tiến",
-    "multiStrategyTitle": "Đa chiến lược",
-    "multiStrategyDesc": "Kết hợp chiến lược trend-following và range-trading thông minh, tự động chuyển đổi theo điều kiện thị trường.",
-    "moneyManagementTitle": "Quản trị vốn",
-    "moneyManagementDesc": "Hệ thống quản lý rủi ro tiên tiến với stop loss động, position sizing và money management tự động.",
-    "smartMarketTitle": "Điều kiện thị trường thông minh",
-    "smartMarketDesc": "Phân tích volatility, spread, và news events để tránh giao dịch trong điều kiện bất lợi.",
-    "flexibleTPTitle": "Đóng rổ/TP linh hoạt",
-    "flexibleTPDesc": "Tự động đóng toàn bộ rổ lệnh khi đạt profit target hoặc trailing stop theo xu hướng.",
-    "spreadLimitTitle": "Giới hạn spread & time",
-    "spreadLimitDesc": "Chỉ giao dịch khi spread thấp và trong khung giờ thanh khoản cao, tránh slippage không mong muốn.",
-    "reportLogTitle": "Báo cáo nhật ký",
-    "reportLogDesc": "Ghi lại chi tiết mọi giao dịch, phân tích hiệu suất và cung cấp báo cáo minh bạch hàng ngày.",
-    "customizableNote": "💡 Tất cả tính năng đều có thể tùy chỉnh theo nhu cầu giao dịch của bạn"
+    "title": "Analytical Software Utilities",
+    "subtitle": "Computational software tools for trading data analysis",
+    "multiStrategyTitle": "Mathematical Data Modeling (Trend/Range)",
+    "multiStrategyDesc": "Applies mathematical data models for trend and range conditions, and switches the calculation set as incoming market data changes.",
+    "moneyManagementTitle": "Calculation Efficiency",
+    "moneyManagementDesc": "Parameter controls for size, stop distance, and script execution limits. Built for data optimization, not performance promises.",
+    "smartMarketTitle": "Charting Data Filters",
+    "smartMarketDesc": "An analytical software utility that filters volatility, spread, and scheduled data so script execution skips unfavorable inputs.",
+    "flexibleTPTitle": "Automated Data Execution",
+    "flexibleTPDesc": "Script execution applies a calculated exit rule when a data target or trailing parameter is reached.",
+    "spreadLimitTitle": "Execution Window Filters",
+    "spreadLimitDesc": "Runs script execution only when spread data is inside the selected limits and during the chosen time window.",
+    "reportLogTitle": "Signal Logging & Synchronization Utility",
+    "reportLogDesc": "Logs each script execution event and keeps a transparent calculation record for review.",
+    "customizableNote": "All parameters can be adjusted for your data analysis setup."
   },
-  "slogan": "5 tài khoản Real Money đã Verified — 80+ copiers theo dõi real-time",
+  "slogan": "Signal Logging & Synchronization Utility — logged calculations available for review",
   "strategy": {
-    "title": "Triết lý giao dịch minh bạch",
-    "description": "EA ThebenchmarkTrader được xây dựng trên nguyên tắc minh bạch tuyệt đối. Mọi điều kiện vào lệnh, ra lệnh và quản trị rủi ro đều được công khai, không có \"hộp đen\" bí ẩn.",
-    "entryTitle": "Điều kiện vào lệnh rõ ràng",
-    "entryDesc": "Sử dụng các chỉ báo kỹ thuật phổ biến như MA, RSI, Bollinger Bands với tham số được tối ưu qua backtest.",
-    "moneyTitle": "Quản trị vốn khoa học",
-    "moneyDesc": "Risk per trade cố định 1-2%, position sizing theo volatility, stop loss luôn được đặt trước khi vào lệnh.",
-    "emergencyTitle": "Stop khẩn cấp tự động",
-    "emergencyDesc": "Hệ thống tự động dừng giao dịch khi drawdown vượt ngưỡng cho phép hoặc phát hiện bất thường.",
-    "warningTitle": "Lưu ý quan trọng",
-    "warningDesc": "Giao dịch Forex có rủi ro cao. Kết quả trong quá khứ không đảm bảo kết quả tương lai. Hãy chỉ đầu tư số tiền bạn có thể chấp nhận mất."
+    "title": "Transparent data analysis",
+    "description": "ThebenchmarkTrader provides computational tools for trading data analysis. Indicator settings, filters, and risk parameters are disclosed for review.",
+    "entryTitle": "Charting Plugin Inputs",
+    "entryDesc": "Uses MA, RSI, and Bollinger Bands as charting plugin inputs, with parameters prepared through historical data tests.",
+    "moneyTitle": "Data Optimization",
+    "moneyDesc": "Fixed calculation limits per script run, size scaled by volatility data, and a stop parameter set before execution.",
+    "emergencyTitle": "Script Execution Halt",
+    "emergencyDesc": "Automated data execution pauses when a drawdown parameter is exceeded or the data feed looks abnormal.",
+    "warningTitle": "Important Notice",
+    "warningDesc": "This analytical software utility does not promise results. Past calculations are not future outcomes."
   },
   "proof": {
     "title": "Hiệu suất được chứng minh",
@@ -214,8 +214,8 @@
     "freeConsultDesc": "Tư vấn chiến lược giao dịch, setup EA và quản lý rủi ro hoàn toàn miễn phí"
   },
   "sticky": {
-    "cta": "Sẵn sàng bắt đầu giao dịch tự động?",
-    "button": "Mua EA ngay"
+    "cta": "Ready to use the analytical software?",
+    "button": "Get the software"
   },
   "pricing": {
     "hero": {
@@ -547,7 +547,7 @@
     }
   },
   "footer": {
-    "description": "Expert Advisor đa chiến lược với quản trị rủi ro khoa học. Tự động hóa giao dịch Forex hiệu quả và minh bạch.",
+    "description": "Multi-strategy analytical software with scientific risk management. Efficient and transparent trading data automation.",
     "quickLinks": "Liên Kết Nhanh",
     "resources": "Tài Nguyên",
     "contactInfo": "Thông Tin Liên Hệ",
@@ -562,10 +562,10 @@
     "companyName": "Thebenchmarktrader LLC",
     "address": "Địa Chỉ",
     "addressValue": "117 S Lexington St Ste 100, Harrisonville, MO 64701",
-    "copyright": "© {year} EA Forex ThebenchmarkTrader. Bảo lưu mọi quyền.",
+    "copyright": "© {year} ThebenchmarkTrader. Bảo lưu mọi quyền.",
     "metaquotesAttribution": "MetaTrader®, MT4®, MT5®, MQL4®, và MQL5® là nhãn hiệu đã đăng ký của MetaQuotes Ltd. TheBenchmarkTrader không liên kết, được bảo trợ, hoặc đại diện cho MetaQuotes Ltd.",
     "brokerDisclaimer": "Tên broker (Tickmill, ThinkMarkets, PuPrime, v.v.) được nhắc đến chỉ nhằm mục đích tham khảo. Các broker là công ty độc lập và không liên kết, được bảo trợ, hoặc đại diện cho TheBenchmarkTrader. Người dùng tự chịu trách nhiệm chọn broker phù hợp.",
-    "riskWarning": "Cảnh Báo Rủi Ro",
+    "riskWarning": "Risk Disclaimer",
     "readyToStart": "Sẵn sàng bắt đầu giao dịch tự động?",
     "buyEANow": "Mua EA Ngay",
     "links": {
@@ -582,7 +582,7 @@
       "terms": "Điều Khoản",
       "termsOfService": "Terms of Service",
       "refundPolicy": "Refund Policy",
-      "privacy": "Bảo Mật",
+      "privacy": "Privacy Policy",
       "affiliate": "Chương Trình Affiliate",
       "youtubeChannel": "Kênh YouTube",
       "videoBacktest": "Video Backtest",

@@ -100,9 +100,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const paypalCaptureId = String(unit?.payments?.captures?.[0]?.id || "");
     const fulfillment = await fulfillPaidPayPalOrder({
       orderId,
       productId: resolvedProductId,
+      paypalCaptureId,
       customerEmail: email,
       customerName: custom.name || payerName || customerInfo?.name,
       customerPhone: custom.phone || customerInfo?.phone || "",

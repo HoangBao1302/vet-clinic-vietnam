@@ -216,16 +216,13 @@ export default function Footer() {
               <Link href="/privacy" className="text-gray-300 hover:text-white text-sm transition-colors">
                 {t('footer.links.privacy')}
               </Link>
-              <Link href="/terms" className="text-gray-300 hover:text-white text-sm transition-colors">
-                {t('footer.links.terms')}
-              </Link>
               <Link href="/terms-of-service" className="text-gray-300 hover:text-white text-sm transition-colors">
                 {t('footer.links.termsOfService')}
               </Link>
               <Link href="/refund-policy" className="text-gray-300 hover:text-white text-sm transition-colors">
                 {t('footer.links.refundPolicy')}
               </Link>
-              <Link href="/live-results#risk-warning" className="text-gray-300 hover:text-white text-sm transition-colors">
+              <Link href="#risk-disclaimer" className="text-gray-300 hover:text-white text-sm transition-colors">
                 {t('footer.riskWarning')}
               </Link>
             </div>
