@@ -4,8 +4,8 @@ import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import StickyCallToAction from "@/components/StickyCallToAction";
-import { ExternalLink, TrendingUp, Shield, Users, BarChart3, Youtube, Copy, CheckCircle, AlertCircle } from "lucide-react";
-import type { TradingAccount } from "@/data/tradingAccounts";
+import { ExternalLink, Shield, BarChart3, CheckCircle, AlertCircle } from "lucide-react";
+import { withVerifiedAccountCopy, type TradingAccount } from "@/data/tradingAccounts";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 import { withMetaQuotesMark } from "@/lib/trademarks";
 
@@ -20,7 +20,7 @@ export default function LiveResultsClient({ initialAccounts }: { initialAccounts
         if (response.ok) {
           const data = await response.json();
           if (data.accounts?.length) {
-            setActiveAccounts(data.accounts);
+            setActiveAccounts(withVerifiedAccountCopy(data.accounts));
           }
         }
       } catch (error) {
@@ -60,11 +60,11 @@ export default function LiveResultsClient({ initialAccounts }: { initialAccounts
                 </div>
                 <div className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full">
                   <div className="text-sm text-green-200">{t('liveResultsPage.hero.verifiedAccounts')}</div>
-                  <div className="text-2xl font-bold">{activeAccounts.length}+</div>
+                  <div className="text-2xl font-bold">{activeAccounts.length}</div>
                 </div>
                 <div className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full">
-                  <div className="text-sm text-green-200">{t('liveResultsPage.hero.followersLabel')}</div>
-                  <div className="text-2xl font-bold">{t('liveResultsPage.hero.followersValue')}</div>
+                  <div className="text-sm text-green-200">{t('liveResultsPage.hero.tradingDaysLabel')}</div>
+                  <div className="text-2xl font-bold">{t('liveResultsPage.hero.tradingDaysValue')}</div>
                 </div>
               </div>
             </div>
@@ -74,7 +74,7 @@ export default function LiveResultsClient({ initialAccounts }: { initialAccounts
         {/* Why Trust Section */}
         <section className="py-12 bg-blue-50 border-y border-blue-200">
           <div className="container-custom">
-            <div className="grid md:grid-cols-4 gap-6 max-w-5xl mx-auto">
+            <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
               <div className="text-center">
                 <Shield className="w-12 h-12 text-green-600 mx-auto mb-3" />
                 <h3 className="font-semibold text-gray-800 mb-1">{t('liveResultsPage.whyTrust.verified')}</h3>
@@ -86,14 +86,9 @@ export default function LiveResultsClient({ initialAccounts }: { initialAccounts
                 <p className="text-sm text-gray-600">{t('liveResultsPage.whyTrust.realtimeDesc')}</p>
               </div>
               <div className="text-center">
-                <TrendingUp className="w-12 h-12 text-purple-600 mx-auto mb-3" />
+                <ExternalLink className="w-12 h-12 text-purple-600 mx-auto mb-3" />
                 <h3 className="font-semibold text-gray-800 mb-1">{t('liveResultsPage.whyTrust.liveData')}</h3>
                 <p className="text-sm text-gray-600">{t('liveResultsPage.whyTrust.liveDataDesc')}</p>
-              </div>
-              <div className="text-center">
-                <Users className="w-12 h-12 text-orange-600 mx-auto mb-3" />
-                <h3 className="font-semibold text-gray-800 mb-1">{t('liveResultsPage.whyTrust.copyTrading')}</h3>
-                <p className="text-sm text-gray-600">{t('liveResultsPage.whyTrust.copyTradingDesc')}</p>
               </div>
             </div>
           </div>
@@ -207,28 +202,6 @@ export default function LiveResultsClient({ initialAccounts }: { initialAccounts
                           <span>{t('liveResultsPage.accounts.viewProfile')}</span>
                         </a>
                       )}
-                      {account.links?.copyTrade && (
-                        <a
-                          href={account.links.copyTrade}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors"
-                        >
-                          <Copy size={18} />
-                          <span>{t('liveResultsPage.accounts.copyNow')}</span>
-                        </a>
-                      )}
-                      {account.links?.youtube && (
-                        <a
-                          href={account.links.youtube}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors"
-                        >
-                          <Youtube size={18} />
-                          <span>{t('liveResultsPage.accounts.videoGuide')}</span>
-                        </a>
-                      )}
                     </div>
                   </div>
                 </div>
@@ -248,112 +221,6 @@ export default function LiveResultsClient({ initialAccounts }: { initialAccounts
           </div>
         </section>
 
-        {/* Copy Trading Guide Section */}
-        <section className="py-20 bg-gradient-to-br from-blue-50 to-purple-50">
-          <div className="container-custom max-w-5xl mx-auto">
-            <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12">
-              <div className="text-center mb-12">
-                <Youtube className="w-16 h-16 text-red-600 mx-auto mb-4" />
-                <h2 className="text-3xl font-bold text-gray-800 mb-4">
-                  {t('liveResultsPage.copyGuide.title')}
-                </h2>
-                <p className="text-lg text-gray-600">
-                  {t('liveResultsPage.copyGuide.subtitle')}
-                </p>
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-6 mb-8">
-                <div className="border-2 border-gray-200 rounded-lg p-6 hover:border-blue-500 transition-colors">
-                  <h3 className="text-xl font-bold text-gray-800 mb-3">
-                    {t('liveResultsPage.copyGuide.mql5Title')}
-                  </h3>
-                  <p className="text-gray-600 mb-4 text-sm">
-                    {t('liveResultsPage.copyGuide.mql5Desc')}
-                  </p>
-                  <a
-                    href="https://www.youtube.com/watch?v=MQL5_COPY_GUIDE"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-blue-600 font-semibold hover:text-blue-700"
-                  >
-                    <Youtube size={18} />
-                    <span>{t('liveResultsPage.copyGuide.mql5Link')}</span>
-                  </a>
-                </div>
-
-                <div className="border-2 border-gray-200 rounded-lg p-6 hover:border-green-500 transition-colors">
-                  <h3 className="text-xl font-bold text-gray-800 mb-3">
-                    {t('liveResultsPage.copyGuide.myfxbookTitle')}
-                  </h3>
-                  <p className="text-gray-600 mb-4 text-sm">
-                    {t('liveResultsPage.copyGuide.myfxbookDesc')}
-                  </p>
-                  <a
-                    href="https://www.youtube.com/watch?v=MYFXBOOK_COPY_GUIDE"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-blue-600 font-semibold hover:text-blue-700"
-                  >
-                    <Youtube size={18} />
-                    <span>{t('liveResultsPage.copyGuide.myfxbookLink')}</span>
-                  </a>
-                </div>
-
-                <div className="border-2 border-gray-200 rounded-lg p-6 hover:border-orange-500 transition-colors">
-                  <h3 className="text-xl font-bold text-gray-800 mb-3">
-                    {t('liveResultsPage.copyGuide.tickmillTitle')}
-                  </h3>
-                  <p className="text-gray-600 mb-4 text-sm">
-                    {t('liveResultsPage.copyGuide.tickmillDesc')}
-                  </p>
-                  <a
-                    href="https://www.youtube.com/watch?v=TICKMILL_COPY_TUTORIAL"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-blue-600 font-semibold hover:text-blue-700"
-                  >
-                    <Youtube size={18} />
-                    <span>{t('liveResultsPage.copyGuide.tickmillLink')}</span>
-                  </a>
-                </div>
-
-                <div className="border-2 border-gray-200 rounded-lg p-6 hover:border-purple-500 transition-colors">
-                  <h3 className="text-xl font-bold text-gray-800 mb-3">
-                    {t('liveResultsPage.copyGuide.puprimeTitle')}
-                  </h3>
-                  <p className="text-gray-600 mb-4 text-sm">
-                    {t('liveResultsPage.copyGuide.puprimeDesc')}
-                  </p>
-                  <a
-                    href="https://www.youtube.com/watch?v=PUPRIME_COPY_TUTORIAL"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-blue-600 font-semibold hover:text-blue-700"
-                  >
-                    <Youtube size={18} />
-                    <span>{t('liveResultsPage.copyGuide.puprimeLink')}</span>
-                  </a>
-                </div>
-              </div>
-
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 text-center">
-                <p className="text-gray-700 mb-4">
-                  <strong>{t('liveResultsPage.copyGuide.compareTitle')}</strong> {t('liveResultsPage.copyGuide.compareDesc')}
-                </p>
-                <a
-                  href="https://www.youtube.com/watch?v=COPY_VS_EA_VIDEO"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
-                >
-                  <Youtube size={20} />
-                  <span>{t('liveResultsPage.copyGuide.compareLink')}</span>
-                </a>
-              </div>
-            </div>
-          </div>
-        </section>
-
         {/* Disclaimer */}
         <section id="risk-warning" className="py-12 bg-yellow-50 border-y border-yellow-200">
           <div className="container-custom max-w-4xl mx-auto">
@@ -366,10 +233,10 @@ export default function LiveResultsClient({ initialAccounts }: { initialAccounts
                     <strong>{t('liveResultsPage.disclaimer.past')}</strong> {t('liveResultsPage.disclaimer.pastDesc')}
                   </p>
                   <p>
-                    <strong>{t('liveResultsPage.disclaimer.copyRisk')}</strong> {t('liveResultsPage.disclaimer.copyRiskDesc')}
+                    <strong>{t('liveResultsPage.disclaimer.forexRisk')}</strong> {t('liveResultsPage.disclaimer.forexRiskDesc')}
                   </p>
                   <p>
-                    <strong>{t('liveResultsPage.disclaimer.fees')}</strong> {t('liveResultsPage.disclaimer.feesDesc')}
+                    <strong>{t('liveResultsPage.disclaimer.software')}</strong> {t('liveResultsPage.disclaimer.softwareDesc')}
                   </p>
                   <p>
                     <strong>{t('liveResultsPage.disclaimer.recommendation')}</strong> {t('liveResultsPage.disclaimer.recommendationDesc')}
@@ -400,12 +267,6 @@ export default function LiveResultsClient({ initialAccounts }: { initialAccounts
                 className="inline-flex items-center justify-center px-8 py-4 bg-white text-blue-600 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors"
               >
                 {t('liveResultsPage.cta.viewPricing')}
-              </a>
-              <a
-                href="#contact"
-                className="inline-flex items-center justify-center px-8 py-4 border-2 border-white text-white rounded-lg font-bold text-lg hover:bg-white/10 transition-colors"
-              >
-                {t('liveResultsPage.cta.contactCopy')}
               </a>
             </div>
           </div>

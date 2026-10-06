@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ExternalLink, TrendingUp, CheckCircle, Youtube } from "lucide-react";
+import { ExternalLink, CheckCircle } from "lucide-react";
 import Link from "next/link";
 import type { FeaturedAccount } from "@/data/featuredAccounts";
 import { useLocale } from "@/lib/i18n/LocaleContext";
@@ -73,11 +73,6 @@ export default function LiveResults() {
                       {account.platform} • {account.broker}
                     </div>
                   </div>
-                  {account.copyable && (
-                    <span className="px-2 py-1 bg-white/20 rounded text-xs font-medium">
-                      {t("liveResults.copyable")} ✓
-                    </span>
-                  )}
                 </div>
                 <div className="flex items-center gap-2 text-sm">
                   <CheckCircle size={14} />

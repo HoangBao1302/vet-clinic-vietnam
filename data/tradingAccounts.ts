@@ -30,200 +30,223 @@ export interface TradingAccount {
 export const tradingAccounts: TradingAccount[] = [
   {
     id: "mql5-account-1",
-    platform: "MQL4",
+    platform: "MT4",
     accountName: "ThebenchmarkTrader Live #1",
     accountNumber: "9029831",
     broker: "Tickmill",
     verified: true,
-    badge: "Verified Real Account",
-    badge_en: "Verified Real Account",
+    badge: "Verified bởi MQL5®",
+    badge_en: "Verified by MQL5®",
     active: true,
     order: 1,
     stats: {
-      gain: "+4359%",
+      gain: "+10560%",
       drawdown: "28.5%",
-      winRate: "76.8%",
-      profitFactor: "2.3",
-      tradingDays: "593 days"
+      winRate: "77%",
+      profitFactor: "1.65",
+      tradingDays: "280 tuần",
     },
     links: {
       profile: "https://www.mql5.com/en/signals/2327790",
-      youtube: "https://www.youtube.com/@ThebenchmarkTraderEA"
     },
-    description: "Tài khoản live đầu tiên chạy EA ThebenchmarkTrader trên Tickmill. Verified bởi MQL5®, tất cả giao dịch được tracking real-time.",
-    description_en: "First live account running EA ThebenchmarkTrader on Tickmill. Verified by MQL5®, all trades tracked in real-time.",
+    description:
+      "Tài khoản giao dịch thực tế đầu tiên chạy phần mềm EA ThebenchmarkTrader trên nền tảng MT4 (broker: Tickmill). Kết quả được xác minh độc lập bởi MQL5.",
+    description_en:
+      "First live trading account running EA ThebenchmarkTrader software on MT4 (broker: Tickmill). Results independently verified by MQL5.",
     highlights: [
-      "✅ Verified bởi MQL5®.com",
-      "📈 Lợi nhuận ổn định 593 ngày",
-      "🛡️ Drawdown được kiểm soát < 30%",
-      "💰 Risk 1.5% mỗi lệnh",
-      "⏰ Trade trên EURUSD M5, AUDUSD M5"
+      "✅ Verified bởi MQL5 (độc lập, không tự khai)",
+      "📊 280 tuần giao dịch thực tế",
+      "🛡️ Drawdown tối đa 28.5%",
+      "⚙️ Risk setting: 1.5% mỗi lệnh",
+      "🎯 Cặp tiền: EURUSD M5, AUDUSD M5, GBPUSD M5, AUDCAD M5",
     ],
     highlights_en: [
-      "✅ Verified by MQL5®.com",
-      "📈 Stable profit for 593 days",
-      "🛡️ Drawdown controlled < 30%",
-      "💰 Risk 1.5% per trade",
-      "⏰ Trading on EURUSD M5, AUDUSD M5"
-    ]
-  },
-  {
-    id: "mql5-account-2",
-    platform: "MQL5",
-    accountName: "ThebenchmarkTrader Live #2",
-    accountNumber: "87654321",
-    broker: "PuPrime",
-    verified: true,
-    badge: "Verified Real Account",
-    badge_en: "Verified Real Account",
-    active: true,
-    order: 2,
-    stats: {
-      gain: "+142%",
-      drawdown: "9.8%",
-      winRate: "71%",
-      profitFactor: "2.5",
-      tradingDays: "150 days"
-    },
-    links: {
-      profile: "https://www.mql5.com/en/signals/YOUR_SIGNAL_ID_2",
-      youtube: "https://www.youtube.com/watch?v=MQL5_TUTORIAL_ID"
-    },
-    description: "Tài khoản thứ 2 với risk thấp hơn, phù hợp cho trader bảo thủ. Verified bởi MQL5®.",
-    description_en: "Second account with lower risk, suitable for conservative traders. Verified by MQL5®.",
-    highlights: [
-      "✅ Verified bởi MQL5®.com",
-      "🎯 Win rate cao nhất (71%)",
-      "🛡️ Drawdown thấp nhất (9.8%)",
-      "💰 Risk 1% mỗi lệnh",
-      "⏰ Trade trên GBPUSD H1"
+      "✅ Verified by MQL5 (independent, not self-reported)",
+      "📊 280 weeks of live trading",
+      "🛡️ Maximum drawdown 28.5%",
+      "⚙️ Risk setting: 1.5% per trade",
+      "🎯 Pairs: EURUSD M5, AUDUSD M5, GBPUSD M5, AUDCAD M5",
     ],
-    highlights_en: [
-      "✅ Verified by MQL5®.com",
-      "🎯 Highest win rate (71%)",
-      "🛡️ Lowest drawdown (9.8%)",
-      "💰 Risk 1% per trade",
-      "⏰ Trading on GBPUSD H1"
-    ]
-  },
-  {
-    id: "myfxbook-account-1",
-    platform: "Myfxbook",
-    accountName: "EA ThebenchmarkTrader Pro",
-    accountNumber: "MYFX-123456",
-    broker: "Tickmill",
-    verified: true,
-    badge: "Verified by Myfxbook",
-    badge_en: "Verified by Myfxbook",
-    active: true,
-    order: 3,
-    stats: {
-      gain: "+215%",
-      drawdown: "14.2%",
-      winRate: "66%",
-      profitFactor: "2.2",
-      tradingDays: "240 days"
-    },
-    links: {
-      profile: "https://www.myfxbook.com/portfolio/yen-pham-thi-thuan/11670921",
-      youtube: "https://www.youtube.com/watch?v=MYFXBOOK_TUTORIAL_ID"
-    },
-    description: "Tài khoản dài hạn nhất, tracking 240 ngày liên tục. Verified trading history bởi Myfxbook với track record minh bạch.",
-    description_en: "Longest running account, tracked continuously for 240 days. Verified trading history by Myfxbook with transparent track record.",
-    highlights: [
-      "✅ Verified bởi Myfxbook",
-      "📊 Track record 240 ngày",
-      "💎 Lợi nhuận dài hạn tốt nhất",
-      "🎯 Multi-pair trading",
-      "📈 Equity curve ổn định"
-    ],
-    highlights_en: [
-      "✅ Verified by Myfxbook",
-      "📊 240-day track record",
-      "💎 Best long-term profit",
-      "🎯 Multi-pair trading",
-      "📈 Stable equity curve"
-    ]
   },
   {
     id: "tickmill-social-1",
-    platform: "Tickmill Social",
-    accountName: "ThebenchmarkTrader Strategy",
-    accountNumber: "Social-TM-789",
+    platform: "Tickmill",
+    accountName: "FX2 Leo2026",
+    accountNumber: "Tickmill_3104741",
     broker: "Tickmill",
     verified: true,
-    badge: "Tickmill Strategy Provider",
-    badge_en: "Tickmill Strategy Provider",
+    badge: "Verified bởi MQL5®",
+    badge_en: "Verified by MQL5®",
+    active: true,
+    order: 2,
+    stats: {
+      gain: "+92%",
+      drawdown: "8%",
+      winRate: "79.8%",
+      profitFactor: "2.14",
+      tradingDays: "392 ngày",
+    },
+    links: {
+      profile: "https://www.mql5.com/en/signals/2387965",
+    },
+    description:
+      "Tài khoản giao dịch thực tế thứ hai, chạy phần mềm EA ThebenchmarkTrader trên Tickmill. Kết quả verified độc lập bởi MQL5.",
+    description_en:
+      "Second live trading account running EA ThebenchmarkTrader software on Tickmill. Results independently verified by MQL5.",
+    highlights: [
+      "✅ Verified bởi MQL5 (độc lập)",
+      "📊 392 ngày giao dịch thực tế",
+      "🛡️ Drawdown tối đa 8%",
+      "⚙️ Win rate 79.8%, Profit Factor 2.14",
+      "🎯 Multi-pair trading",
+    ],
+    highlights_en: [
+      "✅ Verified by MQL5 (independent)",
+      "📊 392 days of live trading",
+      "🛡️ Maximum drawdown 8%",
+      "⚙️ Win rate 79.8%, Profit Factor 2.14",
+      "🎯 Multi-pair trading",
+    ],
+  },
+  {
+    id: "myfxbook-account-1",
+    platform: "MT4",
+    accountName: "FX1 Leo2026",
+    accountNumber: "Tickmill_live8",
+    broker: "Tickmill",
+    verified: true,
+    badge: "Verified bởi MQL5®",
+    badge_en: "Verified by MQL5®",
+    active: true,
+    order: 3,
+    stats: {
+      gain: "+172%",
+      drawdown: "13.6%",
+      winRate: "72.4%",
+      profitFactor: "1.82",
+      tradingDays: "406 ngày",
+    },
+    links: {
+      profile: "https://www.mql5.com/en/signals/2387963",
+    },
+    description:
+      "Tài khoản giao dịch thực tế thứ ba, chạy phần mềm EA ThebenchmarkTrader trên MT4 (broker: Tickmill). 406 ngày giao dịch liên tục, verified bởi MQL5.",
+    description_en:
+      "Third live trading account running EA ThebenchmarkTrader software on MT4 (broker: Tickmill). 406 consecutive days of trading, verified by MQL5.",
+    highlights: [
+      "✅ Verified bởi MQL5 (độc lập)",
+      "📊 406 ngày giao dịch thực tế",
+      "🎯 Multi-pair trading",
+      "📈 Equity curve đầy đủ trên MQL5",
+    ],
+    highlights_en: [
+      "✅ Verified by MQL5 (independent)",
+      "📊 406 days of live trading",
+      "🎯 Multi-pair trading",
+      "📈 Full equity curve on MQL5",
+    ],
+  },
+  {
+    id: "mql5-account-2",
+    platform: "MT4",
+    accountName: "FX Flare CR2",
+    accountNumber: "ThinkMarkets-Live 4",
+    broker: "ThinkMarkets",
+    verified: true,
+    badge: "Verified bởi MQL5®",
+    badge_en: "Verified by MQL5®",
     active: true,
     order: 4,
     stats: {
-      gain: "+168%",
-      drawdown: "11.3%",
-      winRate: "69%",
-      profitFactor: "2.4",
-      tradingDays: "165 days"
+      gain: "+158%",
+      drawdown: "14.5%",
+      winRate: "79%",
+      profitFactor: "2.23",
+      tradingDays: "462 ngày",
     },
     links: {
-      profile: "https://stats.tmsocial.net/widgets/ratings/4117?widgetKey=social_platform_ratings&lang=en&preview=P3U9NTQ2ZTFiJmE9ODU1NSZwPTQxMTcmdz0x&zarsrc=30&utm_source=zalo&utm_medium=zalo&utm_campaign=zalo",
-      copyTrade: "https://stats.tmsocial.net/widgets/ratings/4117?widgetKey=social_platform_ratings&lang=en&preview=P3U9NTQ2ZTFiJmE9ODU1NSZwPTQxMTcmdz0x&zarsrc=30&utm_source=zalo&utm_medium=zalo&utm_campaign=zalo",
-      youtube: "https://www.youtube.com/watch?v=TICKMILL_COPY_TUTORIAL"
+      profile: "https://www.mql5.com/en/signals/2364376",
     },
-    description: "Copy trading trực tiếp trên Tickmill Social. Khách hàng có thể copy với 1 click, phí copy 20% profit share.",
-    description_en: "Direct copy trading on Tickmill Social. Clients can copy with 1 click, copy fee 20% profit share.",
+    description:
+      "Tài khoản giao dịch thực tế thứ tư, chạy phần mềm EA ThebenchmarkTrader trên MT4 (broker: ThinkMarkets). Cấu hình risk thấp hơn, verified bởi MQL5.",
+    description_en:
+      "Fourth live trading account running EA ThebenchmarkTrader software on MT4 (broker: ThinkMarkets). Lower risk configuration, verified by MQL5.",
     highlights: [
-      "✅ Tickmill Strategy Provider",
-      "👥 50+ investors đang copy",
-      "💰 Copy từ $500 trở lên",
-      "🔄 Auto copy, không cần EA",
-      "📊 Transparent fee: 20% profit share"
+      "✅ Verified bởi MQL5.com (độc lập)",
+      "📊 462 ngày giao dịch thực tế",
+      "⚙️ Risk setting: 1% mỗi lệnh",
+      "🎯 Cặp tiền: AUDCAD, USDCAD, AUDUSD, NZDCAD, GBPUSD, EURGBP",
     ],
     highlights_en: [
-      "✅ Tickmill Strategy Provider",
-      "👥 50+ investors copying",
-      "💰 Copy from $500 and up",
-      "🔄 Auto copy, no EA needed",
-      "📊 Transparent fee: 20% profit share"
-    ]
+      "✅ Verified by MQL5.com (independent)",
+      "📊 462 days of live trading",
+      "⚙️ Risk setting: 1% per trade",
+      "🎯 Pairs: AUDCAD, USDCAD, AUDUSD, NZDCAD, GBPUSD, EURGBP",
+    ],
   },
   {
     id: "puprime-social-1",
-    platform: "PuPrime Social",
-    accountName: "ThebenchmarkTrader MAM",
-    accountNumber: "Social-PP-456",
-    broker: "PuPrime",
+    platform: "Tickmill",
+    accountName: "FX3 Leo2026",
+    accountNumber: "Tickmill-Live 4",
+    broker: "Tickmill",
     verified: true,
-    badge: "PuPrime Master Account",
-    badge_en: "PuPrime Master Account",
+    badge: "Verified bởi MQL5®",
+    badge_en: "Verified by MQL5®",
     active: true,
     order: 5,
     stats: {
-      gain: "+134%",
-      drawdown: "10.5%",
-      winRate: "70%",
-      profitFactor: "2.3",
-      tradingDays: "120 days"
+      gain: "+75%",
+      drawdown: "25.3%",
+      winRate: "77.3%",
+      profitFactor: "1.35",
+      tradingDays: "126 ngày",
     },
     links: {
-      profile: "https://puprime.com/social-trading/YOUR_MASTER_ID",
-      copyTrade: "https://puprime.com/social-trading/YOUR_MASTER_ID/copy",
-      youtube: "https://www.youtube.com/watch?v=PUPRIME_COPY_TUTORIAL"
+      profile: "https://www.mql5.com/en/signals/2387969",
     },
-    description: "Master account trên PuPrime Social Trading. Entry barrier thấp, phù hợp trader mới với vốn nhỏ ($200+).",
-    description_en: "Master account on PuPrime Social Trading. Low entry barrier, suitable for new traders with small capital ($200+).",
+    description:
+      "Tài khoản giao dịch thực tế thứ năm, chạy phần mềm EA ThebenchmarkTrader trên Tickmill. 126 ngày giao dịch thực tế, verified bởi MQL5.",
+    description_en:
+      "Fifth live trading account running EA ThebenchmarkTrader software on Tickmill. 126 days of live trading, verified by MQL5.",
     highlights: [
-      "✅ PuPrime Master Trader",
-      "👥 30+ followers",
-      "💰 Copy từ $200 trở lên",
-      "🎁 Phù hợp vốn nhỏ",
-      "📊 Fee: 25% profit share"
+      "✅ Verified bởi MQL5 (độc lập)",
+      "📊 126 ngày giao dịch thực tế",
+      "🛡️ Drawdown tối đa 25.3%",
+      "⚙️ Win rate 77.3%, Profit Factor 1.35",
     ],
     highlights_en: [
-      "✅ PuPrime Master Trader",
-      "👥 30+ followers",
-      "💰 Copy from $200 and up",
-      "🎁 Suitable for small capital",
-      "📊 Fee: 25% profit share"
-    ]
-  }
+      "✅ Verified by MQL5 (independent)",
+      "📊 126 days of live trading",
+      "🛡️ Maximum drawdown 25.3%",
+      "⚙️ Win rate 77.3%, Profit Factor 1.35",
+    ],
+  },
 ];
 
+const verifiedCopyById = new Map(tradingAccounts.map((account) => [account.id, account]));
+
+/** Public pages use this copy so older stored wording is not shown. */
+export function withVerifiedAccountCopy<T extends { id: string }>(accounts: T[]): T[] {
+  return accounts.map((account) => {
+    const copy = verifiedCopyById.get(account.id);
+    if (!copy) return account;
+    const current = account as T & { stats?: TradingAccount["stats"] };
+    return {
+      ...account,
+      platform: copy.platform,
+      broker: copy.broker,
+      description: copy.description,
+      description_en: copy.description_en,
+      highlights: copy.highlights,
+      highlights_en: copy.highlights_en,
+      badge: copy.badge,
+      badge_en: copy.badge_en,
+      links: { profile: copy.links.profile },
+      stats: {
+        ...current.stats,
+        tradingDays: copy.stats.tradingDays,
+      },
+    };
+  });
+}

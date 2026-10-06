@@ -1,9 +1,16 @@
 import { dbConnect } from "@/lib/mongodb";
 import TradingAccountModel from "@/lib/models/TradingAccount";
-import { tradingAccounts as fallbackAccounts, type TradingAccount } from "@/data/tradingAccounts";
+import { tradingAccounts as fallbackAccounts, withVerifiedAccountCopy, type TradingAccount } from "@/data/tradingAccounts";
+import type { Metadata } from "next";
 import LiveResultsClient from "./LiveResultsClient";
 
 export const revalidate = 60;
+
+export const metadata: Metadata = {
+  title: "Xác Minh Hiệu Suất EA - ThebenchmarkTrader",
+  description:
+    "Các tài khoản dưới đây chạy phần mềm EA ThebenchmarkTrader trên tài khoản giao dịch thực tế. Kết quả được xác minh độc lập bởi MQL5®.",
+};
 
 async function getAccounts(): Promise<TradingAccount[]> {
   try {
@@ -13,7 +20,7 @@ async function getAccounts(): Promise<TradingAccount[]> {
         .sort({ order: 1 })
         .lean();
       if (accounts.length > 0) {
-        return JSON.parse(JSON.stringify(accounts));
+        return withVerifiedAccountCopy(JSON.parse(JSON.stringify(accounts)));
       }
     }
   } catch (error) {

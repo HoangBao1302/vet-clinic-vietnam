@@ -157,17 +157,15 @@
   },
   "liveResults": {
     "badge": "100% Verified Real Accounts",
-    "title": "Real Trading Results",
-    "subtitle": "Not backtest. Not demo. These are real money accounts, verified and tracked 24/7 on reputable platforms.",
+    "title": "EA Performance Verification",
+    "subtitle": "The accounts below run EA ThebenchmarkTrader software on live trading accounts. Results are independently verified by MQL5®.",
     "verified": "Verified Account",
-    "copyable": "Copy",
     "gain": "Gain",
     "drawdown": "DD",
     "days": "Days",
     "viewAccount": "View Account",
     "disclaimer": "Note: Past performance does not guarantee future results. Forex trading carries high risk.",
-    "seeAllAccounts": "See All Accounts",
-    "videoGuide": "Copy Trade Video Guide"
+    "seeAllAccounts": "See All Accounts"
   },
   "contact": {
     "title": "Contact & Support",
@@ -470,30 +468,28 @@
   },
   "liveResultsPage": {
     "hero": {
-      "badge": "100% Verified Real Money Accounts",
-      "title": "Real Trading Results",
-      "subtitle": "All accounts are real money, verified by reputable platforms like MQL5®, Myfxbook, and publicly tracked 24/7. No photoshop, no demo, no fake.",
-      "metaquotes": "MetaTrader®, MT4®, MT5®, MQL4® and MQL5® are registered trademarks of MetaQuotes Ltd.",
-      "totalProfit": "Total Profit",
+      "badge": "Verified by MQL5®",
+      "title": "EA Performance Verification",
+      "subtitle": "The accounts below run EA ThebenchmarkTrader software on live trading accounts. Results are independently verified by MQL5®, the verification platform of MetaQuotes Ltd. Public verification links are available for you to check.",
+      "metaquotes": "MetaTrader®, MT4®, MT5®, MQL4® and MQL5® are registered trademarks of MetaQuotes Ltd. ThebenchmarkTrader is not affiliated with or endorsed by MetaQuotes Ltd.",
+      "totalProfit": "Cumulative gain",
       "totalProfitValue": "+1,000%+",
       "verifiedAccounts": "Verified accounts",
-      "followersLabel": "Followers/Copiers",
-      "followersValue": "80+"
+      "tradingDaysLabel": "Live trading history",
+      "tradingDaysValue": "280+ weeks"
     },
     "whyTrust": {
-      "verified": "100% Verified",
-      "verifiedDesc": "All accounts verified by platform",
-      "realtime": "Real-Time",
-      "realtimeDesc": "24/7 tracking, updated every trade",
-      "liveData": "Live Data",
-      "liveDataDesc": "Click link to view live stats",
-      "copyTrading": "Copy Trading",
-      "copyTradingDesc": "Copy directly, no need to buy EA"
+      "verified": "Independent Verification",
+      "verifiedDesc": "Results verified by MQL5®, the MetaQuotes platform",
+      "realtime": "Real-Time Data",
+      "realtimeDesc": "Trading record updated with each order, public 24/7",
+      "liveData": "Public Verification Link",
+      "liveDataDesc": "Click to view the full trading history on MQL5®"
     },
     "accounts": {
-      "title": "Real Trading Accounts",
-      "subtitle": "All accounts below are real money, verified and publicly trackable. Click the link to view details and full trading history.",
-      "verified": "Verified",
+      "title": "Live Trading Accounts",
+      "subtitle": "Every account below runs EA ThebenchmarkTrader software, is independently verified, and has a public verification link. Click the link to view the full trading history.",
+      "verified": "Verified by MQL5®",
       "platform": "Platform:",
       "broker": "Broker:",
       "account": "Account:",
@@ -502,48 +498,26 @@
       "winRate": "Win Rate",
       "profitFactor": "Profit Factor",
       "days": "Days",
-      "highlights": "Highlights:",
-      "viewProfile": "View Profile & Live Stats",
-      "copyNow": "Copy Trading Now",
-      "videoGuide": "Video Guide"
-    },
-    "copyGuide": {
-      "title": "Copy Trading Guide",
-      "subtitle": "Watch detailed video guide on how to copy trade on each platform",
-      "mql5Title": "📊 MQL5 Signals",
-      "mql5Desc": "Automatically copy signals on MT4®/MT5®. Suitable if you want to control risk yourself.",
-      "mql5Link": "Watch MQL5 Guide",
-      "myfxbookTitle": "📈 Myfxbook AutoTrade",
-      "myfxbookDesc": "AutoTrade via Myfxbook with multiple brokers. Set up once, auto sync forever.",
-      "myfxbookLink": "Watch Myfxbook Guide",
-      "tickmillTitle": "🎯 Tickmill Social",
-      "tickmillDesc": "Native copy trading on Tickmill. Simplest, 1-click copy, no EA needed.",
-      "tickmillLink": "Watch Tickmill Guide",
-      "puprimeTitle": "💰 PuPrime Social",
-      "puprimeDesc": "Copy on PuPrime with low capital ($200+). Suitable for beginner traders.",
-      "puprimeLink": "Watch PuPrime Guide",
-      "compareTitle": "💡 Not sure to copy or buy EA?",
-      "compareDesc": "Watch comparison video to choose the most suitable option.",
-      "compareLink": "Copy Trading vs Buy EA - Comparison Video"
+      "highlights": "Operating parameters:",
+      "viewProfile": "View Verified Trading Record on MQL5®"
     },
     "disclaimer": {
       "title": "Risk Warning",
       "past": "Past performance does not guarantee future results.",
-      "pastDesc": "All accounts above are real money and verified, but performance may change depending on market conditions.",
-      "copyRisk": "Copy trading carries risk:",
-      "copyRiskDesc": "When copying, you also bear similar drawdown as master account. Only copy with money you can afford to lose.",
-      "fees": "Copy fees:",
-      "feesDesc": "Tickmill (20% profit share), PuPrime (25% profit share), MQL5/Myfxbook (varies by platform). Read terms carefully before copying.",
+      "pastDesc": "The accounts above are live trading accounts and independently verified, but performance can change with market conditions.",
+      "forexRisk": "Forex trading carries a high level of risk:",
+      "forexRiskDesc": "It can result in the loss of all invested capital. Only trade with money you can afford to lose.",
+      "software": "The EA is an analytical tool:",
+      "softwareDesc": "EA ThebenchmarkTrader is software for analysis and trade automation. We do not guarantee profits, we do not manage client funds, and we do not provide investment advice.",
       "recommendation": "Recommendation:",
-      "recommendationDesc": "Test on demo/small capital first. Monitor for at least 1 month before scaling up. Never go all-in on 1 strategy.",
+      "recommendationDesc": "Test on a demo or small account before using a live account. Monitor performance for at least one month before scaling up.",
       "brokerTitle": "Broker notice:",
-      "broker": "Broker names (Tickmill, ThinkMarkets, PuPrime) are mentioned for reference only. These are independent companies and are not affiliated with, sponsored by, or representatives of TheBenchmarkTrader. Choosing a broker is the user's decision. TheBenchmarkTrader is not responsible for broker services."
+      "broker": "Broker names (Tickmill, ThinkMarkets) are mentioned for reference only. These are independent companies and are not affiliated with or endorsed by TheBenchmarkTrader. Choosing a broker is the user's decision."
     },
     "cta": {
-      "title": "Ready to Start?",
-      "subtitle": "Choose between copy trading (easier) or buy EA (more control). Both have real verified results.",
-      "viewPricing": "View EA Pricing",
-      "contactCopy": "Copy Trading Consultation"
+      "title": "Ready to use EA ThebenchmarkTrader?",
+      "subtitle": "The EA has been tested on 5 live trading accounts, independently verified by MQL5®. View pricing and download the software.",
+      "viewPricing": "View EA Pricing"
     }
   },
   "footer": {

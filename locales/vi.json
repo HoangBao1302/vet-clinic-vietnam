@@ -157,17 +157,15 @@
   },
   "liveResults": {
     "badge": "100% Verified Real Accounts",
-    "title": "Kết Quả Giao Dịch Thực Tế",
-    "subtitle": "Không phải backtest. Không phải demo. Đây là tài khoản real money, verified và tracking 24/7 trên các platform uy tín.",
+    "title": "Xác Minh Hiệu Suất EA",
+    "subtitle": "Các tài khoản dưới đây chạy phần mềm EA ThebenchmarkTrader trên tài khoản giao dịch thực tế. Kết quả được xác minh độc lập bởi MQL5®.",
     "verified": "Verified Account",
-    "copyable": "Copy",
     "gain": "Gain",
     "drawdown": "DD",
     "days": "Days",
     "viewAccount": "Xem Tài Khoản",
     "disclaimer": "Lưu ý: Hiệu suất quá khứ không đảm bảo kết quả tương lai. Giao dịch Forex có rủi ro cao.",
-    "seeAllAccounts": "Xem Tất Cả Tài Khoản",
-    "videoGuide": "Video Hướng Dẫn Copy Trade"
+    "seeAllAccounts": "Xem Tất Cả Tài Khoản"
   },
   "contact": {
     "title": "Liên hệ & Hỗ trợ",
@@ -470,30 +468,28 @@
   },
   "liveResultsPage": {
     "hero": {
-      "badge": "100% Verified Real Money Accounts",
-      "title": "Kết Quả Giao Dịch Thực Tế",
-      "subtitle": "Tất cả tài khoản đều là real money, được verify bởi các nền tảng uy tín như MQL5®, Myfxbook, và tracking công khai 24/7. Không photoshop, không demo, không fake.",
-      "metaquotes": "MetaTrader®, MT4®, MT5®, MQL4®, MQL5® là nhãn hiệu đăng ký của MetaQuotes Ltd.",
-      "totalProfit": "Tổng lợi nhuận",
+      "badge": "Verified by MQL5®",
+      "title": "Xác Minh Hiệu Suất EA",
+      "subtitle": "Các tài khoản dưới đây chạy phần mềm EA ThebenchmarkTrader trên tài khoản giao dịch thực tế. Kết quả được xác minh độc lập bởi MQL5® — nền tảng verify của MetaQuotes Ltd. Link verify công khai để bạn tự kiểm tra.",
+      "metaquotes": "MetaTrader®, MT4®, MT5®, MQL4®, MQL5® là nhãn hiệu đăng ký của MetaQuotes Ltd. ThebenchmarkTrader không liên kết hay được bảo trợ bởi MetaQuotes Ltd.",
+      "totalProfit": "Tổng gain (tích lũy)",
       "totalProfitValue": "+1,000%+",
-      "verifiedAccounts": "Verified accounts",
-      "followersLabel": "Followers/Copiers",
-      "followersValue": "80+"
+      "verifiedAccounts": "Tài khoản verified",
+      "tradingDaysLabel": "Ngày giao dịch thực",
+      "tradingDaysValue": "280+ tuần"
     },
     "whyTrust": {
-      "verified": "100% Verified",
-      "verifiedDesc": "Tất cả tài khoản đều verified bởi platform",
-      "realtime": "Real-Time",
-      "realtimeDesc": "Tracking 24/7, cập nhật mỗi giao dịch",
-      "liveData": "Live Data",
-      "liveDataDesc": "Click vào link để xem live stats",
-      "copyTrading": "Copy Trading",
-      "copyTradingDesc": "Copy trực tiếp, không cần mua EA"
+      "verified": "Xác Minh Độc Lập",
+      "verifiedDesc": "Kết quả verified bởi MQL5® — nền tảng của MetaQuotes",
+      "realtime": "Dữ Liệu Real-Time",
+      "realtimeDesc": "Trading record cập nhật theo từng lệnh, công khai 24/7",
+      "liveData": "Link Verify Công Khai",
+      "liveDataDesc": "Click để xem lịch sử giao dịch đầy đủ trên MQL5®"
     },
     "accounts": {
       "title": "Tài Khoản Giao Dịch Thực Tế",
-      "subtitle": "Tất cả tài khoản dưới đây đều là real money, verified và có thể tracking công khai. Click vào link để xem chi tiết và lịch sử giao dịch đầy đủ.",
-      "verified": "Verified",
+      "subtitle": "Tất cả tài khoản dưới đây chạy phần mềm EA ThebenchmarkTrader, verified độc lập và có link verify công khai. Click vào link để xem lịch sử giao dịch đầy đủ.",
+      "verified": "Verified bởi MQL5®",
       "platform": "Platform:",
       "broker": "Broker:",
       "account": "Account:",
@@ -502,48 +498,26 @@
       "winRate": "Win Rate",
       "profitFactor": "Profit Factor",
       "days": "Days",
-      "highlights": "Điểm nổi bật:",
-      "viewProfile": "Xem Profile & Stats Live",
-      "copyNow": "Copy Trading Ngay",
-      "videoGuide": "Video Hướng Dẫn"
-    },
-    "copyGuide": {
-      "title": "Hướng Dẫn Copy Trading",
-      "subtitle": "Xem video hướng dẫn chi tiết cách copy trading trên từng platform",
-      "mql5Title": "📊 MQL5 Signals",
-      "mql5Desc": "Copy tín hiệu tự động trên MT4®/MT5®. Phù hợp nếu bạn muốn control risk tự mình.",
-      "mql5Link": "Xem hướng dẫn MQL5",
-      "myfxbookTitle": "📈 Myfxbook AutoTrade",
-      "myfxbookDesc": "AutoTrade qua Myfxbook với nhiều broker. Setup 1 lần, auto sync forever.",
-      "myfxbookLink": "Xem hướng dẫn Myfxbook",
-      "tickmillTitle": "🎯 Tickmill Social",
-      "tickmillDesc": "Copy trading native trên Tickmill. Đơn giản nhất, 1 click copy, không cần EA.",
-      "tickmillLink": "Xem hướng dẫn Tickmill",
-      "puprimeTitle": "💰 PuPrime Social",
-      "puprimeDesc": "Copy trên PuPrime với vốn thấp ($200+). Phù hợp trader mới bắt đầu.",
-      "puprimeLink": "Xem hướng dẫn PuPrime",
-      "compareTitle": "💡 Chưa chắc nên copy hay mua EA?",
-      "compareDesc": "Xem video so sánh để chọn phương án phù hợp nhất.",
-      "compareLink": "Copy Trading vs Mua EA - Video So Sánh"
+      "highlights": "Thông số vận hành:",
+      "viewProfile": "Xem Trading Record Đã Verify trên MQL5®"
     },
     "disclaimer": {
       "title": "Cảnh Báo Rủi Ro",
-      "past": "Kết quả trong quá khứ không đảm bảo kết quả tương lai.",
-      "pastDesc": "Tất cả các tài khoản trên đều là real money và verified, nhưng hiệu suất có thể thay đổi theo điều kiện thị trường.",
-      "copyRisk": "Copy trading có rủi ro:",
-      "copyRiskDesc": "Khi copy, bạn cũng chịu drawdown tương tự master account. Chỉ copy với số tiền bạn có thể chấp nhận mất.",
-      "fees": "Phí copy:",
-      "feesDesc": "Tickmill (20% profit share), PuPrime (25% profit share), MQL5/Myfxbook (fee khác nhau tùy platform). Đọc kỹ terms trước khi copy.",
+      "past": "Kết quả quá khứ không đảm bảo kết quả tương lai.",
+      "pastDesc": "Các tài khoản trên là tài khoản giao dịch thực tế và được verify độc lập, nhưng hiệu suất có thể thay đổi theo điều kiện thị trường.",
+      "forexRisk": "Giao dịch forex có rủi ro cao:",
+      "forexRiskDesc": "Có thể dẫn đến mất toàn bộ vốn đầu tư. Chỉ giao dịch với số tiền bạn có thể chấp nhận mất.",
+      "software": "Phần mềm EA là công cụ phân tích:",
+      "softwareDesc": "EA ThebenchmarkTrader là phần mềm phân tích và tự động hóa giao dịch. Chúng tôi không đảm bảo lợi nhuận, không quản lý vốn khách hàng, và không cung cấp tư vấn đầu tư.",
       "recommendation": "Khuyến nghị:",
-      "recommendationDesc": "Test trên demo/vốn nhỏ trước. Theo dõi ít nhất 1 tháng trước khi scale up. Không bao giờ all-in vào 1 strategy.",
+      "recommendationDesc": "Test trên demo/vốn nhỏ trước khi dùng tài khoản thực. Theo dõi hiệu suất ít nhất 1 tháng trước khi scale up.",
       "brokerTitle": "Lưu ý về broker:",
-      "broker": "Tên broker (Tickmill, ThinkMarkets, PuPrime) được nhắc đến chỉ nhằm tham khảo. Đây là các công ty độc lập, không liên kết hay được bảo trợ bởi TheBenchmarkTrader. Việc chọn broker là quyết định của người dùng. TheBenchmarkTrader không chịu trách nhiệm về dịch vụ của broker."
+      "broker": "Tên broker (Tickmill, ThinkMarkets) được nhắc đến chỉ nhằm tham khảo. Đây là các công ty độc lập, không liên kết hay được bảo trợ bởi TheBenchmarkTrader. Việc chọn broker là quyết định của người dùng."
     },
     "cta": {
-      "title": "Sẵn sàng bắt đầu?",
-      "subtitle": "Chọn giữa copy trading (dễ hơn) hoặc mua EA (control hơn). Cả 2 đều có kết quả thực tế đã verified.",
-      "viewPricing": "Xem Bảng Giá EA",
-      "contactCopy": "Tư Vấn Copy Trading"
+      "title": "Sẵn sàng dùng EA ThebenchmarkTrader?",
+      "subtitle": "EA đã được kiểm chứng trên 5 tài khoản giao dịch thực tế, verified độc lập bởi MQL5®. Xem bảng giá và tải phần mềm.",
+      "viewPricing": "Xem Bảng Giá EA"
     }
   },
   "footer": {

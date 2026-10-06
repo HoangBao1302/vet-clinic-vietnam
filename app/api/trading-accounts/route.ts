@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { dbConnect } from "@/lib/mongodb";
 import TradingAccount from "@/lib/models/TradingAccount";
+import { withVerifiedAccountCopy } from "@/data/tradingAccounts";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -15,7 +16,7 @@ export async function GET() {
 
     return NextResponse.json({
       success: true,
-      accounts
+      accounts: withVerifiedAccountCopy(accounts)
     });
   } catch (error: any) {
     console.error("Error fetching trading accounts:", error);
