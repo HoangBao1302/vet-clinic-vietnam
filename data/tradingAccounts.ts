@@ -35,8 +35,8 @@ export const tradingAccounts: TradingAccount[] = [
     accountNumber: "9029831",
     broker: "Tickmill",
     verified: true,
-    badge: "Verified bởi MQL5®",
-    badge_en: "Verified by MQL5®",
+    badge: "Verified trên MQL5.com",
+    badge_en: "Verified on MQL5.com",
     active: true,
     order: 1,
     stats: {
@@ -50,18 +50,18 @@ export const tradingAccounts: TradingAccount[] = [
       profile: "https://www.mql5.com/en/signals/2327790",
     },
     description:
-      "Tài khoản giao dịch thực tế đầu tiên chạy phần mềm EA ThebenchmarkTrader trên nền tảng MT4 (broker: Tickmill). Kết quả được xác minh độc lập bởi MQL5.",
+      "Tài khoản giao dịch thực tế đầu tiên chạy phần mềm EA ThebenchmarkTrader trên nền tảng MetaTrader 4 (broker: Tickmill). Kết quả được xác minh độc lập trên MQL5.com.",
     description_en:
-      "First live trading account running EA ThebenchmarkTrader software on MT4 (broker: Tickmill). Results independently verified by MQL5.",
+      "First live trading account running EA ThebenchmarkTrader software on MetaTrader 4 (broker: Tickmill). Results independently verified on MQL5.com.",
     highlights: [
-      "✅ Verified bởi MQL5 (độc lập, không tự khai)",
+      "✅ Verified trên MQL5.com (độc lập, không tự khai)",
       "📊 280 tuần giao dịch thực tế",
       "🛡️ Drawdown tối đa 28.5%",
       "⚙️ Risk setting: 1.5% mỗi lệnh",
       "🎯 Cặp tiền: EURUSD M5, AUDUSD M5, GBPUSD M5, AUDCAD M5",
     ],
     highlights_en: [
-      "✅ Verified by MQL5 (independent, not self-reported)",
+      "✅ Verified on MQL5.com (independent, not self-reported)",
       "📊 280 weeks of live trading",
       "🛡️ Maximum drawdown 28.5%",
       "⚙️ Risk setting: 1.5% per trade",
@@ -75,8 +75,8 @@ export const tradingAccounts: TradingAccount[] = [
     accountNumber: "Tickmill_3104741",
     broker: "Tickmill",
     verified: true,
-    badge: "Verified bởi MQL5®",
-    badge_en: "Verified by MQL5®",
+    badge: "Verified trên MQL5.com",
+    badge_en: "Verified on MQL5.com",
     active: true,
     order: 2,
     stats: {
@@ -90,18 +90,18 @@ export const tradingAccounts: TradingAccount[] = [
       profile: "https://www.mql5.com/en/signals/2387965",
     },
     description:
-      "Tài khoản giao dịch thực tế thứ hai, chạy phần mềm EA ThebenchmarkTrader trên Tickmill. Kết quả verified độc lập bởi MQL5.",
+      "Tài khoản giao dịch thực tế thứ hai, chạy phần mềm EA ThebenchmarkTrader trên Tickmill. Kết quả verified độc lập trên MQL5.com.",
     description_en:
-      "Second live trading account running EA ThebenchmarkTrader software on Tickmill. Results independently verified by MQL5.",
+      "Second live trading account running EA ThebenchmarkTrader software on Tickmill. Results independently verified on MQL5.com.",
     highlights: [
-      "✅ Verified bởi MQL5 (độc lập)",
+      "✅ Verified trên MQL5.com (độc lập)",
       "📊 392 ngày giao dịch thực tế",
       "🛡️ Drawdown tối đa 8%",
       "⚙️ Win rate 79.8%, Profit Factor 2.14",
       "🎯 Multi-pair trading",
     ],
     highlights_en: [
-      "✅ Verified by MQL5 (independent)",
+      "✅ Verified on MQL5.com (independent)",
       "📊 392 days of live trading",
       "🛡️ Maximum drawdown 8%",
       "⚙️ Win rate 79.8%, Profit Factor 2.14",
@@ -115,8 +115,8 @@ export const tradingAccounts: TradingAccount[] = [
     accountNumber: "Tickmill_live8",
     broker: "Tickmill",
     verified: true,
-    badge: "Verified bởi MQL5®",
-    badge_en: "Verified by MQL5®",
+    badge: "Verified trên MQL5.com",
+    badge_en: "Verified on MQL5.com",
     active: true,
     order: 3,
     stats: {
@@ -130,20 +130,20 @@ export const tradingAccounts: TradingAccount[] = [
       profile: "https://www.mql5.com/en/signals/2387963",
     },
     description:
-      "Tài khoản giao dịch thực tế thứ ba, chạy phần mềm EA ThebenchmarkTrader trên MT4 (broker: Tickmill). 406 ngày giao dịch liên tục, verified bởi MQL5.",
+      "Tài khoản giao dịch thực tế thứ ba, chạy phần mềm EA ThebenchmarkTrader trên MetaTrader 4 (broker: Tickmill). 406 ngày giao dịch liên tục, verified trên MQL5.com.",
     description_en:
-      "Third live trading account running EA ThebenchmarkTrader software on MT4 (broker: Tickmill). 406 consecutive days of trading, verified by MQL5.",
+      "Third live trading account running EA ThebenchmarkTrader software on MetaTrader 4 (broker: Tickmill). 406 consecutive days of trading, verified on MQL5.com.",
     highlights: [
-      "✅ Verified bởi MQL5 (độc lập)",
+      "✅ Verified trên MQL5.com (độc lập)",
       "📊 406 ngày giao dịch thực tế",
       "🎯 Multi-pair trading",
-      "📈 Equity curve đầy đủ trên MQL5",
+      "📈 Equity curve đầy đủ trên MQL5.com",
     ],
     highlights_en: [
-      "✅ Verified by MQL5 (independent)",
+      "✅ Verified on MQL5.com (independent)",
       "📊 406 days of live trading",
       "🎯 Multi-pair trading",
-      "📈 Full equity curve on MQL5",
+      "📈 Full equity curve on MQL5.com",
     ],
   },
   {
@@ -153,8 +153,8 @@ export const tradingAccounts: TradingAccount[] = [
     accountNumber: "ThinkMarkets-Live 4",
     broker: "ThinkMarkets",
     verified: true,
-    badge: "Verified bởi MQL5®",
-    badge_en: "Verified by MQL5®",
+    badge: "Verified trên MQL5.com",
+    badge_en: "Verified on MQL5.com",
     active: true,
     order: 4,
     stats: {
@@ -168,17 +168,17 @@ export const tradingAccounts: TradingAccount[] = [
       profile: "https://www.mql5.com/en/signals/2364376",
     },
     description:
-      "Tài khoản giao dịch thực tế thứ tư, chạy phần mềm EA ThebenchmarkTrader trên MT4 (broker: ThinkMarkets). Cấu hình risk thấp hơn, verified bởi MQL5.",
+      "Tài khoản giao dịch thực tế thứ tư, chạy phần mềm EA ThebenchmarkTrader trên MetaTrader 4 (broker: ThinkMarkets). Cấu hình risk thấp hơn, verified trên MQL5.com.",
     description_en:
-      "Fourth live trading account running EA ThebenchmarkTrader software on MT4 (broker: ThinkMarkets). Lower risk configuration, verified by MQL5.",
+      "Fourth live trading account running EA ThebenchmarkTrader software on MetaTrader 4 (broker: ThinkMarkets). Lower risk configuration, verified on MQL5.com.",
     highlights: [
-      "✅ Verified bởi MQL5.com (độc lập)",
+      "✅ Verified trên MQL5.com (độc lập)",
       "📊 462 ngày giao dịch thực tế",
       "⚙️ Risk setting: 1% mỗi lệnh",
       "🎯 Cặp tiền: AUDCAD, USDCAD, AUDUSD, NZDCAD, GBPUSD, EURGBP",
     ],
     highlights_en: [
-      "✅ Verified by MQL5.com (independent)",
+      "✅ Verified on MQL5.com (independent)",
       "📊 462 days of live trading",
       "⚙️ Risk setting: 1% per trade",
       "🎯 Pairs: AUDCAD, USDCAD, AUDUSD, NZDCAD, GBPUSD, EURGBP",
@@ -191,8 +191,8 @@ export const tradingAccounts: TradingAccount[] = [
     accountNumber: "Tickmill-Live 4",
     broker: "Tickmill",
     verified: true,
-    badge: "Verified bởi MQL5®",
-    badge_en: "Verified by MQL5®",
+    badge: "Verified trên MQL5.com",
+    badge_en: "Verified on MQL5.com",
     active: true,
     order: 5,
     stats: {
@@ -206,17 +206,17 @@ export const tradingAccounts: TradingAccount[] = [
       profile: "https://www.mql5.com/en/signals/2387969",
     },
     description:
-      "Tài khoản giao dịch thực tế thứ năm, chạy phần mềm EA ThebenchmarkTrader trên Tickmill. 126 ngày giao dịch thực tế, verified bởi MQL5.",
+      "Tài khoản giao dịch thực tế thứ năm, chạy phần mềm EA ThebenchmarkTrader trên Tickmill. 126 ngày giao dịch thực tế, verified trên MQL5.com.",
     description_en:
-      "Fifth live trading account running EA ThebenchmarkTrader software on Tickmill. 126 days of live trading, verified by MQL5.",
+      "Fifth live trading account running EA ThebenchmarkTrader software on Tickmill. 126 days of live trading, verified on MQL5.com.",
     highlights: [
-      "✅ Verified bởi MQL5 (độc lập)",
+      "✅ Verified trên MQL5.com (độc lập)",
       "📊 126 ngày giao dịch thực tế",
       "🛡️ Drawdown tối đa 25.3%",
       "⚙️ Win rate 77.3%, Profit Factor 1.35",
     ],
     highlights_en: [
-      "✅ Verified by MQL5 (independent)",
+      "✅ Verified on MQL5.com (independent)",
       "📊 126 days of live trading",
       "🛡️ Maximum drawdown 25.3%",
       "⚙️ Win rate 77.3%, Profit Factor 1.35",

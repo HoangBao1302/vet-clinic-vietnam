@@ -1,10 +1,9 @@
-/** Add ® on the first-style mention of MetaQuotes marks in a string. */
+/** Plain compatibility names. Do not add a ® mark to MetaQuotes trademarks. */
 export function withMetaQuotesMark(text: string | undefined | null): string {
   if (!text) return "";
   return text
-    .replace(/\bMetaTrader\b(?!®)/g, "MetaTrader®")
-    .replace(/\bMQL4\b(?!®)/g, "MQL4®")
-    .replace(/\bMQL5\b(?!®)/g, "MQL5®")
-    .replace(/\bMT4\b(?!®)/g, "MT4®")
-    .replace(/\bMT5\b(?!®)/g, "MT5®");
+    .replace(/®/g, "")
+    .replace(/\bMT4\b/g, "MetaTrader 4")
+    .replace(/\bMT5\b/g, "MetaTrader 5")
+    .replace(/\bMQL5\b(?!\.com)/g, "MQL5.com");
 }

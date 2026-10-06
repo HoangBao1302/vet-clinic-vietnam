@@ -74,7 +74,7 @@
     "subtitle": "Multi-strategy analytical software with scientific risk management. Efficient and transparent trading data automation.",
     "description": "Multi-strategy analytical software with scientific risk management. Efficient and transparent trading data automation.",
     "badges": {
-      "mt4mt5": "MT4®/MT5®",
+      "mt4mt5": "Tương thích MetaTrader 4/5",
       "riskControl": "Risk Control",
       "backtestFriendly": "Backtest-Friendly"
     },
@@ -158,7 +158,7 @@
   "liveResults": {
     "badge": "100% Verified Real Accounts",
     "title": "Xác Minh Hiệu Suất EA",
-    "subtitle": "Các tài khoản dưới đây chạy phần mềm EA ThebenchmarkTrader trên tài khoản giao dịch thực tế. Kết quả được xác minh độc lập bởi MQL5®.",
+    "subtitle": "Các tài khoản dưới đây chạy phần mềm EA ThebenchmarkTrader trên tài khoản giao dịch thực tế. Kết quả được xác minh độc lập trên MQL5.com.",
     "verified": "Verified Account",
     "gain": "Gain",
     "drawdown": "DD",
@@ -241,7 +241,7 @@
         "features": [
           "Chạy trên tài khoản demo",
           "Đầy đủ tính năng EA",
-          "Hỗ trợ MT4®/MT5®",
+          "Tương thích MetaTrader 4/5",
           "Báo cáo hiệu suất",
           "Hướng dẫn cài đặt",
           "Hỗ trợ email"
@@ -261,7 +261,7 @@
         "features": [
           "Chạy trên tài khoản thực",
           "Đầy đủ tính năng EA",
-          "Hỗ trợ MT4/MT5",
+          "Tương thích MetaTrader 4/5",
           "Báo cáo chi tiết",
           "Hướng dẫn cài đặt",
           "Hỗ trợ 1-1 qua Telegram",
@@ -468,10 +468,10 @@
   },
   "liveResultsPage": {
     "hero": {
-      "badge": "Verified by MQL5®",
+      "badge": "Verified on MQL5.com",
       "title": "Xác Minh Hiệu Suất EA",
-      "subtitle": "Các tài khoản dưới đây chạy phần mềm EA ThebenchmarkTrader trên tài khoản giao dịch thực tế. Kết quả được xác minh độc lập bởi MQL5® — nền tảng verify của MetaQuotes Ltd. Link verify công khai để bạn tự kiểm tra.",
-      "metaquotes": "MetaTrader®, MT4®, MT5®, MQL4®, MQL5® là nhãn hiệu đăng ký của MetaQuotes Ltd. ThebenchmarkTrader không liên kết hay được bảo trợ bởi MetaQuotes Ltd.",
+      "subtitle": "Các tài khoản dưới đây chạy phần mềm EA ThebenchmarkTrader trên tài khoản giao dịch thực tế. Kết quả được xác minh độc lập trên MQL5.com — nền tảng verify của MetaQuotes Ltd. Link verify công khai để bạn tự kiểm tra.",
+      "metaquotes": "MetaTrader, MT4, MT5, MQL4, MQL5 là nhãn hiệu của MetaQuotes Ltd. ThebenchmarkTrader là sản phẩm phần mềm độc lập, không liên kết, không được bảo trợ, và không được xác nhận bởi MetaQuotes Ltd.",
       "totalProfit": "Tổng gain (tích lũy)",
       "totalProfitValue": "+1,000%+",
       "verifiedAccounts": "Tài khoản verified",
@@ -480,16 +480,16 @@
     },
     "whyTrust": {
       "verified": "Xác Minh Độc Lập",
-      "verifiedDesc": "Kết quả verified bởi MQL5® — nền tảng của MetaQuotes",
+      "verifiedDesc": "Kết quả verified trên MQL5.com — nền tảng của MetaQuotes",
       "realtime": "Dữ Liệu Real-Time",
       "realtimeDesc": "Trading record cập nhật theo từng lệnh, công khai 24/7",
       "liveData": "Link Verify Công Khai",
-      "liveDataDesc": "Click để xem lịch sử giao dịch đầy đủ trên MQL5®"
+      "liveDataDesc": "Click để xem lịch sử giao dịch đầy đủ trên MQL5.com"
     },
     "accounts": {
       "title": "Tài Khoản Giao Dịch Thực Tế",
       "subtitle": "Tất cả tài khoản dưới đây chạy phần mềm EA ThebenchmarkTrader, verified độc lập và có link verify công khai. Click vào link để xem lịch sử giao dịch đầy đủ.",
-      "verified": "Verified bởi MQL5®",
+      "verified": "Verified trên MQL5.com",
       "platform": "Platform:",
       "broker": "Broker:",
       "account": "Account:",
@@ -499,7 +499,7 @@
       "profitFactor": "Profit Factor",
       "days": "Days",
       "highlights": "Thông số vận hành:",
-      "viewProfile": "Xem Trading Record Đã Verify trên MQL5®"
+      "viewProfile": "Xem Trading Record Đã Verify trên MQL5.com"
     },
     "disclaimer": {
       "title": "Cảnh Báo Rủi Ro",
@@ -516,7 +516,7 @@
     },
     "cta": {
       "title": "Sẵn sàng dùng EA ThebenchmarkTrader?",
-      "subtitle": "EA đã được kiểm chứng trên 5 tài khoản giao dịch thực tế, verified độc lập bởi MQL5®. Xem bảng giá và tải phần mềm.",
+      "subtitle": "EA đã được kiểm chứng trên 5 tài khoản giao dịch thực tế, verified độc lập trên MQL5.com. Xem bảng giá và tải phần mềm.",
       "viewPricing": "Xem Bảng Giá EA"
     }
   },
@@ -537,7 +537,7 @@
     "address": "Địa Chỉ",
     "addressValue": "117 S Lexington St Ste 100, Harrisonville, MO 64701",
     "copyright": "© {year} ThebenchmarkTrader. Bảo lưu mọi quyền.",
-    "metaquotesAttribution": "MetaTrader®, MT4®, MT5®, MQL4®, và MQL5® là nhãn hiệu đã đăng ký của MetaQuotes Ltd. TheBenchmarkTrader không liên kết, được bảo trợ, hoặc đại diện cho MetaQuotes Ltd.",
+    "metaquotesAttribution": "MetaTrader, MT4, MT5, MQL4, MQL5 là nhãn hiệu của MetaQuotes Ltd. ThebenchmarkTrader là sản phẩm phần mềm độc lập, không liên kết, không được bảo trợ, và không được xác nhận bởi MetaQuotes Ltd. Tên nền tảng được nhắc đến chỉ nhằm mục đích mô tả tính tương thích của sản phẩm.",
     "brokerDisclaimer": "Tên broker (Tickmill, ThinkMarkets, PuPrime, v.v.) được nhắc đến chỉ nhằm mục đích tham khảo. Các broker là công ty độc lập và không liên kết, được bảo trợ, hoặc đại diện cho TheBenchmarkTrader. Người dùng tự chịu trách nhiệm chọn broker phù hợp.",
     "riskWarning": "Risk Disclaimer",
     "readyToStart": "Sẵn sàng bắt đầu giao dịch tự động?",

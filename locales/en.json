@@ -74,7 +74,7 @@
     "subtitle": "Multi-strategy analytical software with scientific risk management. Efficient and transparent trading data automation.",
     "description": "Multi-strategy analytical software with scientific risk management. Efficient and transparent trading data automation.",
     "badges": {
-      "mt4mt5": "MT4®/MT5®",
+      "mt4mt5": "Compatible with MetaTrader 4/5",
       "riskControl": "Risk Control",
       "backtestFriendly": "Backtest-Friendly"
     },
@@ -158,7 +158,7 @@
   "liveResults": {
     "badge": "100% Verified Real Accounts",
     "title": "EA Performance Verification",
-    "subtitle": "The accounts below run EA ThebenchmarkTrader software on live trading accounts. Results are independently verified by MQL5®.",
+    "subtitle": "The accounts below run EA ThebenchmarkTrader software on live trading accounts. Results are independently verified on MQL5.com.",
     "verified": "Verified Account",
     "gain": "Gain",
     "drawdown": "DD",
@@ -241,7 +241,7 @@
         "features": [
           "Works on demo accounts",
           "Full EA features",
-          "MT4®/MT5® support",
+          "Compatible with MetaTrader 4/5",
           "Performance reports",
           "Installation guide",
           "Email support"
@@ -261,7 +261,7 @@
         "features": [
           "Works on live accounts",
           "Full EA features",
-          "MT4/MT5 support",
+          "Compatible with MetaTrader 4/5",
           "Detailed reports",
           "Installation guide",
           "1-on-1 Telegram support",
@@ -468,10 +468,10 @@
   },
   "liveResultsPage": {
     "hero": {
-      "badge": "Verified by MQL5®",
+      "badge": "Verified on MQL5.com",
       "title": "EA Performance Verification",
-      "subtitle": "The accounts below run EA ThebenchmarkTrader software on live trading accounts. Results are independently verified by MQL5®, the verification platform of MetaQuotes Ltd. Public verification links are available for you to check.",
-      "metaquotes": "MetaTrader®, MT4®, MT5®, MQL4® and MQL5® are registered trademarks of MetaQuotes Ltd. ThebenchmarkTrader is not affiliated with or endorsed by MetaQuotes Ltd.",
+      "subtitle": "The accounts below run EA ThebenchmarkTrader software on live trading accounts. Results are independently verified on MQL5.com, the verification platform of MetaQuotes Ltd. Public verification links are available for you to check.",
+      "metaquotes": "MetaTrader, MT4, MT5, MQL4, and MQL5 are trademarks of MetaQuotes Ltd. ThebenchmarkTrader is an independent software product and is not affiliated with, sponsored by, or endorsed by MetaQuotes Ltd.",
       "totalProfit": "Cumulative gain",
       "totalProfitValue": "+1,000%+",
       "verifiedAccounts": "Verified accounts",
@@ -480,16 +480,16 @@
     },
     "whyTrust": {
       "verified": "Independent Verification",
-      "verifiedDesc": "Results verified by MQL5®, the MetaQuotes platform",
+      "verifiedDesc": "Results verified on MQL5.com, the MetaQuotes platform",
       "realtime": "Real-Time Data",
       "realtimeDesc": "Trading record updated with each order, public 24/7",
       "liveData": "Public Verification Link",
-      "liveDataDesc": "Click to view the full trading history on MQL5®"
+      "liveDataDesc": "Click to view the full trading history on MQL5.com"
     },
     "accounts": {
       "title": "Live Trading Accounts",
       "subtitle": "Every account below runs EA ThebenchmarkTrader software, is independently verified, and has a public verification link. Click the link to view the full trading history.",
-      "verified": "Verified by MQL5®",
+      "verified": "Verified on MQL5.com",
       "platform": "Platform:",
       "broker": "Broker:",
       "account": "Account:",
@@ -499,7 +499,7 @@
       "profitFactor": "Profit Factor",
       "days": "Days",
       "highlights": "Operating parameters:",
-      "viewProfile": "View Verified Trading Record on MQL5®"
+      "viewProfile": "View Verified Trading Record on MQL5.com"
     },
     "disclaimer": {
       "title": "Risk Warning",
@@ -516,7 +516,7 @@
     },
     "cta": {
       "title": "Ready to use EA ThebenchmarkTrader?",
-      "subtitle": "The EA has been tested on 5 live trading accounts, independently verified by MQL5®. View pricing and download the software.",
+      "subtitle": "The EA has been tested on 5 live trading accounts, independently verified on MQL5.com. View pricing and download the software.",
       "viewPricing": "View EA Pricing"
     }
   },
@@ -537,7 +537,7 @@
     "address": "Address",
     "addressValue": "117 S Lexington St Ste 100, Harrisonville, MO 64701",
     "copyright": "© {year} Thebenchmarktrader LLC. All rights reserved.",
-    "metaquotesAttribution": "MetaTrader®, MT4®, MT5®, MQL4®, and MQL5® are registered trademarks of MetaQuotes Ltd. TheBenchmarkTrader is not affiliated with, sponsored by, or a representative of MetaQuotes Ltd.",
+    "metaquotesAttribution": "MetaTrader, MT4, MT5, MQL4, and MQL5 are trademarks of MetaQuotes Ltd. ThebenchmarkTrader is an independent software product and is not affiliated with, sponsored by, or endorsed by MetaQuotes Ltd. Platform names are mentioned solely to describe product compatibility.",
     "brokerDisclaimer": "Broker names (Tickmill, ThinkMarkets, PuPrime, etc.) are mentioned for reference only. Brokers are independent companies and are not affiliated with, sponsored by, or representatives of TheBenchmarkTrader. Users are responsible for choosing a suitable broker.",
     "riskWarning": "Risk Disclaimer",
     "readyToStart": "Ready to start automated trading?",

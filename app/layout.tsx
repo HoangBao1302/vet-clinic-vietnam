@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://ThebenchmarkTrader.com'),
   title: "ThebenchmarkTrader - Trading Data Analysis & Computational Software Tools",
   description: "Multi-strategy analytical software with scientific risk management. Efficient and transparent trading data automation.",
-  keywords: "trading data analysis, computational software, analytical tools, MT4®, MT5®, indicators",
+  keywords: "trading data analysis, computational software, analytical tools, MetaTrader 4, MetaTrader 5, indicators",
   authors: [{ name: "ThebenchmarkTrader" }],
   icons: {
     icon: [

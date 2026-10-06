@@ -9,7 +9,7 @@ export const revalidate = 60;
 export const metadata: Metadata = {
   title: "Xác Minh Hiệu Suất EA - ThebenchmarkTrader",
   description:
-    "Các tài khoản dưới đây chạy phần mềm EA ThebenchmarkTrader trên tài khoản giao dịch thực tế. Kết quả được xác minh độc lập bởi MQL5®.",
+    "Các tài khoản dưới đây chạy phần mềm EA ThebenchmarkTrader trên tài khoản giao dịch thực tế. Kết quả được xác minh độc lập trên MQL5.com.",
 };
 
 async function getAccounts(): Promise<TradingAccount[]> {

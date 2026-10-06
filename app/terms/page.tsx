@@ -263,7 +263,18 @@ export default function TermsOfService() {
                 </div>
 
                 <h2 className="text-2xl font-bold text-gray-800 mb-4">
-                  {isEn ? "11. Contact" : "11. Liên Hệ"}
+                  {isEn ? "11. Trademarks" : "11. Nhãn Hiệu"}
+                </h2>
+                <div className="mb-6">
+                  <p className="text-gray-700 mb-3">
+                    {isEn
+                      ? "MetaTrader, MT4, MT5, MQL4, and MQL5 are trademarks of MetaQuotes Ltd. ThebenchmarkTrader is an independent software product and is not affiliated with, sponsored by, or endorsed by MetaQuotes Ltd. Platform names are mentioned solely to describe product compatibility."
+                      : "MetaTrader, MT4, MT5, MQL4, MQL5 là nhãn hiệu của MetaQuotes Ltd. ThebenchmarkTrader là sản phẩm phần mềm độc lập, không liên kết, không được bảo trợ, và không được xác nhận bởi MetaQuotes Ltd. Tên nền tảng được nhắc đến chỉ nhằm mục đích mô tả tính tương thích của sản phẩm."}
+                  </p>
+                </div>
+
+                <h2 className="text-2xl font-bold text-gray-800 mb-4">
+                  {isEn ? "12. Contact" : "12. Liên Hệ"}
                 </h2>
                 <div className="mb-6">
                   <p className="text-gray-700 mb-3"><strong>{isEn ? "Company:" : "Công ty:"}</strong> Thebenchmarktrader LLC</p>
