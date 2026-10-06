@@ -9,10 +9,11 @@ import {
 } from "@/lib/paypal";
 import connectDB from "@/lib/mongodb";
 import Order from "@/lib/models/Order";
+import { detectCustomerCountry } from "@/lib/customerLocale";
 
 export async function POST(request: NextRequest) {
   try {
-    const { productId, productName, amount, customerInfo, affiliateCode } = await request.json();
+    const { productId, productName, amount, customerInfo, affiliateCode, customerCountry } = await request.json();
 
     if (!productId || !productName || !amount || !customerInfo) {
       return NextResponse.json(
@@ -139,9 +140,13 @@ export async function POST(request: NextRequest) {
 
     try {
       await connectDB();
+      const country = customerCountry === undefined
+        ? (await detectCustomerCountry(request)) || ""
+        : String(customerCountry || "").trim().toUpperCase();
       await Order.findOneAndUpdate(
         { orderId: order.id },
         {
+          ...(country ? { $set: { customerCountry: country } } : {}),
           $setOnInsert: {
             orderId: order.id,
             productId,

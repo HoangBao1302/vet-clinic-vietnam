@@ -10,6 +10,7 @@ import {
   toCryptoCheckoutError,
   NOWPAYMENTS_PAY_CURRENCY,
 } from "@/lib/nowpayments";
+import { detectCustomerCountry } from "@/lib/customerLocale";
 
 export async function POST(request: NextRequest) {
   try {
@@ -42,6 +43,7 @@ export async function POST(request: NextRequest) {
     const description = getPayPalProductName(productId) || productName || "ThebenchmarkTrader software";
 
     await connectDB();
+    const customerCountry = (await detectCustomerCountry(request)) || "";
     await Order.create({
       orderId,
       productId,
@@ -57,6 +59,7 @@ export async function POST(request: NextRequest) {
       broker: customerInfo.broker || "",
       accountId: customerInfo.accountId || "",
       server: customerInfo.server || "",
+      ...(customerCountry ? { customerCountry } : {}),
     });
 
     const payment = await createNowPaymentsDeposit({

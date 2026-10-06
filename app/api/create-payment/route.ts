@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getPayPalSiteUrl, isPayPalConfigured } from "@/lib/paypal";
+import { detectCustomerCountry } from "@/lib/customerLocale";
 
 // Note: Install dependencies first: npm install stripe @paypal/checkout-server-sdk
 
@@ -32,6 +33,7 @@ export async function POST(request: NextRequest) {
       }
 
       try {
+        const customerCountry = await detectCustomerCountry(request);
         const response = await fetch(`${getPayPalSiteUrl()}/api/paypal/create-order`, {
           method: "POST",
           headers: {
@@ -42,7 +44,8 @@ export async function POST(request: NextRequest) {
             productName,
             amount,
             customerInfo,
-            affiliateCode
+            affiliateCode,
+            customerCountry,
           }),
         });
 

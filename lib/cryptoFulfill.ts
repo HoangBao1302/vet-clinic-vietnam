@@ -1,7 +1,12 @@
 import Order from "@/lib/models/Order";
 import connectDB from "@/lib/mongodb";
 import { fulfillPaidPayPalOrder } from "@/lib/paypalFulfill";
-import { nowPaymentsRequest, shouldFulfillCryptoPayment, type NowPayment } from "@/lib/nowpayments";
+import {
+  nowPaymentsRequest,
+  receivedCryptoUsd,
+  shouldFulfillCryptoPayment,
+  type NowPayment,
+} from "@/lib/nowpayments";
 
 function paymentIdOf(payment: NowPayment) {
   return String(payment.payment_id || "").trim();
@@ -27,7 +32,7 @@ function inferredProductId(payment: NowPayment, fallback?: string) {
   return fallback || "indicator-pro-mt5";
 }
 
-/** Mark the exact NOWPayments order paid when status is finished or fee-short partially_paid. */
+/** Persist the exact NOWPayments order when status is finished or partially_paid. */
 export async function fulfillCryptoNowPayment(payment: NowPayment) {
   await connectDB();
 
@@ -48,9 +53,12 @@ export async function fulfillCryptoNowPayment(payment: NowPayment) {
       ? await Order.findOne({ cryptoPaymentId: paymentId })
       : null;
 
-  const expectedUsd = matched?.amount ? matched.amount / 100 : listedUsd(hydrated);
-  if (!shouldFulfillCryptoPayment(hydrated, expectedUsd || listedUsd(hydrated))) {
+  if (!shouldFulfillCryptoPayment(hydrated)) {
     return { fulfilled: "", skipped: `not payable (${hydrated.payment_status || "unknown"})` };
+  }
+  const amountUsd = receivedCryptoUsd(hydrated) || listedUsd(hydrated) || (matched?.amount ? matched.amount / 100 : 0);
+  if (amountUsd <= 0) {
+    return { fulfilled: "", skipped: "missing received amount" };
   }
 
   const targetOrderId = matched?.orderId || orderId;
@@ -67,12 +75,13 @@ export async function fulfillCryptoNowPayment(payment: NowPayment) {
     customerEmail: matched?.customerEmail || "",
     customerName: matched?.customerName || "Customer",
     customerPhone: matched?.customerPhone || "",
-    amountUsd: expectedUsd || listedUsd(hydrated),
+    amountUsd,
     broker: matched?.broker,
     accountId: matched?.accountId,
     server: matched?.server,
     paymentMethod: "crypto",
     cryptoPaymentId: paymentId || undefined,
+    customerCountry: matched?.customerCountry || "",
   });
 
   return { fulfilled: targetOrderId, skipped: "" };

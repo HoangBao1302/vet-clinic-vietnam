@@ -3,12 +3,14 @@
 import { Facebook, Instagram, Twitter, Phone, Mail, MessageCircle, Youtube, MapPin, Building2 } from "lucide-react";
 import Link from "next/link";
 import Newsletter from "./Newsletter";
+import RiskDisclaimer from "./RiskDisclaimer";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 
 export default function Footer() {
   const { t } = useLocale();
 
   return (
+    <>
     <footer className="bg-gray-800 text-white">
       <div className="container-custom py-12">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -210,12 +212,18 @@ export default function Footer() {
             <p className="text-gray-300 text-sm">
               {String(t('footer.copyright')).replace('{year}', String(new Date().getFullYear()))}
             </p>
-            <div className="flex space-x-6 mt-4 md:mt-0">
+            <div className="flex flex-wrap justify-center md:justify-end gap-x-6 gap-y-2 mt-4 md:mt-0">
               <Link href="/privacy" className="text-gray-300 hover:text-white text-sm transition-colors">
                 {t('footer.links.privacy')}
               </Link>
               <Link href="/terms" className="text-gray-300 hover:text-white text-sm transition-colors">
                 {t('footer.links.terms')}
+              </Link>
+              <Link href="/terms-of-service" className="text-gray-300 hover:text-white text-sm transition-colors">
+                {t('footer.links.termsOfService')}
+              </Link>
+              <Link href="/refund-policy" className="text-gray-300 hover:text-white text-sm transition-colors">
+                {t('footer.links.refundPolicy')}
               </Link>
               <Link href="/live-results#risk-warning" className="text-gray-300 hover:text-white text-sm transition-colors">
                 {t('footer.riskWarning')}
@@ -236,5 +244,7 @@ export default function Footer() {
         </div>
       </div>
     </footer>
+    <RiskDisclaimer />
+    </>
   );
 } 

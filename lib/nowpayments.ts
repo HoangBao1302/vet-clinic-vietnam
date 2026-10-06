@@ -45,24 +45,31 @@ export function verifyNowPaymentsSignature(payload: unknown, signature: string |
   return crypto.timingSafeEqual(left, right);
 }
 
-/** Binance USDT TRC20 withdraw fee is ~1.5; allow a little slack. */
-export const BINANCE_TRC20_FEE_USDT = 2;
-
 export function isCryptoPaidStatus(status?: string) {
   const normalized = String(status || "").toLowerCase();
   return normalized === "finished" || normalized === "confirmed";
 }
 
+export function receivedCryptoUsd(
+  payment: Pick<NowPayment, "actually_paid" | "outcome_amount" | "price_amount" | "pay_amount">
+) {
+  const received = Number(payment.actually_paid ?? payment.outcome_amount ?? 0);
+  if (Number.isFinite(received) && received > 0) return received;
+  const listed = Number(payment.price_amount ?? payment.pay_amount ?? 0);
+  return Number.isFinite(listed) && listed > 0 ? listed : 0;
+}
+
+/** NOWPayments Finished / Confirmed / Partially_paid all persist that exact order. */
 export function shouldFulfillCryptoPayment(
   payment: Pick<NowPayment, "payment_status" | "actually_paid" | "outcome_amount" | "price_amount" | "pay_amount">,
-  expectedUsd: number
+  _expectedUsd?: number
 ) {
   const normalized = String(payment.payment_status || "").toLowerCase();
-  if (isCryptoPaidStatus(normalized)) return true;
-  if (normalized !== "partially_paid" || expectedUsd <= 0) return false;
-  const received = Number(payment.actually_paid ?? payment.outcome_amount ?? 0);
-  if (!Number.isFinite(received) || received <= 0) return false;
-  return received + BINANCE_TRC20_FEE_USDT >= expectedUsd;
+  return (
+    normalized === "finished" ||
+    normalized === "confirmed" ||
+    normalized === "partially_paid"
+  );
 }
 
 export async function nowPaymentsRequest<T>(path: string, init?: RequestInit): Promise<T> {

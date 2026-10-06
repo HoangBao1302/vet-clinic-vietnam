@@ -455,66 +455,25 @@ export async function POST(request: NextRequest) {
           };
           const productName = productNames[session.metadata?.productId] || session.metadata?.productName || 'EA ThebenchmarkTrader';
           
+          const { emailLocaleFromCountry } = await import("@/lib/customerLocale");
+          const { buildPurchaseEmail } = await import("@/lib/purchaseEmail");
+          const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://thebenchmarktrader.com";
+          const productId = session.metadata?.productId || "";
+          const locale = emailLocaleFromCountry(session.metadata?.customerCountry);
+          const receipt = buildPurchaseEmail({
+            locale,
+            orderId: session.id,
+            productName,
+            amountLabel: `$${amountUSD.toFixed(2)}`,
+            paymentMethod: "stripe",
+            downloadsUrl: `${siteUrl}/downloads?order=${encodeURIComponent(session.id)}&productId=${encodeURIComponent(productId)}`,
+            isMt5: productId.toLowerCase().includes("mt5"),
+          });
+
           await sendEmail({
             to: session.customer_email,
-            subject: "✅ Thanh toán thành công - Download EA ThebenchmarkTrader",
-            html: `
-              <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px 20px; text-align: center;">
-                  <h1 style="margin: 0; font-size: 32px;">🎉 Thanh toán thành công!</h1>
-                </div>
-                
-                <div style="padding: 40px 20px; background: #f8f9fa;">
-                  <h2 style="color: #333;">Cảm ơn bạn đã mua hàng!</h2>
-                  
-                  <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0;">
-                    <p><strong>Mã đơn hàng:</strong> ${session.id}</p>
-                    <p><strong>Sản phẩm:</strong> ${productName}</p>
-                    <p><strong>Phương thức:</strong> Stripe</p>
-                    <p><strong>Số tiền:</strong> $${amountUSD.toFixed(2)}</p>
-                  </div>
-                  
-                  <div style="text-align: center; margin: 30px 0;">
-                    <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'https://ThebenchmarkTrader.com'}/downloads?order=${session.id}&productId=${session.metadata?.productId}" 
-                       style="display: inline-block; padding: 15px 40px; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 18px;">
-                      Tải xuống ngay
-                    </a>
-                  </div>
-                  
-                  <div style="background: #e0f2fe; padding: 20px; border-radius: 8px; margin: 20px 0;">
-                    <h3 style="color: #1e40af; margin-top: 0;">📋 Hướng dẫn cài đặt:</h3>
-                    ${session.metadata?.productId?.includes('mt5') ? `
-                      <ol style="color: #1e3a8a; margin: 10px 0; padding-left: 20px;">
-                        <li>Giải nén file (nếu là .zip)</li>
-                        <li>Copy file .ex5 vào thư mục MT5/MQL5/Experts</li>
-                        <li>Restart MetaTrader 5</li>
-                        <li>Drag EA lên chart và configure</li>
-                      </ol>
-                      <p style="color: #059669; font-weight: bold;">📱 Phiên bản MT5 - Dành cho MetaTrader 5</p>
-                    ` : `
-                      <ol style="color: #1e3a8a; margin: 10px 0; padding-left: 20px;">
-                        <li>Giải nén file (nếu là .zip)</li>
-                        <li>Copy file .ex4 vào thư mục MT4/MQL4/Experts</li>
-                        <li>Restart MetaTrader 4</li>
-                        <li>Drag EA lên chart và configure</li>
-                      </ol>
-                      <p style="color: #059669; font-weight: bold;">📱 Phiên bản MT4 - Dành cho MetaTrader 4</p>
-                    `}
-                  </div>
-                  
-                  <h3>Cần hỗ trợ?</h3>
-                  <ul style="list-style: none; padding: 0;">
-                    <li>📧 Email: support@thebenchmarktrader.com</li>
-                    <li>📱 Telegram Group: t.me/+0ETUdIuYUzdhZWQ1</li>
-                    <li>📞 Hotline: +1925 582 0779</li>
-                  </ul>
-                </div>
-                
-                <div style="text-align: center; padding: 20px; color: #6b7280; font-size: 14px;">
-                  <p>EA Forex ThebenchmarkTrader<br>© 2025 All rights reserved</p>
-                </div>
-              </div>
-            `,
+            subject: receipt.subject,
+            html: receipt.html,
           });
         } catch (emailError) {
           console.error("Error sending email:", emailError);

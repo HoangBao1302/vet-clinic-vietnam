@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import Order from "@/lib/models/Order";
 import { sendEmail } from "@/lib/email";
+import { detectCustomerCountry } from "@/lib/customerLocale";
 import { writeFile, mkdir } from "fs/promises";
 import path from "path";
 import { existsSync } from "fs";
@@ -76,7 +77,8 @@ export async function POST(request: NextRequest) {
       server: customerInfo.server || '',
       transferProof: transferProofPath,
       transferProofApproved: false,
-      emailSent: false
+      emailSent: false,
+      customerCountry: (await detectCustomerCountry(request)) || "",
     };
 
     const order = new Order(orderData);

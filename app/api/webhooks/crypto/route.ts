@@ -29,14 +29,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: "Invalid signature" }, { status: 401 });
     }
 
-    const expectedUsd = Number(payment.price_amount || payment.pay_amount || 0);
     console.log("NOWPayments IPN received:", {
       orderId: payment.order_id,
       paymentId: payment.payment_id,
       paymentStatus: payment.payment_status,
     });
 
-    if (!shouldFulfillCryptoPayment(payment, expectedUsd || 16)) {
+    if (!shouldFulfillCryptoPayment(payment)) {
       return NextResponse.json({ success: true, message: "Webhook received" });
     }
 

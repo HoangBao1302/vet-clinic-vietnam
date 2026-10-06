@@ -22,6 +22,8 @@ export interface IOrder extends Document {
   approvedAt?: Date;
   rejectionReason?: string;
   cryptoPaymentId?: string;
+  /** ISO country from the shopper's IP at checkout. VN keeps the Vietnamese receipt. */
+  customerCountry?: string;
 }
 
 const OrderSchema: Schema = new Schema({
@@ -114,6 +116,10 @@ const OrderSchema: Schema = new Schema({
     required: false
   },
   cryptoPaymentId: {
+    type: String,
+    required: false
+  },
+  customerCountry: {
     type: String,
     required: false
   }
