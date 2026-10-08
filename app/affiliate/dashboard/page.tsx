@@ -568,7 +568,6 @@ export default function AffiliateDashboard() {
                   <ul className="text-gray-600 mt-1 space-y-1">
                     <li>• EA & Indicators: {user?.isPaid ? '35%' : '30%'}</li>
                     <li>• Khóa học: 25%</li>
-                    <li>• Copy Social: 10% (recurring)</li>
                   </ul>
                 </div>
                 <div>

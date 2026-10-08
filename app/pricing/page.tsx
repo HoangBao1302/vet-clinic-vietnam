@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import StickyCallToAction from "@/components/StickyCallToAction";
-import { Check, Download, ShoppingCart, Star, ChevronDown, ChevronUp, Send, Youtube, PlayCircle, Video, AlertCircle } from "lucide-react";
+import { Check, Download, ShoppingCart, Star, Send, Youtube, PlayCircle, Video, AlertCircle } from "lucide-react";
 import HoneypotField from "@/components/HoneypotField";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 import { useAuth } from "@/lib/authContext";
@@ -22,7 +22,6 @@ function goToDownloads(hash: string, isAuthenticated: boolean) {
 export default function PricingPage() {
   const { t } = useLocale();
   const { isAuthenticated } = useAuth();
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
   
   // Generate pricing plans from translations with safety checks
   const pricingPlans = [
@@ -423,23 +422,9 @@ export default function PricingPage() {
 
             <div className="space-y-4">
               {faqs.map((faq, index) => (
-                <div key={index} className="bg-white rounded-lg shadow-sm border border-gray-200">
-                  <button
-                    onClick={() => setOpenFaq(openFaq === index ? null : index)}
-                    className="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-50"
-                  >
-                    <span className="font-semibold text-gray-800">{faq.question}</span>
-                    {openFaq === index ? (
-                      <ChevronUp size={20} className="text-gray-500" />
-                    ) : (
-                      <ChevronDown size={20} className="text-gray-500" />
-                    )}
-                  </button>
-                  {openFaq === index && (
-                    <div className="px-6 pb-4">
-                      <p className="text-gray-600 leading-relaxed">{faq.answer}</p>
-                    </div>
-                  )}
+                <div key={index} className="bg-white rounded-lg shadow-sm border border-gray-200 px-6 py-4">
+                  <h3 className="font-semibold text-gray-800">{faq.question}</h3>
+                  <p className="text-gray-600 leading-relaxed mt-2">{faq.answer}</p>
                 </div>
               ))}
             </div>

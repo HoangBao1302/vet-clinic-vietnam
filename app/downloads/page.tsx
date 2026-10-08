@@ -33,7 +33,7 @@ const pdfGuides: DownloadItem[] = [
   {
     id: "guide-installation",
     name: "Hướng dẫn cài đặt EA ThebenchmarkTrader",
-    description: "PDF chi tiết từng bước cài đặt EA trên MT4/MT5, cấu hình tham số và troubleshooting",
+    description: "PDF chi tiết từng bước cài đặt EA trên MetaTrader 4/5, cấu hình tham số và troubleshooting",
     version: "v2.0",
     size: "5.2 MB",
     type: "pdf",
@@ -78,7 +78,7 @@ const fallbackProducts: DownloadItem[] = [
   {
     id: "indicator-trend-lines",
     name: "Auto Trend Lines Indicator (Free)",
-    description: "Tự động vẽ đường xu hướng (trendlines) chính xác. Compatible MT4/MT5.",
+    description: "Tự động vẽ đường xu hướng (trendlines) chính xác. Tương thích MetaTrader 4/5.",
     version: "v2.1",
     size: "95 KB",
     type: "indicator",

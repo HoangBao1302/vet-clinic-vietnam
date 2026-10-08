@@ -113,7 +113,6 @@ export default function AffiliateTerms() {
                         <li>• EA Pro + Source: <span className="font-bold text-green-600">35%</span></li>
                         <li>• Indicators Pack: <span className="font-bold text-green-600">35%</span></li>
                         <li>• Khóa học: <span className="font-bold text-green-600">25%</span></li>
-                        <li>• Copy Social: <span className="font-bold text-green-600">10%</span> (recurring)</li>
                       </ul>
                     </div>
                     <div className="bg-gradient-to-br from-blue-50 to-purple-50 p-4 rounded-lg">
@@ -126,7 +125,6 @@ export default function AffiliateTerms() {
                         <li>• EA Pro + Source: <span className="font-bold text-blue-600">30%</span></li>
                         <li>• Indicators Pack: <span className="font-bold text-blue-600">30%</span></li>
                         <li>• Khóa học: <span className="font-bold text-blue-600">25%</span></li>
-                        <li>• Copy Social: <span className="font-bold text-blue-600">10%</span> (recurring)</li>
                       </ul>
                     </div>
                   </div>

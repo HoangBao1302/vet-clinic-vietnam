@@ -4,7 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import StickyCallToAction from "@/components/StickyCallToAction";
 import AuthProtected from "@/components/AuthProtected";
-import { Gift, TrendingUp, Users, GraduationCap, DollarSign, CheckCircle, Star, ChevronRight, Copy as CopyIcon, Handshake } from "lucide-react";
+import { Gift, TrendingUp, GraduationCap, DollarSign, CheckCircle, Star, ChevronRight, Handshake } from "lucide-react";
 import Link from "next/link";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 
@@ -42,26 +42,6 @@ const affiliatePrograms: AffiliateProgram[] = [
     payoutMethod: "Bank Transfer / PayPal / Crypto",
     minPayout: "$100",
     cookieDuration: "90 ngày"
-  },
-  {
-    id: "copy-social",
-    title: "Copy Social Trading",
-    slug: "copy-social",
-    commission: "10%",
-    icon: Users,
-    color: "from-green-600 to-blue-600",
-    description: "Giới thiệu khách hàng copy trading trên MQL5, Myfxbook, Tickmill Social hoặc PuPrime Social. Thu nhập thụ động lâu dài.",
-    benefits: [
-      "Hoa hồng 10% từ profit share hàng tháng",
-      "Thu nhập thụ động recurring (khách copy = bạn vẫn hưởng hoa hồng)",
-      "Cookie lifetime (khách hàng mãi mãi là của bạn)",
-      "Không cần bán hàng, chỉ giới thiệu",
-      "Dashboard tracking số followers & earnings",
-      "Chi trả hàng tháng"
-    ],
-    payoutMethod: "Bank Transfer / PayPal",
-    minPayout: "$50",
-    cookieDuration: "Lifetime"
   },
   {
     id: "courses",
@@ -166,7 +146,7 @@ export default function ReferralPage() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-12">
+            <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-12">
               {affiliatePrograms.map((program, index) => {
                 const IconComponent = program.icon;
                 const programData = t(`affiliate.programs.items.${program.id}`) as any;

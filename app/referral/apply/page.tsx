@@ -315,14 +315,10 @@ export default function AffiliateApplyPage() {
             {/* Commission Info */}
             <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl p-6 mb-8 text-white">
               <h3 className="text-xl font-bold mb-3">💰 Cơ Hội Kiếm Tiền</h3>
-              <div className="grid md:grid-cols-3 gap-4">
+              <div className="grid md:grid-cols-2 gap-4">
                 <div>
                   <div className="text-3xl font-bold">30%</div>
                   <div className="text-sm opacity-90">Bán EA</div>
-                </div>
-                <div>
-                  <div className="text-3xl font-bold">10%</div>
-                  <div className="text-sm opacity-90">Copy Social</div>
                 </div>
                 <div>
                   <div className="text-3xl font-bold">25%</div>

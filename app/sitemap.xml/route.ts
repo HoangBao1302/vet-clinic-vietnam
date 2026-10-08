@@ -65,30 +65,6 @@ export async function GET() {
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
-  <url>
-    <loc>${baseUrl}/blog/chon-broker-phu-hop-ea</loc>
-    <lastmod>2024-12-10T00:00:00.000Z</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>${baseUrl}/blog/quan-tri-rui-ro-ea</loc>
-    <lastmod>2024-12-05T00:00:00.000Z</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>${baseUrl}/blog/toi-uu-tham-so-ea</loc>
-    <lastmod>2024-11-28T00:00:00.000Z</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>${baseUrl}/blog/xu-huong-ea-2024</loc>
-    <lastmod>2024-11-20T00:00:00.000Z</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
 </urlset>`;
 
   return new NextResponse(sitemap, {

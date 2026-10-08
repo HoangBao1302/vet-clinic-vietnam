@@ -338,6 +338,13 @@ export default function AboutPage() {
             </div>
           </div>
         </section>
+
+        <section className="py-12 bg-gray-50 border-t border-gray-200">
+          <div className="container-custom max-w-4xl space-y-3 text-sm text-gray-600 leading-relaxed">
+            <p>{t('about.legal.metaquotes')}</p>
+            <p>{t('about.legal.dukascopy')}</p>
+          </div>
+        </section>
       </main>
 
       <Footer />

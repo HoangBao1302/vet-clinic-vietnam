@@ -163,14 +163,12 @@ export const partners: PartnerInfo[] = [
     notes: [
       "⭐ Platform công nghệ cao",
       "⚠️ Minimum deposit cao hơn",
-      "✅ Copy trading & Social trading",
       "💡 VPS miễn phí (điều kiện)",
       "🎓 Tài nguyên giáo dục phong phú"
     ],
     notes_en: [
       "⭐ High-tech platform",
       "⚠️ Higher minimum deposit",
-      "✅ Copy trading & Social trading",
       "💡 Free VPS (conditions apply)",
       "🎓 Rich educational resources"
     ]

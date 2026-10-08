@@ -111,7 +111,6 @@ export async function POST(request: NextRequest) {
                 <ul style="color: #1e3a8a; margin: 10px 0; padding-left: 20px;">
                   <li><strong>30%</strong> - Bán EA</li>
                   <li><strong>25%</strong> - Bán Khóa Học</li>
-                  <li><strong>10%</strong> - Copy Social (recurring)</li>
                 </ul>
               </div>
               

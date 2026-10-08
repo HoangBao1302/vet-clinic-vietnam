@@ -132,7 +132,7 @@
     "riskReward": "Risk:Reward",
     "riskRewardDesc": "Risk/Reward ratio",
     "testimonialsTitle": "Verified results, not testimonials",
-    "testimonialsSubtitle": "5 verified real-money accounts. Public track record, 80+ copiers watching in real time.",
+    "testimonialsSubtitle": "5 live trading accounts independently verified on MQL5.com. Public verification links so you can check them yourself.",
     "verifiedCta": "See the evidence →",
     "verifiedBadge": "Verified",
     "videoTitle": "See Real Results",
@@ -230,7 +230,7 @@
     "buyHint": "Sign in or create an account. Checkout is on the Downloads page (PayPal).",
     "demoHint": "Sign in or create an account to download the Demo from Downloads.",
     "contactInstead": "Or contact us for advice",
-    "indicatorNote": "Multi-Indicator Pro Pack: {price} — buy on the Downloads page (MT4/MT5).",
+    "indicatorNote": "Multi-Indicator Pro Pack: {price} — buy on the Downloads page (MetaTrader 4/5).",
     "plans": {
       "demo": {
         "name": "Demo",
@@ -306,7 +306,7 @@
         },
         {
           "q": "Is there a refund policy?",
-          "a": "We offer 100% refund within 30 days if the EA doesn't work as described. However, we encourage trying the Demo first before purchasing."
+          "a": "All sales of digital software licenses are final. See the Refund Policy page for details. A refund is considered only if a verified technical defect in our software cannot be fixed. No refunds for trading losses or user-side setup errors. We encourage trying the Demo before you buy."
         },
         {
           "q": "What kind of technical support is provided?",
@@ -314,7 +314,7 @@
         },
         {
           "q": "Which brokers does the EA work with?",
-          "a": "The EA works with most brokers supporting MT4/MT5. We recommend brokers with low spreads and fast execution like IC Markets, Pepperstone, FXCM."
+          "a": "The EA works with most brokers supporting MetaTrader 4/5. We recommend brokers with low spreads and fast execution. See the Partners page for the reviewed broker list."
         },
         {
           "q": "Can I customize the EA?",
@@ -324,10 +324,10 @@
     },
     "guide": {
       "title": "EA Installation Guide",
-      "subtitle": "Watch detailed step-by-step video guide to install EA ThebenchmarkTrader on MT4/MT5, configure parameters and start trading",
+      "subtitle": "Watch detailed step-by-step video guide to install EA ThebenchmarkTrader on MetaTrader 4/5, configure parameters and start trading",
       "step1": "Install EA",
       "step1Number": "01",
-      "step1Desc": "Guide to import and activate EA on MT4/MT5 platform",
+      "step1Desc": "Guide to import and activate EA on the MetaTrader 4/5 platform",
       "step2": "Configure",
       "step2Number": "02",
       "step2Desc": "Set parameters suitable for your capital and strategy",
@@ -464,6 +464,10 @@
       "parameters2": "Max open positions: 3",
       "parameters3": "Min R:R ratio: 1:1.5",
       "parameters4": "Max spread: 3 pips"
+    },
+    "legal": {
+      "metaquotes": "MetaTrader, MT4, MT5, MQL4, and MQL5 are trademarks of MetaQuotes Ltd. ThebenchmarkTrader is an independent software product and is not affiliated with, sponsored by, or endorsed by MetaQuotes Ltd. Platform names are mentioned solely to describe product compatibility.",
+      "dukascopy": "Dukascopy is an independent trademark. ThebenchmarkTrader is not affiliated with, sponsored by, or endorsed by Dukascopy Bank SA. Tick data is mentioned only to describe the backtest data source."
     }
   },
   "liveResultsPage": {
@@ -643,7 +647,7 @@
       "items": {
         "guide-installation": {
           "name": "EA ThebenchmarkTrader Installation Guide",
-          "description": "Detailed step-by-step EA installation on MT4/MT5, parameter configuration, and troubleshooting"
+          "description": "Detailed step-by-step EA installation on MetaTrader 4/5, parameter configuration, and troubleshooting"
         },
         "guide-parameters": {
           "name": "EA Parameter Optimization Guide",
@@ -666,7 +670,7 @@
         },
         "indicator-trend-lines": {
           "name": "Auto Trend Lines Indicator (Free)",
-          "description": "Automatically draws accurate trendlines. Compatible with MT4/MT5."
+          "description": "Automatically draws accurate trendlines. Compatible with MetaTrader 4/5."
         },
         "ea-demo": {
           "name": "EA ThebenchmarkTrader Demo (Free)",
@@ -751,7 +755,7 @@
       "title": "Important Notice",
       "point1": {
         "title": "Independent review:",
-        "content": "The information above is an independent review based on research and real trading experience. We do not receive commissions from these brokers (or may receive - please check specific terms)."
+        "content": "The information above is an independent review based on research and real trading experience. ThebenchmarkTrader has affiliate/IB relationships with the brokers listed on this page. When you open an account through a link on this page, we receive a referral commission. This does not affect your spread or trading conditions."
       },
       "point2": {
         "title": "Do your own research:",
@@ -771,11 +775,11 @@
       "items": [
         {
           "question": "Which brokers does the EA work on?",
-          "answer": "EA ThebenchmarkTrader works on most brokers supporting MT4/MT5. However, best performance is on brokers with low spreads, fast execution (ECN/STP), and no EA strategy restrictions."
+          "answer": "EA ThebenchmarkTrader works on most brokers supporting MetaTrader 4/5. However, best performance is on brokers with low spreads, fast execution (ECN/STP), and no EA strategy restrictions."
         },
         {
           "question": "Will I receive commissions if I sign up through the link?",
-          "answer": "We may have IB/affiliate programs with some brokers. However, this does not affect your spread or trading conditions. You can always register directly if you prefer."
+          "answer": "Yes. ThebenchmarkTrader has affiliate/IB programs with the brokers listed on this page. When you sign up through a link on this page, we receive a referral commission. This does not affect your spread or trading conditions. You can still register directly if you prefer."
         },
         {
           "question": "Which broker is best suited for this EA?",
@@ -792,7 +796,7 @@
     "hero": {
       "badge": "Earn Passive Income",
       "title": "Affiliate Marketing Program",
-      "subtitle": "Earn money by referring EA, Copy Trading, and Forex Courses. High commissions, transparent tracking, on-time payments.",
+      "subtitle": "Earn money by referring EA and Forex Courses. High commissions, transparent tracking, on-time payments.",
       "stats": {
         "commission": "Highest commission",
         "cookie": "Max cookie",
@@ -818,8 +822,8 @@
       }
     },
     "programs": {
-      "title": "3 Affiliate Programs",
-      "subtitle": "Choose the program that fits your audience. You can join all 3 at once!",
+      "title": "2 Affiliate Programs",
+      "subtitle": "Choose the program that fits your audience. You can join both at once!",
       "commissionLabel": "Commission",
       "learnMore": "Learn More",
       "details": {
@@ -897,7 +901,7 @@
           "role": "Youtube 50K subs"
         },
         {
-          "quote": "Copy Social program is amazing! Passive income every month without doing anything extra.",
+          "quote": "The course program is clear. 25% commission, ready-made marketing materials, and fast support.",
           "name": "Minh Le",
           "role": "Trading Community"
         },
@@ -923,11 +927,11 @@
         },
         {
           "question": "When will I receive payment?",
-          "answer": "EA & Course sales: Weekly/bi-weekly payout. Copy Social: Monthly payout. Minimum payout $50-$100 depending on program."
+          "answer": "EA & Course sales: Weekly/bi-weekly payout. Minimum payout $50-$100 depending on program."
         },
         {
-          "question": "Can I join all 3 programs?",
-          "answer": "Yes! You can promote EA, Copy Trading, and Courses simultaneously. Each program has its own tracking link."
+          "question": "Can I join both programs?",
+          "answer": "Yes! You can promote EA and Courses at the same time. Each program has its own tracking link."
         },
         {
           "question": "How can I track my sales?",
@@ -1310,7 +1314,7 @@
       "title": "EA ThebenchmarkTrader",
       "subtitle": "Virtual Assistant • Online"
     },
-    "welcome": "Hello! 👋\n\nI'm the virtual assistant for EA ThebenchmarkTrader. I can help you with:\n\n💰 Pricing and EA packages\n📊 View real results\n🤖 How EA works\n🎯 Copy trading\n📥 Purchase/installation guide\n\nWhat are you interested in?",
+    "welcome": "Hello! 👋\n\nI'm the virtual assistant for EA ThebenchmarkTrader. I can help you with:\n\n💰 Pricing and EA packages\n📊 View real results\n🤖 How EA works\n📥 Purchase/installation guide\n\nWhat are you interested in?",
     "quickReplies": [
       {
         "text": "💰 How much is the EA?",
@@ -1318,15 +1322,11 @@
       },
       {
         "text": "📊 View real results",
-        "answer": "We have 5+ verified accounts with real money results:\n\n✅ MQL5: +186% gain, 12.5% DD\n✅ Myfxbook: +215% gain, 14.2% DD\n✅ Tickmill Social: +168% gain (can copy)\n\nWould you like to see details?"
+        "answer": "We have 5+ verified accounts with real money results:\n\n✅ MQL5: +186% gain, 12.5% DD\n✅ Myfxbook: +215% gain, 14.2% DD\n✅ Tickmill: +168% gain\n\nWould you like to see details? The Live Results page has public verification links."
       },
       {
         "text": "🤖 How does EA work?",
         "answer": "EA ThebenchmarkTrader uses:\n\n📈 Multi-strategy: Trend + Range\n🛡️ Risk management: 1-2% per trade\n⏰ Time filter: Avoid major news\n📊 Multi-timeframe analysis\n\nEA automatically analyzes and places orders 24/7. What feature would you like to know more about?"
-      },
-      {
-        "text": "🎯 Can I copy trade?",
-        "answer": "Yes! You can copy trade directly:\n\n✅ Tickmill Social: Copy from $500\n✅ PuPrime Social: Copy from $200\n✅ MQL5 Signals: Auto-copy on MT4/MT5\n\nNo need to buy EA, just follow and copy. Do you have a broker account?"
       },
       {
         "text": "📥 How to buy/download EA?",

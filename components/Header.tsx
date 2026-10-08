@@ -245,14 +245,6 @@ export default function Header() {
                       <div className="text-xs text-gray-500 mt-0.5">{t('nav.sellEADesc')}</div>
                     </Link>
                     <Link
-                      href="/referral/copy-social"
-                      onClick={() => setIsReferralOpen(false)}
-                      className="block px-4 py-2.5 text-gray-700 hover:bg-green-50 hover:text-primary-600 transition-colors"
-                    >
-                      <div className="font-semibold text-sm">{t('nav.copySocial')} <span className="text-green-600 font-bold">10%</span></div>
-                      <div className="text-xs text-gray-500 mt-0.5">{t('nav.copySocialDesc')}</div>
-                    </Link>
-                    <Link
                       href="/referral/ban-khoa-hoc"
                       onClick={() => setIsReferralOpen(false)}
                       className="block px-4 py-2.5 text-gray-700 hover:bg-orange-50 hover:text-primary-600 transition-colors"
@@ -453,13 +445,6 @@ export default function Header() {
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {t('nav.sellEALabel')} <span className="text-blue-600 font-semibold">30%</span>
-                  </Link>
-                  <Link
-                    href="/referral/copy-social"
-                    className="block text-gray-700 hover:text-primary-600 transition-colors"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    {t('nav.copySocialLabel')} <span className="text-green-600 font-semibold">10%</span>
                   </Link>
                   <Link
                     href="/referral/ban-khoa-hoc"

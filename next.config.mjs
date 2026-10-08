@@ -6,6 +6,15 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  async redirects() {
+    return [
+      {
+        source: "/referral/copy-social",
+        destination: "/referral",
+        permanent: false,
+      },
+    ];
+  },
   images: {
     unoptimized: false,
     formats: ['image/webp', 'image/avif'],

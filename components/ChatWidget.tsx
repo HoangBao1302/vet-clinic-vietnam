@@ -76,7 +76,7 @@ export default function ChatWidget() {
         text: reply.answer || t('chatWidget.processing'),
         sender: "bot",
         timestamp: new Date(),
-        options: reply.id === "7" ? undefined : quickReplies // Show options again except for "other"
+        options: reply.id === String(quickReplies.length) ? undefined : quickReplies
       };
 
       setMessages(prev => [...prev, botMessage]);

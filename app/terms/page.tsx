@@ -73,8 +73,8 @@ export default function TermsOfService() {
                   <p className="text-gray-700 mb-3">
                     <strong>{isEn ? '"Services"' : '"Dịch vụ"'}</strong>{" "}
                     {isEn
-                      ? "- Includes EA, indicators, signals, and market analysis tools."
-                      : "- Bao gồm EA, indicators, signals, và các công cụ phân tích thị trường."}
+                      ? "- Includes EA, indicators, and market analysis tools."
+                      : "- Bao gồm EA, indicators, và các công cụ phân tích thị trường."}
                   </p>
                   <p className="text-gray-700 mb-3">
                     <strong>{isEn ? '"User"' : '"Người dùng"'}</strong>{" "}
@@ -147,7 +147,7 @@ export default function TermsOfService() {
                   <ul className="text-gray-700 mb-4 space-y-1">
                     <li>• {isEn ? "Use the EA for personal trading" : "Sử dụng EA cho giao dịch cá nhân"}</li>
                     <li>• {isEn ? "Receive technical support within the service scope" : "Nhận hỗ trợ kỹ thuật trong phạm vi dịch vụ"}</li>
-                    <li>• {isEn ? "Join the community and receive signals" : "Tham gia cộng đồng và nhận signals"}</li>
+                    <li>• {isEn ? "Join the community for product updates and technical discussion" : "Tham gia cộng đồng để nhận cập nhật sản phẩm và thảo luận kỹ thuật"}</li>
                     <li>• {isEn ? "Receive EA updates when available" : "Cập nhật EA khi có phiên bản mới"}</li>
                   </ul>
                   <h3 className="text-lg font-semibold text-gray-800 mb-2">
@@ -167,19 +167,23 @@ export default function TermsOfService() {
                 <div className="mb-6">
                   <p className="text-gray-700 mb-3">
                     {isEn
-                      ? "All payments are made before services are delivered. We accept PayPal."
-                      : "Tất cả thanh toán được thực hiện trước khi cung cấp dịch vụ. Chúng tôi chấp nhận thanh toán qua PayPal."}
+                      ? "All payments are made before services are delivered. We accept PayPal, card, bank transfer, and other methods shown at checkout."
+                      : "Tất cả thanh toán được thực hiện trước khi cung cấp dịch vụ. Chúng tôi chấp nhận PayPal, thẻ, chuyển khoản và các phương thức hiển thị tại checkout."}
                   </p>
                   <p className="text-gray-700 mb-3">
                     <strong>{isEn ? "Refund policy:" : "Chính sách hoàn tiền:"}</strong>{" "}
                     {isEn
-                      ? "Refunds within 7 days if the EA does not work due to a technical fault on our side."
-                      : "Hoàn tiền trong vòng 7 ngày nếu EA không hoạt động do lỗi kỹ thuật từ phía chúng tôi."}
+                      ? "All sales of digital software licenses are final (all sales final). See the Refund Policy for details. A refund is considered only if a verified technical defect in our software cannot be fixed, under the process on that page."
+                      : "Mọi thanh toán cho giấy phép phần mềm số là cuối cùng (all sales final). Xem chi tiết tại Chính Sách Hoàn Tiền. Trường hợp lỗi kỹ thuật từ phía chúng tôi được xác nhận và không khắc phục được, việc hoàn tiền được xem xét theo quy trình technical defect trên trang đó."}{" "}
+                    <a href="/refund-policy" className="text-blue-700 underline">
+                      {isEn ? "Refund Policy" : "Chính Sách Hoàn Tiền"}
+                    </a>
+                    .
                   </p>
                   <p className="text-gray-700 mb-3">
                     {isEn
-                      ? "No refunds for trading losses or user-side errors."
-                      : "Không hoàn tiền trong trường hợp thua lỗ do giao dịch hoặc lỗi từ phía người dùng."}
+                      ? "No refunds for trading losses, incorrect user setup, broker issues, or VPS/connectivity problems."
+                      : "Không hoàn tiền trong trường hợp thua lỗ do giao dịch, lỗi cài đặt từ phía người dùng, sự cố broker, hoặc VPS/kết nối."}
                   </p>
                 </div>
 

@@ -132,7 +132,7 @@
     "riskReward": "Risk:Reward",
     "riskRewardDesc": "Tỷ lệ rủi ro/lợi nhuận",
     "testimonialsTitle": "Kết quả Verified, không lời nói",
-    "testimonialsSubtitle": "5 tài khoản Real Money đã Verified. Track record công khai, 80+ copiers đang theo dõi real-time.",
+    "testimonialsSubtitle": "5 tài khoản giao dịch thực tế đã verify độc lập trên MQL5.com. Link verify công khai để bạn tự kiểm tra.",
     "verifiedCta": "Xem bằng chứng →",
     "verifiedBadge": "Verified",
     "videoTitle": "Xem Kết Quả Thực Tế",
@@ -230,7 +230,7 @@
     "buyHint": "Cần đăng nhập hoặc tạo tài khoản. Thanh toán trên trang Downloads (PayPal).",
     "demoHint": "Cần đăng nhập hoặc tạo tài khoản để tải Demo trên trang Downloads.",
     "contactInstead": "Hoặc liên hệ tư vấn",
-    "indicatorNote": "Multi-Indicator Pro Pack: {price} — mua trên trang Downloads (MT4/MT5).",
+    "indicatorNote": "Multi-Indicator Pro Pack: {price} — mua trên trang Downloads (MetaTrader 4/5).",
     "plans": {
       "demo": {
         "name": "Demo",
@@ -306,7 +306,7 @@
         },
         {
           "q": "Có chính sách hoàn tiền không?",
-          "a": "Chúng tôi có chính sách hoàn tiền 100% trong 30 ngày nếu EA không hoạt động đúng như mô tả. Tuy nhiên, chúng tôi khuyến khích dùng thử Demo trước khi mua."
+          "a": "Mọi thanh toán cho giấy phép phần mềm số là cuối cùng (all sales final). Xem chi tiết tại trang Refund Policy. Chỉ xem xét hoàn tiền nếu lỗi kỹ thuật từ phía chúng tôi được xác nhận và không khắc phục được. Không hoàn tiền do thua lỗ giao dịch hoặc lỗi cài đặt từ phía người dùng. Nên dùng thử Demo trước khi mua."
         },
         {
           "q": "Hỗ trợ kỹ thuật như thế nào?",
@@ -314,7 +314,7 @@
         },
         {
           "q": "EA hoạt động trên broker nào?",
-          "a": "EA hoạt động trên hầu hết các broker hỗ trợ MT4/MT5. Chúng tôi khuyến nghị các broker có spread thấp và execution nhanh như IC Markets, Pepperstone, FXCM."
+          "a": "EA hoạt động trên hầu hết các broker hỗ trợ MetaTrader 4/5. Chúng tôi khuyến nghị các broker có spread thấp và execution nhanh. Xem trang Đối tác để biết danh sách broker đã đánh giá."
         },
         {
           "q": "Tôi có thể tùy chỉnh EA không?",
@@ -324,10 +324,10 @@
     },
     "guide": {
       "title": "Hướng Dẫn Cài Đặt EA",
-      "subtitle": "Xem video hướng dẫn chi tiết từng bước cài đặt EA ThebenchmarkTrader trên MT4/MT5, cấu hình tham số và bắt đầu giao dịch",
+      "subtitle": "Xem video hướng dẫn chi tiết từng bước cài đặt EA ThebenchmarkTrader trên MetaTrader 4/5, cấu hình tham số và bắt đầu giao dịch",
       "step1": "Cài Đặt EA",
       "step1Number": "01",
-      "step1Desc": "Hướng dẫn import và kích hoạt EA trên nền tảng MT4/MT5",
+      "step1Desc": "Hướng dẫn import và kích hoạt EA trên nền tảng MetaTrader 4/5",
       "step2": "Cấu Hình",
       "step2Number": "02",
       "step2Desc": "Thiết lập tham số phù hợp với mức vốn và chiến lược của bạn",
@@ -464,6 +464,10 @@
       "parameters2": "Max open positions: 3",
       "parameters3": "Min R:R ratio: 1:1.5",
       "parameters4": "Max spread: 3 pips"
+    },
+    "legal": {
+      "metaquotes": "MetaTrader, MT4, MT5, MQL4, MQL5 là nhãn hiệu của MetaQuotes Ltd. ThebenchmarkTrader là sản phẩm phần mềm độc lập, không liên kết, không được bảo trợ, và không được xác nhận bởi MetaQuotes Ltd. Tên nền tảng được nhắc đến chỉ nhằm mục đích mô tả tính tương thích của sản phẩm.",
+      "dukascopy": "Dukascopy là thương hiệu độc lập. ThebenchmarkTrader không liên kết, không được bảo trợ, và không được xác nhận bởi Dukascopy Bank SA. Dữ liệu tick được nhắc đến chỉ nhằm mô tả nguồn dữ liệu backtest."
     }
   },
   "liveResultsPage": {
@@ -643,7 +647,7 @@
       "items": {
         "guide-installation": {
           "name": "Hướng dẫn cài đặt EA ThebenchmarkTrader",
-          "description": "PDF chi tiết từng bước cài đặt EA trên MT4/MT5, cấu hình tham số và troubleshooting"
+          "description": "PDF chi tiết từng bước cài đặt EA trên MetaTrader 4/5, cấu hình tham số và troubleshooting"
         },
         "guide-parameters": {
           "name": "Hướng dẫn tối ưu tham số EA",
@@ -666,7 +670,7 @@
         },
         "indicator-trend-lines": {
           "name": "Auto Trend Lines Indicator (Free)",
-          "description": "Tự động vẽ đường xu hướng (trendlines) chính xác. Compatible MT4/MT5."
+          "description": "Tự động vẽ đường xu hướng (trendlines) chính xác. Tương thích MetaTrader 4/5."
         },
         "ea-demo": {
           "name": "EA ThebenchmarkTrader Demo (Free)",
@@ -751,7 +755,7 @@
       "title": "Lưu Ý Quan Trọng",
       "point1": {
         "title": "Đánh giá độc lập:",
-        "content": "Thông tin trên đây là đánh giá độc lập dựa trên nghiên cứu và kinh nghiệm thực tế. Chúng tôi không nhận hoa hồng từ các broker này (hoặc có thể nhận - vui lòng kiểm tra điều khoản cụ thể)."
+        "content": "Thông tin trên đây là đánh giá độc lập dựa trên nghiên cứu và kinh nghiệm thực tế. ThebenchmarkTrader có quan hệ affiliate/IB với các broker được giới thiệu trên trang này. Khi bạn đăng ký tài khoản qua liên kết trên trang này, chúng tôi nhận hoa hồng giới thiệu. Việc này không ảnh hưởng đến spread hay điều kiện giao dịch của bạn."
       },
       "point2": {
         "title": "Tự nghiên cứu:",
@@ -771,11 +775,11 @@
       "items": [
         {
           "question": "EA hoạt động trên broker nào?",
-          "answer": "EA ThebenchmarkTrader hoạt động trên hầu hết các broker hỗ trợ MT4/MT5. Tuy nhiên, hiệu suất tốt nhất trên các broker có spread thấp, execution nhanh (ECN/STP), và không hạn chế chiến lược EA."
+          "answer": "EA ThebenchmarkTrader hoạt động trên hầu hết các broker hỗ trợ MetaTrader 4/5. Tuy nhiên, hiệu suất tốt nhất trên các broker có spread thấp, execution nhanh (ECN/STP), và không hạn chế chiến lược EA."
         },
         {
           "question": "Tôi có nhận được hoa hồng nếu đăng ký qua link?",
-          "answer": "Chúng tôi có thể có chương trình IB/affiliate với một số broker. Tuy nhiên, điều này không ảnh hưởng đến spread hay điều kiện giao dịch của bạn. Bạn luôn có thể đăng ký trực tiếp nếu muốn."
+          "answer": "Có. ThebenchmarkTrader có chương trình affiliate/IB với các broker được liệt kê trên trang này. Khi bạn đăng ký qua liên kết trên trang này, chúng tôi nhận hoa hồng giới thiệu. Việc này không ảnh hưởng đến spread hay điều kiện giao dịch của bạn. Bạn vẫn có thể đăng ký trực tiếp nếu muốn."
         },
         {
           "question": "Broker nào phù hợp nhất với EA này?",
@@ -792,7 +796,7 @@
     "hero": {
       "badge": "Kiếm Thu Nhập Thụ Động",
       "title": "Chương Trình Tiếp Thị Liên Kết",
-      "subtitle": "Kiếm tiền bằng cách giới thiệu EA, Copy Trading, và Khóa Học Forex. Hoa hồng cao, tracking minh bạch, chi trả đúng hạn.",
+      "subtitle": "Kiếm tiền bằng cách giới thiệu EA và Khóa Học Forex. Hoa hồng cao, tracking minh bạch, chi trả đúng hạn.",
       "stats": {
         "commission": "Hoa hồng cao nhất",
         "cookie": "Cookie tối đa",
@@ -818,8 +822,8 @@
       }
     },
     "programs": {
-      "title": "3 Chương Trình Affiliate",
-      "subtitle": "Chọn chương trình phù hợp với audience của bạn. Bạn có thể tham gia cả 3 cùng lúc!",
+      "title": "2 Chương Trình Affiliate",
+      "subtitle": "Chọn chương trình phù hợp với audience của bạn. Bạn có thể tham gia cả hai cùng lúc!",
       "commissionLabel": "Hoa hồng",
       "learnMore": "Tìm Hiểu Thêm",
       "details": {
@@ -897,7 +901,7 @@
           "role": "Youtube 50K subs"
         },
         {
-          "quote": "Copy Social program tuyệt vời! Thu nhập thụ động mỗi tháng mà không cần làm gì thêm.",
+          "quote": "Chương trình bán khóa học rất rõ ràng. Hoa hồng 25%, tài liệu marketing sẵn, support phản hồi nhanh.",
           "name": "Minh Lê",
           "role": "Trading Community"
         },
@@ -923,11 +927,11 @@
         },
         {
           "question": "Khi nào tôi nhận được tiền?",
-          "answer": "Bán EA & Khóa học: Chi trả hàng tuần/2 tuần 1 lần. Copy Social: Chi trả hàng tháng. Minimum payout $50-$100 tùy chương trình."
+          "answer": "Bán EA & Khóa học: Chi trả hàng tuần/2 tuần 1 lần. Minimum payout $50-$100 tùy chương trình."
         },
         {
-          "question": "Tôi có thể tham gia cả 3 chương trình?",
-          "answer": "Có! Bạn có thể promote cả EA, Copy Trading, và Khóa Học cùng lúc. Mỗi chương trình có tracking link riêng."
+          "question": "Tôi có thể tham gia cả 2 chương trình?",
+          "answer": "Có! Bạn có thể promote cả EA và Khóa Học cùng lúc. Mỗi chương trình có tracking link riêng."
         },
         {
           "question": "Làm sao để tracking được sale của mình?",
@@ -1310,7 +1314,7 @@
       "title": "EA ThebenchmarkTrader",
       "subtitle": "Trợ lý ảo • Online"
     },
-    "welcome": "Xin chào! 👋\n\nTôi là trợ lý ảo của EA ThebenchmarkTrader. Tôi có thể giúp bạn:\n\n💰 Thông tin giá và gói EA\n📊 Xem kết quả thực tế\n🤖 Cách EA hoạt động\n🎯 Copy trading\n📥 Hướng dẫn mua/cài đặt\n\nBạn quan tâm điều gì?",
+    "welcome": "Xin chào! 👋\n\nTôi là trợ lý ảo của EA ThebenchmarkTrader. Tôi có thể giúp bạn:\n\n💰 Thông tin giá và gói EA\n📊 Xem kết quả thực tế\n🤖 Cách EA hoạt động\n📥 Hướng dẫn mua/cài đặt\n\nBạn quan tâm điều gì?",
     "quickReplies": [
       {
         "text": "💰 Giá EA bao nhiêu?",
@@ -1318,15 +1322,11 @@
       },
       {
         "text": "📊 Xem kết quả thực tế",
-        "answer": "Chúng tôi có 5+ tài khoản verified với kết quả real money:\n\n✅ MQL5: +186% gain, 12.5% DD\n✅ Myfxbook: +215% gain, 14.2% DD\n✅ Tickmill Social: +168% gain (có thể copy)\n\nBạn muốn xem chi tiết không?"
+        "answer": "Chúng tôi có 5+ tài khoản verified với kết quả real money:\n\n✅ MQL5: +186% gain, 12.5% DD\n✅ Myfxbook: +215% gain, 14.2% DD\n✅ Tickmill: +168% gain\n\nBạn muốn xem chi tiết không? Trang Kết quả Live có link verify công khai."
       },
       {
         "text": "🤖 EA hoạt động như thế nào?",
         "answer": "EA ThebenchmarkTrader sử dụng:\n\n📈 Đa chiến lược: Trend + Range\n🛡️ Quản trị rủi ro: 1-2% per trade\n⏰ Time filter: Tránh news quan trọng\n📊 Multi-timeframe analysis\n\nEA tự động phân tích và đặt lệnh 24/7. Bạn muốn biết thêm về tính năng nào?"
-      },
-      {
-        "text": "🎯 Copy trading có được không?",
-        "answer": "Có! Bạn có thể copy trading trực tiếp:\n\n✅ Tickmill Social: Copy từ $500\n✅ PuPrime Social: Copy từ $200\n✅ MQL5 Signals: Auto-copy trên MT4/MT5\n\nKhông cần mua EA, chỉ cần follow và copy. Bạn có tài khoản broker nào chưa?"
       },
       {
         "text": "📥 Làm sao để mua/tải EA?",

@@ -240,7 +240,6 @@ export function getAffiliateApprovalEmail(username: string, affiliateCode: strin
           <ul>
             <li><strong>30%</strong> - Bán EA</li>
             <li><strong>25%</strong> - Bán Khóa Học</li>
-            <li><strong>10%</strong> - Copy Social (recurring)</li>
           </ul>
 
           <h3>🚀 Bắt Đầu Kiếm Tiền:</h3>

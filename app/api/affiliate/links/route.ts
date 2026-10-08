@@ -155,13 +155,6 @@ export async function GET(request: NextRequest) {
         commissionRate: 25,
         description: 'Khóa học trading từ cơ bản đến nâng cao',
       },
-      {
-        id: 'social-copy',
-        name: 'Copy Social Trading',
-        price: 2000000,
-        commissionRate: 10,
-        description: 'Copy trades từ trader chuyên nghiệp (recurring)',
-      },
     ];
 
     // Generate tracking links for all products

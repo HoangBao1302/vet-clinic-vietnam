@@ -35,9 +35,13 @@ export default function PartnersPage() {
   // Helper to get localized partner field
   const getLocalizedField = (partner: PartnerInfo, field: 'spread' | 'license' | 'deposit' | 'support' | 'notes'): string[] => {
     const englishField = `${field}_en` as keyof PartnerInfo;
-    return locale === 'en' && partner[englishField] 
+    const values = locale === 'en' && partner[englishField] 
       ? (partner[englishField] as string[])
       : partner[field];
+    if (field === 'notes') {
+      return values.filter((item) => !/copy trading|social trading/i.test(item));
+    }
+    return values;
   };
 
   if (loading) {
