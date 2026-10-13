@@ -62,7 +62,7 @@ export default function RegisterPage() {
       return false;
     }
     
-    if (!formData.password || formData.password.length < 6) {
+    if (!formData.password || formData.password.length < 8) {
       setError(t('auth.register.validation.passwordMin'));
       return false;
     }
@@ -282,7 +282,7 @@ export default function RegisterPage() {
                     value={formData.password}
                     onChange={handleChange}
                     required
-                    minLength={6}
+                    minLength={8}
                     className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder={t('auth.register.passwordPlaceholder')}
                   />

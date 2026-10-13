@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { dbConnect } from "@/lib/mongodb";
 import User from "@/lib/models/User";
 
-const PROMOTE_STAFF_SECRET = process.env.PROMOTE_STAFF_SECRET || "PROMOTE_STAFF_2024";
+const PROMOTE_STAFF_SECRET = process.env.PROMOTE_STAFF_SECRET;
 
 // POST: Promote user to Staff role
 export async function POST(request: NextRequest) {
@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
     const { email, secretKey } = body;
 
     // Verify secret key
-    if (secretKey !== PROMOTE_STAFF_SECRET) {
+    if (!PROMOTE_STAFF_SECRET || secretKey !== PROMOTE_STAFF_SECRET) {
       return NextResponse.json(
         { error: "Invalid secret key" },
         { status: 403 }

@@ -1,8 +1,11 @@
 import { NextResponse } from "next/server";
-import { verifyAdminAccess } from "@/lib/auth";
+import { verifyAdminAccess, requireAdmin } from "@/lib/requestAuth";
 import { NextRequest } from "next/server";
 
 export async function GET(request: NextRequest) {
+  const auth = requireAdmin(request);
+  if (!auth.authorized) return auth.response;
+
   try {
     // Verify admin access
     const authError = await verifyAdminAccess(request);

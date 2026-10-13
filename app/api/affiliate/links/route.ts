@@ -2,21 +2,20 @@ import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import User from '@/lib/models/User';
 import { verifyToken } from '@/lib/auth';
+import { getRequestToken } from '@/lib/requestAuth';
 
 export async function POST(request: NextRequest) {
   try {
     await connectDB();
 
     // Get token from header
-    const authHeader = request.headers.get('authorization');
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    const token = getRequestToken(request);
+    if (!token) {
       return NextResponse.json(
         { message: 'Không có token xác thực' },
         { status: 401 }
       );
     }
-
-    const token = authHeader.split(' ')[1];
     const decoded = verifyToken(token);
 
     if (!decoded) {
@@ -89,15 +88,13 @@ export async function GET(request: NextRequest) {
     await connectDB();
 
     // Get token from header
-    const authHeader = request.headers.get('authorization');
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    const token = getRequestToken(request);
+    if (!token) {
       return NextResponse.json(
         { message: 'Không có token xác thực' },
         { status: 401 }
       );
     }
-
-    const token = authHeader.split(' ')[1];
     const decoded = verifyToken(token);
 
     if (!decoded) {

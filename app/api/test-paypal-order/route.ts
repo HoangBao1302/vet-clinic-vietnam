@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
+import { requireAdmin } from "@/lib/requestAuth";
 
 export async function POST(request: NextRequest) {
   try {
+    const auth = requireAdmin(request);
+    if (!auth.authorized) return auth.response;
+
     const { productId, productName, amount, customerInfo } = await request.json();
 
     console.log("PayPal test order creation:", {

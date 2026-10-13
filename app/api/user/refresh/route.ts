@@ -1,33 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import User from '@/lib/models/User';
-import { verifyToken } from '@/lib/auth';
+import { requireUser } from '@/lib/requestAuth';
 
 export async function POST(request: NextRequest) {
   try {
+    const auth = requireUser(request);
+    if (!auth.authorized) return auth.response;
+
     await connectDB();
 
-    // Get token from header
-    const authHeader = request.headers.get('authorization');
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return NextResponse.json(
-        { message: 'Không có token xác thực' },
-        { status: 401 }
-      );
-    }
-
-    const token = authHeader.split(' ')[1];
-    const decoded = verifyToken(token);
-
-    if (!decoded) {
-      return NextResponse.json(
-        { message: 'Token không hợp lệ' },
-        { status: 401 }
-      );
-    }
-
-    // Get fresh user data from database
-    const user = await User.findById(decoded.userId).select('-password');
+    const user = await User.findById(auth.user.userId).select('-password');
     
     if (!user) {
       return NextResponse.json(

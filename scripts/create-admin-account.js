@@ -99,11 +99,16 @@ const createAdminAccount = async () => {
       return;
     }
 
-    // Create new admin account
+    const bootstrapPassword = process.env.ADMIN_BOOTSTRAP_PASSWORD;
+    if (!bootstrapPassword || bootstrapPassword.length < 12) {
+      console.error('Set ADMIN_BOOTSTRAP_PASSWORD (min 12 chars) before creating an admin account.');
+      process.exit(1);
+    }
+
     const adminUser = new User({
       username: 'admin',
       email: 'admin@thebenchmarktrader.com',
-      password: 'admin123', // Will be hashed automatically
+      password: bootstrapPassword,
       role: 'admin',
       membershipTier: 'paid',
       isPaid: true,
@@ -115,13 +120,13 @@ const createAdminAccount = async () => {
     console.log('\n📋 Admin Account Details:');
     console.log('Username: admin');
     console.log('Email: admin@thebenchmarktrader.com');
-    console.log('Password: admin123');
+    console.log('Password: (from ADMIN_BOOTSTRAP_PASSWORD)');
     console.log('Role: admin');
     
     console.log('\n🔑 Login Instructions:');
     console.log('1. Go to /login');
     console.log('2. Use email: admin@thebenchmarktrader.com');
-    console.log('3. Use password: admin123');
+    console.log('3. Use the bootstrap password you set');
     console.log('4. Go to /admin/conversions');
     
     console.log('\n⚠️  IMPORTANT: Change the password after first login!');

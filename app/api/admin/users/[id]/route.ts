@@ -3,9 +3,10 @@ import connectDB from '@/lib/mongodb';
 import User from '@/lib/models/User';
 import { verifyToken } from '@/lib/auth';
 import { sendEmail, getAffiliateApprovalEmail, getAffiliateRejectionEmail, getMembershipUpgradeEmail } from '@/lib/email';
+import { getRequestToken, requireAdmin } from "@/lib/requestAuth";
 
 function checkAdmin(request: NextRequest) {
-  const token = request.headers.get('authorization')?.split(' ')[1];
+  const token = getRequestToken(request);
   
   if (!token) {
     return { authorized: false, message: 'Không có token' };
@@ -29,6 +30,9 @@ export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const auth = requireAdmin(request);
+  if (!auth.authorized) return auth.response;
+
   try {
     const authCheck = checkAdmin(request);
     if (!authCheck.authorized) {
@@ -73,6 +77,9 @@ export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const auth = requireAdmin(request);
+  if (!auth.authorized) return auth.response;
+
   try {
     const authCheck = checkAdmin(request);
     if (!authCheck.authorized) {
@@ -187,6 +194,9 @@ export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const auth = requireAdmin(request);
+  if (!auth.authorized) return auth.response;
+
   try {
     const authCheck = checkAdmin(request);
     if (!authCheck.authorized) {

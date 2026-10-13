@@ -1,9 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import Order from "@/lib/models/Order";
+import { requireAdmin } from "@/lib/requestAuth";
 
 export async function POST(request: NextRequest) {
   try {
+    const auth = requireAdmin(request);
+    if (!auth.authorized) return auth.response;
+
     await connectDB();
     
     // Find all orders with legacy product IDs (missing -mt4/-mt5)

@@ -613,7 +613,7 @@
       "validation": {
         "usernameMin": "Username must be at least 3 characters",
         "emailInvalid": "Invalid email address",
-        "passwordMin": "Password must be at least 6 characters",
+        "passwordMin": "Password must be at least 8 characters",
         "passwordMismatch": "Passwords do not match"
       }
     }

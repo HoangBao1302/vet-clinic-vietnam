@@ -593,12 +593,7 @@ export default function DownloadsPage() {
 
                     <button
                       onClick={() => {
-                        const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-                        if (!token) {
-                          window.location.href = `/login?redirect=/downloads`;
-                        } else {
-                          handleFreeDownload(item);
-                        }
+                        handleFreeDownload(item);
                       }}
                       className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
                     >

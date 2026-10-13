@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useAuth } from "@/lib/authContext";
 import { useLocale } from "@/lib/i18n/LocaleContext";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { LogIn, Mail, Lock, AlertCircle, CheckCircle } from "lucide-react";
+import ReCaptcha, { ReCaptchaRef } from "@/components/ReCaptcha";
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -22,6 +23,8 @@ export default function LoginPage() {
   const [success, setSuccess] = useState("");
   const [registerHref, setRegisterHref] = useState("/register");
   const [hasPurchaseRedirect, setHasPurchaseRedirect] = useState(false);
+  const recaptchaRef = useRef<ReCaptchaRef>(null);
+  const recaptchaTokenRef = useRef<string | null>(null);
 
   useEffect(() => {
     const redirect = new URLSearchParams(window.location.search).get("redirect") || "";
@@ -45,12 +48,25 @@ export default function LoginPage() {
     setError("");
 
     try {
+      if (process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY && recaptchaRef.current) {
+        recaptchaTokenRef.current = null;
+        await recaptchaRef.current.execute();
+        let attempts = 0;
+        while (!recaptchaTokenRef.current && attempts < 20) {
+          await new Promise((resolve) => setTimeout(resolve, 100));
+          attempts += 1;
+        }
+      }
+
       const response = await fetch("/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          recaptchaToken: recaptchaTokenRef.current,
+        }),
       });
 
       const data = await response.json();
@@ -175,6 +191,16 @@ export default function LoginPage() {
                   {t('auth.login.forgotPassword')}
                 </Link>
               </div>
+
+              {process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY && (
+                <ReCaptcha
+                  ref={recaptchaRef}
+                  siteKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+                  onVerify={(token) => {
+                    recaptchaTokenRef.current = token;
+                  }}
+                />
+              )}
 
               <button
                 type="submit"

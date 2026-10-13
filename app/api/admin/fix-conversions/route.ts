@@ -2,8 +2,12 @@ import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import AffiliateClick from '@/lib/models/AffiliateClick';
 import User from '@/lib/models/User';
+import { requireAdmin } from "@/lib/requestAuth";
 
 export async function POST(request: NextRequest) {
+  const auth = requireAdmin(request);
+  if (!auth.authorized) return auth.response;
+
   try {
     const db = await connectDB();
     
@@ -131,6 +135,9 @@ export async function POST(request: NextRequest) {
 }
 
 export async function GET(request: NextRequest) {
+  const auth = requireAdmin(request);
+  if (!auth.authorized) return auth.response;
+
   try {
     const db = await connectDB();
     

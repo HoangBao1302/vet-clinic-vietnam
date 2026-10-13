@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { dbConnect } from "@/lib/mongodb";
 import License from "@/lib/models/License";
+import { requireAdmin } from "@/lib/requestAuth";
 
 export async function POST(req: NextRequest) {
+  const auth = requireAdmin(req);
+  if (!auth.authorized) return auth.response;
+
   try {
     await dbConnect();
     

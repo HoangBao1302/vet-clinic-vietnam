@@ -2,9 +2,13 @@ import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import AffiliateClick from '@/lib/models/AffiliateClick';
 import User from '@/lib/models/User';
+import { requireAdmin } from "@/lib/requestAuth";
 
 // Automated monitoring system for affiliate tracking issues
 export async function GET(request: NextRequest) {
+  const auth = requireAdmin(request);
+  if (!auth.authorized) return auth.response;
+
   try {
     const db = await connectDB();
     

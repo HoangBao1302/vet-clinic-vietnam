@@ -3,13 +3,14 @@ import connectDB from '@/lib/mongodb';
 import PaymentRequest from '@/lib/models/PaymentRequest';
 import User from '@/lib/models/User';
 import { verifyToken } from '@/lib/auth';
+import { getRequestToken } from '@/lib/requestAuth';
 
 export async function POST(request: NextRequest) {
   try {
     await connectDB();
 
     // Verify authentication
-    const token = request.headers.get('authorization')?.replace('Bearer ', '');
+    const token = getRequestToken(request);
     if (!token) {
       return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }
@@ -105,7 +106,7 @@ export async function GET(request: NextRequest) {
     await connectDB();
 
     // Verify authentication
-    const token = request.headers.get('authorization')?.replace('Bearer ', '');
+    const token = getRequestToken(request);
     if (!token) {
       return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }

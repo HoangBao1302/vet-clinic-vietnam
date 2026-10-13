@@ -3,8 +3,12 @@ import connectDB from '@/lib/mongodb';
 import PaymentRequest from '@/lib/models/PaymentRequest';
 import User from '@/lib/models/User';
 import { verifyToken } from '@/lib/auth';
+import { getRequestToken, requireAdmin } from "@/lib/requestAuth";
 
 export async function POST(request: NextRequest) {
+  const auth = requireAdmin(request);
+  if (!auth.authorized) return auth.response;
+
   try {
     const db = await connectDB();
     
@@ -17,7 +21,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Verify admin authentication
-    const token = request.headers.get('authorization')?.replace('Bearer ', '');
+    const token = getRequestToken(request);
     if (!token) {
       return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }

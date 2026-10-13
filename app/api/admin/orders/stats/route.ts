@@ -1,9 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import Order from "@/lib/models/Order";
+import { requireAdmin } from "@/lib/requestAuth";
 
 export async function GET(request: NextRequest) {
   try {
+    const auth = requireAdmin(request);
+    if (!auth.authorized) return auth.response;
+
     await connectDB();
 
     const allOrders = await Order.find({}).sort({ createdAt: -1 }).limit(100);

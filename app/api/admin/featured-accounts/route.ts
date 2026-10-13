@@ -2,21 +2,22 @@ import { NextRequest, NextResponse } from "next/server";
 import { dbConnect } from "@/lib/mongodb";
 import FeaturedAccount from "@/lib/models/FeaturedAccount";
 import User from "@/lib/models/User";
-import { cookies } from "next/headers";
-import jwt from "jsonwebtoken";
+import { getRequestToken, requireAdmin } from "@/lib/requestAuth";
+import { verifyToken } from "@/lib/auth";
 
-const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-change-in-production";
 
 async function verifyAdminAccess(request: NextRequest) {
   try {
-    const cookieStore = await cookies();
-    const token = cookieStore.get("token")?.value;
+    const token = getRequestToken(request);
 
     if (!token) {
       return { authorized: false, user: null };
     }
 
-    const decoded = jwt.verify(token, JWT_SECRET) as { userId: string };
+    const decoded = verifyToken(token);
+    if (!decoded) {
+      return { authorized: false, user: null };
+    }
     await dbConnect();
     const user = await User.findById(decoded.userId);
 
@@ -31,6 +32,9 @@ async function verifyAdminAccess(request: NextRequest) {
 }
 
 export async function GET(request: NextRequest) {
+  const auth = requireAdmin(request);
+  if (!auth.authorized) return auth.response;
+
   try {
     const { authorized } = await verifyAdminAccess(request);
     if (!authorized) {
@@ -65,6 +69,9 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  const auth = requireAdmin(request);
+  if (!auth.authorized) return auth.response;
+
   try {
     const { authorized, user } = await verifyAdminAccess(request);
     if (!authorized || !user) {

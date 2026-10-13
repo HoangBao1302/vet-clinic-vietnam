@@ -2,9 +2,52 @@ import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import User from '@/lib/models/User';
 import { generateToken } from '@/lib/auth';
+import { loginLimiter, getClientIP } from '@/lib/rateLimit';
+import { applyAuthCookie } from '@/lib/authCookie';
+
+async function verifyRecaptcha(token: string | undefined) {
+  if (!token) {
+    if (process.env.NODE_ENV === 'production') {
+      return { ok: false, message: 'Security verification required' };
+    }
+    return { ok: true };
+  }
+
+  try {
+    const recaptchaResponse = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/api/verify-recaptcha`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token }),
+    });
+    const recaptchaData = await recaptchaResponse.json();
+    if (!recaptchaData.success) {
+      return { ok: false, message: 'reCAPTCHA verification failed. Please try again.' };
+    }
+    return { ok: true };
+  } catch {
+    if (process.env.NODE_ENV === 'production') {
+      return { ok: false, message: 'Security verification failed. Please try again.' };
+    }
+    return { ok: true };
+  }
+}
 
 export async function POST(request: NextRequest) {
   try {
+    const clientIP = getClientIP(request);
+    const rateLimitResult = loginLimiter(clientIP);
+    if (!rateLimitResult.allowed) {
+      return NextResponse.json(
+        { success: false, message: rateLimitResult.message || 'Quá nhiều lần đăng nhập. Vui lòng thử lại sau 15 phút.' },
+        {
+          status: 429,
+          headers: {
+            'Retry-After': Math.ceil((rateLimitResult.resetTime - Date.now()) / 1000).toString(),
+          },
+        }
+      );
+    }
+
     const db = await connectDB();
     
     if (!db) {
@@ -14,7 +57,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { email, password } = await request.json();
+    const { email, password, recaptchaToken } = await request.json();
+
+    const captcha = await verifyRecaptcha(recaptchaToken);
+    if (!captcha.ok) {
+      return NextResponse.json({ success: false, message: captcha.message }, { status: 400 });
+    }
 
     // Validation
     if (!email || !password) {
@@ -81,7 +129,7 @@ export async function POST(request: NextRequest) {
       role: user.role,
     });
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       success: true,
       message: 'Đăng nhập thành công!',
       token,
@@ -92,6 +140,7 @@ export async function POST(request: NextRequest) {
         role: user.role,
       },
     });
+    return applyAuthCookie(response, token);
   } catch (error: any) {
     console.error('Login error:', error);
     return NextResponse.json(

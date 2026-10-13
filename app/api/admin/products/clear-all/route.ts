@@ -1,9 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { dbConnect } from "@/lib/mongodb";
 import Product from "@/lib/models/Product";
-import { verifyAdminAccess } from "@/lib/auth";
+import { verifyAdminAccess, requireAdmin } from "@/lib/requestAuth";
 
 export async function DELETE(request: NextRequest) {
+  const auth = requireAdmin(request);
+  if (!auth.authorized) return auth.response;
+
   try {
     // Verify admin access
     const authError = await verifyAdminAccess(request);

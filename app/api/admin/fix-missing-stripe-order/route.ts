@@ -3,8 +3,12 @@ import connectDB from '@/lib/mongodb';
 import User from '@/lib/models/User';
 import Order from '@/lib/models/Order';
 import AffiliateClick from '@/lib/models/AffiliateClick';
+import { requireAdmin } from "@/lib/requestAuth";
 
 export async function POST(request: NextRequest) {
+  const auth = requireAdmin(request);
+  if (!auth.authorized) return auth.response;
+
   try {
     const db = await connectDB();
     

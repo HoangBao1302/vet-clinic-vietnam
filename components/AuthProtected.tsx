@@ -16,29 +16,15 @@ export default function AuthProtected({ children, redirectTo = '/login' }: AuthP
   const [checking, setChecking] = useState(true);
 
   useEffect(() => {
-    const checkAuth = () => {
-      const token = localStorage.getItem('token');
-      const userData = localStorage.getItem('user');
-      
-      // If we have auth data in localStorage, wait for context to initialize
-      if (token && userData && !isAuthenticated && isLoading) {
-        return;
-      }
-      
-      // Only redirect if we have NO auth data AND context is ready and says not authenticated
-      if (!token && !userData && isAuthenticated === false && !isLoading) {
-        const currentPath = window.location.pathname;
-        router.push(`${redirectTo}?redirect=${encodeURIComponent(currentPath)}`);
-        return;
-      }
-      
-      // Context ready, we can proceed
-      if (!isLoading) {
-        setChecking(false);
-      }
-    };
+    if (isLoading) return;
 
-    checkAuth();
+    if (!isAuthenticated) {
+      const currentPath = window.location.pathname;
+      router.push(`${redirectTo}?redirect=${encodeURIComponent(currentPath)}`);
+      return;
+    }
+
+    setChecking(false);
   }, [isAuthenticated, isLoading, router, redirectTo]);
 
   // Show loading while checking auth

@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
+import { requireAdmin } from "@/lib/requestAuth";
 
 export async function POST(request: NextRequest) {
   try {
+    const auth = requireAdmin(request);
+    if (!auth.authorized) return auth.response;
+
     const { orderId, customerEmail, customerName, productName, amount, paymentMethod, customerCountry } = await request.json();
     
     console.log("Sending order email:", { orderId, customerEmail, customerName, productName, amount, paymentMethod });

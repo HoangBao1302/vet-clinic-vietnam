@@ -4,9 +4,13 @@ import Order from "@/lib/models/Order";
 import { sendEmail } from "@/lib/email";
 import { emailLocaleFromCountry } from "@/lib/customerLocale";
 import { buildPurchaseEmail } from "@/lib/purchaseEmail";
+import { requireAdmin } from "@/lib/requestAuth";
 
 export async function POST(request: NextRequest) {
   try {
+    const auth = requireAdmin(request);
+    if (!auth.authorized) return auth.response;
+
     const { orderId, action, adminName, rejectionReason } = await request.json();
 
     // Validate input

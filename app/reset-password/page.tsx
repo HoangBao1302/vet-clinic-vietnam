@@ -46,7 +46,7 @@ export default function ResetPasswordPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.password || formData.password.length < 6) {
+    if (!formData.password || formData.password.length < 8) {
       setError("Mật khẩu phải có ít nhất 6 ký tự");
       return;
     }
@@ -185,7 +185,7 @@ export default function ResetPasswordPage() {
                           setError("");
                         }}
                         required
-                        minLength={6}
+                        minLength={8}
                         className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         placeholder="••••••••"
                       />

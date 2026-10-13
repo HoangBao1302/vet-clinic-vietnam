@@ -1,8 +1,14 @@
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-this';
-const JWT_EXPIRE = '7d'; // Token expires in 7 days
+const JWT_SECRET = process.env.JWT_SECRET || '';
+const JWT_EXPIRE = '7d';
+
+if (!JWT_SECRET) {
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error('JWT_SECRET must be set in production');
+  }
+}
 
 export interface JWTPayload {
   userId: string;
@@ -13,7 +19,7 @@ export interface JWTPayload {
 
 // Generate JWT token
 export function generateToken(payload: JWTPayload): string {
-  return jwt.sign(payload, JWT_SECRET, {
+  return jwt.sign(payload, JWT_SECRET || 'dev-only-jwt-secret', {
     expiresIn: JWT_EXPIRE,
   });
 }
@@ -21,7 +27,7 @@ export function generateToken(payload: JWTPayload): string {
 // Verify JWT token
 export function verifyToken(token: string): JWTPayload | null {
   try {
-    return jwt.verify(token, JWT_SECRET) as JWTPayload;
+    return jwt.verify(token, JWT_SECRET || 'dev-only-jwt-secret') as JWTPayload;
   } catch (error) {
     return null;
   }

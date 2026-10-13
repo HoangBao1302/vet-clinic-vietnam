@@ -105,7 +105,7 @@ export const registerLimiter = (ip: string) =>
 export const loginLimiter = (ip: string) =>
   rateLimit(ip, {
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 10, // 10 login attempts per 15 minutes
+    max: 5, // 5 login attempts per 15 minutes
     message: 'Quá nhiều lần đăng nhập. Vui lòng thử lại sau 15 phút.',
   });
 

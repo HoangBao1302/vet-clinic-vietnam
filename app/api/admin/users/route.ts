@@ -2,10 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import User from '@/lib/models/User';
 import { verifyToken } from '@/lib/auth';
+import { getRequestToken, requireAdmin } from "@/lib/requestAuth";
 
-// Middleware to check admin role
 function checkAdmin(request: NextRequest) {
-  const token = request.headers.get('authorization')?.split(' ')[1];
+  const token = getRequestToken(request);
   
   if (!token) {
     return { authorized: false, message: 'Không có token' };
@@ -26,6 +26,9 @@ function checkAdmin(request: NextRequest) {
 
 // GET all users (Admin only)
 export async function GET(request: NextRequest) {
+  const auth = requireAdmin(request);
+  if (!auth.authorized) return auth.response;
+
   try {
     const authCheck = checkAdmin(request);
     if (!authCheck.authorized) {
@@ -101,6 +104,9 @@ export async function GET(request: NextRequest) {
 
 // CREATE new user (Admin only)
 export async function POST(request: NextRequest) {
+  const auth = requireAdmin(request);
+  if (!auth.authorized) return auth.response;
+
   try {
     const authCheck = checkAdmin(request);
     if (!authCheck.authorized) {

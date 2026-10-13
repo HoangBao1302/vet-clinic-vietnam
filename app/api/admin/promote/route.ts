@@ -8,8 +8,8 @@ export async function POST(request: NextRequest) {
   try {
     const { email, secretKey } = await request.json();
 
-    // Simple security check
-    if (secretKey !== 'PROMOTE_ADMIN_2024') {
+    const promoteSecret = process.env.PROMOTE_ADMIN_SECRET;
+    if (!promoteSecret || secretKey !== promoteSecret) {
       return NextResponse.json(
         { success: false, message: 'Invalid secret key' },
         { status: 403 }

@@ -3,6 +3,7 @@ import connectDB from '@/lib/mongodb';
 import User from '@/lib/models/User';
 import Download from '@/lib/models/Download';
 import { verifyToken } from '@/lib/auth';
+import { getRequestToken } from '@/lib/requestAuth';
 
 export async function POST(request: NextRequest) {
   try {
@@ -16,15 +17,13 @@ export async function POST(request: NextRequest) {
     }
 
     // Get token from header
-    const authHeader = request.headers.get('authorization');
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    const token = getRequestToken(request);
+    if (!token) {
       return NextResponse.json(
         { message: 'Không có token xác thực' },
         { status: 401 }
       );
     }
-
-    const token = authHeader.split(' ')[1];
     const decoded = verifyToken(token);
 
     if (!decoded) {

@@ -5,8 +5,12 @@ import {
   isPayPalConfigured,
 } from "@/lib/paypal";
 import { fulfillPaidPayPalOrder, parsePayPalCustomId } from "@/lib/paypalFulfill";
+import { requireAdmin } from "@/lib/requestAuth";
 
 export async function POST(request: NextRequest) {
+  const auth = requireAdmin(request);
+  if (!auth.authorized) return auth.response;
+
   if (!isPayPalConfigured()) {
     return NextResponse.json({ success: false, error: "PayPal not configured" }, { status: 503 });
   }

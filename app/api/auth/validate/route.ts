@@ -1,23 +1,32 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyToken } from '@/lib/auth';
+import connectDB from '@/lib/mongodb';
+import User from '@/lib/models/User';
+import { requireUser } from '@/lib/requestAuth';
 
 export async function GET(request: NextRequest) {
   try {
-    // Get token from Authorization header
-    const authHeader = request.headers.get('authorization');
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return NextResponse.json(
-        { success: false, message: 'No token provided' },
-        { status: 401 }
-      );
+    const auth = requireUser(request);
+    if (!auth.authorized) return auth.response;
+
+    const db = await connectDB();
+    if (!db) {
+      return NextResponse.json({
+        success: true,
+        userId: auth.user.userId,
+        role: auth.user.role,
+        user: {
+          id: auth.user.userId,
+          username: auth.user.username,
+          email: auth.user.email,
+          role: auth.user.role,
+        },
+      });
     }
 
-    const token = authHeader.split(' ')[1];
-    const decoded = verifyToken(token);
-
-    if (!decoded) {
+    const user = await User.findById(auth.user.userId).select('-password');
+    if (!user) {
       return NextResponse.json(
-        { success: false, message: 'Invalid token' },
+        { success: false, message: 'User not found' },
         { status: 401 }
       );
     }
@@ -25,10 +34,19 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       success: true,
       message: 'Token is valid',
-      userId: decoded.userId,
-      role: decoded.role
+      userId: user._id.toString(),
+      role: user.role,
+      user: {
+        id: user._id.toString(),
+        username: user.username,
+        email: user.email,
+        role: user.role,
+        isPaid: user.isPaid,
+        membershipTier: user.membershipTier,
+        affiliateStatus: user.affiliateStatus,
+        affiliateCode: user.affiliateCode,
+      },
     });
-
   } catch (error: any) {
     console.error('Token validation error:', error);
     return NextResponse.json(

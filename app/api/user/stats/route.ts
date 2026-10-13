@@ -3,20 +3,19 @@ import connectDB from '@/lib/mongodb';
 import User from '@/lib/models/User';
 import PaymentRequest from '@/lib/models/PaymentRequest';
 import { verifyToken } from '@/lib/auth';
+import { getRequestToken } from '@/lib/requestAuth';
 
 export async function GET(request: NextRequest) {
   try {
     console.log('🔍 User Stats API called');
     // Get token from Authorization header
-    const authHeader = request.headers.get('authorization');
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    const token = getRequestToken(request);
+    if (!token) {
       return NextResponse.json(
         { success: false, message: 'Unauthorized' },
         { status: 401 }
       );
     }
-
-    const token = authHeader.split(' ')[1];
     const decoded = verifyToken(token);
 
     if (!decoded) {

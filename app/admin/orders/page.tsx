@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { formatUsd } from '@/config/productPrices';
+import { useAuth } from '@/lib/authContext';
 
 interface Order {
   _id: string;
@@ -38,30 +39,27 @@ interface OrderStats {
 
 export default function OrdersDashboard() {
   const router = useRouter();
+  const { token, isAdmin, isLoading } = useAuth();
   const [stats, setStats] = useState<OrderStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [password, setPassword] = useState('');
-  const [authenticated, setAuthenticated] = useState(false);
   const [filter, setFilter] = useState<'all' | 'valid' | 'invalid'>('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [viewingImage, setViewingImage] = useState<string>('');
 
-  const handleAuth = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Simple password protection (you should use proper auth in production)
-    if (password === 'admin123') {
-      setAuthenticated(true);
+  const authHeaders = (): HeadersInit =>
+    token ? { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' } : { 'Content-Type': 'application/json' };
+
+  useEffect(() => {
+    if (!isLoading && isAdmin) {
       fetchStats();
-    } else {
-      setError('Mật khẩu không đúng');
     }
-  };
+  }, [isLoading, isAdmin, token]);
 
   const fetchStats = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/admin/orders/stats');
+      const response = await fetch('/api/admin/orders/stats', { headers: authHeaders() });
       if (!response.ok) throw new Error('Failed to fetch stats');
       const data = await response.json();
       setStats(data);
@@ -78,7 +76,7 @@ export default function OrdersDashboard() {
     try {
       const response = await fetch('/api/admin/orders/fix', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: authHeaders(),
         body: JSON.stringify({ orderId }),
       });
       
@@ -97,6 +95,7 @@ export default function OrdersDashboard() {
     try {
       const response = await fetch('/api/admin/orders/fix-all-legacy', {
         method: 'POST',
+        headers: authHeaders(),
       });
       
       if (!response.ok) throw new Error('Failed to fix legacy orders');
@@ -126,7 +125,7 @@ export default function OrdersDashboard() {
     try {
       const response = await fetch('/api/bank-transfer/approve', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: authHeaders(),
         body: JSON.stringify({
           orderId,
           action,
@@ -213,34 +212,14 @@ export default function OrdersDashboard() {
     document.body.removeChild(link);
   };
 
-  if (!authenticated) {
+  if (isLoading || !isAdmin) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 flex items-center justify-center p-4">
         <div className="bg-white rounded-lg shadow-xl p-8 max-w-md w-full">
-          <h1 className="text-2xl font-bold text-gray-900 mb-6">🔐 Admin Dashboard</h1>
-          <form onSubmit={handleAuth}>
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2">
-                Mật khẩu
-              </label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-900"
-                placeholder="Nhập mật khẩu admin"
-              />
-            </div>
-            {error && (
-              <div className="mb-4 text-red-600 text-sm">{error}</div>
-            )}
-            <button
-              type="submit"
-              className="w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 transition"
-            >
-              Đăng nhập
-            </button>
-          </form>
+          <h1 className="text-2xl font-bold text-gray-900 mb-6">Admin Dashboard</h1>
+          <p className="text-gray-700 text-sm">
+            {isLoading ? 'Checking access...' : 'Admin login required. Go to /login then open this page.'}
+          </p>
         </div>
       </div>
     );
