@@ -9,6 +9,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Calendar, Clock, ArrowRight, TrendingUp, Eye, Loader } from "lucide-react";
 import { useLocale } from "@/lib/i18n/LocaleContext";
+import { pickLocalizedBlog } from "@/lib/i18n/localize";
 
 interface BlogPost {
   _id: string;
@@ -42,16 +43,13 @@ export default function BlogPage() {
   const [loading, setLoading] = useState(true);
   const [categoryStats, setCategoryStats] = useState<Record<string, number>>({});
 
-  // Helper function to get localized content for a post
   const getLocalizedPost = (post: BlogPost) => {
-    if (locale === 'en') {
-      return {
-        ...post,
-        title: post.title_en || post.title,
-        excerpt: post.excerpt_en || post.excerpt,
-      };
-    }
-    return post;
+    const localized = pickLocalizedBlog(locale, post);
+    return {
+      ...post,
+      title: localized.title || t("blogPage.missingTranslation"),
+      excerpt: localized.missingTranslation ? t("blogPage.missingTranslation") : localized.excerpt,
+    };
   };
 
   useEffect(() => {

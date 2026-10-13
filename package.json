@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "audit:i18n": "node scripts/audit-i18n.js",
     "forex-news": "node scripts/forex-news/index.js"
   },
   "dependencies": {

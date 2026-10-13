@@ -38,40 +38,34 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
     setLocaleState(newLocale);
     if (isClient) {
       localStorage.setItem('locale', newLocale);
+      document.documentElement.lang = newLocale;
     }
   };
 
-  // Translation function with nested key support (e.g., "nav.home")
-  // Returns string, array, or object depending on the translation value
+  useEffect(() => {
+    if (isClient) {
+      document.documentElement.lang = locale;
+    }
+  }, [isClient, locale]);
+
   const t = (key: string): any => {
     const keys = key.split('.');
     let value: any = translations[locale];
-    
+
     for (const k of keys) {
       if (value && typeof value === 'object' && k in value) {
         value = value[k];
       } else {
-        // Fallback to Vietnamese if key not found
-        value = translations.vi;
-        for (const fallbackK of keys) {
-          if (value && typeof value === 'object' && fallbackK in value) {
-            value = value[fallbackK];
-          } else {
-            console.warn(`Translation key not found: ${key}`);
-            return key; // Return key if not found
-          }
-        }
-        break;
+        console.warn(`Translation key not found for ${locale}: ${key}`);
+        return key;
       }
     }
-    
-    // Return value as-is (can be string, array, or object)
-    // If value is undefined or null, return the key as fallback
+
     if (value === undefined || value === null) {
-      console.warn(`Translation value is undefined for key: ${key}`);
+      console.warn(`Translation value is undefined for ${locale}: ${key}`);
       return key;
     }
-    
+
     return value;
   };
 

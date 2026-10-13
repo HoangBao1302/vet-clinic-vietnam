@@ -6,9 +6,11 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Lock, AlertCircle, CheckCircle, Eye, EyeOff } from "lucide-react";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 
 export default function ResetPasswordPage() {
   const router = useRouter();
+  const { t } = useLocale();
   const [token, setToken] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
@@ -32,7 +34,7 @@ export default function ResetPasswordPage() {
       
       // Validate token
       if (!tokenParam) {
-        setError("Link không hợp lệ. Vui lòng thử lại.");
+        setError(t("auth.reset.invalidLink"));
         setValidatingToken(false);
         return;
       }
@@ -47,12 +49,12 @@ export default function ResetPasswordPage() {
     e.preventDefault();
     
     if (!formData.password || formData.password.length < 8) {
-      setError("Mật khẩu phải có ít nhất 8 ký tự");
+      setError(t("auth.reset.passwordMin"));
       return;
     }
     
     if (formData.password !== formData.confirmPassword) {
-      setError("Mật khẩu xác nhận không khớp");
+      setError(t("auth.reset.passwordMismatch"));
       return;
     }
     
@@ -74,7 +76,7 @@ export default function ResetPasswordPage() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || "Có lỗi xảy ra");
+        throw new Error(data.message || t("auth.reset.error"));
       }
 
       setSuccess(true);
@@ -98,7 +100,7 @@ export default function ResetPasswordPage() {
           <div className="container-custom max-w-md mx-auto text-center">
             <div className="bg-white rounded-2xl shadow-xl p-8">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-              <p className="text-gray-600">Đang xác thực...</p>
+              <p className="text-gray-600">{t("auth.reset.validating")}</p>
             </div>
           </div>
         </main>
@@ -119,16 +121,16 @@ export default function ResetPasswordPage() {
                   <AlertCircle className="w-8 h-8 text-red-600" />
                 </div>
                 <h1 className="text-2xl font-bold text-gray-800 mb-2">
-                  Link Không Hợp Lệ
+                  {t("auth.reset.invalidTitle")}
                 </h1>
                 <p className="text-gray-600 mb-6">
-                  Link đặt lại mật khẩu đã hết hạn hoặc không hợp lệ.
+                  {t("auth.reset.invalidBody")}
                 </p>
                 <Link
                   href="/forgot-password"
                   className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
                 >
-                  Yêu cầu link mới
+                  {t("auth.reset.requestNew")}
                 </Link>
               </div>
             </div>
@@ -154,10 +156,10 @@ export default function ResetPasswordPage() {
                     <Lock className="w-8 h-8 text-white" />
                   </div>
                   <h1 className="text-3xl font-bold text-gray-800 mb-2">
-                    Đặt Lại Mật Khẩu
+                    {t("auth.reset.title")}
                   </h1>
                   <p className="text-gray-600">
-                    Nhập mật khẩu mới cho tài khoản của bạn
+                    {t("auth.reset.subtitle")}
                   </p>
                 </div>
 
@@ -173,7 +175,7 @@ export default function ResetPasswordPage() {
                 <form onSubmit={handleSubmit} className="space-y-5">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Mật khẩu mới
+                      {t("auth.reset.password")}
                     </label>
                     <div className="relative">
                       <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -197,12 +199,12 @@ export default function ResetPasswordPage() {
                         {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                       </button>
                     </div>
-                    <p className="text-xs text-gray-500 mt-1">Ít nhất 8 ký tự</p>
+                    <p className="text-xs text-gray-500 mt-1">{t("auth.reset.minChars")}</p>
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Xác nhận mật khẩu mới
+                      {t("auth.reset.confirmPassword")}
                     </label>
                     <div className="relative">
                       <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -232,7 +234,7 @@ export default function ResetPasswordPage() {
                     disabled={loading}
                     className="w-full py-3 bg-gradient-to-r from-green-600 to-blue-600 text-white rounded-lg font-semibold hover:from-green-700 hover:to-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    {loading ? "Đang cập nhật..." : "Đặt Lại Mật Khẩu"}
+                    {loading ? t("auth.reset.submitting") : t("auth.reset.submit")}
                   </button>
                 </form>
               </>
@@ -244,21 +246,21 @@ export default function ResetPasswordPage() {
                     <CheckCircle className="w-8 h-8 text-green-600" />
                   </div>
                   <h2 className="text-2xl font-bold text-gray-800 mb-2">
-                    Thành Công!
+                    {t("auth.reset.successTitle")}
                   </h2>
                   <p className="text-gray-600 mb-6">
-                    Mật khẩu của bạn đã được đặt lại thành công.
+                    {t("auth.reset.successMessage")}
                   </p>
                   <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
                     <p className="text-sm text-gray-700">
-                      Bạn sẽ được chuyển đến trang đăng nhập sau 3 giây...
+                      {t("auth.reset.redirecting")}
                     </p>
                   </div>
                   <Link
                     href="/login"
                     className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
                   >
-                    Đăng Nhập Ngay
+                    {t("auth.reset.loginNow")}
                   </Link>
                 </div>
               </>

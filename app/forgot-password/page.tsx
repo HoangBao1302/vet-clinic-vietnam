@@ -5,8 +5,10 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Mail, AlertCircle, CheckCircle, ArrowLeft } from "lucide-react";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 
 export default function ForgotPasswordPage() {
+  const { t } = useLocale();
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -16,7 +18,7 @@ export default function ForgotPasswordPage() {
     e.preventDefault();
     
     if (!email || !/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
-      setError("Vui lòng nhập email hợp lệ");
+      setError(t("auth.forgot.emailInvalid"));
       return;
     }
     
@@ -35,7 +37,7 @@ export default function ForgotPasswordPage() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || "Có lỗi xảy ra");
+        throw new Error(data.message || t("auth.forgot.error"));
       }
 
       setSuccess(true);
@@ -59,10 +61,10 @@ export default function ForgotPasswordPage() {
                 <Mail className="w-8 h-8 text-white" />
               </div>
               <h1 className="text-3xl font-bold text-gray-800 mb-2">
-                Quên Mật Khẩu?
+                {t("auth.forgot.title")}
               </h1>
               <p className="text-gray-600">
-                Nhập email để nhận link đặt lại mật khẩu
+                {t("auth.forgot.subtitle")}
               </p>
             </div>
 
@@ -80,7 +82,7 @@ export default function ForgotPasswordPage() {
                 <form onSubmit={handleSubmit} className="space-y-5">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Email đã đăng ký
+                      {t("auth.forgot.email")}
                     </label>
                     <div className="relative">
                       <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -103,7 +105,7 @@ export default function ForgotPasswordPage() {
                     disabled={loading}
                     className="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    {loading ? "Đang gửi..." : "Gửi Link Đặt Lại"}
+                    {loading ? t("auth.forgot.submitting") : t("auth.forgot.submit")}
                   </button>
                 </form>
 
@@ -114,7 +116,7 @@ export default function ForgotPasswordPage() {
                     className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-800 font-medium"
                   >
                     <ArrowLeft size={16} />
-                    Quay lại đăng nhập
+                    {t("auth.forgot.backToLogin")}
                   </Link>
                 </div>
               </>
@@ -126,10 +128,10 @@ export default function ForgotPasswordPage() {
                     <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" />
                     <div>
                       <h3 className="text-lg font-semibold text-green-800 mb-1">
-                        Email đã được gửi!
+                        {t("auth.forgot.successTitle")}
                       </h3>
                       <p className="text-sm text-green-700">
-                        Chúng tôi đã gửi link đặt lại mật khẩu đến email:
+                        {t("auth.forgot.successMessage")}
                       </p>
                       <p className="text-sm font-semibold text-green-800 mt-1">
                         {email}
@@ -138,19 +140,19 @@ export default function ForgotPasswordPage() {
                   </div>
                   
                   <div className="bg-white rounded-lg p-4 space-y-2 text-sm text-gray-700">
-                    <p className="font-medium">📧 Hướng dẫn:</p>
+                    <p className="font-medium">{t("auth.forgot.guideTitle")}</p>
                     <ol className="list-decimal list-inside space-y-1 ml-2">
-                      <li>Kiểm tra hộp thư đến (inbox)</li>
-                      <li>Nếu không thấy, kiểm tra spam/junk</li>
-                      <li>Click vào link trong email (có hiệu lực 1 giờ)</li>
-                      <li>Nhập mật khẩu mới</li>
+                      <li>{t("auth.forgot.guide1")}</li>
+                      <li>{t("auth.forgot.guide2")}</li>
+                      <li>{t("auth.forgot.guide3")}</li>
+                      <li>{t("auth.forgot.guide4")}</li>
                     </ol>
                   </div>
                 </div>
 
                 {/* Resend */}
                 <div className="text-center mb-6">
-                  <p className="text-sm text-gray-600 mb-2">Không nhận được email?</p>
+                  <p className="text-sm text-gray-600 mb-2">{t("auth.forgot.noEmail")}</p>
                   <button
                     onClick={() => {
                       setSuccess(false);
@@ -158,7 +160,7 @@ export default function ForgotPasswordPage() {
                     }}
                     className="text-blue-600 hover:text-blue-700 font-semibold text-sm"
                   >
-                    Gửi lại
+                    {t("auth.forgot.resend")}
                   </button>
                 </div>
 
@@ -169,7 +171,7 @@ export default function ForgotPasswordPage() {
                     className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-800 font-medium text-sm"
                   >
                     <ArrowLeft size={16} />
-                    Quay lại đăng nhập
+                    {t("auth.forgot.backToLogin")}
                   </Link>
                 </div>
               </>
@@ -179,7 +181,7 @@ export default function ForgotPasswordPage() {
           {/* Help Text */}
           {!success && (
             <div className="mt-6 text-center text-sm text-gray-500">
-              <p>Cần hỗ trợ? Liên hệ: support@thebenchmarktrader.com</p>
+              <p>{t("auth.forgot.needHelp")}</p>
             </div>
           )}
         </div>

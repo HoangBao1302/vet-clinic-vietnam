@@ -10,6 +10,7 @@ import Image from "next/image";
 import { Calendar, Clock, ArrowLeft, Share2, Crown, Loader } from "lucide-react";
 import PremiumBlogGate from "@/components/PremiumBlogGate";
 import { useLocale } from "@/lib/i18n/LocaleContext";
+import { pickLocalizedBlog } from "@/lib/i18n/localize";
 
 interface BlogPost {
   _id: string;
@@ -36,15 +37,9 @@ interface BlogPost {
   createdAt: string;
 }
 
-const categoryNames: Record<string, string> = {
-  news: "📰 Tin Tức",
-  education: "🎓 Đào Tạo & Phân Tích",
-  "ea-leopard": "🤖 EA ThebenchmarkTrader",
-};
-
 export default function BlogPostPage() {
   const params = useParams();
-  const { locale } = useLocale();
+  const { locale, t } = useLocale();
   const [post, setPost] = useState<BlogPost | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -68,45 +63,22 @@ export default function BlogPostPage() {
       const response = await fetch(`/api/blog/posts/${slug}`);
       
       if (!response.ok) {
-        throw new Error("Bài viết không tồn tại");
+        throw new Error("NOT_FOUND");
       }
       
       const data = await response.json();
       setPost(data.post);
     } catch (err) {
       console.error("Error fetching post:", err);
-      setError(err instanceof Error ? err.message : "Có lỗi xảy ra");
+      setError(err instanceof Error ? err.message : "ERROR");
     } finally {
       setLoading(false);
     }
   };
 
-  // Helper function to get localized content
   const getLocalizedContent = () => {
-    if (!post) return { title: '', excerpt: '', content: '' };
-    
-    if (locale === 'en') {
-      const localized = {
-        title: post.title_en || post.title,
-        excerpt: post.excerpt_en || post.excerpt,
-        content: post.content_en || post.content,
-      };
-      
-      // Debug logging
-      console.log('Blog Detail - Locale:', locale);
-      console.log('Blog Detail - Post has title_en:', !!post.title_en);
-      console.log('Blog Detail - Post has excerpt_en:', !!post.excerpt_en);
-      console.log('Blog Detail - Post has content_en:', !!post.content_en);
-      console.log('Blog Detail - Using content:', localized.content.substring(0, 100) + '...');
-      
-      return localized;
-    }
-    
-    return {
-      title: post.title,
-      excerpt: post.excerpt,
-      content: post.content,
-    };
+    if (!post) return { title: "", excerpt: "", content: "", missingTranslation: false };
+    return pickLocalizedBlog(locale, post);
   };
 
   const localizedContent = getLocalizedContent();
@@ -118,7 +90,7 @@ export default function BlogPostPage() {
         <main className="pt-20">
           <div className="container-custom py-20 text-center">
             <Loader className="animate-spin h-12 w-12 text-blue-600 mx-auto mb-4" />
-            <p className="text-gray-600">Đang tải bài viết...</p>
+            <p className="text-gray-600">{t("blogPage.loading")}</p>
           </div>
         </main>
         <Footer />
@@ -133,13 +105,13 @@ export default function BlogPostPage() {
         <main className="pt-20">
           <div className="container-custom py-20 text-center">
             <h1 className="text-4xl font-bold text-gray-800 mb-4">
-              Bài viết không tồn tại
+              {t("blogPage.notFoundTitle")}
             </h1>
             <p className="text-lg text-gray-600 mb-8">
-              {error || "Bài viết bạn đang tìm kiếm không tồn tại hoặc đã bị xóa."}
+              {t("blogPage.notFoundBody")}
             </p>
             <Link href="/blog" className="btn-primary">
-              Quay lại Blog
+              {t("blogPage.backToBlog")}
             </Link>
           </div>
         </main>
@@ -148,7 +120,11 @@ export default function BlogPostPage() {
     );
   }
 
-  const categoryName = categoryNames[post.category] || post.category;
+  const categoryNameRaw = t(`blogPage.categories.${post.category}.name`);
+  const categoryName =
+    typeof categoryNameRaw === "string" && !categoryNameRaw.startsWith("blogPage.")
+      ? categoryNameRaw
+      : post.category;
   const postDate = post.publishedAt || post.createdAt;
 
   return (
@@ -165,7 +141,7 @@ export default function BlogPostPage() {
                 className="inline-flex items-center space-x-2 text-blue-600 hover:text-blue-700 mb-8"
               >
                 <ArrowLeft size={16} />
-                <span>Quay lại Blog</span>
+                <span>{t("blogPage.backToBlog")}</span>
               </Link>
 
               <div className="mb-6 flex items-center gap-3">
@@ -181,29 +157,31 @@ export default function BlogPostPage() {
               </div>
 
               <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6 leading-tight">
-                {localizedContent.title}
+                {localizedContent.title || t("blogPage.missingTranslation")}
               </h1>
 
               <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-                {localizedContent.excerpt}
+                {localizedContent.missingTranslation
+                  ? t("blogPage.missingTranslation")
+                  : localizedContent.excerpt}
               </p>
 
               <div className="flex items-center justify-between border-t border-gray-200 pt-6">
                 <div className="flex items-center space-x-6 text-gray-500">
                   <div className="flex items-center space-x-2">
                     <Calendar size={16} />
-                    <span>{new Date(postDate).toLocaleDateString('vi-VN')}</span>
+                    <span>{new Date(postDate).toLocaleDateString(locale === "vi" ? "vi-VN" : "en-US")}</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <Clock size={16} />
                     <span>{post.readTime}</span>
                   </div>
-                  <span>bởi {post.author.name}</span>
+                  <span>{t("blogPage.byAuthor")} {post.author.name}</span>
                 </div>
 
                 <button className="flex items-center space-x-2 text-gray-500 hover:text-blue-600">
                   <Share2 size={16} />
-                  <span>Chia sẻ</span>
+                  <span>{t("blogPage.share")}</span>
                 </button>
               </div>
             </div>
@@ -240,7 +218,11 @@ export default function BlogPostPage() {
                   >
                     <div 
                       className="prose prose-lg max-w-none"
-                      dangerouslySetInnerHTML={{ __html: localizedContent.content || `<p>${localizedContent.excerpt}</p><p>Nội dung đang được cập nhật...</p>` }}
+                      dangerouslySetInnerHTML={{
+                        __html: localizedContent.missingTranslation
+                          ? `<p>${t("blogPage.missingTranslation")}</p>`
+                          : localizedContent.content || `<p>${localizedContent.excerpt}</p>`,
+                      }}
                       style={{
                         lineHeight: '1.8',
                       }}
@@ -267,17 +249,17 @@ export default function BlogPostPage() {
                   <div className="mt-12 pt-8 border-t border-gray-200">
                     <div className="bg-blue-50 p-6 rounded-lg">
                       <h3 className="text-lg font-semibold text-gray-800 mb-3">
-                        Quan tâm đến EA ThebenchmarkTrader?
+                        {t("blogPage.ctaTitle")}
                       </h3>
                       <p className="text-gray-600 mb-4">
-                        Tải demo miễn phí hoặc tìm hiểu thêm về các gói EA của chúng tôi.
+                        {t("blogPage.ctaBody")}
                       </p>
                       <div className="flex space-x-4">
                         <Link href="/pricing#demo" className="btn-primary">
-                          Tải Demo
+                          {t("blogPage.ctaDemo")}
                         </Link>
                         <Link href="/pricing" className="btn-secondary">
-                          Xem Bảng Giá
+                          {t("blogPage.ctaPricing")}
                         </Link>
                       </div>
                     </div>
@@ -290,15 +272,15 @@ export default function BlogPostPage() {
                     {/* Stats */}
                     <div className="bg-gray-50 p-6 rounded-lg">
                       <h3 className="font-semibold text-gray-800 mb-4">
-                        Thống kê
+                        {t("blogPage.stats")}
                       </h3>
                       <div className="space-y-2 text-sm">
                         <div className="flex justify-between">
-                          <span className="text-gray-600">Lượt xem:</span>
+                          <span className="text-gray-600">{t("blogPage.viewsLabel")}</span>
                           <span className="font-medium">{post.views}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-gray-600">Thời gian đọc:</span>
+                          <span className="text-gray-600">{t("blogPage.readTimeLabel")}</span>
                           <span className="font-medium">{post.readTime}</span>
                         </div>
                       </div>
@@ -307,13 +289,13 @@ export default function BlogPostPage() {
                     {/* Contact CTA */}
                     <div className="bg-blue-600 text-white p-6 rounded-lg">
                       <h3 className="font-semibold mb-3">
-                        Cần hỗ trợ?
+                        {t("blogPage.needHelp")}
                       </h3>
                       <p className="text-blue-100 text-sm mb-4">
-                        Liên hệ với team hỗ trợ để được tư vấn chi tiết về EA.
+                        {t("blogPage.needHelpBody")}
                       </p>
                       <Link href="/pricing#contact" className="btn-secondary w-full text-center block">
-                        Liên hệ ngay
+                        {t("blogPage.contactNow")}
                       </Link>
                     </div>
                   </div>
