@@ -47,7 +47,7 @@ export default function ResetPasswordPage() {
     e.preventDefault();
     
     if (!formData.password || formData.password.length < 8) {
-      setError("Mật khẩu phải có ít nhất 6 ký tự");
+      setError("Mật khẩu phải có ít nhất 8 ký tự");
       return;
     }
     
@@ -197,7 +197,7 @@ export default function ResetPasswordPage() {
                         {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                       </button>
                     </div>
-                    <p className="text-xs text-gray-500 mt-1">Ít nhất 6 ký tự</p>
+                    <p className="text-xs text-gray-500 mt-1">Ít nhất 8 ký tự</p>
                   </div>
 
                   <div>
