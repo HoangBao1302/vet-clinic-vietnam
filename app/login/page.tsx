@@ -85,7 +85,11 @@ export default function LoginPage() {
       const safeRedirect = redirect.startsWith("/") && !redirect.startsWith("//") ? redirect : "";
 
       setTimeout(() => {
-        if (safeRedirect) {
+        const wantsAdmin = safeRedirect.startsWith("/admin");
+        const canOpenAdmin = data.user.role === "admin" || data.user.role === "staff";
+        if (wantsAdmin && !canOpenAdmin) {
+          window.location.assign("/");
+        } else if (safeRedirect) {
           window.location.assign(safeRedirect);
         } else if (data.user.role === "admin") {
           window.location.assign("/admin");

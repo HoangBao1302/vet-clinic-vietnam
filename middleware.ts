@@ -22,10 +22,10 @@ export function middleware(request: NextRequest) {
 
   if (pathname.startsWith('/admin')) {
     if (!token) {
-      return new NextResponse('Not Found', {
-        status: 404,
-        headers: { 'content-type': 'text/plain; charset=utf-8' },
-      });
+      const loginUrl = request.nextUrl.clone();
+      loginUrl.pathname = '/login';
+      loginUrl.search = `?redirect=${encodeURIComponent(pathname)}`;
+      return NextResponse.redirect(loginUrl);
     }
     return NextResponse.next();
   }
