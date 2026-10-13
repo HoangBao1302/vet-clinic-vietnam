@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { dbConnect } from "@/lib/mongodb";
 import BlogPost from "@/lib/models/BlogPost";
+import { looksVietnamese } from "@/lib/i18n/localize";
 
 const AUTOMATION_API_KEY = process.env.AUTOMATION_BLOG_API_KEY || "";
 
@@ -32,6 +33,10 @@ function autoExcerpt(content: string, maxLen = 200): string {
   const stripped = content.replace(/^#+\s.*$/gm, "").replace(/[*_`#>\[\]]/g, "").trim();
   const first = stripped.split("\n").find((l) => l.trim().length > 20) || stripped;
   return first.trim().slice(0, maxLen);
+}
+
+function cleanText(raw: unknown): string {
+  return typeof raw === "string" ? raw.trim() : "";
 }
 
 function pickCoverImage(raw: unknown): string {
@@ -66,14 +71,17 @@ export async function POST(request: NextRequest) {
     await dbConnect();
 
     const body = await request.json();
+    const title = cleanText(body.title);
+    const content = cleanText(body.content);
+    const titleEn = cleanText(body.title_en);
+    const contentEn = cleanText(body.content_en);
     const {
-      title,
-      content,
       author: rawAuthor,
       date,
       category: rawCategory,
       tags,
       excerpt: rawExcerpt,
+      excerpt_en: rawExcerptEn,
       status,
       slug: rawSlug,
       source,
@@ -81,15 +89,32 @@ export async function POST(request: NextRequest) {
       image: rawImage,
     } = body;
 
-    // Validate required fields
     if (!title || !content) {
       return NextResponse.json({ error: "Missing required fields: title, content" }, { status: 400 });
     }
 
     const slug = rawSlug || generateSlug(title);
     const category = mapCategory(rawCategory);
-    const excerpt = rawExcerpt || autoExcerpt(content);
+    const excerpt = cleanText(rawExcerpt) || autoExcerpt(content);
+    const excerptEn = cleanText(rawExcerptEn) || (contentEn ? autoExcerpt(contentEn) : "");
     const authorName = typeof rawAuthor === "string" ? rawAuthor : rawAuthor?.name || "Automation";
+    const publishing = status === "published";
+
+    if (publishing && (!titleEn || !excerptEn || !contentEn)) {
+      return NextResponse.json(
+        {
+          error: "Published posts need title_en, excerpt_en, and content_en so English and Vietnamese go live together",
+        },
+        { status: 400 }
+      );
+    }
+
+    if (titleEn && looksVietnamese(titleEn)) {
+      return NextResponse.json(
+        { error: "title_en must be English, not Vietnamese" },
+        { status: 400 }
+      );
+    }
 
     // Duplicate check: by slug or title
     const existing = await BlogPost.findOne({
@@ -99,8 +124,11 @@ export async function POST(request: NextRequest) {
     if (existing) {
       // Daily automation may re-run the same slug — update in place
       existing.title = title;
+      existing.title_en = titleEn || existing.title_en;
       existing.excerpt = excerpt.slice(0, 490);
+      existing.excerpt_en = excerptEn ? excerptEn.slice(0, 490) : existing.excerpt_en;
       existing.content = content;
+      existing.content_en = contentEn || existing.content_en;
       existing.category = category;
       existing.tags = Array.isArray(tags) ? tags.slice(0, 10) : [];
       existing.author = {
@@ -122,6 +150,7 @@ export async function POST(request: NextRequest) {
           id: existing._id,
           slug: existing.slug,
           title: existing.title,
+          title_en: existing.title_en,
           status: existing.status,
         },
       });
@@ -129,9 +158,12 @@ export async function POST(request: NextRequest) {
 
     const post = new BlogPost({
       title,
+      title_en: titleEn || undefined,
       slug,
       excerpt: excerpt.slice(0, 490),
+      excerpt_en: excerptEn ? excerptEn.slice(0, 490) : undefined,
       content,
+      content_en: contentEn || undefined,
       author: {
         id: "automation",
         name: authorName,
@@ -157,6 +189,7 @@ export async function POST(request: NextRequest) {
         id: post._id,
         slug: post.slug,
         title: post.title,
+        title_en: post.title_en,
         status: post.status,
       },
     });
