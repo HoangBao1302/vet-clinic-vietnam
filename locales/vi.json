@@ -769,6 +769,56 @@
       "description": "Team support luôn sẵn sàng hỗ trợ bạn qua Telegram hoặc email. Đừng ngại liên hệ!",
       "contactButton": "Liên Hệ Support",
       "telegramButton": "Join Telegram Group"
+    },
+    "orderBanner": {
+      "fromPayment": "Mã đơn hàng từ email / thanh toán:",
+      "pasteHint": "Dán mã này vào đúng sản phẩm đã mua rồi bấm Xác Nhận."
+    },
+    "loadingProducts": "Đang tải sản phẩm...",
+    "success": {
+      "verifying": "Đang xác minh thanh toán...",
+      "processing": "Đang xử lý...",
+      "title": "Thanh toán thành công!",
+      "thanks": "Cảm ơn bạn đã mua hàng. Mã đơn hàng của bạn là:",
+      "orderCode": "Mã đơn hàng:",
+      "saveCode": "Lưu mã này để tải lại sau",
+      "emailSent": "Đã gửi email kèm mã đơn và nút tải xuống. Kiểm tra hộp thư (và Spam).",
+      "checkEmail": "Kiểm tra email để nhận link download. Nếu chưa thấy, dùng mã đơn hàng bên trên.",
+      "useCode": "Hoặc sử dụng mã đơn hàng ở trên tại trang Downloads",
+      "watchGuide": "Xem video hướng dẫn cài đặt trước khi sử dụng",
+      "downloadNow": "Tải xuống ngay",
+      "viewGuide": "Xem hướng dẫn cài đặt",
+      "needHelp": "Cần hỗ trợ cài đặt? Team support sẵn sàng giúp đỡ:",
+      "paypalFailed": "Không xác nhận được thanh toán PayPal. Vui lòng liên hệ support kèm mã đơn.",
+      "nextSteps": "Bước tiếp theo:",
+      "paymentMethod": "Phương thức:",
+      "methodCrypto": "Crypto (USDT TRC20)",
+      "methodStripe": "Stripe",
+      "methodPaypal": "PayPal"
+    },
+    "members": {
+      "loading": "Đang tải...",
+      "subtitle": "Tải về EA Demo và Indicators dành cho thành viên",
+      "upgradeHint": "Nâng cấp lên thành viên trả phí để tải không giới hạn và nhận thêm quyền lợi.",
+      "downloading": "Đang tải...",
+      "limitReached": "Đã hết lượt download",
+      "upgradeTitle": "Nâng cấp thành viên trả phí để:",
+      "viewPlans": "Xem gói thành viên",
+      "title": "Downloads miễn phí",
+      "membershipTier": "Hạng thành viên",
+      "eaDemoDownloads": "Lượt tải EA Demo",
+      "indicatorDownloads": "Lượt tải Indicator",
+      "downloadFree": "Tải miễn phí",
+      "unlimitedTitle": "Muốn tải không giới hạn?",
+      "benefitUnlimited": "Tải không giới hạn",
+      "benefitFull": "Truy cập EA bản đầy đủ",
+      "benefitPremium": "Nội dung premium",
+      "limitEa": "{used}/1 lần tải",
+      "limitIndicator": "{used}/3 lần tải",
+      "fileEaDemo": "Phiên bản demo với các tính năng cơ bản, giới hạn thời gian 30 ngày",
+      "fileTrend": "Indicator xác định xu hướng chính xác cao",
+      "fileSR": "Tự động vẽ vùng support và resistance",
+      "fileVolume": "Phân tích volume theo từng vùng giá"
     }
   },
   "partners": {
@@ -979,6 +1029,134 @@
           "answer": "Sau khi được duyệt, bạn sẽ có quyền truy cập vào Affiliate Dashboard với tracking real-time về clicks, conversions, earnings. Update 24/7."
         }
       ]
+    },
+    "dashboard": {
+      "title": "Dashboard Affiliate",
+      "code": "Mã affiliate:",
+      "status": "Trạng thái:",
+      "membership": "Hạng thành viên:",
+      "totalClicks": "Tổng click",
+      "conversions": "Đơn chuyển đổi",
+      "conversionRate": "Tỷ lệ chuyển đổi",
+      "totalEarned": "Tổng hoa hồng",
+      "withdrawn": "Đã rút:",
+      "available": "Khả dụng:",
+      "trackingLinks": "Link theo dõi",
+      "price": "Giá:",
+      "commission": "Hoa hồng:",
+      "estimate": "Ước tính:",
+      "copy": "Sao chép",
+      "analysis": "Phân tích hiệu suất",
+      "conversionTitle": "Tỷ lệ chuyển đổi",
+      "clicksLabel": "Tổng click:",
+      "conversionsLabel": "Đơn chuyển đổi:",
+      "rateLabel": "Tỷ lệ chuyển đổi:",
+      "excellent": "Xuất sắc!",
+      "needsWork": "Cần cải thiện",
+      "needsHelp": "Cần hỗ trợ",
+      "noConversion": "Chưa có đơn chuyển đổi",
+      "tips": "Lời khuyên",
+      "tipNoConv1": "Có {clicks} click nhưng chưa có đơn chuyển đổi",
+      "tipNoConv2": "Kiểm tra chất lượng traffic",
+      "tipNoConv3": "Cải thiện trang đích",
+      "tipNoConv4": "Thêm bằng chứng xã hội",
+      "tipLow1": "Tỷ lệ chuyển đổi thấp ({rate}%)",
+      "tipLow2": "Tối ưu đối tượng tiếp cận",
+      "tipLow3": "Cải thiện lời kêu gọi hành động",
+      "tipLow4": "Thử nghiệm nội dung khác nhau",
+      "tipMid1": "Tỷ lệ chuyển đổi trung bình ({rate}%)",
+      "tipMid2": "Tăng tín hiệu tin cậy",
+      "tipMid3": "Cải thiện follow-up",
+      "tipMid4": "Tăng lưu lượng",
+      "tipHigh1": "Tỷ lệ chuyển đổi xuất sắc ({rate}%)",
+      "tipHigh2": "Giữ chiến lược hiện tại",
+      "tipHigh3": "Tăng ngân sách",
+      "tipHigh4": "Hướng dẫn affiliate khác",
+      "commissionInfo": "Thông tin hoa hồng",
+      "earned": "Tổng kiếm được",
+      "withdrawnShort": "Đã rút",
+      "availableShort": "Khả dụng",
+      "ratesTitle": "Tỷ lệ hoa hồng:",
+      "rateEa": "EA & Indicators: {rate}%",
+      "rateCourse": "Khóa học: 25%",
+      "payoutTitle": "Thanh toán:",
+      "payout1": "Cuối mỗi tháng",
+      "payout2": "Tối thiểu: 500.000đ",
+      "payout3": "Chuyển khoản ngân hàng hoặc PayPal",
+      "requestPayout": "Yêu cầu thanh toán",
+      "availableBalance": "Số dư khả dụng: {amount}đ",
+      "notEligible": "Chưa đủ điều kiện rút tiền",
+      "currentBalance": "Số dư hiện tại: {amount}đ",
+      "needMore": "Cần thêm {amount}đ để đạt mức tối thiểu 500.000đ",
+      "keepSharing": "Tiếp tục chia sẻ link affiliate để kiếm thêm hoa hồng.",
+      "loadingAuth": "Đang kiểm tra đăng nhập...",
+      "loadingDashboard": "Đang tải dashboard...",
+      "retrying": "Đang thử lại... ({count}/3)",
+      "refresh": "Tải lại trang",
+      "errorTitle": "Không tải được dashboard",
+      "debugTitle": "Thông tin gỡ lỗi:",
+      "retry": "Thử tải lại",
+      "clearAuth": "Xóa phiên và đăng nhập lại",
+      "persistHelp": "Nếu vẫn lỗi, hãy liên hệ support kèm thông tin gỡ lỗi phía trên.",
+      "debugEmail": "Email:",
+      "debugStatus": "Trạng thái affiliate:",
+      "debugCode": "Mã affiliate:",
+      "debugTier": "Hạng thành viên:",
+      "debugPaid": "Thành viên trả phí:",
+      "debugRetry": "Số lần thử:",
+      "notLoaded": "Chưa tải",
+      "yes": "Có",
+      "no": "Không"
+    },
+    "payment": {
+      "title": "Yêu cầu thanh toán",
+      "code": "Mã affiliate:",
+      "loadingAffiliate": "Đang tải thông tin affiliate...",
+      "slowTitle": "Tải chậm",
+      "slowBody": "Thông tin affiliate đang tải chậm. Bạn có thể:",
+      "reload": "Tải lại trang",
+      "backDashboard": "Quay về dashboard",
+      "earned": "Tổng kiếm được",
+      "withdrawn": "Đã rút",
+      "available": "Khả dụng",
+      "notEligible": "Chưa đủ điều kiện rút tiền",
+      "needMore": "Cần thêm {amount}đ để đạt mức tối thiểu 500.000đ",
+      "keepSharing": "Tiếp tục chia sẻ link affiliate để kiếm thêm hoa hồng.",
+      "history": "Lịch sử yêu cầu",
+      "createNew": "Tạo yêu cầu mới",
+      "createTitle": "Tạo yêu cầu thanh toán",
+      "amount": "Số tiền (VNĐ) *",
+      "amountPlaceholder": "Tối thiểu 500,000 VNĐ",
+      "method": "Phương thức thanh toán *",
+      "bank": "Chuyển khoản ngân hàng",
+      "bankHint": "Thanh toán qua ngân hàng địa phương",
+      "paypalHint": "Thanh toán qua PayPal",
+      "accountNumber": "Số tài khoản *",
+      "accountPlaceholder": "Nhập số tài khoản ngân hàng",
+      "bankName": "Tên ngân hàng *",
+      "holder": "Tên chủ tài khoản *",
+      "holderPlaceholder": "Tên đầy đủ của chủ tài khoản",
+      "paypalEmail": "Email PayPal *",
+      "submit": "Gửi yêu cầu",
+      "submitting": "Đang gửi...",
+      "cancel": "Hủy",
+      "loading": "Đang tải...",
+      "emptyTitle": "Chưa có yêu cầu thanh toán",
+      "emptyBody": "Tạo yêu cầu thanh toán đầu tiên của bạn",
+      "methodLabel": "Phương thức thanh toán:",
+      "bankInfo": "Thông tin ngân hàng:",
+      "adminNote": "Ghi chú từ admin:",
+      "rejectReason": "Lý do từ chối:",
+      "processedAt": "Xử lý lúc:",
+      "statusPending": "Chờ duyệt",
+      "statusApproved": "Đã duyệt",
+      "statusRejected": "Từ chối",
+      "statusPaid": "Đã thanh toán",
+      "statusUnknown": "Không xác định",
+      "minAlert": "Số dư chưa đủ tối thiểu 500,000đ để tạo yêu cầu thanh toán",
+      "bankNamePlaceholder": "VD: Vietcombank, Techcombank, BIDV...",
+      "submitError": "Không gửi được yêu cầu thanh toán",
+      "genericError": "Có lỗi khi gửi yêu cầu"
     }
   },
   "affiliatePages": {
@@ -1130,25 +1308,41 @@
             "name": "MQL5 Signals",
             "commission": "10% profit share",
             "description": "Platform copy trading chính thức của MetaTrader. Hàng triệu users, uy tín cao.",
-            "features": ["Integrated với MT4/MT5", "Auto copy trades", "Transparent performance"]
+            "features": [
+              "Integrated với MT4/MT5",
+              "Auto copy trades",
+              "Transparent performance"
+            ]
           },
           {
             "name": "Myfxbook AutoTrade",
             "commission": "10% profit share",
             "description": "Platform phổ biến với community lớn. Tracking chi tiết, verified results.",
-            "features": ["Verified track records", "Risk management tools", "Community ratings"]
+            "features": [
+              "Verified track records",
+              "Risk management tools",
+              "Community ratings"
+            ]
           },
           {
             "name": "Tickmill Social",
             "commission": "20% profit share",
             "description": "Copy trading của broker Tickmill. Commission cao hơn, execution tốt.",
-            "features": ["FCA regulated", "Low spreads", "Fast execution"]
+            "features": [
+              "FCA regulated",
+              "Low spreads",
+              "Fast execution"
+            ]
           },
           {
             "name": "PuPrime Social",
             "commission": "25% profit share",
             "description": "Copy trading của PuPrime. Commission cao nhất, dễ onboard.",
-            "features": ["Highest commission", "$50 minimum", "Easy setup"]
+            "features": [
+              "Highest commission",
+              "$50 minimum",
+              "Easy setup"
+            ]
           }
         ]
       },
@@ -1217,14 +1411,26 @@
             "price": "$197",
             "commission": "$49",
             "description": "Khóa học cơ bản về forex trading. Phù hợp cho beginner, conversion rate cao.",
-            "features": ["Forex basics đến advanced", "Technical & fundamental analysis", "Risk management strategies", "30+ video lessons", "Lifetime access"]
+            "features": [
+              "Forex basics đến advanced",
+              "Technical & fundamental analysis",
+              "Risk management strategies",
+              "30+ video lessons",
+              "Lifetime access"
+            ]
           },
           {
             "name": "EA Mastery Course",
             "price": "$497",
             "commission": "$124",
             "description": "Khóa học setup & optimize EA ThebenchmarkTrader. Best seller với conversion tốt nhất.",
-            "features": ["Setup & optimize EA Thebenchmark Trader", "Advanced parameter tuning", "Portfolio management", "Live trading sessions", "1-on-1 support + private group"],
+            "features": [
+              "Setup & optimize EA Thebenchmark Trader",
+              "Advanced parameter tuning",
+              "Portfolio management",
+              "Live trading sessions",
+              "1-on-1 support + private group"
+            ],
             "badge": "BEST SELLER"
           },
           {
@@ -1232,7 +1438,13 @@
             "price": "$997",
             "commission": "$249",
             "description": "Bundle tất cả khóa học + 1-on-1 mentorship. High ticket, commission cao nhất.",
-            "features": ["All courses above", "1-on-1 mentorship (3 sessions)", "Custom EA settings for your style", "Priority support lifetime", "Quarterly strategy updates"]
+            "features": [
+              "All courses above",
+              "1-on-1 mentorship (3 sessions)",
+              "Custom EA settings for your style",
+              "Priority support lifetime",
+              "Quarterly strategy updates"
+            ]
           }
         ]
       },
@@ -1242,22 +1454,41 @@
           {
             "title": "Commission Cao $49-$249",
             "description": "25% của giá khóa học. Với khóa $997, bạn nhận $249 mỗi sale - cao hơn nhiều so với bán EA.",
-            "points": ["Foundation (5 sales): $245", "EA Mastery (3 sales): $372", "Pro Bundle (2 sales): $498"]
+            "points": [
+              "Foundation (5 sales): $245",
+              "EA Mastery (3 sales): $372",
+              "Pro Bundle (2 sales): $498"
+            ]
           },
           {
             "title": "Tặng Trial Khóa Học",
             "description": "Affiliate được FREE access toàn bộ khóa học để test và review trước khi bán. Bạn cần hiểu sản phẩm để bán tốt!",
-            "points": ["Full access tất cả courses", "Join private community", "Certificate sau khi hoàn thành", "Dùng làm credential khi promote"]
+            "points": [
+              "Full access tất cả courses",
+              "Join private community",
+              "Certificate sau khi hoàn thành",
+              "Dùng làm credential khi promote"
+            ]
           },
           {
             "title": "Marketing Funnel Có Sẵn",
             "description": "Landing pages, email sequences, webinar scripts đã được optimize với conversion rate cao. Chỉ việc copy & paste.",
-            "points": ["High-converting landing pages", "Email sequences (7-day nurture)", "Webinar presentation slides", "Social media post templates"]
+            "points": [
+              "High-converting landing pages",
+              "Email sequences (7-day nurture)",
+              "Webinar presentation slides",
+              "Social media post templates"
+            ]
           },
           {
             "title": "Cookie 60 Ngày & Payout 2x/tháng",
             "description": "Cookie 60 ngày đủ dài cho decision cycle của khóa học. Chi trả 2 lần/tháng (ngày 1 và 15).",
-            "points": ["Cookie 60 ngày (dài hơn standard)", "Payout 2 lần/tháng", "Min payout: $100", "Bank transfer / PayPal"]
+            "points": [
+              "Cookie 60 ngày (dài hơn standard)",
+              "Payout 2 lần/tháng",
+              "Min payout: $100",
+              "Bank transfer / PayPal"
+            ]
           }
         ]
       },

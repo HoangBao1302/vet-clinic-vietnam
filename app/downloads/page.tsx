@@ -32,8 +32,8 @@ interface DownloadItem {
 const pdfGuides: DownloadItem[] = [
   {
     id: "guide-installation",
-    name: "Hướng dẫn cài đặt EA ThebenchmarkTrader",
-    description: "PDF chi tiết từng bước cài đặt EA trên MetaTrader 4/5, cấu hình tham số và troubleshooting",
+    name: "EA ThebenchmarkTrader Installation Guide",
+    description: "Detailed step-by-step EA installation on MetaTrader 4/5, parameter configuration, and troubleshooting",
     version: "v2.0",
     size: "5.2 MB",
     type: "pdf",
@@ -42,8 +42,8 @@ const pdfGuides: DownloadItem[] = [
   },
   {
     id: "guide-parameters",
-    name: "Hướng dẫn tối ưu tham số EA",
-    description: "Cách điều chỉnh Risk%, Lot Size, Max Positions cho từng loại tài khoản",
+    name: "EA Parameter Optimization Guide",
+    description: "How to adjust Risk%, Lot Size, Max Positions for each account type",
     version: "v1.5",
     size: "3.8 MB",
     type: "pdf",
@@ -52,8 +52,8 @@ const pdfGuides: DownloadItem[] = [
   },
   {
     id: "guide-broker",
-    name: "Hướng dẫn chọn và setup broker",
-    description: "So sánh broker, mở tài khoản, verify và deposit. Kèm checklist đầy đủ",
+    name: "Broker Selection & Setup Guide",
+    description: "Broker comparison, account opening, verification, and deposit. Complete checklist included",
     version: "v1.0",
     size: "4.5 MB",
     type: "pdf",
@@ -68,7 +68,7 @@ const fallbackProducts: DownloadItem[] = [
   {
     id: "indicator-support-resistance",
     name: "Support & Resistance Indicator (Free)",
-    description: "Indicator tự động vẽ vùng hỗ trợ kháng cự trên mọi timeframe. Hoàn toàn miễn phí cho cộng đồng.",
+    description: "Automatically draws support and resistance zones on all timeframes. Completely free for the community.",
     version: "v3.2",
     size: "120 KB",
     type: "indicator",
@@ -78,7 +78,7 @@ const fallbackProducts: DownloadItem[] = [
   {
     id: "indicator-trend-lines",
     name: "Auto Trend Lines Indicator (Free)",
-    description: "Tự động vẽ đường xu hướng (trendlines) chính xác. Tương thích MetaTrader 4/5.",
+    description: "Automatically draws accurate trendlines. Compatible with MetaTrader 4/5.",
     version: "v2.1",
     size: "95 KB",
     type: "indicator",
@@ -88,7 +88,7 @@ const fallbackProducts: DownloadItem[] = [
   {
     id: "ea-demo",
     name: "EA ThebenchmarkTrader Demo (Free)",
-    description: "Phiên bản demo đầy đủ tính năng, chỉ chạy trên tài khoản demo. Không giới hạn thời gian.",
+    description: "Full-featured demo version, runs on demo accounts only. No time limit.",
     version: "v2.0 Demo",
     size: "450 KB",
     type: "ea",
@@ -99,7 +99,7 @@ const fallbackProducts: DownloadItem[] = [
   {
     id: "indicator-pro-mt4",
     name: "Benchmark Trader - Multi-Indicator Pro Pack (MT4 Software License)",
-    description: "Bộ 10 indicators chuyên nghiệp: SR, Trend, Momentum, Volume, Fibonacci auto và nhiều hơn.",
+    description: "Set of 10 professional indicators: SR, Trend, Momentum, Volume, Auto Fibonacci, and more.",
     version: "v5.0 Pro",
     size: "2.8 MB",
     type: "indicator",
@@ -112,7 +112,7 @@ const fallbackProducts: DownloadItem[] = [
   {
     id: "ea-full-mt4",
     name: "Benchmark Trader - Full Analytics Pack (MT4 Software License)",
-    description: "Phiên bản đầy đủ cho tài khoản thực. License 3 tài khoản, cập nhật miễn phí 1 năm.",
+    description: "Full version for live accounts. License for 3 accounts, free updates for 1 year.",
     version: "v2.0 Full",
     size: "680 KB",
     type: "ea",
@@ -125,7 +125,7 @@ const fallbackProducts: DownloadItem[] = [
   {
     id: "ea-pro-source-mt4",
     name: "Benchmark Trader - Pro Analytics Source Pack (MT4 Software License)",
-    description: "Phiên bản Pro với source code đầy đủ. Unlimited accounts, cập nhật trọn đời, hỗ trợ VIP.",
+    description: "Pro version with full source code. Unlimited accounts, lifetime updates, VIP support.",
     version: "v2.0 Pro",
     size: "197 KB",
     type: "ea",
@@ -139,7 +139,7 @@ const fallbackProducts: DownloadItem[] = [
   {
     id: "indicator-pro-mt5",
     name: "Benchmark Trader - Multi-Indicator Pro Pack (MT5 Software License)",
-    description: "Bộ 10 indicators chuyên nghiệp: SR, Trend, Momentum, Volume, Fibonacci auto và nhiều hơn.",
+    description: "Set of 10 professional indicators: SR, Trend, Momentum, Volume, Auto Fibonacci, and more.",
     version: "v5.0 Pro",
     size: "2.8 MB",
     type: "indicator",
@@ -152,7 +152,7 @@ const fallbackProducts: DownloadItem[] = [
   {
     id: "ea-full-mt5",
     name: "Benchmark Trader - Full Analytics Pack (MT5 Software License)",
-    description: "Phiên bản đầy đủ cho tài khoản thực. License 3 tài khoản, cập nhật miễn phí 1 năm.",
+    description: "Full version for live accounts. License for 3 accounts, free updates for 1 year.",
     version: "v2.0 Full",
     size: "680 KB",
     type: "ea",
@@ -165,7 +165,7 @@ const fallbackProducts: DownloadItem[] = [
   {
     id: "ea-pro-source-mt5",
     name: "Benchmark Trader - Pro Analytics Source Pack (MT5 Software License)",
-    description: "Phiên bản Pro với source code đầy đủ. Unlimited accounts, cập nhật trọn đời, hỗ trợ VIP.",
+    description: "Pro version with full source code. Unlimited accounts, lifetime updates, VIP support.",
     version: "v2.0 Pro",
     size: "197 KB",
     type: "ea",
@@ -179,8 +179,18 @@ const fallbackProducts: DownloadItem[] = [
 
 export default function DownloadsPage() {
   const { user, isAuthenticated, isLoading } = useAuth();
-  const { t, locale } = useLocale();
+  const { t } = useLocale();
   const router = useRouter();
+  const catalogText = (
+    section: "pdfSection" | "freeSection" | "paidSection",
+    id: string,
+    field: "name" | "description",
+    fallback: string
+  ) => {
+    const key = `downloads.${section}.items.${id}.${field}`;
+    const value = t(key);
+    return value !== key ? value : fallback;
+  };
   const [verifyingOrder, setVerifyingOrder] = useState<string | null>(null);
   const [orderCode, setOrderCode] = useState("");
   const [verifyMessage, setVerifyMessage] = useState("");
@@ -317,7 +327,8 @@ export default function DownloadsPage() {
         if (result.actualProductId && result.requestedProductId) {
           const actualProduct = allDownloads.find(d => d.id === result.actualProductId);
           if (actualProduct) {
-            const productName = locale === 'en' ? actualProduct.name.replace(' (MT4)', '').replace(' (MT5)', '') : actualProduct.name;
+            const productName = catalogText("paidSection", actualProduct.id, "name", actualProduct.name)
+              || catalogText("freeSection", actualProduct.id, "name", actualProduct.name);
             errorMsg += ` ${t('downloads.verification.wrongProduct')}: ${productName}`;
           }
         }
@@ -408,12 +419,8 @@ export default function DownloadsPage() {
 
   // Helper function to render paid product card
   const renderPaidProductCard = (item: DownloadItem) => {
-    const translatedName = locale === 'en' && t(`downloads.paidSection.items.${item.id}.name`) !== `downloads.paidSection.items.${item.id}.name`
-      ? t(`downloads.paidSection.items.${item.id}.name`)
-      : item.name.replace(" (MT4)", "").replace(" (MT5)", "");
-    const translatedDesc = locale === 'en' && t(`downloads.paidSection.items.${item.id}.description`) !== `downloads.paidSection.items.${item.id}.description`
-      ? t(`downloads.paidSection.items.${item.id}.description`)
-      : item.description;
+    const translatedName = catalogText("paidSection", item.id, "name", item.name.replace(" (MT4)", "").replace(" (MT5)", ""));
+    const translatedDesc = catalogText("paidSection", item.id, "description", item.description);
 
     return (
       <div key={item.id} className="bg-white border-2 border-purple-200 rounded-xl p-5 sm:p-6 hover:border-purple-500 hover:shadow-2xl transition-all flex flex-col h-full">
@@ -560,12 +567,8 @@ export default function DownloadsPage() {
 
             <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
               {pdfGuidesFiltered.map((item) => {
-                const translatedName = locale === 'en' && t(`downloads.pdfSection.items.${item.id}.name`) !== `downloads.pdfSection.items.${item.id}.name` 
-                  ? t(`downloads.pdfSection.items.${item.id}.name`)
-                  : item.name;
-                const translatedDesc = locale === 'en' && t(`downloads.pdfSection.items.${item.id}.description`) !== `downloads.pdfSection.items.${item.id}.description`
-                  ? t(`downloads.pdfSection.items.${item.id}.description`)
-                  : item.description;
+                const translatedName = catalogText("pdfSection", item.id, "name", item.name);
+                const translatedDesc = catalogText("pdfSection", item.id, "description", item.description);
                 
                 return (
                   <div key={item.id} className="bg-white border-2 border-gray-200 rounded-xl p-6 hover:border-blue-500 hover:shadow-xl transition-all">
@@ -625,12 +628,8 @@ export default function DownloadsPage() {
 
             <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
               {freeItems.map((item) => {
-                const translatedName = locale === 'en' && t(`downloads.freeSection.items.${item.id}.name`) !== `downloads.freeSection.items.${item.id}.name`
-                  ? t(`downloads.freeSection.items.${item.id}.name`)
-                  : item.name;
-                const translatedDesc = locale === 'en' && t(`downloads.freeSection.items.${item.id}.description`) !== `downloads.freeSection.items.${item.id}.description`
-                  ? t(`downloads.freeSection.items.${item.id}.description`)
-                  : item.description;
+                const translatedName = catalogText("freeSection", item.id, "name", item.name);
+                const translatedDesc = catalogText("freeSection", item.id, "description", item.description);
                 
                 return (
                   <div key={item.id} className="bg-white border-2 border-gray-200 rounded-xl p-6 hover:border-green-500 hover:shadow-xl transition-all">
@@ -692,9 +691,9 @@ export default function DownloadsPage() {
               </div>
               {urlOrderCode && (
                 <div className="mt-6 max-w-2xl mx-auto bg-blue-50 border border-blue-200 rounded-xl p-4 text-left">
-                  <p className="text-sm text-blue-800 font-medium mb-1">Mã đơn hàng từ email / thanh toán:</p>
+                  <p className="text-sm text-blue-800 font-medium mb-1">{t("downloads.orderBanner.fromPayment")}</p>
                   <p className="font-mono text-sm text-blue-700 break-all">{urlOrderCode}</p>
-                  <p className="text-xs text-blue-600 mt-2">Dán mã này vào đúng sản phẩm đã mua rồi bấm Xác Nhận.</p>
+                  <p className="text-xs text-blue-600 mt-2">{t("downloads.orderBanner.pasteHint")}</p>
                 </div>
               )}
             </div>
@@ -702,7 +701,7 @@ export default function DownloadsPage() {
             {loadingProducts ? (
               <div className="text-center py-12">
                 <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
-                <p className="mt-4 text-gray-600">Đang tải sản phẩm từ MongoDB...</p>
+                <p className="mt-4 text-gray-600">{t("downloads.loadingProducts")}</p>
               </div>
             ) : (
               <>

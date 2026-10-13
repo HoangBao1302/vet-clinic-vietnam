@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/authContext";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { 
@@ -38,6 +39,15 @@ interface TrackingProduct {
 export default function AffiliateDashboard() {
   const router = useRouter();
   const { user, isAuthenticated, isLoading } = useAuth();
+  const { t, locale } = useLocale();
+  const formatNum = (n: number) => n.toLocaleString(locale === "en" ? "en-US" : "vi-VN");
+  const money = (n: number) =>
+    locale === "en" ? `${formatNum(n)} VND` : `${formatNum(n)}đ`;
+  const tr = (key: string, vars: Record<string, string | number> = {}) =>
+    Object.entries(vars).reduce(
+      (s, [k, v]) => s.replaceAll(`{${k}}`, String(v)),
+      String(t(key))
+    );
   const [stats, setStats] = useState<AffiliateStats | null>(null);
   const [trackingLinks, setTrackingLinks] = useState<TrackingProduct[]>([]);
   const [loading, setLoading] = useState(true);
@@ -250,11 +260,11 @@ export default function AffiliateDashboard() {
           <div className="container-custom py-20 text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
             <p className="text-gray-600">
-              {isLoading ? 'Loading authentication...' : 'Loading dashboard...'}
+              {isLoading ? t("affiliate.dashboard.loadingAuth") : t("affiliate.dashboard.loadingDashboard")}
             </p>
             {retryCount > 0 && (
               <p className="text-sm text-yellow-600 mt-2">
-                Retrying... ({retryCount}/3)
+                {tr("affiliate.dashboard.retrying", { count: retryCount })}
               </p>
             )}
             <div className="mt-4">
@@ -262,7 +272,7 @@ export default function AffiliateDashboard() {
                 onClick={() => window.location.reload()}
                 className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
               >
-                🔄 Refresh Page
+                {t("affiliate.dashboard.refresh")}
               </button>
             </div>
           </div>
@@ -281,19 +291,19 @@ export default function AffiliateDashboard() {
           <div className="container-custom py-20 text-center">
             <div className="bg-red-50 border border-red-200 rounded-lg p-6 max-w-2xl mx-auto">
               <AlertCircle className="text-red-600 mx-auto mb-4" size={48} />
-              <h2 className="text-xl font-semibold text-red-800 mb-2">Error Loading Dashboard</h2>
+              <h2 className="text-xl font-semibold text-red-800 mb-2">{t("affiliate.dashboard.errorTitle")}</h2>
               <p className="text-red-600 mb-4">{error}</p>
               
               {/* Debug Information */}
               <div className="bg-gray-100 rounded-lg p-4 mb-4 text-left">
-                <h3 className="font-semibold text-gray-800 mb-2">Debug Information:</h3>
+                <h3 className="font-semibold text-gray-800 mb-2">{t("affiliate.dashboard.debugTitle")}</h3>
                 <div className="text-sm text-gray-600 space-y-1">
-                  <p>• User Email: {user?.email || 'Not loaded'}</p>
-                  <p>• Affiliate Status: {user?.affiliateStatus || 'Not loaded'}</p>
-                  <p>• Affiliate Code: {user?.affiliateCode || 'Not loaded'}</p>
-                  <p>• Membership Tier: {user?.membershipTier || 'Not loaded'}</p>
-                  <p>• Is Paid: {user?.isPaid ? 'Yes' : 'No'}</p>
-                  <p>• Retry Count: {retryCount}/3</p>
+                  <p>• {t("affiliate.dashboard.debugEmail")} {user?.email || t("affiliate.dashboard.notLoaded")}</p>
+                  <p>• {t("affiliate.dashboard.debugStatus")} {user?.affiliateStatus || t("affiliate.dashboard.notLoaded")}</p>
+                  <p>• {t("affiliate.dashboard.debugCode")} {user?.affiliateCode || t("affiliate.dashboard.notLoaded")}</p>
+                  <p>• {t("affiliate.dashboard.debugTier")} {user?.membershipTier || t("affiliate.dashboard.notLoaded")}</p>
+                  <p>• {t("affiliate.dashboard.debugPaid")} {user?.isPaid ? t("affiliate.dashboard.yes") : t("affiliate.dashboard.no")}</p>
+                  <p>• {t("affiliate.dashboard.debugRetry")} {retryCount}/3</p>
                 </div>
               </div>
               
@@ -302,13 +312,13 @@ export default function AffiliateDashboard() {
                   onClick={loadDashboardData}
                   className="w-full px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
                 >
-                  🔄 Retry Loading
+                  {t("affiliate.dashboard.retry")}
                 </button>
                 <button
                   onClick={() => window.location.reload()}
                   className="w-full px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700"
                 >
-                  🔄 Refresh Page
+                  {t("affiliate.dashboard.refresh")}
                 </button>
                 <button
                   onClick={() => {
@@ -319,12 +329,12 @@ export default function AffiliateDashboard() {
                   }}
                   className="w-full px-4 py-2 bg-yellow-600 text-white rounded hover:bg-yellow-700"
                 >
-                  🔑 Clear Auth & Login Again
+                  {t("affiliate.dashboard.clearAuth")}
                 </button>
               </div>
               
               <div className="mt-4 text-xs text-gray-500">
-                <p>If the problem persists, please contact support with the debug information above.</p>
+                <p>{t("affiliate.dashboard.persistHelp")}</p>
               </div>
             </div>
           </div>
@@ -344,14 +354,14 @@ export default function AffiliateDashboard() {
           <div className="container-custom">
             <h1 className="text-4xl font-bold flex items-center gap-3">
               <TrendingUp size={40} />
-              Affiliate Dashboard
+              {t("affiliate.dashboard.title")}
             </h1>
             <p className="text-green-100 mt-2">
-              Mã affiliate: <span className="font-mono font-bold">{user?.affiliateCode}</span>
+              {t("affiliate.dashboard.code")} <span className="font-mono font-bold">{user?.affiliateCode}</span>
             </p>
             <p className="text-green-100 text-sm mt-1">
-              Status: <span className="font-bold">{user?.affiliateStatus}</span> | 
-              Membership: <span className="font-bold">{user?.membershipTier}</span>
+              {t("affiliate.dashboard.status")} <span className="font-bold">{user?.affiliateStatus}</span> | 
+              {t("affiliate.dashboard.membership")} <span className="font-bold">{user?.membershipTier}</span>
             </p>
           </div>
         </section>
@@ -365,7 +375,7 @@ export default function AffiliateDashboard() {
                   <MousePointer className="text-blue-600" size={32} />
                 </div>
                 <p className="text-3xl font-bold text-gray-800">{stats?.totalClicks || 0}</p>
-                <p className="text-sm text-gray-600">Total Clicks</p>
+                <p className="text-sm text-gray-600">{t("affiliate.dashboard.totalClicks")}</p>
               </div>
 
               <div className="bg-white rounded-lg shadow-md p-6">
@@ -373,7 +383,7 @@ export default function AffiliateDashboard() {
                   <CheckCircle className="text-green-600" size={32} />
                 </div>
                 <p className="text-3xl font-bold text-gray-800">{stats?.conversions || 0}</p>
-                <p className="text-sm text-gray-600">Conversions</p>
+                <p className="text-sm text-gray-600">{t("affiliate.dashboard.conversions")}</p>
               </div>
 
               <div className="bg-white rounded-lg shadow-md p-6">
@@ -381,7 +391,7 @@ export default function AffiliateDashboard() {
                   <BarChart3 className="text-purple-600" size={32} />
                 </div>
                 <p className="text-3xl font-bold text-gray-800">{stats?.conversionRate || 0}%</p>
-                <p className="text-sm text-gray-600">Conversion Rate</p>
+                <p className="text-sm text-gray-600">{t("affiliate.dashboard.conversionRate")}</p>
               </div>
 
               <div className="bg-white rounded-lg shadow-md p-6">
@@ -389,12 +399,12 @@ export default function AffiliateDashboard() {
                   <DollarSign className="text-yellow-600" size={32} />
                 </div>
                 <p className="text-3xl font-bold text-gray-800">
-                  {(stats?.totalCommission || 0).toLocaleString('vi-VN')}đ
+                  {money(stats?.totalCommission || 0)}
                 </p>
-                <p className="text-sm text-gray-600">Total Commission Earned</p>
+                <p className="text-sm text-gray-600">{t("affiliate.dashboard.totalEarned")}</p>
                 <div className="mt-2 pt-2 border-t border-gray-200">
-                  <p className="text-xs text-gray-500">Đã rút: {(stats?.totalCommissionPaid || 0).toLocaleString('vi-VN')}đ</p>
-                  <p className="text-xs text-green-600 font-semibold">Khả dụng: {(stats?.availableBalance || 0).toLocaleString('vi-VN')}đ</p>
+                  <p className="text-xs text-gray-500">{t("affiliate.dashboard.withdrawn")} {money(stats?.totalCommissionPaid || 0)}</p>
+                  <p className="text-xs text-green-600 font-semibold">{t("affiliate.dashboard.available")} {money(stats?.availableBalance || 0)}</p>
                 </div>
               </div>
             </div>
@@ -403,7 +413,7 @@ export default function AffiliateDashboard() {
             <div className="bg-white rounded-lg shadow-md p-6">
               <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
                 <ExternalLink size={24} />
-                Tracking Links
+                {t("affiliate.dashboard.trackingLinks")}
               </h2>
 
               <div className="space-y-4">
@@ -414,10 +424,10 @@ export default function AffiliateDashboard() {
                         <h3 className="text-lg font-semibold text-gray-800">{product.name}</h3>
                         <p className="text-sm text-gray-600 mb-2">{product.description}</p>
                         <div className="flex items-center gap-4 text-sm text-gray-500">
-                          <span>Giá: {product.price.toLocaleString('vi-VN')}đ</span>
-                          <span>Hoa hồng: {product.commissionRate}%</span>
+                          <span>{t("affiliate.dashboard.price")} {money(product.price)}</span>
+                          <span>{t("affiliate.dashboard.commission")} {product.commissionRate}%</span>
                           <span className="text-green-600 font-semibold">
-                            Ước tính: {product.estimatedCommission.toLocaleString('vi-VN')}đ
+                            {t("affiliate.dashboard.estimate")} {money(product.estimatedCommission)}
                           </span>
                         </div>
                       </div>
@@ -435,7 +445,7 @@ export default function AffiliateDashboard() {
                         className="px-4 py-2 bg-blue-600 text-white rounded text-sm hover:bg-blue-700 flex items-center gap-2"
                       >
                         <Copy size={16} />
-                        Copy
+                        {t("affiliate.dashboard.copy")}
                       </button>
                     </div>
                   </div>
@@ -448,24 +458,24 @@ export default function AffiliateDashboard() {
               <div className="mt-8 bg-white rounded-lg shadow-md p-6">
                 <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
                   <BarChart3 size={20} />
-                  Phân tích hiệu suất
+                  {t("affiliate.dashboard.analysis")}
                 </h3>
                 
                 <div className="grid md:grid-cols-2 gap-6">
                   {/* Conversion Analysis */}
                   <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4">
-                    <h4 className="font-semibold text-gray-800 mb-3">📊 Tỷ lệ chuyển đổi</h4>
+                    <h4 className="font-semibold text-gray-800 mb-3">{t("affiliate.dashboard.conversionTitle")}</h4>
                     <div className="space-y-2">
                       <div className="flex justify-between items-center">
-                        <span className="text-sm text-gray-600">Tổng clicks:</span>
+                        <span className="text-sm text-gray-600">{t("affiliate.dashboard.clicksLabel")}</span>
                         <span className="font-semibold">{stats.totalClicks}</span>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span className="text-sm text-gray-600">Conversions:</span>
+                        <span className="text-sm text-gray-600">{t("affiliate.dashboard.conversionsLabel")}</span>
                         <span className="font-semibold text-green-600">{stats.conversions}</span>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span className="text-sm text-gray-600">Conversion Rate:</span>
+                        <span className="text-sm text-gray-600">{t("affiliate.dashboard.rateLabel")}</span>
                         <span className={`font-semibold ${
                           stats.conversionRate >= 20 ? 'text-green-600' : 
                           stats.conversionRate >= 10 ? 'text-yellow-600' : 'text-red-600'
@@ -480,22 +490,22 @@ export default function AffiliateDashboard() {
                       {stats.conversionRate >= 20 ? (
                         <div className="flex items-center gap-2 text-green-600">
                           <CheckCircle size={16} />
-                          <span className="text-sm font-medium">Xuất sắc!</span>
+                          <span className="text-sm font-medium">{t("affiliate.dashboard.excellent")}</span>
                         </div>
                       ) : stats.conversionRate >= 10 ? (
                         <div className="flex items-center gap-2 text-yellow-600">
                           <Clock size={16} />
-                          <span className="text-sm font-medium">Cần cải thiện</span>
+                          <span className="text-sm font-medium">{t("affiliate.dashboard.needsWork")}</span>
                         </div>
                       ) : stats.conversionRate > 0 ? (
                         <div className="flex items-center gap-2 text-orange-600">
                           <AlertCircle size={16} />
-                          <span className="text-sm font-medium">Cần hỗ trợ</span>
+                          <span className="text-sm font-medium">{t("affiliate.dashboard.needsHelp")}</span>
                         </div>
                       ) : (
                         <div className="flex items-center gap-2 text-red-600">
                           <AlertCircle size={16} />
-                          <span className="text-sm font-medium">Chưa có conversion</span>
+                          <span className="text-sm font-medium">{t("affiliate.dashboard.noConversion")}</span>
                         </div>
                       )}
                     </div>
@@ -503,35 +513,35 @@ export default function AffiliateDashboard() {
                   
                   {/* Tips based on performance */}
                   <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg p-4">
-                    <h4 className="font-semibold text-gray-800 mb-3">💡 Lời khuyên</h4>
+                    <h4 className="font-semibold text-gray-800 mb-3">{t("affiliate.dashboard.tips")}</h4>
                     <div className="space-y-2 text-sm">
                       {stats.conversionRate === 0 ? (
                         <>
-                          <p className="text-gray-700">• Có {stats.totalClicks} click nhưng chưa có conversion</p>
-                          <p className="text-gray-700">• Kiểm tra chất lượng traffic</p>
-                          <p className="text-gray-700">• Cải thiện landing page</p>
-                          <p className="text-gray-700">• Thêm social proof</p>
+                          <p className="text-gray-700">• {tr("affiliate.dashboard.tipNoConv1", { clicks: stats.totalClicks })}</p>
+                          <p className="text-gray-700">• {t("affiliate.dashboard.tipNoConv2")}</p>
+                          <p className="text-gray-700">• {t("affiliate.dashboard.tipNoConv3")}</p>
+                          <p className="text-gray-700">• {t("affiliate.dashboard.tipNoConv4")}</p>
                         </>
                       ) : stats.conversionRate < 10 ? (
                         <>
-                          <p className="text-gray-700">• Conversion rate thấp ({stats.conversionRate}%)</p>
-                          <p className="text-gray-700">• Tối ưu hóa targeting</p>
-                          <p className="text-gray-700">• Cải thiện call-to-action</p>
-                          <p className="text-gray-700">• A/B test các message</p>
+                          <p className="text-gray-700">• {tr("affiliate.dashboard.tipLow1", { rate: stats.conversionRate })}</p>
+                          <p className="text-gray-700">• {t("affiliate.dashboard.tipLow2")}</p>
+                          <p className="text-gray-700">• {t("affiliate.dashboard.tipLow3")}</p>
+                          <p className="text-gray-700">• {t("affiliate.dashboard.tipLow4")}</p>
                         </>
                       ) : stats.conversionRate < 20 ? (
                         <>
-                          <p className="text-gray-700">• Conversion rate trung bình ({stats.conversionRate}%)</p>
-                          <p className="text-gray-700">• Tăng cường trust signals</p>
-                          <p className="text-gray-700">• Cải thiện follow-up</p>
-                          <p className="text-gray-700">• Scale up traffic</p>
+                          <p className="text-gray-700">• {tr("affiliate.dashboard.tipMid1", { rate: stats.conversionRate })}</p>
+                          <p className="text-gray-700">• {t("affiliate.dashboard.tipMid2")}</p>
+                          <p className="text-gray-700">• {t("affiliate.dashboard.tipMid3")}</p>
+                          <p className="text-gray-700">• {t("affiliate.dashboard.tipMid4")}</p>
                         </>
                       ) : (
                         <>
-                          <p className="text-gray-700">• Conversion rate xuất sắc ({stats.conversionRate}%)</p>
-                          <p className="text-gray-700">• Tiếp tục strategy hiện tại</p>
-                          <p className="text-gray-700">• Scale up budget</p>
-                          <p className="text-gray-700">• Mentor các affiliate khác</p>
+                          <p className="text-gray-700">• {tr("affiliate.dashboard.tipHigh1", { rate: stats.conversionRate })}</p>
+                          <p className="text-gray-700">• {t("affiliate.dashboard.tipHigh2")}</p>
+                          <p className="text-gray-700">• {t("affiliate.dashboard.tipHigh3")}</p>
+                          <p className="text-gray-700">• {t("affiliate.dashboard.tipHigh4")}</p>
                         </>
                       )}
                     </div>
@@ -542,40 +552,40 @@ export default function AffiliateDashboard() {
 
             {/* Commission Info */}
             <div className="mt-8 bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">💰 Thông tin hoa hồng</h3>
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">{t("affiliate.dashboard.commissionInfo")}</h3>
               
               {/* Commission Summary */}
               <div className="bg-white rounded-lg p-4 mb-4 border-l-4 border-green-600">
                 <div className="grid grid-cols-3 gap-1 text-center">
                   <div>
-                    <p className="text-sm md:text-base font-bold text-gray-800">{(stats?.totalCommission || 0).toLocaleString('vi-VN')}đ</p>
-                    <p className="text-xs text-gray-600">Tổng kiếm được</p>
+                    <p className="text-sm md:text-base font-bold text-gray-800">{money(stats?.totalCommission || 0)}</p>
+                    <p className="text-xs text-gray-600">{t("affiliate.dashboard.earned")}</p>
                   </div>
                   <div>
-                    <p className="text-sm md:text-base font-bold text-red-600">-{(stats?.totalCommissionPaid || 0).toLocaleString('vi-VN')}đ</p>
-                    <p className="text-xs text-gray-600">Đã rút</p>
+                    <p className="text-sm md:text-base font-bold text-red-600">-{money(stats?.totalCommissionPaid || 0)}</p>
+                    <p className="text-xs text-gray-600">{t("affiliate.dashboard.withdrawnShort")}</p>
                   </div>
                   <div>
-                    <p className="text-sm md:text-base font-bold text-green-600">{(stats?.availableBalance || 0).toLocaleString('vi-VN')}đ</p>
-                    <p className="text-xs text-gray-600">Khả dụng</p>
+                    <p className="text-sm md:text-base font-bold text-green-600">{money(stats?.availableBalance || 0)}</p>
+                    <p className="text-xs text-gray-600">{t("affiliate.dashboard.availableShort")}</p>
                   </div>
                 </div>
               </div>
 
               <div className="grid md:grid-cols-2 gap-4 text-sm mb-4">
                 <div>
-                  <p className="font-semibold text-gray-700">Tỷ lệ hoa hồng:</p>
+                  <p className="font-semibold text-gray-700">{t("affiliate.dashboard.ratesTitle")}</p>
                   <ul className="text-gray-600 mt-1 space-y-1">
-                    <li>• EA & Indicators: {user?.isPaid ? '35%' : '30%'}</li>
-                    <li>• Khóa học: 25%</li>
+                    <li>• {tr("affiliate.dashboard.rateEa", { rate: user?.isPaid ? 35 : 30 })}</li>
+                    <li>• {t("affiliate.dashboard.rateCourse")}</li>
                   </ul>
                 </div>
                 <div>
-                  <p className="font-semibold text-gray-700">Thanh toán:</p>
+                  <p className="font-semibold text-gray-700">{t("affiliate.dashboard.payoutTitle")}</p>
                   <ul className="text-gray-600 mt-1 space-y-1">
-                    <li>• Cuối mỗi tháng</li>
-                    <li>• Tối thiểu: 500.000đ</li>
-                    <li>• Qua chuyển khoản ngân hàng hoặc PayPal</li>
+                    <li>• {t("affiliate.dashboard.payout1")}</li>
+                    <li>• {t("affiliate.dashboard.payout2")}</li>
+                    <li>• {t("affiliate.dashboard.payout3")}</li>
                   </ul>
                 </div>
               </div>
@@ -592,10 +602,10 @@ export default function AffiliateDashboard() {
                       className="w-full px-6 py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center justify-center gap-2"
                     >
                       <DollarSign size={20} />
-                      Yêu Cầu Thanh Toán
+                      {t("affiliate.dashboard.requestPayout")}
                     </button>
                     <p className="text-xs text-center text-gray-500">
-                      💡 Số dư khả dụng: {(stats?.availableBalance || 0).toLocaleString('vi-VN')}đ
+                      {tr("affiliate.dashboard.availableBalance", { amount: formatNum(stats?.availableBalance || 0) })}
                     </p>
                   </>
                 ) : (
@@ -603,21 +613,21 @@ export default function AffiliateDashboard() {
                     <button
                       disabled
                       className="w-full px-6 py-3 bg-gray-300 text-gray-500 rounded-lg font-semibold cursor-not-allowed flex items-center justify-center gap-2"
-                      title="Số dư chưa đủ tối thiểu 500,000đ"
+                      title={t("affiliate.payment.minAlert")}
                     >
                       <DollarSign size={20} />
-                      Yêu Cầu Thanh Toán
+                      {t("affiliate.dashboard.requestPayout")}
                     </button>
                     <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 text-sm">
-                      <p className="text-yellow-800 font-semibold mb-1">⚠️ Chưa đủ điều kiện rút tiền</p>
+                      <p className="text-yellow-800 font-semibold mb-1">{t("affiliate.dashboard.notEligible")}</p>
                       <p className="text-yellow-700 text-xs">
-                        Số dư hiện tại: <span className="font-semibold">{(stats?.availableBalance || 0).toLocaleString('vi-VN')}đ</span>
+                        {tr("affiliate.dashboard.currentBalance", { amount: formatNum(stats?.availableBalance || 0) })}
                       </p>
                       <p className="text-yellow-700 text-xs">
-                        Cần thêm: <span className="font-semibold text-red-600">{(500000 - (stats?.availableBalance || 0)).toLocaleString('vi-VN')}đ</span> để đạt tối thiểu rút tiền (500,000đ)
+                        {tr("affiliate.dashboard.needMore", { amount: formatNum(500000 - (stats?.availableBalance || 0)) })}
                       </p>
                       <p className="text-yellow-600 text-xs mt-2">
-                        💡 Tiếp tục chia sẻ link affiliate để kiếm thêm hoa hồng!
+                        {t("affiliate.dashboard.keepSharing")}
                       </p>
                     </div>
                   </>

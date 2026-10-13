@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/authContext";
+import { useLocale } from "@/lib/i18n/LocaleContext";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { 
@@ -30,6 +31,15 @@ interface PaymentRequest {
 export default function PaymentRequestPage() {
   const router = useRouter();
   const { user, isAuthenticated, refreshUser } = useAuth();
+  const { t, locale } = useLocale();
+  const money = (n: number) =>
+    locale === "en" ? `${n.toLocaleString("en-US")} VND` : `${n.toLocaleString("vi-VN")}đ`;
+  const tr = (key: string, vars: Record<string, string | number> = {}) =>
+    Object.entries(vars).reduce(
+      (s, [k, v]) => s.replaceAll(`{${k}}`, String(v)),
+      String(t(key))
+    );
+  const dateLocale = locale === "en" ? "en-US" : "vi-VN";
   const [paymentRequests, setPaymentRequests] = useState<PaymentRequest[]>([]);
   const [availableBalance, setAvailableBalance] = useState(0);
   const [totalCommission, setTotalCommission] = useState(0);
@@ -201,10 +211,10 @@ export default function PaymentRequestPage() {
         setShowForm(false);
         fetchPaymentRequests();
       } else {
-        setError(data.message || 'Failed to submit payment request');
+        setError(data.message || t("affiliate.payment.submitError"));
       }
     } catch (error) {
-      setError('An error occurred while submitting the request');
+      setError(t("affiliate.payment.genericError"));
     } finally {
       setSubmitting(false);
     }
@@ -227,16 +237,16 @@ export default function PaymentRequestPage() {
 
   const getStatusText = (status: string) => {
     switch (status) {
-      case 'pending':
-        return 'Đang chờ duyệt';
-      case 'approved':
-        return 'Đã duyệt';
-      case 'rejected':
-        return 'Bị từ chối';
-      case 'paid':
-        return 'Đã thanh toán';
+      case "pending":
+        return t("affiliate.payment.statusPending");
+      case "approved":
+        return t("affiliate.payment.statusApproved");
+      case "rejected":
+        return t("affiliate.payment.statusRejected");
+      case "paid":
+        return t("affiliate.payment.statusPaid");
       default:
-        return 'Không xác định';
+        return t("affiliate.payment.statusUnknown");
     }
   };
 
@@ -268,25 +278,25 @@ export default function PaymentRequestPage() {
           <div className="container-custom">
             <div className="text-center py-12">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4"></div>
-              <p className="text-gray-600">Đang tải thông tin affiliate...</p>
+              <p className="text-gray-600">{t("affiliate.payment.loadingAffiliate")}</p>
               {loadingTimeout && (
                 <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-                  <p className="text-yellow-800 font-semibold mb-2">⚠️ Tải chậm</p>
+                  <p className="text-yellow-800 font-semibold mb-2">{t("affiliate.payment.slowTitle")}</p>
                   <p className="text-yellow-700 text-sm mb-3">
-                    Thông tin affiliate đang tải chậm. Bạn có thể:
+                    {t("affiliate.payment.slowBody")}
                   </p>
                   <div className="space-y-2">
                     <button
                       onClick={() => window.location.reload()}
                       className="w-full px-4 py-2 bg-yellow-600 text-white rounded hover:bg-yellow-700 text-sm"
                     >
-                      🔄 Tải lại trang
+                      {t("affiliate.payment.reload")}
                     </button>
                     <button
                       onClick={() => router.push('/affiliate/dashboard')}
                       className="w-full px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700 text-sm"
                     >
-                      ← Quay về Dashboard
+                      {t("affiliate.payment.backDashboard")}
                     </button>
                   </div>
                 </div>
@@ -315,10 +325,10 @@ export default function PaymentRequestPage() {
           <div className="container-custom">
             <h1 className="text-4xl font-bold flex items-center gap-3">
               <DollarSign size={40} />
-              Yêu Cầu Thanh Toán
+              {t("affiliate.payment.title")}
             </h1>
             <p className="text-green-100 mt-2">
-              Mã affiliate: <span className="font-mono font-bold">{user?.affiliateCode}</span>
+              {t("affiliate.payment.code")} <span className="font-mono font-bold">{user?.affiliateCode}</span>
             </p>
           </div>
         </section>
@@ -341,27 +351,29 @@ export default function PaymentRequestPage() {
             <div className="mb-6 bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-6">
               <div className="grid md:grid-cols-3 gap-4 text-center mb-4">
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">Tổng kiếm được</p>
-                  <p className="text-2xl font-bold text-gray-800">{totalCommission.toLocaleString('vi-VN')}đ</p>
+                  <p className="text-sm text-gray-600 mb-1">{t("affiliate.payment.earned")}</p>
+                  <p className="text-2xl font-bold text-gray-800">{money(totalCommission)}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">Đã rút</p>
-                  <p className="text-2xl font-bold text-red-600">-{(totalCommission - availableBalance).toLocaleString('vi-VN')}đ</p>
+                  <p className="text-sm text-gray-600 mb-1">{t("affiliate.payment.withdrawn")}</p>
+                  <p className="text-2xl font-bold text-red-600">-{money(totalCommission - availableBalance)}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">Khả dụng</p>
-                  <p className="text-2xl font-bold text-green-600">{availableBalance.toLocaleString('vi-VN')}đ</p>
+                  <p className="text-sm text-gray-600 mb-1">{t("affiliate.payment.available")}</p>
+                  <p className="text-2xl font-bold text-green-600">{money(availableBalance)}</p>
                 </div>
               </div>
               
               {availableBalance < 500000 && (
                 <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-sm">
-                  <p className="text-yellow-800 font-semibold mb-1">⚠️ Chưa đủ điều kiện rút tiền</p>
+                  <p className="text-yellow-800 font-semibold mb-1">{t("affiliate.payment.notEligible")}</p>
                   <p className="text-yellow-700 text-xs">
-                    Cần thêm: <span className="font-semibold text-red-600">{(500000 - availableBalance).toLocaleString('vi-VN')}đ</span> để đạt tối thiểu rút tiền (500,000đ)
+                    {tr("affiliate.payment.needMore", {
+                      amount: (500000 - availableBalance).toLocaleString(dateLocale),
+                    })}
                   </p>
                   <p className="text-yellow-600 text-xs mt-2">
-                    💡 Tiếp tục chia sẻ link affiliate để kiếm thêm hoa hồng!
+                    {t("affiliate.payment.keepSharing")}
                   </p>
                 </div>
               )}
@@ -369,9 +381,9 @@ export default function PaymentRequestPage() {
 
             {/* Action Buttons */}
             <div className="mb-8 flex justify-between items-center">
-              <h2 className="text-2xl font-bold text-gray-800">Lịch Sử Yêu Cầu</h2>
+              <h2 className="text-2xl font-bold text-gray-800">{t("affiliate.payment.history")}</h2>
               <button
-                onClick={() => availableBalance >= 500000 ? setShowForm(!showForm) : alert('Số dư chưa đủ tối thiểu 500,000đ để tạo yêu cầu thanh toán')}
+                onClick={() => availableBalance >= 500000 ? setShowForm(!showForm) : alert(t("affiliate.payment.minAlert"))}
                 className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-colors ${
                   availableBalance >= 500000 
                     ? 'bg-green-600 text-white hover:bg-green-700' 
@@ -380,20 +392,20 @@ export default function PaymentRequestPage() {
                 disabled={availableBalance < 500000}
               >
                 <Plus size={20} />
-                Tạo Yêu Cầu Mới
+                {t("affiliate.payment.createNew")}
               </button>
             </div>
 
             {/* Payment Request Form */}
             {showForm && (
               <div className="mb-8 bg-white rounded-lg shadow-md p-6">
-                <h3 className="text-xl font-bold mb-6">Tạo Yêu Cầu Thanh Toán</h3>
+                <h3 className="text-xl font-bold mb-6">{t("affiliate.payment.createTitle")}</h3>
                 
                 <form onSubmit={handleSubmit} className="space-y-6">
                   {/* Amount */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Số tiền (VNĐ) *
+                      {t("affiliate.payment.amount")}
                     </label>
                     <input
                       type="number"
@@ -402,7 +414,7 @@ export default function PaymentRequestPage() {
                       min="500000"
                       step="1000"
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                      placeholder="Tối thiểu 500,000 VNĐ"
+                      placeholder={t("affiliate.payment.amountPlaceholder")}
                       required
                     />
                   </div>
@@ -410,7 +422,7 @@ export default function PaymentRequestPage() {
                   {/* Payment Method */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Phương thức thanh toán *
+                      {t("affiliate.payment.method")}
                     </label>
                     <div className="grid md:grid-cols-2 gap-4">
                       <button
@@ -424,8 +436,8 @@ export default function PaymentRequestPage() {
                       >
                         <Building2 size={24} className="text-green-600" />
                         <div className="text-left">
-                          <p className="font-semibold">Chuyển khoản ngân hàng</p>
-                          <p className="text-sm text-gray-600">Thanh toán qua ngân hàng địa phương</p>
+                          <p className="font-semibold">{t("affiliate.payment.bank")}</p>
+                          <p className="text-sm text-gray-600">{t("affiliate.payment.bankHint")}</p>
                         </div>
                       </button>
                       <button
@@ -440,7 +452,7 @@ export default function PaymentRequestPage() {
                         <CreditCard size={24} className="text-blue-600" />
                         <div className="text-left">
                           <p className="font-semibold">PayPal</p>
-                          <p className="text-sm text-gray-600">Thanh toán qua PayPal</p>
+                          <p className="text-sm text-gray-600">{t("affiliate.payment.paypalHint")}</p>
                         </div>
                       </button>
                     </div>
@@ -451,7 +463,7 @@ export default function PaymentRequestPage() {
                     <div className="space-y-4">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Số tài khoản *
+                          {t("affiliate.payment.accountNumber")}
                         </label>
                         <input
                           type="text"
@@ -461,13 +473,13 @@ export default function PaymentRequestPage() {
                             bankInfo: { ...formData.bankInfo, accountNumber: e.target.value }
                           })}
                           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                          placeholder="Nhập số tài khoản ngân hàng"
+                          placeholder={t("affiliate.payment.accountPlaceholder")}
                           required
                         />
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Tên ngân hàng *
+                          {t("affiliate.payment.bankName")}
                         </label>
                         <input
                           type="text"
@@ -477,13 +489,13 @@ export default function PaymentRequestPage() {
                             bankInfo: { ...formData.bankInfo, bankName: e.target.value }
                           })}
                           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                          placeholder="VD: Vietcombank, Techcombank, BIDV..."
+                          placeholder={t("affiliate.payment.bankNamePlaceholder")}
                           required
                         />
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Tên chủ tài khoản *
+                          {t("affiliate.payment.holder")}
                         </label>
                         <input
                           type="text"
@@ -493,7 +505,7 @@ export default function PaymentRequestPage() {
                             bankInfo: { ...formData.bankInfo, accountHolderName: e.target.value }
                           })}
                           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                          placeholder="Tên đầy đủ của chủ tài khoản"
+                          placeholder={t("affiliate.payment.holderPlaceholder")}
                           required
                         />
                       </div>
@@ -504,7 +516,7 @@ export default function PaymentRequestPage() {
                   {formData.paymentMethod === 'paypal' && (
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Email PayPal *
+                        {t("affiliate.payment.paypalEmail")}
                       </label>
                       <input
                         type="email"
@@ -524,14 +536,14 @@ export default function PaymentRequestPage() {
                       disabled={submitting}
                       className="flex-1 px-6 py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     >
-                      {submitting ? 'Đang gửi...' : 'Gửi Yêu Cầu'}
+                      {submitting ? t("affiliate.payment.submitting") : t("affiliate.payment.submit")}
                     </button>
                     <button
                       type="button"
                       onClick={() => setShowForm(false)}
                       className="px-6 py-3 bg-gray-600 text-white rounded-lg font-semibold hover:bg-gray-700 transition-colors"
                     >
-                      Hủy
+                      {t("affiliate.payment.cancel")}
                     </button>
                   </div>
                 </form>
@@ -542,13 +554,13 @@ export default function PaymentRequestPage() {
             {loading ? (
               <div className="text-center py-12">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4"></div>
-                <p className="text-gray-600">Đang tải...</p>
+                <p className="text-gray-600">{t("affiliate.payment.loading")}</p>
               </div>
             ) : paymentRequests.length === 0 ? (
               <div className="text-center py-12 bg-white rounded-lg shadow-md">
                 <DollarSign size={48} className="text-gray-400 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-gray-600 mb-2">Chưa có yêu cầu thanh toán</h3>
-                <p className="text-gray-500">Tạo yêu cầu thanh toán đầu tiên của bạn</p>
+                <h3 className="text-xl font-semibold text-gray-600 mb-2">{t("affiliate.payment.emptyTitle")}</h3>
+                <p className="text-gray-500">{t("affiliate.payment.emptyBody")}</p>
               </div>
             ) : (
               <div className="space-y-4">
@@ -559,10 +571,10 @@ export default function PaymentRequestPage() {
                         {getStatusIcon(request.status)}
                         <div>
                           <h3 className="text-lg font-semibold text-gray-800">
-                            {request.amount.toLocaleString('vi-VN')} VNĐ
+                            {money(request.amount)}
                           </h3>
                           <p className="text-sm text-gray-600">
-                            {new Date(request.createdAt).toLocaleDateString('vi-VN')}
+                            {new Date(request.createdAt).toLocaleDateString(dateLocale)}
                           </p>
                         </div>
                       </div>
@@ -573,14 +585,14 @@ export default function PaymentRequestPage() {
 
                     <div className="grid md:grid-cols-2 gap-4 mb-4">
                       <div>
-                        <p className="text-sm font-medium text-gray-700">Phương thức thanh toán:</p>
+                        <p className="text-sm font-medium text-gray-700">{t("affiliate.payment.methodLabel")}</p>
                         <p className="text-sm text-gray-600">
-                          {request.paymentMethod === 'bank_transfer' ? 'Chuyển khoản ngân hàng' : 'PayPal'}
+                          {request.paymentMethod === 'bank_transfer' ? t("affiliate.payment.bank") : 'PayPal'}
                         </p>
                       </div>
                       {request.paymentMethod === 'bank_transfer' && request.bankInfo && (
                         <div>
-                          <p className="text-sm font-medium text-gray-700">Thông tin ngân hàng:</p>
+                          <p className="text-sm font-medium text-gray-700">{t("affiliate.payment.bankInfo")}</p>
                           <p className="text-sm text-gray-600">
                             {request.bankInfo.bankName} - {request.bankInfo.accountHolderName}
                           </p>
@@ -588,7 +600,7 @@ export default function PaymentRequestPage() {
                       )}
                       {request.paymentMethod === 'paypal' && request.paypalEmail && (
                         <div>
-                          <p className="text-sm font-medium text-gray-700">Email PayPal:</p>
+                          <p className="text-sm font-medium text-gray-700">{t("affiliate.payment.paypalEmail")}</p>
                           <p className="text-sm text-gray-600">{request.paypalEmail}</p>
                         </div>
                       )}
@@ -596,21 +608,21 @@ export default function PaymentRequestPage() {
 
                     {request.adminNotes && (
                       <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                        <p className="text-sm font-medium text-blue-800">Ghi chú từ admin:</p>
+                        <p className="text-sm font-medium text-blue-800">{t("affiliate.payment.adminNote")}</p>
                         <p className="text-sm text-blue-700">{request.adminNotes}</p>
                       </div>
                     )}
 
                     {request.rejectionReason && (
                       <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-                        <p className="text-sm font-medium text-red-800">Lý do từ chối:</p>
+                        <p className="text-sm font-medium text-red-800">{t("affiliate.payment.rejectReason")}</p>
                         <p className="text-sm text-red-700">{request.rejectionReason}</p>
                       </div>
                     )}
 
                     {request.processedAt && (
                       <div className="text-sm text-gray-500">
-                        Xử lý lúc: {new Date(request.processedAt).toLocaleString('vi-VN')}
+                        {t("affiliate.payment.processedAt")} {new Date(request.processedAt).toLocaleString(dateLocale)}
                       </div>
                     )}
                   </div>

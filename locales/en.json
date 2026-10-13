@@ -769,6 +769,56 @@
       "description": "Our support team is always ready to help via Telegram or email. Don't hesitate to contact us!",
       "contactButton": "Contact Support",
       "telegramButton": "Join Telegram Group"
+    },
+    "orderBanner": {
+      "fromPayment": "Order code from your email / payment:",
+      "pasteHint": "Paste this code on the product you bought, then click Confirm."
+    },
+    "loadingProducts": "Loading products...",
+    "success": {
+      "verifying": "Verifying payment...",
+      "processing": "Processing...",
+      "title": "Payment successful!",
+      "thanks": "Thank you for your purchase. Your order code is:",
+      "orderCode": "Order code:",
+      "saveCode": "Save this code to download again later",
+      "emailSent": "We emailed the order code and download button. Check inbox (and Spam).",
+      "checkEmail": "Check your email for the download link. If you do not see it, use the order code above.",
+      "useCode": "Or use the order code above on the Downloads page",
+      "watchGuide": "Watch the installation guide before using the files",
+      "downloadNow": "Download now",
+      "viewGuide": "View installation guide",
+      "needHelp": "Need install help? Support is ready:",
+      "paypalFailed": "Could not confirm the PayPal payment. Contact support with your order code.",
+      "nextSteps": "Next steps:",
+      "paymentMethod": "Method:",
+      "methodCrypto": "Crypto (USDT TRC20)",
+      "methodStripe": "Stripe",
+      "methodPaypal": "PayPal"
+    },
+    "members": {
+      "loading": "Loading...",
+      "subtitle": "Download the demo EA and indicators for members",
+      "upgradeHint": "Upgrade to a paid membership for unlimited downloads and extra benefits.",
+      "downloading": "Downloading...",
+      "limitReached": "Download limit reached",
+      "upgradeTitle": "Upgrade to a paid membership to:",
+      "viewPlans": "View membership plans",
+      "title": "Free Downloads",
+      "membershipTier": "Membership tier",
+      "eaDemoDownloads": "EA Demo downloads",
+      "indicatorDownloads": "Indicator downloads",
+      "downloadFree": "Free download",
+      "unlimitedTitle": "Want unlimited downloads?",
+      "benefitUnlimited": "Unlimited downloads",
+      "benefitFull": "Access the full EA",
+      "benefitPremium": "Premium content",
+      "limitEa": "{used}/1 download",
+      "limitIndicator": "{used}/3 downloads",
+      "fileEaDemo": "Demo version with core features and a 30-day time limit",
+      "fileTrend": "High-accuracy trend identification indicator",
+      "fileSR": "Automatically draws support and resistance zones",
+      "fileVolume": "Analyzes volume by price zone"
     }
   },
   "partners": {
@@ -979,6 +1029,134 @@
           "answer": "After approval, you'll have access to Affiliate Dashboard with real-time tracking of clicks, conversions, earnings. Updated 24/7."
         }
       ]
+    },
+    "dashboard": {
+      "title": "Affiliate Dashboard",
+      "code": "Affiliate code:",
+      "status": "Status:",
+      "membership": "Membership:",
+      "totalClicks": "Total clicks",
+      "conversions": "Conversions",
+      "conversionRate": "Conversion rate",
+      "totalEarned": "Total commission",
+      "withdrawn": "Withdrawn:",
+      "available": "Available:",
+      "trackingLinks": "Tracking Links",
+      "price": "Price:",
+      "commission": "Commission:",
+      "copy": "Copy",
+      "analysis": "Performance analysis",
+      "clicksLabel": "Total clicks:",
+      "excellent": "Excellent!",
+      "needsWork": "Needs improvement",
+      "needsHelp": "Needs support",
+      "noConversion": "No conversions yet",
+      "tips": "Tips",
+      "tipNoConv1": "You have {clicks} clicks but no conversions yet",
+      "tipNoConv2": "Check traffic quality",
+      "tipNoConv3": "Improve the landing page",
+      "tipNoConv4": "Add social proof",
+      "tipLow1": "Conversion rate is low ({rate}%)",
+      "tipLow2": "Improve targeting",
+      "tipLow3": "Improve the call-to-action",
+      "tipLow4": "A/B test your messages",
+      "tipMid1": "Conversion rate is average ({rate}%)",
+      "tipMid2": "Add more trust signals",
+      "tipMid3": "Improve follow-up",
+      "tipMid4": "Scale traffic",
+      "tipHigh1": "Conversion rate is excellent ({rate}%)",
+      "tipHigh2": "Keep the current strategy",
+      "tipHigh3": "Scale the budget",
+      "tipHigh4": "Mentor other affiliates",
+      "commissionInfo": "Commission details",
+      "earned": "Total earned",
+      "withdrawnShort": "Withdrawn",
+      "availableShort": "Available",
+      "ratesTitle": "Commission rates:",
+      "rateEa": "EA & Indicators: {rate}%",
+      "rateCourse": "Courses: 25%",
+      "payoutTitle": "Payouts:",
+      "payout1": "End of each month",
+      "payout2": "Minimum: 500,000 VND",
+      "payout3": "Bank transfer or PayPal",
+      "requestPayout": "Request payout",
+      "currentBalance": "Current balance: {amount} VND",
+      "needMore": "Need {amount} VND more to reach the 500,000 VND minimum",
+      "keepSharing": "Keep sharing your affiliate link to earn more commission.",
+      "retry": "Retry loading",
+      "refresh": "Refresh page",
+      "clearAuth": "Clear session and log in again",
+      "persistHelp": "If this continues, contact support with the debug information above.",
+      "estimate": "Estimate:",
+      "conversionTitle": "Conversion rate",
+      "availableBalance": "Available balance: {amount} VND",
+      "notEligible": "Not eligible to withdraw yet",
+      "loadingAuth": "Loading authentication...",
+      "loadingDashboard": "Loading dashboard...",
+      "retrying": "Retrying... ({count}/3)",
+      "errorTitle": "Error loading dashboard",
+      "debugTitle": "Debug information:",
+      "debugEmail": "Email:",
+      "debugStatus": "Affiliate status:",
+      "debugCode": "Affiliate code:",
+      "debugTier": "Membership:",
+      "debugPaid": "Paid member:",
+      "debugRetry": "Retry count:",
+      "notLoaded": "Not loaded",
+      "yes": "Yes",
+      "no": "No",
+      "conversionsLabel": "Conversions:",
+      "rateLabel": "Conversion rate:"
+    },
+    "payment": {
+      "title": "Payout request",
+      "code": "Affiliate code:",
+      "loadingAffiliate": "Loading affiliate information...",
+      "slowTitle": "Loading is slow",
+      "slowBody": "Affiliate information is taking longer than usual. You can:",
+      "reload": "Reload page",
+      "backDashboard": "Back to dashboard",
+      "earned": "Total earned",
+      "withdrawn": "Withdrawn",
+      "available": "Available",
+      "needMore": "Need {amount} VND more to reach the 500,000 VND minimum",
+      "keepSharing": "Keep sharing your affiliate link to earn more commission.",
+      "history": "Request history",
+      "createNew": "Create new request",
+      "createTitle": "Create payout request",
+      "amount": "Amount (VND) *",
+      "amountPlaceholder": "Minimum 500,000 VND",
+      "method": "Payment method *",
+      "bank": "Bank transfer",
+      "bankHint": "Payout via local bank",
+      "paypalHint": "Payout via PayPal",
+      "accountNumber": "Account number *",
+      "bankName": "Bank name *",
+      "paypalEmail": "PayPal email *",
+      "submitting": "Sending...",
+      "submit": "Submit request",
+      "cancel": "Cancel",
+      "loading": "Loading...",
+      "emptyTitle": "No payout requests yet",
+      "emptyBody": "Create your first payout request",
+      "methodLabel": "Payment method:",
+      "bankInfo": "Bank details:",
+      "rejectReason": "Rejection reason:",
+      "processedAt": "Processed at:",
+      "minAlert": "Balance is below the 500,000 VND minimum for a payout request",
+      "statusPending": "Pending",
+      "statusApproved": "Approved",
+      "statusRejected": "Rejected",
+      "statusPaid": "Paid",
+      "statusUnknown": "Unknown",
+      "notEligible": "Not eligible to withdraw yet",
+      "accountPlaceholder": "Enter your bank account number",
+      "holder": "Account holder *",
+      "holderPlaceholder": "Full name of the account holder",
+      "adminNote": "Admin notes:",
+      "bankNamePlaceholder": "e.g. Vietcombank, Techcombank, BIDV...",
+      "submitError": "Failed to submit payment request",
+      "genericError": "An error occurred while submitting the request"
     }
   },
   "affiliatePages": {
@@ -1130,25 +1308,41 @@
             "name": "MQL5 Signals",
             "commission": "10% profit share",
             "description": "Official MetaTrader copy trading platform. Millions of users, high credibility.",
-            "features": ["Integrated with MT4/MT5", "Auto copy trades", "Transparent performance"]
+            "features": [
+              "Integrated with MT4/MT5",
+              "Auto copy trades",
+              "Transparent performance"
+            ]
           },
           {
             "name": "Myfxbook AutoTrade",
             "commission": "10% profit share",
             "description": "Popular platform with large community. Detailed tracking, verified results.",
-            "features": ["Verified track records", "Risk management tools", "Community ratings"]
+            "features": [
+              "Verified track records",
+              "Risk management tools",
+              "Community ratings"
+            ]
           },
           {
             "name": "Tickmill Social",
             "commission": "20% profit share",
             "description": "Tickmill broker's copy trading. Higher commission, good execution.",
-            "features": ["FCA regulated", "Low spreads", "Fast execution"]
+            "features": [
+              "FCA regulated",
+              "Low spreads",
+              "Fast execution"
+            ]
           },
           {
             "name": "PuPrime Social",
             "commission": "25% profit share",
             "description": "PuPrime copy trading. Highest commission, easy onboarding.",
-            "features": ["Highest commission", "$50 minimum", "Easy setup"]
+            "features": [
+              "Highest commission",
+              "$50 minimum",
+              "Easy setup"
+            ]
           }
         ]
       },
@@ -1217,14 +1411,26 @@
             "price": "$197",
             "commission": "$49",
             "description": "Basic forex trading course. Suitable for beginners, high conversion rate.",
-            "features": ["Forex basics to advanced", "Technical & fundamental analysis", "Risk management strategies", "30+ video lessons", "Lifetime access"]
+            "features": [
+              "Forex basics to advanced",
+              "Technical & fundamental analysis",
+              "Risk management strategies",
+              "30+ video lessons",
+              "Lifetime access"
+            ]
           },
           {
             "name": "EA Mastery Course",
             "price": "$497",
             "commission": "$124",
             "description": "Course on setup & optimize EA ThebenchmarkTrader. Best seller with best conversion.",
-            "features": ["Setup & optimize EA ThebenchmarkTrader", "Advanced parameter tuning", "Portfolio management", "Live trading sessions", "1-on-1 support + private group"],
+            "features": [
+              "Setup & optimize EA ThebenchmarkTrader",
+              "Advanced parameter tuning",
+              "Portfolio management",
+              "Live trading sessions",
+              "1-on-1 support + private group"
+            ],
             "badge": "BEST SELLER"
           },
           {
@@ -1232,7 +1438,13 @@
             "price": "$997",
             "commission": "$249",
             "description": "Bundle of all courses + 1-on-1 mentorship. High ticket, highest commission.",
-            "features": ["All courses above", "1-on-1 mentorship (3 sessions)", "Custom EA settings for your style", "Priority support lifetime", "Quarterly strategy updates"]
+            "features": [
+              "All courses above",
+              "1-on-1 mentorship (3 sessions)",
+              "Custom EA settings for your style",
+              "Priority support lifetime",
+              "Quarterly strategy updates"
+            ]
           }
         ]
       },
@@ -1242,22 +1454,41 @@
           {
             "title": "High Commission $49-$249",
             "description": "25% of course price. With $997 course, you receive $249 per sale - much higher than EA sales.",
-            "points": ["Foundation (5 sales): $245", "EA Mastery (3 sales): $372", "Pro Bundle (2 sales): $498"]
+            "points": [
+              "Foundation (5 sales): $245",
+              "EA Mastery (3 sales): $372",
+              "Pro Bundle (2 sales): $498"
+            ]
           },
           {
             "title": "Free Course Trial",
             "description": "Affiliates get FREE access to all courses to test and review before selling. You need to understand the product to sell well!",
-            "points": ["Full access to all courses", "Join private community", "Certificate upon completion", "Use as credentials when promoting"]
+            "points": [
+              "Full access to all courses",
+              "Join private community",
+              "Certificate upon completion",
+              "Use as credentials when promoting"
+            ]
           },
           {
             "title": "Ready Marketing Funnel",
             "description": "Landing pages, email sequences, webinar scripts already optimized with high conversion rates. Just copy & paste.",
-            "points": ["High-converting landing pages", "Email sequences (7-day nurture)", "Webinar presentation slides", "Social media post templates"]
+            "points": [
+              "High-converting landing pages",
+              "Email sequences (7-day nurture)",
+              "Webinar presentation slides",
+              "Social media post templates"
+            ]
           },
           {
             "title": "60-Day Cookie & 2x/Month Payout",
             "description": "60-day cookie is long enough for course decision cycle. Payout twice monthly (1st and 15th).",
-            "points": ["60-day cookie (longer than standard)", "Payout twice monthly", "Min payout: $100", "Bank transfer / PayPal"]
+            "points": [
+              "60-day cookie (longer than standard)",
+              "Payout twice monthly",
+              "Min payout: $100",
+              "Bank transfer / PayPal"
+            ]
           }
         ]
       },
