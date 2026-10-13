@@ -88,7 +88,8 @@
     "disclaimer": "Note:",
     "disclaimerText": "Results based on backtest. Actual performance may vary depending on broker and market conditions.",
     "realAccountCTA": "View real account results",
-    "viewRealAccount": "View Live Account"
+    "viewRealAccount": "View Live Account",
+    "viewBacktest": "View backtest details"
   },
   "features": {
     "title": "Analytical Software Utilities",
@@ -165,7 +166,8 @@
     "days": "Days",
     "viewAccount": "View Account",
     "disclaimer": "Note: Past performance does not guarantee future results. Forex trading carries high risk.",
-    "seeAllAccounts": "See All Accounts"
+    "seeAllAccounts": "See All Accounts",
+    "loading": "Loading..."
   },
   "contact": {
     "title": "Contact & Support",

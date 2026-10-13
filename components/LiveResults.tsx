@@ -34,7 +34,7 @@ export default function LiveResults() {
     return (
       <section id="live-results" className="py-20 bg-gradient-to-br from-green-50 to-blue-50">
         <div className="container-custom text-center">
-          <p>Loading...</p>
+          <p>{t("liveResults.loading")}</p>
         </div>
       </section>
     );

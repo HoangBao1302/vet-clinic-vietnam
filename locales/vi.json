@@ -61,22 +61,22 @@
     "errorMessage": "Có lỗi xảy ra, vui lòng thử lại.",
     "disclaimer": "Chỉ dành cho thành viên premium • Hủy đăng ký bất kỳ lúc nào",
     "benefits": {
-      "marketAnalysis": "Market Analysis",
+      "marketAnalysis": "Phân tích thị trường",
       "marketAnalysisDesc": "Phân tích xu hướng thị trường hàng tuần từ các chuyên gia",
-      "tradingSignals": "Trading Signals",
+      "tradingSignals": "Tín hiệu giao dịch",
       "tradingSignalsDesc": "Tín hiệu entry/exit chất lượng cao cho các cặp tiền chính",
-      "communityAccess": "Community Access",
+      "communityAccess": "Cộng đồng",
       "communityAccessDesc": "Tham gia group VIP và nhận hỗ trợ 24/7 từ team"
     }
   },
   "hero": {
     "title": "ThebenchmarkTrader",
-    "subtitle": "Multi-strategy analytical software with scientific risk management. Efficient and transparent trading data automation.",
-    "description": "Multi-strategy analytical software with scientific risk management. Efficient and transparent trading data automation.",
+    "subtitle": "Phần mềm phân tích đa chiến lược với quản trị rủi ro khoa học. Tự động hóa dữ liệu giao dịch hiệu quả và minh bạch.",
+    "description": "Phần mềm phân tích đa chiến lược với quản trị rủi ro khoa học. Tự động hóa dữ liệu giao dịch hiệu quả và minh bạch.",
     "badges": {
       "mt4mt5": "Tương thích MetaTrader 4/5",
       "riskControl": "Risk Control",
-      "backtestFriendly": "Backtest-Friendly"
+      "backtestFriendly": "Thân thiện backtest"
     },
     "performanceTitle": "Hiệu Suất Chính",
     "stats": {
@@ -88,37 +88,38 @@
     "disclaimer": "Lưu ý:",
     "disclaimerText": "Kết quả dựa trên backtest. Hiệu suất thực tế có thể khác biệt tùy broker và điều kiện thị trường.",
     "realAccountCTA": "Xem kết quả tài khoản thật",
-    "viewRealAccount": "Xem Tài Khoản Thực"
+    "viewRealAccount": "Xem Tài Khoản Thực",
+    "viewBacktest": "Xem chi tiết backtest"
   },
   "features": {
-    "title": "Analytical Software Utilities",
-    "subtitle": "Computational software tools for trading data analysis",
-    "multiStrategyTitle": "Mathematical Data Modeling (Trend/Range)",
-    "multiStrategyDesc": "Applies mathematical data models for trend and range conditions, and switches the calculation set as incoming market data changes.",
-    "moneyManagementTitle": "Calculation Efficiency",
-    "moneyManagementDesc": "Parameter controls for size, stop distance, and script execution limits. Built for data optimization, not performance promises.",
-    "smartMarketTitle": "Charting Data Filters",
-    "smartMarketDesc": "An analytical software utility that filters volatility, spread, and scheduled data so script execution skips unfavorable inputs.",
-    "flexibleTPTitle": "Automated Data Execution",
-    "flexibleTPDesc": "Script execution applies a calculated exit rule when a data target or trailing parameter is reached.",
-    "spreadLimitTitle": "Execution Window Filters",
-    "spreadLimitDesc": "Runs script execution only when spread data is inside the selected limits and during the chosen time window.",
-    "reportLogTitle": "Signal Logging & Synchronization Utility",
-    "reportLogDesc": "Logs each script execution event and keeps a transparent calculation record for review.",
-    "customizableNote": "All parameters can be adjusted for your data analysis setup."
+    "title": "Tiện ích phần mềm phân tích",
+    "subtitle": "Công cụ tính toán hỗ trợ phân tích dữ liệu giao dịch",
+    "multiStrategyTitle": "Mô hình dữ liệu toán học (Trend/Range)",
+    "multiStrategyDesc": "Áp dụng mô hình toán học cho điều kiện trend và range, rồi chuyển bộ tính toán khi dữ liệu thị trường thay đổi.",
+    "moneyManagementTitle": "Hiệu quả tính toán",
+    "moneyManagementDesc": "Kiểm soát parameter về size, khoảng stop và giới hạn script execution. Thiết kế để tối ưu dữ liệu, không cam kết hiệu suất.",
+    "smartMarketTitle": "Bộ lọc dữ liệu biểu đồ",
+    "smartMarketDesc": "Tiện ích lọc volatility, spread và dữ liệu lịch kinh tế, để script execution bỏ qua các input bất lợi.",
+    "flexibleTPTitle": "Thực thi dữ liệu tự động",
+    "flexibleTPDesc": "Script execution áp dụng quy tắc thoát lệnh khi đạt target hoặc trailing parameter.",
+    "spreadLimitTitle": "Bộ lọc cửa sổ thực thi",
+    "spreadLimitDesc": "Chỉ chạy script execution khi spread nằm trong giới hạn đã chọn và trong khung thời gian đã đặt.",
+    "reportLogTitle": "Tiện ích Signal Logging & Synchronization",
+    "reportLogDesc": "Ghi lại từng sự kiện script execution và lưu bản tính toán minh bạch để xem lại.",
+    "customizableNote": "Mọi parameter đều có thể điều chỉnh theo setup phân tích của bạn."
   },
-  "slogan": "Signal Logging & Synchronization Utility — logged calculations available for review",
+  "slogan": "Tiện ích Signal Logging & Synchronization — bản tính toán đã ghi sẵn để xem lại",
   "strategy": {
-    "title": "Transparent data analysis",
-    "description": "ThebenchmarkTrader provides computational tools for trading data analysis. Indicator settings, filters, and risk parameters are disclosed for review.",
-    "entryTitle": "Charting Plugin Inputs",
-    "entryDesc": "Uses MA, RSI, and Bollinger Bands as charting plugin inputs, with parameters prepared through historical data tests.",
-    "moneyTitle": "Data Optimization",
-    "moneyDesc": "Fixed calculation limits per script run, size scaled by volatility data, and a stop parameter set before execution.",
-    "emergencyTitle": "Script Execution Halt",
-    "emergencyDesc": "Automated data execution pauses when a drawdown parameter is exceeded or the data feed looks abnormal.",
-    "warningTitle": "Important Notice",
-    "warningDesc": "This analytical software utility does not promise results. Past calculations are not future outcomes."
+    "title": "Phân tích dữ liệu minh bạch",
+    "description": "ThebenchmarkTrader cung cấp công cụ tính toán để phân tích dữ liệu giao dịch. Indicator settings, bộ lọc và risk parameter được công bố để bạn tự kiểm tra.",
+    "entryTitle": "Input plugin biểu đồ",
+    "entryDesc": "Dùng MA, RSI và Bollinger Bands làm input plugin, với parameter được chuẩn bị qua kiểm thử dữ liệu lịch sử.",
+    "moneyTitle": "Tối ưu dữ liệu",
+    "moneyDesc": "Giới hạn tính toán cố định mỗi lần chạy script, size điều chỉnh theo volatility, và stop parameter được đặt trước khi thực thi.",
+    "emergencyTitle": "Dừng script execution",
+    "emergencyDesc": "Tự động tạm dừng khi vượt drawdown parameter hoặc data feed bất thường.",
+    "warningTitle": "Lưu ý quan trọng",
+    "warningDesc": "Tiện ích phân tích này không cam kết kết quả. Tính toán quá khứ không phải kết quả tương lai."
   },
   "proof": {
     "title": "Hiệu suất được chứng minh",
@@ -156,16 +157,17 @@
     }
   },
   "liveResults": {
-    "badge": "100% Verified Real Accounts",
+    "badge": "100% tài khoản thực đã Verified",
     "title": "Xác Minh Hiệu Suất EA",
     "subtitle": "Các tài khoản dưới đây chạy phần mềm EA ThebenchmarkTrader trên tài khoản giao dịch thực tế. Kết quả được xác minh độc lập trên MQL5.com.",
-    "verified": "Verified Account",
+    "verified": "Tài khoản Verified",
     "gain": "Gain",
     "drawdown": "DD",
-    "days": "Days",
+    "days": "Ngày",
     "viewAccount": "Xem Tài Khoản",
     "disclaimer": "Lưu ý: Hiệu suất quá khứ không đảm bảo kết quả tương lai. Giao dịch Forex có rủi ro cao.",
-    "seeAllAccounts": "Xem Tất Cả Tài Khoản"
+    "seeAllAccounts": "Xem Tất Cả Tài Khoản",
+    "loading": "Đang tải..."
   },
   "contact": {
     "title": "Liên hệ & Hỗ trợ",
@@ -212,8 +214,8 @@
     "freeConsultDesc": "Tư vấn chiến lược giao dịch, setup EA và quản lý rủi ro hoàn toàn miễn phí"
   },
   "sticky": {
-    "cta": "Ready to use the analytical software?",
-    "button": "Get the software"
+    "cta": "Sẵn sàng dùng phần mềm phân tích?",
+    "button": "Nhận phần mềm"
   },
   "pricing": {
     "hero": {
@@ -525,7 +527,7 @@
     }
   },
   "footer": {
-    "description": "Multi-strategy analytical software with scientific risk management. Efficient and transparent trading data automation.",
+    "description": "Phần mềm phân tích đa chiến lược với quản trị rủi ro khoa học. Tự động hóa dữ liệu giao dịch hiệu quả và minh bạch.",
     "quickLinks": "Liên Kết Nhanh",
     "resources": "Tài Nguyên",
     "contactInfo": "Thông Tin Liên Hệ",
