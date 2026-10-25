@@ -13,6 +13,7 @@ const FETCH_INTERVAL_MS = 2 * 60 * 60 * 1000;
 const ARTICLE_MAX_AGE_MS = 2 * 60 * 60 * 1000;
 
 const NEWS_QUERY = 'forex OR currency OR EUR/USD OR gold trading';
+const FOREX_RELEVANCE_PATTERN = /\b(forex|fx\b|currency|currencies|exchange rate|foreign exchange|eur\/usd|gbp\/usd|usd\/jpy|usd\/cad|aud\/usd|dollar|euro|yen|pound|central bank|federal reserve|\bfed\b|\becb\b|\bboj\b|interest rate|monetary policy|gold\b|xauusd|xau|crude oil|commodit|pip\b|currency pair|fx market)\b/i;
 
 function loadEnv() {
   try {
@@ -90,6 +91,11 @@ function isRecentArticle(article, now = Date.now()) {
     return false;
   }
   return now - publishedAt <= ARTICLE_MAX_AGE_MS;
+}
+
+function isForexRelevant(article) {
+  const text = `${article.title || ''} ${article.source || ''}`;
+  return FOREX_RELEVANCE_PATTERN.test(text);
 }
 
 function dedupeArticles(articles) {
@@ -177,15 +183,15 @@ async function fetchAlphaVantage(apiKey) {
   }));
 }
 
-function buildRateLimitMessage(provider, hours) {
-  return `API limit reached for ${provider}, will resume in ${hours} hours`;
+function buildRateLimitMessage(hours) {
+  return `API limit reached, will resume in ${hours} hours`;
 }
 
 async function main() {
   loadEnv();
 
   const newsApiKey = process.env.NEWS_API_KEY;
-  const alphaVantageKey = process.env.ALPHA_VANTAGE_API_KEY;
+  const alphaVantageKey = process.env.ALPHA_VANTAGE_API_KEY || process.env.ALPHA_VANTAGE_KEY;
   const now = Date.now();
   const state = loadState();
 
@@ -216,7 +222,7 @@ async function main() {
 
   if (newsApiKey && newsApiLimited && (!alphaVantageKey || alphaLimited)) {
     result.action = 'rate_limit';
-    result.message = buildRateLimitMessage('NewsAPI and Alpha Vantage', hoursToReset);
+    result.message = buildRateLimitMessage(hoursToReset);
     console.log(JSON.stringify(result));
     return;
   }
@@ -238,7 +244,7 @@ async function main() {
       if (/rate limit|too many requests|429/i.test(error.message)) {
         state.newsApiUsage.count = NEWS_API_DAILY_LIMIT;
         result.action = 'rate_limit';
-        result.message = buildRateLimitMessage('NewsAPI', hoursToReset);
+        result.message = buildRateLimitMessage(hoursToReset);
         saveState(state);
         console.log(JSON.stringify(result));
         return;
@@ -256,7 +262,7 @@ async function main() {
         state.alphaVantageUsage.count = ALPHA_VANTAGE_DAILY_LIMIT;
         if (result.action !== 'rate_limit') {
           result.action = 'rate_limit';
-          result.message = buildRateLimitMessage('Alpha Vantage', hoursToReset);
+          result.message = buildRateLimitMessage(hoursToReset);
         }
       }
     }
@@ -266,7 +272,8 @@ async function main() {
 
   const postedSet = new Set((state.postedUrls || []).map((url) => url.toLowerCase()));
   const freshArticles = dedupeArticles(collected)
-    .filter(isRecentArticle)
+    .filter(isForexRelevant)
+    .filter((article) => isRecentArticle(article, now))
     .filter((article) => article.url && !postedSet.has(article.url.toLowerCase()))
     .slice(0, 5);
 
