@@ -14,6 +14,14 @@ const ARTICLE_MAX_AGE_MS = 2 * 60 * 60 * 1000;
 
 const NEWS_QUERY = 'forex OR currency OR EUR/USD OR gold trading';
 
+const FOREX_KEYWORDS = [
+  'forex', 'currency', 'eur/usd', 'gbp/usd', 'usd/jpy', 'usd/chf', 'aud/usd',
+  'gold', 'silver', 'oil', 'crude', 'dollar', 'euro', 'yen', 'yuan', 'pound',
+  'sterling', 'franc', 'fed', 'ecb', 'boj', 'central bank', 'interest rate',
+  'exchange rate', 'fx', 'pip', 'commodity', 'bullion', 'opec', 'inflation',
+  'treasury', 'bond yield', 'forexlive', 'trading',
+];
+
 function loadEnv() {
   try {
     require('dotenv').config({ path: path.join(process.cwd(), '.env.local') });
@@ -90,6 +98,11 @@ function isRecentArticle(article, now = Date.now()) {
     return false;
   }
   return now - publishedAt <= ARTICLE_MAX_AGE_MS;
+}
+
+function isForexRelevant(article) {
+  const text = `${article.title} ${article.source}`.toLowerCase();
+  return FOREX_KEYWORDS.some((keyword) => text.includes(keyword));
 }
 
 function dedupeArticles(articles) {
@@ -185,7 +198,7 @@ async function main() {
   loadEnv();
 
   const newsApiKey = process.env.NEWS_API_KEY;
-  const alphaVantageKey = process.env.ALPHA_VANTAGE_API_KEY;
+  const alphaVantageKey = process.env.ALPHA_VANTAGE_API_KEY || process.env.ALPHA_VANTAGE_KEY;
   const now = Date.now();
   const state = loadState();
 
@@ -266,7 +279,8 @@ async function main() {
 
   const postedSet = new Set((state.postedUrls || []).map((url) => url.toLowerCase()));
   const freshArticles = dedupeArticles(collected)
-    .filter(isRecentArticle)
+    .filter((article) => isRecentArticle(article, now))
+    .filter(isForexRelevant)
     .filter((article) => article.url && !postedSet.has(article.url.toLowerCase()))
     .slice(0, 5);
 
