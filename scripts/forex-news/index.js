@@ -13,6 +13,7 @@ const FETCH_INTERVAL_MS = 2 * 60 * 60 * 1000;
 const ARTICLE_MAX_AGE_MS = 2 * 60 * 60 * 1000;
 
 const NEWS_QUERY = 'forex OR currency OR EUR/USD OR gold trading';
+const FOREX_RELEVANCE_PATTERN = /\b(forex|currency|currencies|eur\/usd|gbp\/usd|usd\/jpy|fx\b|foreign exchange|exchange rate|central bank|interest rate|monetary policy|dollar|euro|yen|pound sterling|gold|xauusd|xau\/usd|fed\b|ecb\b|boj\b)\b/i;
 
 function loadEnv() {
   try {
@@ -92,6 +93,11 @@ function isRecentArticle(article, now = Date.now()) {
   return now - publishedAt <= ARTICLE_MAX_AGE_MS;
 }
 
+function isForexRelevant(article) {
+  const text = `${article.title || ''} ${article.description || ''}`;
+  return FOREX_RELEVANCE_PATTERN.test(text);
+}
+
 function dedupeArticles(articles) {
   const seen = new Set();
   const unique = [];
@@ -127,12 +133,14 @@ function formatSlackMessage(articles, timestamp = new Date()) {
   return lines.join('\n').trim();
 }
 
-async function fetchNewsApi(apiKey) {
+async function fetchNewsApi(apiKey, now = Date.now()) {
+  const from = new Date(now - ARTICLE_MAX_AGE_MS).toISOString();
   const params = new URLSearchParams({
     q: NEWS_QUERY,
     language: 'en',
     sortBy: 'publishedAt',
     pageSize: '5',
+    from,
     apiKey,
   });
 
@@ -149,6 +157,7 @@ async function fetchNewsApi(apiKey) {
     url: article.url,
     source: article.source?.name || 'Unknown',
     publishedAt: article.publishedAt,
+    description: article.description || '',
     provider: 'newsapi',
   }));
 }
@@ -173,19 +182,23 @@ async function fetchAlphaVantage(apiKey) {
     url: item.url,
     source: item.source || 'Unknown',
     publishedAt: `${item.time_published.slice(0, 4)}-${item.time_published.slice(4, 6)}-${item.time_published.slice(6, 8)}T${item.time_published.slice(9, 11)}:${item.time_published.slice(11, 13)}:${item.time_published.slice(13, 15)}Z`,
+    description: item.summary || '',
     provider: 'alphavantage',
   }));
 }
 
-function buildRateLimitMessage(provider, hours) {
-  return `API limit reached for ${provider}, will resume in ${hours} hours`;
+function buildRateLimitMessage(hours, provider = null) {
+  if (provider) {
+    return `API limit reached for ${provider}, will resume in ${hours} hours`;
+  }
+  return `API limit reached, will resume in ${hours} hours`;
 }
 
 async function main() {
   loadEnv();
 
   const newsApiKey = process.env.NEWS_API_KEY;
-  const alphaVantageKey = process.env.ALPHA_VANTAGE_API_KEY;
+  const alphaVantageKey = process.env.ALPHA_VANTAGE_API_KEY || process.env.ALPHA_VANTAGE_KEY;
   const now = Date.now();
   const state = loadState();
 
@@ -232,7 +245,7 @@ async function main() {
 
   if (newsApiKey && !newsApiLimited) {
     try {
-      collected.push(...await fetchNewsApi(newsApiKey));
+      collected.push(...await fetchNewsApi(newsApiKey, now));
       state.newsApiUsage.count += 1;
     } catch (error) {
       if (/rate limit|too many requests|429/i.test(error.message)) {
@@ -266,7 +279,8 @@ async function main() {
 
   const postedSet = new Set((state.postedUrls || []).map((url) => url.toLowerCase()));
   const freshArticles = dedupeArticles(collected)
-    .filter(isRecentArticle)
+    .filter((article) => isRecentArticle(article, now))
+    .filter(isForexRelevant)
     .filter((article) => article.url && !postedSet.has(article.url.toLowerCase()))
     .slice(0, 5);
 
