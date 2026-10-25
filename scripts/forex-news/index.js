@@ -7,41 +7,44 @@ const path = require('path');
 const STATE_DIR = '/cursor/stores/automation';
 const STATE_FILE = path.join(STATE_DIR, 'forex-news-state.json');
 
-const NEWS_API_DAILY_LIMIT = 100;
-const ALPHA_VANTAGE_DAILY_LIMIT = 25;
-const FETCH_INTERVAL_MS = 2 * 60 * 60 * 1000;
-const ARTICLE_MAX_AGE_MS = 2 * 60 * 60 * 1000;
+const MAX_ARTICLES = 8;
+const ARTICLE_MAX_AGE_MS = 48 * 60 * 60 * 1000;
 
-const NEWS_QUERY = 'forex OR currency OR EUR/USD OR gold trading';
+const RSS_FEEDS = [
+  { name: 'ForexLive', url: 'https://www.forexlive.com/feed' },
+  { name: 'Investing.com', url: 'https://www.investing.com/rss/news.rss' },
+  { name: 'CNBC', url: 'https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=10000664' },
+  { name: 'MarketWatch', url: 'https://feeds.marketwatch.com/marketwatch/topstories/' },
+  { name: 'OilPrice.com', url: 'https://oilprice.com/rss/main' },
+  { name: 'Federal Reserve', url: 'https://www.federalreserve.gov/feeds/press_all.xml' },
+  { name: 'ECB', url: 'https://www.ecb.europa.eu/rss/press.html' },
+  { name: 'Bank of England', url: 'https://www.bankofengland.co.uk/rss/news' },
+  { name: 'Yahoo Finance', url: 'https://finance.yahoo.com/news/rssindex' },
+];
 
-function loadEnv() {
-  try {
-    require('dotenv').config({ path: path.join(process.cwd(), '.env.local') });
-  } catch {
-    // dotenv is optional if env vars are already set
-  }
-}
+const KEYWORDS = [
+  'forex', 'currency', 'eur/usd', 'eur-usd', 'gbp/usd', 'gbp-usd', 'usd/jpy', 'usd-jpy',
+  'dollar', 'euro', 'yen', 'pound', 'sterling', 'gold', 'oil', 'crude', 'brent', 'wti',
+  'fed', 'federal reserve', 'ecb', 'european central bank', 'boj', 'bank of england',
+  'interest rate', 'rate cut', 'rate hike', 'inflation', 'cpi', 'gdp', 'employment',
+  'nonfarm', 'nfp', 'central bank', 'fx', 'foreign exchange', 'commodities', 'opec',
+  'xau', 'precious metal', 'treasury', 'bond yield', 'usd', 'eur', 'gbp', 'jpy', 'cny',
+  'hormuz', 'pboc', 'reserve bank', 'lagarde', 'powell',
+];
 
-function todayUtc() {
-  return new Date().toISOString().slice(0, 10);
-}
+const PRIORITY_KEYWORDS = [
+  'eur/usd', 'gbp/usd', 'usd/jpy', 'gold', 'oil', 'crude', 'fed', 'ecb',
+  'bank of england', 'interest rate', 'cpi', 'inflation', 'nonfarm', 'central bank',
+];
 
-function hoursUntilUtcMidnight() {
-  const now = new Date();
-  const midnight = new Date(Date.UTC(
-    now.getUTCFullYear(),
-    now.getUTCMonth(),
-    now.getUTCDate() + 1,
-  ));
-  return Math.ceil((midnight.getTime() - now.getTime()) / (60 * 60 * 1000));
-}
+const EXCLUDE_KEYWORDS = [
+  'crypto', 'bitcoin', 'ethereum', 'xrp', 'stablecoin', 'nft', 'blockchain',
+];
 
 function defaultState() {
   return {
-    newsApiUsage: { date: todayUtc(), count: 0 },
-    alphaVantageUsage: { date: todayUtc(), count: 0 },
     postedUrls: [],
-    lastFetchAt: null,
+    lastDigestDate: null,
   };
 }
 
@@ -63,33 +66,136 @@ function saveState(state) {
   fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2));
 }
 
-function resetDailyUsage(state) {
-  const today = todayUtc();
-  if (state.newsApiUsage?.date !== today) {
-    state.newsApiUsage = { date: today, count: 0 };
-  }
-  if (state.alphaVantageUsage?.date !== today) {
-    state.alphaVantageUsage = { date: today, count: 0 };
-  }
-}
-
-function normalizeTitle(title) {
-  return String(title || '')
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, ' ')
+function decodeHtml(value) {
+  return String(value || '')
+    .replace(/<!\[CDATA\[(.*?)\]\]>/gs, '$1')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&nbsp;/g, ' ')
+    .replace(/\s+/g, ' ')
     .trim();
 }
 
-function articleKey(article) {
-  return article.url || normalizeTitle(article.title);
+function extractTag(block, tag) {
+  const cdata = block.match(new RegExp(`<${tag}[^>]*><!\\[CDATA\\[(.*?)\\]\\]></${tag}>`, 'is'));
+  if (cdata) {
+    return cdata[1].trim();
+  }
+  const plain = block.match(new RegExp(`<${tag}[^>]*>(.*?)</${tag}>`, 'is'));
+  return plain ? plain[1].trim() : '';
+}
+
+function parseRss(xml, sourceName) {
+  const items = [];
+  const itemRegex = /<item[\s>]([\s\S]*?)<\/item>/gi;
+  let match;
+
+  while ((match = itemRegex.exec(xml)) !== null) {
+    const block = match[1];
+    const title = decodeHtml(extractTag(block, 'title'));
+    const link = decodeHtml(extractTag(block, 'link'))
+      || (block.match(/<link[^>]*href="([^"]+)"/i)?.[1] || '');
+    const description = decodeHtml(
+      extractTag(block, 'description')
+      || extractTag(block, 'summary')
+      || extractTag(block, 'content:encoded'),
+    );
+    const pubDate = decodeHtml(
+      extractTag(block, 'pubDate')
+      || extractTag(block, 'dc:date')
+      || extractTag(block, 'updated'),
+    );
+
+    if (title && link) {
+      items.push({
+        title,
+        url: link,
+        excerpt: description,
+        source: sourceName,
+        publishedAt: pubDate,
+      });
+    }
+  }
+
+  return items;
+}
+
+function parsePublishedAt(value) {
+  const parsed = Date.parse(value);
+  return Number.isNaN(parsed) ? null : parsed;
 }
 
 function isRecentArticle(article, now = Date.now()) {
-  const publishedAt = new Date(article.publishedAt).getTime();
-  if (Number.isNaN(publishedAt)) {
-    return false;
+  const publishedAt = parsePublishedAt(article.publishedAt);
+  if (!publishedAt) {
+    return true;
   }
   return now - publishedAt <= ARTICLE_MAX_AGE_MS;
+}
+
+function isRelevant(article) {
+  const text = `${article.title} ${article.excerpt}`.toLowerCase();
+  if (EXCLUDE_KEYWORDS.some((keyword) => text.includes(keyword))) {
+    return false;
+  }
+  return KEYWORDS.some((keyword) => text.includes(keyword));
+}
+
+function scoreArticle(article) {
+  const text = `${article.title} ${article.excerpt}`.toLowerCase();
+  let score = 0;
+
+  for (const keyword of PRIORITY_KEYWORDS) {
+    if (text.includes(keyword)) {
+      score += 3;
+    }
+  }
+
+  if (['Federal Reserve', 'ECB', 'Bank of England'].includes(article.source)) {
+    score += 5;
+  }
+
+  const publishedAt = parsePublishedAt(article.publishedAt);
+  if (publishedAt) {
+    const ageHours = (Date.now() - publishedAt) / (60 * 60 * 1000);
+    score += Math.max(0, 24 - ageHours);
+  }
+
+  return score;
+}
+
+function excerptSentences(text, maxSentences = 3) {
+  const clean = decodeHtml(text).replace(/\s+/g, ' ').trim();
+  if (!clean) {
+    return '';
+  }
+
+  const sentences = clean.match(/[^.!?]+[.!?]+/g) || [clean];
+  return sentences.slice(0, maxSentences).join(' ').trim();
+}
+
+function fallbackExcerpt(title) {
+  const cleanTitle = decodeHtml(title);
+  const lower = cleanTitle.toLowerCase();
+
+  if (lower.includes('gold')) {
+    return 'Precious metals traders are reassessing positioning as gold price moves interact with inflation data, rate expectations, and broader risk sentiment.';
+  }
+  if (lower.includes('oil') || lower.includes('crude') || lower.includes('brent') || lower.includes('pipeline')) {
+    return 'Energy markets remain in focus as supply disruptions and geopolitical risks keep crude price volatility elevated for FX and inflation outlooks.';
+  }
+  if (lower.includes('ecb') || lower.includes('lagarde') || lower.includes('euro')) {
+    return 'Euro-area policy and inflation developments continue to shape EUR crosses and expectations for European Central Bank action.';
+  }
+  if (lower.includes('fed') || lower.includes('federal reserve')) {
+    return 'US monetary policy expectations are shifting, with implications for the dollar and major currency pairs.';
+  }
+
+  return `This headline is being tracked for potential impacts on major currency pairs, commodities, and central bank policy: ${cleanTitle}.`;
 }
 
 function dedupeArticles(articles) {
@@ -97,9 +203,7 @@ function dedupeArticles(articles) {
   const unique = [];
 
   for (const article of articles) {
-    const urlKey = article.url ? article.url.trim().toLowerCase() : '';
-    const titleKey = normalizeTitle(article.title);
-    const key = urlKey || titleKey;
+    const key = article.url.toLowerCase().replace(/\/$/, '');
     if (!key || seen.has(key)) {
       continue;
     }
@@ -110,86 +214,64 @@ function dedupeArticles(articles) {
   return unique;
 }
 
-function formatTimestamp(date = new Date()) {
-  return date.toUTCString().replace(' GMT', ' UTC');
+function formatDigestDate(date = new Date()) {
+  return date.toLocaleDateString('en-US', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    timeZone: 'UTC',
+  });
 }
 
-function formatSlackMessage(articles, timestamp = new Date()) {
-  const lines = [`📰 Forex News Update - ${formatTimestamp(timestamp)}`, ''];
+function formatDigest(articles, date = new Date()) {
+  const lines = [`📰 Forex News Digest - ${formatDigestDate(date)}`, ''];
 
   for (const article of articles) {
     lines.push(`🔹 ${article.title}`);
-    lines.push(`   Source: ${article.source}`);
-    lines.push(`   Link → ${article.url}`);
+    lines.push(`   ${article.excerpt}`);
+    lines.push(`   Read more at ${article.source} → ${article.url}`);
     lines.push('');
   }
 
   return lines.join('\n').trim();
 }
 
-async function fetchNewsApi(apiKey) {
-  const params = new URLSearchParams({
-    q: NEWS_QUERY,
-    language: 'en',
-    sortBy: 'publishedAt',
-    pageSize: '5',
-    apiKey,
+async function fetchFeed(feed) {
+  const response = await fetch(feed.url, {
+    headers: { 'User-Agent': 'ForexNewsDigest/1.0' },
+    signal: AbortSignal.timeout(20000),
   });
-
-  const response = await fetch(`https://newsapi.org/v2/everything?${params.toString()}`);
-  const data = await response.json();
 
   if (!response.ok) {
-    const message = data?.message || data?.code || `HTTP ${response.status}`;
-    throw new Error(`NewsAPI error: ${message}`);
+    throw new Error(`HTTP ${response.status}`);
   }
 
-  return (data.articles || []).map((article) => ({
-    title: article.title,
-    url: article.url,
-    source: article.source?.name || 'Unknown',
-    publishedAt: article.publishedAt,
-    provider: 'newsapi',
-  }));
-}
-
-async function fetchAlphaVantage(apiKey) {
-  const params = new URLSearchParams({
-    function: 'NEWS_SENTIMENT',
-    topics: 'forex',
-    limit: '5',
-    apikey: apiKey,
-  });
-
-  const response = await fetch(`https://www.alphavantage.co/query?${params.toString()}`);
-  const data = await response.json();
-
-  if (data?.Note || data?.Information) {
-    throw new Error(`Alpha Vantage error: ${data.Note || data.Information}`);
+  const xml = await response.text();
+  if (!xml.includes('<item')) {
+    throw new Error('No RSS items found');
   }
 
-  return (data.feed || []).map((item) => ({
-    title: item.title,
-    url: item.url,
-    source: item.source || 'Unknown',
-    publishedAt: `${item.time_published.slice(0, 4)}-${item.time_published.slice(4, 6)}-${item.time_published.slice(6, 8)}T${item.time_published.slice(9, 11)}:${item.time_published.slice(11, 13)}:${item.time_published.slice(13, 15)}Z`,
-    provider: 'alphavantage',
-  }));
+  return parseRss(xml, feed.name);
 }
 
-function buildRateLimitMessage(provider, hours) {
-  return `API limit reached for ${provider}, will resume in ${hours} hours`;
+async function fetchAllArticles() {
+  const collected = [];
+
+  for (const feed of RSS_FEEDS) {
+    try {
+      collected.push(...await fetchFeed(feed));
+    } catch {
+      // Skip unavailable feeds and continue with the rest.
+    }
+  }
+
+  return collected;
 }
 
 async function main() {
-  loadEnv();
-
-  const newsApiKey = process.env.NEWS_API_KEY;
-  const alphaVantageKey = process.env.ALPHA_VANTAGE_API_KEY;
-  const now = Date.now();
   const state = loadState();
-
-  resetDailyUsage(state);
+  const postedSet = new Set((state.postedUrls || []).map((url) => url.toLowerCase()));
 
   const result = {
     action: 'skip',
@@ -198,94 +280,35 @@ async function main() {
     reason: null,
   };
 
-  if (!newsApiKey && !alphaVantageKey) {
-    result.reason = 'missing_api_keys';
-    console.log(JSON.stringify(result));
-    return;
-  }
-
-  if (state.lastFetchAt && now - Date.parse(state.lastFetchAt) < FETCH_INTERVAL_MS) {
-    result.reason = 'fetch_interval_not_elapsed';
-    console.log(JSON.stringify(result));
-    return;
-  }
-
-  const newsApiLimited = state.newsApiUsage.count >= NEWS_API_DAILY_LIMIT;
-  const alphaLimited = state.alphaVantageUsage.count >= ALPHA_VANTAGE_DAILY_LIMIT;
-  const hoursToReset = hoursUntilUtcMidnight();
-
-  if (newsApiKey && newsApiLimited && (!alphaVantageKey || alphaLimited)) {
-    result.action = 'rate_limit';
-    result.message = buildRateLimitMessage('NewsAPI and Alpha Vantage', hoursToReset);
-    console.log(JSON.stringify(result));
-    return;
-  }
-
-  if (newsApiKey && newsApiLimited && !alphaVantageKey) {
-    result.action = 'rate_limit';
-    result.message = buildRateLimitMessage('NewsAPI', hoursToReset);
-    console.log(JSON.stringify(result));
-    return;
-  }
-
-  const collected = [];
-
-  if (newsApiKey && !newsApiLimited) {
-    try {
-      collected.push(...await fetchNewsApi(newsApiKey));
-      state.newsApiUsage.count += 1;
-    } catch (error) {
-      if (/rate limit|too many requests|429/i.test(error.message)) {
-        state.newsApiUsage.count = NEWS_API_DAILY_LIMIT;
-        result.action = 'rate_limit';
-        result.message = buildRateLimitMessage('NewsAPI', hoursToReset);
-        saveState(state);
-        console.log(JSON.stringify(result));
-        return;
-      }
-      result.reason = `newsapi_error:${error.message}`;
-    }
-  }
-
-  if (alphaVantageKey && !alphaLimited) {
-    try {
-      collected.push(...await fetchAlphaVantage(alphaVantageKey));
-      state.alphaVantageUsage.count += 1;
-    } catch (error) {
-      if (/rate limit|too many requests|429|call frequency/i.test(error.message)) {
-        state.alphaVantageUsage.count = ALPHA_VANTAGE_DAILY_LIMIT;
-        if (result.action !== 'rate_limit') {
-          result.action = 'rate_limit';
-          result.message = buildRateLimitMessage('Alpha Vantage', hoursToReset);
-        }
-      }
-    }
-  }
-
-  state.lastFetchAt = new Date(now).toISOString();
-
-  const postedSet = new Set((state.postedUrls || []).map((url) => url.toLowerCase()));
-  const freshArticles = dedupeArticles(collected)
+  const collected = await fetchAllArticles();
+  const articles = dedupeArticles(collected)
+    .filter(isRelevant)
     .filter(isRecentArticle)
     .filter((article) => article.url && !postedSet.has(article.url.toLowerCase()))
-    .slice(0, 5);
+    .sort((left, right) => scoreArticle(right) - scoreArticle(left))
+    .slice(0, MAX_ARTICLES);
 
-  if (freshArticles.length === 0) {
-    result.reason = result.reason || 'no_new_articles';
-    saveState(state);
+  for (const article of articles) {
+    article.excerpt = excerptSentences(article.excerpt, 3)
+      || fallbackExcerpt(article.title);
+  }
+
+  if (articles.length === 0) {
+    result.reason = 'no_new_articles';
     console.log(JSON.stringify(result));
     return;
   }
 
   result.action = 'post';
-  result.articles = freshArticles;
-  result.message = formatSlackMessage(freshArticles);
+  result.articles = articles;
+  result.message = formatDigest(articles);
 
-  for (const article of freshArticles) {
+  for (const article of articles) {
     state.postedUrls.push(article.url);
   }
-
+  state.lastDigestDate = new Date().toISOString();
   saveState(state);
+
   console.log(JSON.stringify(result));
 }
 
