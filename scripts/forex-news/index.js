@@ -14,6 +14,24 @@ const ARTICLE_MAX_AGE_MS = 2 * 60 * 60 * 1000;
 
 const NEWS_QUERY = 'forex OR currency OR EUR/USD OR gold trading';
 
+const FOREX_KEYWORD_PATTERNS = [
+  /\bforex\b/i,
+  /\bcurrency\b/i,
+  /\bcurrencies\b/i,
+  /\bfx\b/i,
+  /\beur\/usd\b/i,
+  /\bgbp\/usd\b/i,
+  /\busd\/jpy\b/i,
+  /\busd\/cad\b/i,
+  /\busd\/chf\b/i,
+  /\baud\/usd\b/i,
+  /\bnzd\/usd\b/i,
+  /\bgold trading\b/i,
+  /\bgold price\b/i,
+  /\bforeign exchange\b/i,
+  /\bexchange rate\b/i,
+];
+
 function loadEnv() {
   try {
     require('dotenv').config({ path: path.join(process.cwd(), '.env.local') });
@@ -92,6 +110,11 @@ function isRecentArticle(article, now = Date.now()) {
   return now - publishedAt <= ARTICLE_MAX_AGE_MS;
 }
 
+function isForexRelevant(article) {
+  const text = `${article.title || ''} ${article.url || ''}`;
+  return FOREX_KEYWORD_PATTERNS.some((pattern) => pattern.test(text));
+}
+
 function dedupeArticles(articles) {
   const seen = new Set();
   const unique = [];
@@ -128,10 +151,12 @@ function formatSlackMessage(articles, timestamp = new Date()) {
 }
 
 async function fetchNewsApi(apiKey) {
+  const from = new Date(Date.now() - ARTICLE_MAX_AGE_MS).toISOString();
   const params = new URLSearchParams({
     q: NEWS_QUERY,
     language: 'en',
     sortBy: 'publishedAt',
+    from,
     pageSize: '5',
     apiKey,
   });
@@ -185,7 +210,7 @@ async function main() {
   loadEnv();
 
   const newsApiKey = process.env.NEWS_API_KEY;
-  const alphaVantageKey = process.env.ALPHA_VANTAGE_API_KEY;
+  const alphaVantageKey = process.env.ALPHA_VANTAGE_API_KEY || process.env.ALPHA_VANTAGE_KEY;
   const now = Date.now();
   const state = loadState();
 
@@ -266,7 +291,8 @@ async function main() {
 
   const postedSet = new Set((state.postedUrls || []).map((url) => url.toLowerCase()));
   const freshArticles = dedupeArticles(collected)
-    .filter(isRecentArticle)
+    .filter((article) => isRecentArticle(article, now))
+    .filter(isForexRelevant)
     .filter((article) => article.url && !postedSet.has(article.url.toLowerCase()))
     .slice(0, 5);
 
